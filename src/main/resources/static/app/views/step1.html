@@ -1,0 +1,53 @@
+<div name="step1">
+
+	<div class="form-group" bs-has ng-init="formData.steps.currentStep = 1">
+		<label class="control-label col-sm-4 col-md-3" for="email" >{{'step1.email' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<div class="input-group">
+				<input required name="email" type="email" class="form-control" id="email" ng-model="formData.speaker.email">
+				<span class="input-group-addon">@</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="col-sm-4 col-md-3 control-label" for="name">{{'step1.name' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<input required type="text" name="name" class="form-control" id="name" ng-model="formData.speaker.name">
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="col-sm-4 col-md-3 control-label" for="firstname">{{'step1.firstname' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<input required type="text" class="form-control" id="firstname" name="firstname" ng-model="formData.speaker.firstname">
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="col-sm-4 col-md-3 control-label" for="phone">{{'step1.phone' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<input type="tel" class="form-control" name="phone" id="phone" preferred-countries="fr, de, gb, us" international-phone-number ng-model="formData.speaker.phone">
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="col-sm-4 col-md-3 control-label" for="company">{{'step1.company' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<input type="text" class="form-control" name="company" id="company" ng-model="formData.speaker.company">
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="col-sm-4 col-md-3 control-label" for="bio">{{'step1.bio' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<textarea required class="form-control" name="bio" id="bio" ng-model="formData.speaker.bio"  rows="3"></textarea>
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="col-sm-4 col-md-3 control-label" for="social">{{'step1.social' | translate}}</label>
+		<div class="col-sm-8 col-md-9">
+			<tags-input id="social" name="social" allowed-tags-pattern="^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$" ng-model="formData.speaker.socialArray"></tags-input>
+		</div>
+	</div>
+</div>
+<div class="col-sm-5 col-sm-offset-7 col-md-3 col-md-offset-9">
+	<a ui-sref="form.step2" ng-disabled="!formData.steps.isValid[0]" class="btn btn-block btn-primary" href="#/form/step2">
+		{{'steps.next' | translate}} <span class="glyphicon glyphicon-circle-arrow-right"></span>
+	</a>
+</div>

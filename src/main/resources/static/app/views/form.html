@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div id="form-container">
+      <div class="text-center">
+        <h2><img src="/images/devfest.png" alt="" style="width: 20px;margin-bottom:5px;margin-right:5px">Call for paper - DevFest</h2>
+      </div>
+      <div class="col-sm-12">
+        <progressbar class="progress-striped" ng-attr-type="{{formData.steps.currentStep === 4 ? 'success' : ''}}" min="1" max="3" value="formData.steps.currentStep - (formData.steps.currentStep === 4 ? 1 : 0)">
+          <div ng-show="formData.steps.currentStep < 4">{{'steps.step' | translate}} {{formData.steps.currentStep}} / {{formData.steps.isValid.length}}</div>
+          <div ng-show="formData.steps.currentStep === 4">{{'steps.done' | translate}}</div>
+        </progressbar>
+        <div class="col-xs-6">
+          <div>{{'steps.required' | translate}}</div>
+        </div>
+        <div class="col-xs-6 text-right">
+          <lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
+        </div>
+      </div>
+      <!-- use ng-submit to catch the form submission and use our Angular function -->
+      <form class="form-horizontal" id="form"  name="form" ng-submit="processForm(form.$valid)" xt-form role="form" novalidate>
+        <!-- our nested state views will be injected here -->
+        <div id="form-views" ui-view></div>
+      </form>
+    </div>
+  </div>
+</div>
