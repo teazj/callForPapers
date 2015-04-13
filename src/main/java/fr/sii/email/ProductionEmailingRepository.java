@@ -21,8 +21,8 @@ public class ProductionEmailingRepository implements EmailingRepository {
         this.props = new Properties();
         this.props.put("mail.smtp.auth", "true");
         this.props.put("mail.smtp.starttls.enable", "true");
-        this.props.put("mail.smtp.host", emailingSettings.getSmtpHost());
-        this.props.put("mail.smtp.port", emailingSettings.getSmtpPort());
+        this.props.put("mail.smtp.host", emailingSettings.getSmtphost());
+        this.props.put("mail.smtp.port", emailingSettings.getSmtpport());
     }
 
     public void send(EmailModel email) throws Exception {

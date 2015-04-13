@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class SpreadsheetConfig {
     @Bean
     public SpreadsheetRepository googleRepository() {
-        return new ProductionGoogleRepository();
+        return new ProductionSpreadsheetRepository();
     }
 }

@@ -7,8 +7,8 @@ google:
     consumerSecret: ${GOOGLE_CONSUMER_SECRET}
 
 email:
-    smtpHost: smtp.gmail.com
-    smtpPort: 587
+    smtphost: smtp.gmail.com
+    smtpport: 587
     password: ${EMAIL_PASSWORD}
     username: ${EMAIL_USERNAME}
 ---

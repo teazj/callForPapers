@@ -12,25 +12,25 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix="email")
 public class EmailingSettings {
-    private String smtpHost;
-    private String smtpPort;
+    private String smtphost;
+    private String smtpport;
     private String password;
     private String username;
 
-    public String getSmtpHost() {
-        return smtpHost;
+    public String getSmtphost() {
+        return smtphost;
     }
 
-    public void setSmtpHost(String smtpHost) {
-        this.smtpHost = smtpHost;
+    public void setSmtphost(String smtphost) {
+        this.smtphost = smtphost;
     }
 
-    public String getSmtpPort() {
-        return smtpPort;
+    public String getSmtpport() {
+        return smtpport;
     }
 
-    public void setSmtpPort(String smtpPort) {
-        this.smtpPort = smtpPort;
+    public void setSmtpport(String smtpport) {
+        this.smtpport = smtpport;
     }
 
     public String getPassword() {
@@ -52,8 +52,8 @@ public class EmailingSettings {
     @Override
     public String toString() {
         return "EmailingSettings{" +
-                "smtpHost='" + smtpHost + '\'' +
-                ", smtpPort='" + smtpPort + '\'' +
+                "smtphost='" + smtphost + '\'' +
+                ", smtpport='" + smtpport + '\'' +
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 '}';

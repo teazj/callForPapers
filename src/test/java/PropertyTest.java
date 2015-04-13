@@ -30,7 +30,7 @@ public class PropertyTest {
 
 
     @Test
-    public void test1_getApplicationProperty() {
+    public void test1_getApplicationPropertyGoogleApp() {
         assertEquals("CallForPaper",env.getProperty("google.spreadsheetName"));
         assertEquals("891245656445-kmikis13jdvj0sagiah01vtljd8rhro5.apps.googleusercontent.com",env.getProperty("google.consumerKey"));
         assertEquals("VURYm_x9EQfIRhU_ykse-f8o",env.getProperty("google.consumerSecret"));
@@ -38,8 +38,15 @@ public class PropertyTest {
     }
 
     @Test
-    public void test2_getApplicationProperty() {
+         public void test2_getApplicationPropertyGoogleLogin() {
         assertEquals("maugin.thomas",env.getProperty("google.login"));
+        assertEquals("maugin.thomas@gmail.com",env.getProperty("email.username"));
+    }
+
+    @Test
+    public void test2_getApplicationPropertyEmail() {
+        assertEquals("smtp.gmail.com",env.getProperty("email.smtphost"));
+        assertEquals("587",env.getProperty("email.smtpport"));
         assertEquals("maugin.thomas@gmail.com",env.getProperty("email.username"));
     }
 }

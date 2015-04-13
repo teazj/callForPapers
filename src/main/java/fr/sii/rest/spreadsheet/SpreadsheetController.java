@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 
 @Controller
-public class GoogleSpreadsheetController {
+public class SpreadsheetController {
 
     @Autowired
     private SpreadsheetService googleService;

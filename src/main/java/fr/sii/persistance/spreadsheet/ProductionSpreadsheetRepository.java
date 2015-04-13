@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by tmaugin on 02/04/2015.
  */
-public class ProductionGoogleRepository implements SpreadsheetRepository {
+public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     /**
      * Our view of Google Spreadsheets as an authenticated Google user.
      */
@@ -37,7 +37,7 @@ public class ProductionGoogleRepository implements SpreadsheetRepository {
         service.setUserCredentials(username, password);
     }
 
-    public ProductionGoogleRepository() {
+    public ProductionSpreadsheetRepository() {
         this.service = new SpreadsheetService("Google Spreadsheet");
         this.factory = FeedURLFactory.getDefault();
     }

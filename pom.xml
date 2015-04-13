@@ -90,8 +90,6 @@
         <artifactId>greenmail</artifactId>
         <version>1.4.0</version>
     </dependency>
-
-
 </dependencies>
 
 <properties>
@@ -103,6 +101,9 @@
         <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <mainClass>fr.sii.Application</mainClass>
+            </configuration>
         </plugin>
     </plugins>
 </build>
