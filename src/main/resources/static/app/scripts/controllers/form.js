@@ -5,7 +5,6 @@ angular.module('CallForPaper')
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
-		$scope.formData.session = {};
 		$scope.formData.steps.currentStep = 1;
 		$scope.formData.steps.isValid = [false, false, false];
 		$scope.language = $translate.use();

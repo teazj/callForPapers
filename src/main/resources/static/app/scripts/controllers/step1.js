@@ -2,6 +2,7 @@
 
 angular.module('CallForPaper')
 	.controller('Step1Ctrl', function($scope) {
+	  $scope.$parent.formData.speaker = {};
 		$scope.$watch(function(){
 			return $scope.form.email.$valid && $scope.form.name.$valid && $scope.form.firstname.$valid && $scope.form.phone.$valid && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid;
 		},function(isValid){
