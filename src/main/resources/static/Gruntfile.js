@@ -227,10 +227,12 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/**/*',
-            'images/{,*/}*.{gif,webp}',
+            'images/{,*/}*.{gif,webp,png,jpg}',
             'styles/fonts/*'
           ]
-        }, {
+        },
+        {expand: true, cwd: '<%= yeoman.app %>/styles/fonts/', src: ['**'], dest: '<%= yeoman.dist %>/fonts/'},
+        {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',

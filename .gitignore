@@ -2,7 +2,9 @@
 *.iml
 target
 
+npm-debug.log
 src/main/resources/static/node_modules
+src/main/resources/static/npm-debug.log
 src/main/resources/static/dist
 src/main/resources/static/.tmp
 src/main/resources/static/.sass-cache
