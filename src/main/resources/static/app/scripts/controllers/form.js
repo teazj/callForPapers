@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('FormCtrl', function($scope, $filter, $translate,$rootScope, $http, $state) {
+	.controller('FormCtrl', function($scope, $filter, $translate,$rootScope, $http, $state, $stateParams) {
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
@@ -15,8 +15,9 @@ angular.module('CallForPaper')
 			angular.extend(model,$scope.formData.help);
 			angular.extend(model,$scope.formData.speaker);
 			angular.extend(model,$scope.formData.session);
+			var eventName = $stateParams.event;
 
-			$http.post('/devfest/session', model).
+			$http.post('/' + eventName + '/session', model).
 			success(function(data, status, headers, config) {
 				// this callback will be called asynchronously
 				// when the response is available

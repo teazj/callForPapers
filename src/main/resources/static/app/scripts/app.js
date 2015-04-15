@@ -16,7 +16,10 @@ var app = angular.module('CallForPaper', [
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    $urlRouterProvider.otherwise('/form/step1');
+    $urlRouterProvider.otherwise('/404');
+    $urlRouterProvider
+    .when('/event/:eventName/form', '/event/:eventName/form/step1')
+    .when('/event/:eventName', '/event/:eventName/form/step1');
     $stateProvider
       // .state('index', {
       //   url: '/',
@@ -24,7 +27,7 @@ var app = angular.module('CallForPaper', [
       //   controller: 'MainCtrl'
       // })
       .state('form', {
-        url: '/form',
+        url: '/event/:eventName/form',
         abstract: true,
         views : {
           '' : {
@@ -57,6 +60,14 @@ var app = angular.module('CallForPaper', [
         url: '/result',
         templateUrl: 'views/result.html',
         controller: 'ResultCtrl'
+      })
+      .state('close', {
+        url: '/close',
+        templateUrl: 'views/close.html'
+      })
+      .state('404', {
+        url: '/404',
+        templateUrl: '404.html'
       });
   })
 .config(function(tagsInputConfigProvider) {
