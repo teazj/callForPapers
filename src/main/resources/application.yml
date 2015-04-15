@@ -11,6 +11,9 @@ email:
     smtpport: 587
     password: ${EMAIL_PASSWORD}
     username: ${EMAIL_USERNAME}
+
+webapp:
+    dir: app
 ---
 spring:
     profiles: development
@@ -21,6 +24,8 @@ spring:
     profiles: production
 google:
     worksheetName: prod
+webapp:
+    dir: dist
 ---
 spring:
     profiles: test

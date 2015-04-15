@@ -1,6 +1,8 @@
 package fr.sii;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -10,11 +12,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
 
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/static/dist/" };
+    @Autowired
+    Environment env;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/static/" + env.getProperty("webapp.dir") + "/" };
         registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
 }
