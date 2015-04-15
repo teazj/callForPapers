@@ -64,8 +64,8 @@
   </div>
   <br class="visible-xs-block">
   <div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-    <button class="btn btn-block btn-success" ng-disabled="!formData.steps.isValid[2] || !formData.steps.isValid[1] || !formData.steps.isValid[0]">
-    {{'steps.validate' | translate}} <span class="glyphicon glyphicon-ok pull-right"></span>
+    <button class="btn btn-block btn-success" ng-disabled="!formData.steps.isValid[2] || !formData.steps.isValid[1] || !formData.steps.isValid[0] || formData.sending">
+    {{'steps.validate' | translate}} <span class="glyphicon glyphicon-ok pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-ok' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
     </button>
   </div>
 </div>
