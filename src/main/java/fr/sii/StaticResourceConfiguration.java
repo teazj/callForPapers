@@ -19,5 +19,6 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/static/" + env.getProperty("webapp.dir") + "/" };
         registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+        registry.addResourceHandler("/widget/**").addResourceLocations("classpath:/static/widget/");
     }
 }
