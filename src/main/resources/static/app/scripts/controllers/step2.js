@@ -8,14 +8,4 @@ angular.module('CallForPaper')
 		},function(isValid){
 			$scope.$parent.formData.steps.isValid[1]= isValid;
 		})
-
-		$scope.$watch(function(){
-			if($scope.$parent.formData.session.coSpeakerArray !== undefined)
-			return $scope.$parent.formData.session.coSpeakerArray.length;
-		},function(){
-			if($scope.$parent.formData.session.coSpeakerArray !== undefined)
-			{
-				$scope.$parent.formData.session.coSpeaker = $scope.$parent.formData.session.coSpeakerArray.map(function(elem){return elem.text;}).join(", ");
-			}
-		})
 	});

@@ -13,15 +13,20 @@ app.config(function($translateProvider) {
       "phone": "Téléphone :",
       "company": "Entreprise :",
       "bio": "Bio * :",
-      "social": "URL (Google, Github, etc) :"
+      "hintBio": "Décrivez vous en quelques mots. Cette description sera utilisée sur le site web",
+      "social": "URL (Google, Github, etc) :",
+      "hintSocial": "Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog"
     },
     "step2": {
-      "name": "Nom de la session * :",
+      "name": "Nom de la conférence * :",
       "description": "Description * :",
+      "hintDescription": "Donnez une description de votre présentation. Elle sera utilisée sur le site web",
       "references": "Références ou compléments d'informations :",
+      "hintReferences": "Y a-t-il des conférences où vous avez déjà fait des présentations ? Si vous pouvez donner un lien vers celle(s)-ci ça serait bien.",
       "difficulty": "Difficulté * (Débutant, Confirmé, Expert) :",
       "track": "Track * :",
-      "cospeaker": "Co-speaker :",
+      "cospeaker": "Co-conférenciers :",
+      "hintCospeaker": "Si vous n'êtes pas seul lors de la présentation, donnez les nom / email / bio / liens sociaux des autres conférenciers",
       "beginner": "Débutant",
       "confirmed": "Confirmé",
       "expert": "Expert",
@@ -31,9 +36,12 @@ app.config(function($translateProvider) {
         "web": "Web",
         "discovery": "Discovery",
         "codelab": "Codelab"
-      }
+      },
+      "hintTrack": "Choisissez la catégorie dans laquelle vous pensez que votre conférence se situe. Discovery est une catégorie pour les conférences non techniques."
     },
     "step3": {
+      "header1": "Ici vous renseignerez les informations nécessaires pour votre venue. Ces informations serons très minucieusement étudiées pour notre décision. Ne choisissez oui que si vous en avez besoin.", 
+      "header2": "Un petit déjeuner et un déjeuner est offert le jour de l'évènement.",
       "financial": "Avez-vous besoin d’une aide financière ? * :",
       "labelTravel": "Voyage :",
       "travel": "J'ai besoin d’une aide financière pour le voyage.",
@@ -71,15 +79,22 @@ app.config(function($translateProvider) {
       "phone": "Phone:",
       "company": "Company:",
       "bio": "Bio *:",
-      "social": "URL (Google, Github, etc):"
+      "hintBio": "Describe yourself with a few words. This description will be use to fill the website",
+      "social": "URL (Google, Github, etc):",
+      "hintSocial": "Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog"
+
     },
     "step2": {
-      "name": "Session nam *",
+      "name": "Session name *",
       "description": "Description *:",
+      "hintDescription": "Give a description of your talk. This description will be used to fill the website",
+      "references": "References or complement informations :",
+      "hintReferences": "Is there any conferences where you have already spoken ? If you could give a link to the presentation, it's better.",
       "complement": "Recommendation and additional information:",
       "difficulty": "Difficulty * (Beginner, Confirmed, Expert):",
       "track": "Track *:",
       "cospeaker": "Co-speaker:",
+      "hintCospeaker": "If you are not alone on stage, give the co-speaker name / email / bio / social networks",
       "beginner": "Beginner",
       "confirmed": "Confirmed",
       "expert": "Expert",
@@ -89,9 +104,12 @@ app.config(function($translateProvider) {
         "web": "Web",
         "discovery": "Discovery",
         "codelab": "Codelab"
-      }
+      },
+      "hintTrack": "Choose the track where you think your talk will be place. Discovery is a track for non technicals presentations"
     },
     "step3": {
+      "header1": "Here is all the informations relatives to your venue. The following informations will be carefuly study for our decision. So please select Yes, only if needed.", 
+      "header2": "A breakfast and lunch is offered the day of the event.",
       "financial": "Do you need financial help ? *:",
       "labelTravel": "Travel",
       "travel": "I need financial help for the trip.",

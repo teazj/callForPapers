@@ -1,65 +1,71 @@
-<div class="form-group" bs-has ng-init="formData.steps.currentStep = 3">
-  <label class="col-sm-4 col-md-3 control-label" for="financial">{{'step3.financial' | translate}}</label>
-  <div class="col-sm-8 col-md-9">
-    <div class="radio">
-      <label>
-        <input ng-model="formData.help.financial" id="financial" type="radio" name="financial" value="true">
-        {{'steps.yes' | translate}}
-      </label>
+<div class="col-lg-offset-2 col-lg-8">
+  <div class="form-group" bs-has ng-init="formData.steps.currentStep = 3">
+    <div>
+      <h4 class="text-center">{{'step3.header1' | translate}}</h4>
+      <h4 class="text-center">{{'step3.header2' | translate}}</h4>
     </div>
-    <div class="radio">
-      <label>
-        <input ng-model="formData.help.financial" type="radio" name="financial" value="false">
-        {{'steps.no' | translate}}
-      </label>
-    </div>
-  </div>
-</div>
-<div ng-show="formData.help.financial === 'true'">
-  <div class="form-group" bs-has>
-    <label class="col-sm-4 col-md-3 control-label" for="travel">{{'step3.labelTravel' | translate}}</label>
-    <div class="col-md-8 col-md-9">
-      <div class="checkbox">
+    <label class="control-label" for="financial">{{'step3.financial' | translate}}</label>
+    <div>
+      <div class="radio">
         <label>
-          <input ng-model="formData.help.travel" id="travel" name="travel" type="checkbox">
-          {{'step3.travel' | translate}}
+          <input ng-model="formData.help.financial" id="financial" type="radio" name="financial" value="true">
+          {{'steps.yes' | translate}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input ng-model="formData.help.financial" type="radio" name="financial" value="false">
+          {{'steps.no' | translate}}
         </label>
       </div>
     </div>
   </div>
-  <div class="form-group" bs-has ng-show="formData.help.travel">
-    <label class="col-sm-4 col-md-3 control-label" for="travelFrom">{{'step3.place' | translate}}</label>
-    <div class="col-md-8 col-md-9">
-      <input required type="text" name="travelFrom" ng-model="formData.help.travelFrom" class="form-control" id="travelFrom">
+  <div ng-show="formData.help.financial === 'true'">
+    <div class="form-group" bs-has>
+      <label class="control-label" for="travel">{{'step3.labelTravel' | translate}}</label>
+      <div>
+        <div class="checkbox">
+          <label>
+            <input ng-model="formData.help.travel" id="travel" name="travel" type="checkbox">
+            {{'step3.travel' | translate}}
+          </label>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="form-group" bs-has>
-    <label class="col-sm-4 col-md-3 control-label" for="hotel">{{'step3.labelHotel' | translate}}</label>
-    <div class="col-md-8 col-md-9">
-      <div class="checkbox">
-        <label>
-          <input ng-model="formData.help.hotel" id="hotel" name="hotel" type="checkbox" value="">
-          {{'step3.hotel' | translate}}
-        </label>
+    <div class="form-group" bs-has ng-show="formData.help.travel">
+      <label class="control-label" for="travelFrom">{{'step3.place' | translate}}</label>
+      <div>
+        <input required type="text" name="travelFrom" ng-model="formData.help.travelFrom" class="form-control" id="travelFrom">
+      </div>
+    </div>
+    <div class="form-group" bs-has>
+      <label class="control-label" for="hotel">{{'step3.labelHotel' | translate}}</label>
+      <div>
+        <div class="checkbox">
+          <label>
+            <input ng-model="formData.help.hotel" id="hotel" name="hotel" type="checkbox" value="">
+            {{'step3.hotel' | translate}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" bs-has ng-show="formData.help.hotel">
+      <label class="control-label" for="hotelDate">{{'step3.date' | translate}}</label>
+      <div>
+        <input required type="text" name="hotelDate" ng-model="formData.help.hotelDate" class="form-control" id="hotelDate">
       </div>
     </div>
   </div>
-  <div class="form-group" bs-has ng-show="formData.help.hotel">
-    <label class="col-sm-4 col-md-3 control-label" for="hotelDate">{{'step3.date' | translate}}</label>
-    <div class="col-md-8 col-md-9">
-      <input required type="text" name="hotelDate" ng-model="formData.help.hotelDate" class="form-control" id="hotelDate">
-    </div>
+  <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
+  <div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
+    <a ui-sref="form.step2" class="btn btn-block btn-warning" href="#/form/step2">
+      <span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
+    </a>
   </div>
-</div>
-<p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
-<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-  <a ui-sref="form.step2" class="btn btn-block btn-warning" href="#/form/step2">
-    <span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
-  </a>
-</div>
-<br class="visible-xs-block">
-<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-  <button class="btn btn-block btn-success" ng-disabled="!formData.steps.isValid[2] || !formData.steps.isValid[1] || !formData.steps.isValid[0]">
+  <br class="visible-xs-block">
+  <div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
+    <button class="btn btn-block btn-success" ng-disabled="!formData.steps.isValid[2] || !formData.steps.isValid[1] || !formData.steps.isValid[0]">
     {{'steps.validate' | translate}} <span class="glyphicon glyphicon-ok pull-right"></span>
-  </button>
+    </button>
+  </div>
 </div>
