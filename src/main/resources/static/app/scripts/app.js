@@ -16,10 +16,12 @@ var app = angular.module('CallForPaper', [
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    $urlRouterProvider.otherwise('/404');
     $urlRouterProvider
     .when('/event/:eventName/form', '/event/:eventName/form/step1')
-    .when('/event/:eventName', '/event/:eventName/form/step1');
+    .when('/event/:eventName/form/', '/event/:eventName/form/step1')
+    .when('/event/:eventName', '/event/:eventName/form/step1')
+    .when('/event/:eventName/', '/event/:eventName/form/step1');
+    $urlRouterProvider.otherwise('/404');
     $stateProvider
       // .state('index', {
       //   url: '/',
