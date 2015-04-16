@@ -32,8 +32,8 @@ public class PropertyTest {
     @Test
     public void test1_getApplicationPropertyGoogleApp() {
         assertEquals("CallForPaper",env.getProperty("google.spreadsheetName"));
-        assertEquals("891245656445-kmikis13jdvj0sagiah01vtljd8rhro5.apps.googleusercontent.com",env.getProperty("google.consumerKey"));
-        assertEquals("VURYm_x9EQfIRhU_ykse-f8o",env.getProperty("google.consumerSecret"));
+        assertEquals("891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com",env.getProperty("google.consumerKey"));
+        assertEquals("-O23H1SzVRqimwsNIL8aVSZf",env.getProperty("google.consumerSecret"));
         assertEquals("test",env.getProperty("google.worksheetName"));
     }
 

@@ -23,25 +23,21 @@ public class SpreadsheetService {
     private SpreadsheetRepository googleRepository;
 
     @Autowired
-    public void login() throws AuthenticationException {
-        googleRepository.login(googleSettings.getLogin(),googleSettings.getPassword());
-    }
-
-    public String showConfig(){
-        return googleSettings.getLogin() + " " + googleSettings.getPassword();
+    public void login() throws ServiceException, IOException {
+        googleRepository.login(googleSettings);
     }
 
     public RowModel addRow(RowModel row) throws ServiceException, IOException {
-        return googleRepository.addRow(googleSettings.getSpreadsheetName(), googleSettings.getWorksheetName(), row);
+        return googleRepository.addRow(row);
     }
 
     public List<RowModel> getRows() throws IOException, ServiceException
     {
-        return googleRepository.getRows(googleSettings.getSpreadsheetName(), googleSettings.getWorksheetName());
+        return googleRepository.getRows();
     }
 
     public List<RowModel> deleteRows() throws IOException, ServiceException
     {
-        return googleRepository.deleteRows(googleSettings.getSpreadsheetName(), googleSettings.getWorksheetName());
+        return googleRepository.deleteRows();
     }
 }

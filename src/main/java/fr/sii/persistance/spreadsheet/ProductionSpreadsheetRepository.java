@@ -1,8 +1,11 @@
 package fr.sii.persistance.spreadsheet;
 
+import com.google.gdata.client.docs.DocsService;
 import com.google.gdata.client.spreadsheet.FeedURLFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.BaseEntry;
+import com.google.gdata.data.PlainTextConstruct;
+import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
@@ -24,29 +27,39 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
      * Our view of Google Spreadsheets as an authenticated Google user.
      */
     private SpreadsheetService service;
+    private DocsService docsService;
+    private SpreadsheetSettings spreadsheetSettings;
+    private SpreadsheetConnector spreadsheetConnector;
+
+    private SpreadsheetEntry spreadsheet;
+    private WorksheetEntry worksheet;
 
     /**
      * A factory that generates the appropriate feed URLs.
      */
     private FeedURLFactory factory;
 
+
     @Override
-    public void login(String username, String password)
-            throws AuthenticationException {
+    public void login(SpreadsheetSettings s)
+            throws ServiceException, IOException {
         // Authenticate
-        service.setUserCredentials(username, password);
+        spreadsheetSettings = s;
+        service.setUserCredentials(s.getLogin(), s.getPassword());
+        spreadsheetConnector = new SpreadsheetConnector(service,docsService);
+        docsService.setUserCredentials(s.getLogin(), s.getPassword());
+        setWorksheet(s.getSpreadsheetName(),s.getWorksheetName());
     }
 
     public ProductionSpreadsheetRepository() {
-        this.service = new SpreadsheetService("Google Spreadsheet");
+        this.service = new SpreadsheetService("CallForPaper-v3");
+        this.docsService = new DocsService("CallForPaper-v3");
         this.factory = FeedURLFactory.getDefault();
     }
 
-    @Override
-    public RowModel addRow(String spreadsheetName, String worksheetName, RowModel postedRow) throws IOException, ServiceException {
+    public void setWorksheet(String spreadsheetName,String worksheetName)
+            throws IOException, ServiceException {
         // Get the spreadsheet to load
-        SpreadsheetEntry spreadsheet = new SpreadsheetEntry();
-
         SpreadsheetFeed feed = service.getFeed(factory.getSpreadsheetsFeedUrl(), SpreadsheetFeed.class);
         List<SpreadsheetEntry> spreadsheets = feed.getEntries();
         for (int i = 0; i < spreadsheets.size(); i++) {
@@ -55,9 +68,16 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
                 spreadsheet = spreadsheets.get(i);
             }
         }
-        // Get the first worksheet of the spreadsheet.
-        WorksheetEntry worksheet = new WorksheetEntry();
 
+        // Not existing, creating it
+        if(spreadsheet == null)
+        {
+            DocumentListEntry documentListEntry = spreadsheetConnector.createSpreadsheet(spreadsheetName);
+            String spreadsheetURL = "https://spreadsheets.google.com/feeds/spreadsheets/" + documentListEntry.getDocId();
+            spreadsheet = service.getEntry(new URL(spreadsheetURL), SpreadsheetEntry.class);
+        }
+
+        // Get worksheet by given name.
         WorksheetFeed worksheetFeed = service.getFeed(spreadsheet.getWorksheetFeedUrl(), WorksheetFeed.class);
         List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
         for (int i = 0; i < worksheets.size(); i++) {
@@ -67,6 +87,29 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             }
         }
 
+        // Not existing, creating it
+        if(worksheet == null)
+        {
+            worksheet = spreadsheetConnector.createWorksheet(spreadsheet,worksheetName, 100, 100);
+        }
+
+        // No header existing, creating it
+        if(spreadsheetConnector.getRange(worksheet,1,1,1,10).size() == 0)
+        {
+            // Fetch the cell feed of the worksheet.
+            URL cellFeedUrl = worksheet.getCellFeedUrl();
+            java.lang.reflect.Field[] fields = RowModel.class.getDeclaredFields();
+            Integer col = 1;
+            for (java.lang.reflect.Field field : fields) {
+                String name = field.getName().toString();
+                spreadsheetConnector.setCell(worksheet, 1, col, name);
+                col++;
+            }
+        }
+    }
+
+    @Override
+    public RowModel addRow(RowModel postedRow) throws IOException, ServiceException {
         // Fetch the list feed of the worksheet.
         URL listFeedUrl = worksheet.getListFeedUrl();
         ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
@@ -101,35 +144,25 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         return postedRow;
     }
 
-    public List<RowModel> getRows(String spreadsheetName, String worksheetName) throws IOException, ServiceException {
-        // Get the spreadsheet to load
-        SpreadsheetEntry spreadsheet = new SpreadsheetEntry();
-
-        SpreadsheetFeed feed = service.getFeed(factory.getSpreadsheetsFeedUrl(), SpreadsheetFeed.class);
-        List<SpreadsheetEntry> spreadsheets = feed.getEntries();
-        for (int i = 0; i < spreadsheets.size(); i++) {
-            BaseEntry entry = (BaseEntry) spreadsheets.get(i);
-            if (spreadsheetName.equals(entry.getTitle().getPlainText())) {
-                spreadsheet = spreadsheets.get(i);
-            }
+    public List<RowModel> getRows() throws IOException, ServiceException {
+        if(spreadsheet == null)
+        {
+            throw new ServiceException("Spreadsheet doesn't exists");
         }
-        // Get the first worksheet of the spreadsheet.
-        WorksheetEntry worksheet = new WorksheetEntry();
-
-        WorksheetFeed worksheetFeed = service.getFeed(spreadsheet.getWorksheetFeedUrl(), WorksheetFeed.class);
-        List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
-        for (int i = 0; i < worksheets.size(); i++) {
-            BaseEntry entry = (BaseEntry) worksheets.get(i);
-            if (worksheetName.equals(entry.getTitle().getPlainText())) {
-                worksheet = worksheets.get(i);
-            }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
         }
+
+        List<RowModel> rows = new ArrayList<>();
 
         // Fetch the list feed of the worksheet.
         URL listFeedUrl = worksheet.getListFeedUrl();
         ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
-
-        List<RowModel> rows = new ArrayList<>();
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
 
         // Iterate through each row, printing its cell values.
         for (ListEntry row : listFeed.getEntries()) {
@@ -153,32 +186,23 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         return rows;
     }
 
-    public List<RowModel> deleteRows(String spreadsheetName, String worksheetName) throws IOException, ServiceException {
-        // Get the spreadsheet to load
-        SpreadsheetEntry spreadsheet = new SpreadsheetEntry();
-
-        SpreadsheetFeed feed = service.getFeed(factory.getSpreadsheetsFeedUrl(), SpreadsheetFeed.class);
-        List<SpreadsheetEntry> spreadsheets = feed.getEntries();
-        for (int i = 0; i < spreadsheets.size(); i++) {
-            BaseEntry entry = (BaseEntry) spreadsheets.get(i);
-            if (spreadsheetName.equals(entry.getTitle().getPlainText())) {
-                spreadsheet = spreadsheets.get(i);
-            }
+    public List<RowModel> deleteRows() throws IOException, ServiceException {
+        if(spreadsheet == null)
+        {
+            throw new ServiceException("Spreadsheet doesn't exists");
         }
-        // Get the first worksheet of the spreadsheet.
-        WorksheetEntry worksheet = new WorksheetEntry();
-
-        WorksheetFeed worksheetFeed = service.getFeed(spreadsheet.getWorksheetFeedUrl(), WorksheetFeed.class);
-        List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
-        for (int i = 0; i < worksheets.size(); i++) {
-            BaseEntry entry = (BaseEntry) worksheets.get(i);
-            if (worksheetName.equals(entry.getTitle().getPlainText())) {
-                worksheet = worksheets.get(i);
-            }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
         }
+
         // Fetch the list feed of the worksheet.
         URL listFeedUrl = worksheet.getListFeedUrl();
         ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
 
         // Delete the rows using the API.
         List<ListEntry> rows = listFeed.getEntries();

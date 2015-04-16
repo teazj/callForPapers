@@ -4,6 +4,7 @@ import com.jayway.restassured.RestAssured;
 import fr.sii.Application;
 import fr.sii.persistance.spreadsheet.RowModel;
 import fr.sii.persistance.spreadsheet.SpreadsheetRepository;
+import fr.sii.persistance.spreadsheet.SpreadsheetSettings;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -45,11 +46,18 @@ public class SpreadsheetTest {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private SpreadsheetSettings spreadsheetSettings;
+
     @Before
     public void setUp() {
         try {
-            spreadsheetRepository.login(env.getProperty("google.login"),env.getProperty("google.password"));
+            spreadsheetRepository.login(spreadsheetSettings);
         } catch (AuthenticationException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         RestAssured.port = port;
@@ -81,10 +89,12 @@ public class SpreadsheetTest {
 
         boolean error = false;
         try {
-            returnedRow = spreadsheetRepository.addRow(spreadsheetName,"test",row);
+            returnedRow = spreadsheetRepository.addRow(row);
         } catch (IOException e) {
+            e.printStackTrace();
             error = true;
         } catch (ServiceException e) {
+            e.printStackTrace();
             error = true;
         }
         assertEquals(false,error);
