@@ -3,7 +3,6 @@ package fr.sii.persistance.spreadsheet;
 /**
  * Created by tmaugin on 02/04/2015.
  */
-import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

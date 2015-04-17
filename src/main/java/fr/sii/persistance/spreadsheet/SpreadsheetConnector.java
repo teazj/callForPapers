@@ -3,24 +3,24 @@ package fr.sii.persistance.spreadsheet;
 /**
  * Created by tmaugin on 16/04/2015.
  */
-        import java.io.IOException;
-        import java.net.URL;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-        import com.google.gdata.client.docs.DocsService;
-        import com.google.gdata.data.PlainTextConstruct;
-        import com.google.gdata.data.docs.DocumentListEntry;
-        import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-        import org.apache.commons.logging.Log;
-        import org.apache.commons.logging.LogFactory;
+import com.google.gdata.client.docs.DocsService;
+import com.google.gdata.data.PlainTextConstruct;
+import com.google.gdata.data.docs.DocumentListEntry;
+import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-        import com.google.gdata.client.spreadsheet.CellQuery;
-        import com.google.gdata.client.spreadsheet.SpreadsheetService;
-        import com.google.gdata.data.spreadsheet.CellEntry;
-        import com.google.gdata.data.spreadsheet.CellFeed;
-        import com.google.gdata.data.spreadsheet.WorksheetEntry;
-        import com.google.gdata.util.ServiceException;
+import com.google.gdata.client.spreadsheet.CellQuery;
+import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.google.gdata.data.spreadsheet.CellEntry;
+import com.google.gdata.data.spreadsheet.CellFeed;
+import com.google.gdata.data.spreadsheet.WorksheetEntry;
+import com.google.gdata.util.ServiceException;
 
 /**
  *

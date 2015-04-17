@@ -4,7 +4,6 @@ package fr.sii.persistance.spreadsheet;
  * Created by tmaugin on 02/04/2015.
  */
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,5 @@
 package fr.sii.email;
 
-import javax.mail.MessagingException;
-
 /**
  * Created by tmaugin on 02/04/2015.
  */
