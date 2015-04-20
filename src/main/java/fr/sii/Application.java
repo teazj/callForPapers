@@ -3,8 +3,6 @@ package fr.sii;
 /**
  * Created by tmaugin on 01/04/2015.
  */
-import fr.sii.persistance.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -16,8 +14,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAutoConfiguration
 @EnableAsync
 public class Application extends SpringBootServletInitializer {
-    @Autowired
-    UserRepository repository;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

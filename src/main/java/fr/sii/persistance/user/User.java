@@ -3,17 +3,14 @@ package fr.sii.persistance.user;
 /**
  * Created by tmaugin on 07/04/2015.
  */
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
 
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
 

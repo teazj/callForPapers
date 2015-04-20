@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+	<application>aesthetic-fx-89513</application>
+	<version>1</version>
+  	<threadsafe>true</threadsafe>
+	<env-variables>
+		<env-var name="GOOGLE_LOGIN" value="maugin.thomas"/>
+		<env-var name="GOOGLE_PASSWORD" value="92thomaumasgin19" />
+		<env-var name="GOOGLE_CONSUMER_KEY" value="891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com"/>
+		<env-var name="GOOGLE_CONSUMER_SECRET" value="-O23H1SzVRqimwsNIL8aVSZf"/>
+		<env-var name="EMAIL_USERNAME" value="maugin.thomas"/>
+		<env-var name="EMAIL_PASSWORD" value="92thomaumasgin19"/>
+	</env-variables>
+</appengine-web-app>

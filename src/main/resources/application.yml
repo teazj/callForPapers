@@ -6,6 +6,9 @@ google:
     consumerKey: ${GOOGLE_CONSUMER_KEY}
     consumerSecret: ${GOOGLE_CONSUMER_SECRET}
 
+database:
+    load: true
+
 email:
     smtphost: smtp.gmail.com
     smtpport: 587
@@ -17,11 +20,15 @@ webapp:
 ---
 spring:
     profiles: development
+database:
+    load: true
 google:
     worksheetName: dev
 ---
 spring:
     profiles: production
+database:
+    load: false
 google:
     worksheetName: prod
 webapp:
@@ -31,3 +38,5 @@ spring:
     profiles: test
 google:
     worksheetName: test
+database:
+    load: true
