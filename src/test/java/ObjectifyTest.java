@@ -10,6 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by tmaugin on 20/04/2015.
  */
@@ -22,9 +24,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class ObjectifyTest {
 
 
-    /*@Test
+    @Test
     public void test1_getUser()
     {
-
-    }*/
+        assertEquals(true,true);
+    }
 }
