@@ -162,20 +162,22 @@
       el.parentNode.insertBefore(button, el);
       var iframeStatus = false;
       var iframeLastSize = 0;
+      var init = false;
       button.onclick = function()
       {
-        if(iframe.style.display == "none")
-        {
-          iframe.style.display = "block";
-        }
+        if(iframe.style.display == "none") iframe.style.display= "block";
         if(iframeStatus === false)
         {
-          iframe.style.height = iframeLastSize;
+          if(init)
+          {
+            iframe.style.height = iframeLastSize;
+          }
           iframeStatus = true;
         }
         else
         {
-          iframeLastSize = iframe.style.height;
+          if(iframe.style.height !== 0 && iframe.style.height !== "0px")
+            iframeLastSize = iframe.style.height;
           iframe.style.height = 0;
           iframeStatus = false;
         }
@@ -201,9 +203,18 @@
       iFrameResize({
         enablePublicMethods: true,
         resizedCallback: function(iframeTmp) {
-          iframeLastSize = iframeTmp.height + 'px';
-            iframe.style.height = 0;
-
+          if(iframeTmp.height != 0)
+            iframeLastSize = iframeTmp.height + 'px';
+        },
+        initCallback: function(iframeTmp) {
+           iframe.style.display= "none";
+           iframeLastSize = iframeTmp.height + 'px';
+           setTimeout(function(){
+            if(iframeStatus === false)
+              iframe.style.height = 0;
+            iframe.style.display = "block";
+            init = true;
+           },1000)
         }
       }, iframe);
       info['iframe'] = iframe;
