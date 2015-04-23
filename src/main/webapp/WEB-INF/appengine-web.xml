@@ -6,14 +6,13 @@
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
-    <!--Uncomment and change-->
-    <!--<env-variables>-->
-        <!--<env-var name="ENV" value="prod"/>-->
-        <!--<env-var name="GOOGLE_LOGIN" value="your_login"/>-->
-        <!--<env-var name="GOOGLE_PASSWORD" value="your_password" />-->
-        <!--<env-var name="GOOGLE_CONSUMER_KEY" value="your_key"/>-->
-        <!--<env-var name="GOOGLE_CONSUMER_SECRET" value="your_secret"/>-->
-        <!--<env-var name="EMAIL_USERNAME" value="your_username"/>-->
-        <!--<env-var name="EMAIL_PASSWORD" value="your_password"/>-->
-    <!--</env-variables>-->
+    <env-variables>
+        <env-var name="ENV" value="${ENV}"/>
+        <env-var name="GOOGLE_LOGIN" value="${GOOGLE_LOGIN}"/>
+        <env-var name="GOOGLE_PASSWORD" value="${GOOGLE_PASSWORD}" />
+        <env-var name="GOOGLE_CONSUMER_KEY" value="${GOOGLE_CONSUMER_KEY}"/>
+        <env-var name="GOOGLE_CONSUMER_SECRET" value="${GOOGLE_CONSUMER_SECRET}"/>
+        <env-var name="EMAIL_USERNAME" value="${EMAIL_USERNAME}"/>
+        <env-var name="EMAIL_PASSWORD" value="${EMAIL_PASSWORD}"/>
+    </env-variables>
 </appengine-web-app>
