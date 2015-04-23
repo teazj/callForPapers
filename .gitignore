@@ -2,10 +2,61 @@
 *.iml
 target
 
-npm-debug.log
-src/main/resources/static/node_modules
-src/main/resources/static/npm-debug.log
-src/main/resources/static/dist
-src/main/resources/static/.tmp
-src/main/resources/static/.sass-cache
-src/main/resources/static/app/bower_components
+**/node_modules
+**/npm-debug.log
+**/bower_components
+src/main/webapp/WEB-INF/static/dist
+src/main/webapp/WEB-INF/static/.tmp
+src/main/webapp/WEB-INF/static/.sass-cache
+
+
+### Eclipse ###
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.classpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# TeXlipse plugin
+.texlipse
+
+
+### Java ###
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+target/
+.svn/
+*.project

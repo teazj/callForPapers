@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-	<application>aesthetic-fx-89513</application>
-	<version>1</version>
-  	<threadsafe>true</threadsafe>
-	<env-variables>
-		<env-var name="GOOGLE_LOGIN" value="maugin.thomas"/>
-		<env-var name="GOOGLE_PASSWORD" value="92thomaumasgin19" />
-		<env-var name="GOOGLE_CONSUMER_KEY" value="891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com"/>
-		<env-var name="GOOGLE_CONSUMER_SECRET" value="-O23H1SzVRqimwsNIL8aVSZf"/>
-		<env-var name="EMAIL_USERNAME" value="maugin.thomas"/>
-		<env-var name="EMAIL_PASSWORD" value="92thomaumasgin19"/>
-	</env-variables>
+    <application>your_app_id</application>
+    <version>1</version>
+    <threadsafe>true</threadsafe>
+    <system-properties>
+        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+    </system-properties>
+    <env-variables>
+        <env-var name="ENV" value="prod"/>
+        <env-var name="GOOGLE_LOGIN" value="your_login"/>
+        <env-var name="GOOGLE_PASSWORD" value="your_password" />
+        <env-var name="GOOGLE_CONSUMER_KEY" value="your_key"/>
+        <env-var name="GOOGLE_CONSUMER_SECRET" value="your_secret"/>
+        <env-var name="EMAIL_USERNAME" value="your_username"/>
+        <env-var name="EMAIL_PASSWORD" value="your_password"/>
+    </env-variables>
 </appengine-web-app>

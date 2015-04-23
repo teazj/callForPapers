@@ -4,7 +4,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         hub: {
             all: {
-                src: ['src/main/resources/static/Gruntfile.js'],
+                src: ['src/main/webapp/WEB-INF/static/Gruntfile.js'],
                 tasks: ['build']
             }
         },
@@ -12,12 +12,12 @@ module.exports = function (grunt) {
             node_modules: {
                 expand: true,
                 src: 'node_modules/**/*',
-                dest: 'src/main/resources/static/'
+                dest: 'src/main/webapp/WEB-INF/static/'
             }
         },
         clean: {
             app: {
-                src: ["src/main/resources/static/app/**/*","src/main/resources/static/node_modules/**/*"]
+                src: ["src/main/webapp/WEB-INF/static/app/","src/main/webapp/WEB-INF/static/node_modules/"]
             }
         }
     });
@@ -25,5 +25,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-hub');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.registerTask('heroku', ['copy:node_modules','hub','clean:app']);
+    grunt.registerTask('build', ['copy:node_modules','hub','clean:app']);
 }
