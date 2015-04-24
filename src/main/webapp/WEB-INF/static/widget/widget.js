@@ -150,7 +150,7 @@
       var info = parseQueryString(el.src);
       // Create button
       var button = document.createElement('button');
-      button.style.backgroundColor =  "rgb(82, 82, 168)";
+      button.style.backgroundColor =  "#4285f4";
       button.style.border =  "none";
       button.style.padding =  "15px";
       button.style.color =  "white";
