@@ -12,7 +12,8 @@ var app = angular.module('CallForPaper', [
     'internationalPhoneNumber',
     'bs-has',
     'pascalprecht.translate',
-    'k8LanguagePicker'
+    'k8LanguagePicker',
+    'ngTable'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -23,11 +24,32 @@ var app = angular.module('CallForPaper', [
     .when('/event/:eventName/', '/event/:eventName/form/step1');
     $urlRouterProvider.otherwise('/404');
     $stateProvider
-      // .state('index', {
-      //   url: '/',
-      //   templateUrl: 'views/main.html',
-      //   controller: 'MainCtrl'
-      // })
+      .state('admin', {
+        url: '/admin',
+        abstract: true,
+        views : {
+          '' : {
+            templateUrl: 'views/admin/admin.html',
+            controller: 'AdminCtrl'
+          },
+          '@form' : {
+            templateUrl: 'views/admin/sessions.html'
+          }
+        },
+      })
+      // Session
+      .state('admin.sessions', {
+        url: '/sessions',
+        templateUrl: 'views/admin/sessions.html',
+        controller: 'SessionsCtrl'
+      })
+      .state('admin.session', {
+        url: '/session/:id',
+        templateUrl: 'views/admin/session.html',
+        controller: 'SessionCtrl'
+      })
+
+      // Form
       .state('form', {
         url: '/event/:eventName/form',
         abstract: true,
