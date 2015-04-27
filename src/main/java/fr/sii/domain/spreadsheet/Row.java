@@ -7,11 +7,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by tmaugin on 03/04/2015.
@@ -258,8 +254,8 @@ public class Row {
         this.hotelDate = hotelDate;
     }
 
-    public Date getAdded() {
-        return added;
+    public Long getAdded() {
+        return (added != null) ? added.getTime() : null;
     }
 
     @JsonProperty
@@ -269,11 +265,12 @@ public class Row {
 
     @JsonIgnore
     public void setAdded(String added) {
-        DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
         Date date = null;
-        try {
-            date = df.parse(added);
-        } catch (ParseException e) {
+        try
+        {
+            date = new Date(Long.parseLong(added));
+        }catch(NumberFormatException e)
+        {
             e.printStackTrace();
         }
         this.added = date;

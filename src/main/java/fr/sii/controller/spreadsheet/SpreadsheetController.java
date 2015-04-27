@@ -31,8 +31,14 @@ public class SpreadsheetController {
 
     @RequestMapping(value="/{event}/session", method= RequestMethod.GET)
     @ResponseBody
-    public List<Row> getGoogleSpreadsheet(@PathVariable String event) throws IOException, ServiceException {
+    public List<Row> getGoogleSpreadsheets(@PathVariable String event) throws IOException, ServiceException {
         return googleService.getRows();
+    }
+
+    @RequestMapping(value="/{event}/session/{added}", method= RequestMethod.GET)
+    @ResponseBody
+    public Row getGoogleSpreadsheet(@PathVariable String event, @PathVariable String added) throws IOException, ServiceException {
+        return googleService.getRow(added);
     }
 
     @RequestMapping(value="/{event}/session", method=RequestMethod.DELETE)

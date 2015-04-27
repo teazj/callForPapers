@@ -14,5 +14,6 @@ public interface SpreadsheetRepository {
     void login(SpreadsheetSettings s) throws ServiceException, IOException;
     Row addRow(Row row) throws IOException, ServiceException;
     List<Row> getRows() throws IOException, ServiceException;
+    Row getRow(String added) throws IOException, ServiceException;
     List<Row> deleteRows() throws IOException, ServiceException;
 }

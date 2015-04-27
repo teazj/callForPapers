@@ -13,6 +13,8 @@ import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -183,6 +185,53 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             rows.add(rowModel);
         }
         return rows;
+    }
+
+    @Override
+    public Row getRow(String added) throws IOException, ServiceException {
+        if(spreadsheet == null)
+        {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = new Row();
+            for (String tag : row.getCustomElements().getTags()) {
+                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+                try {
+                    Method method = Row.class.getMethod("set" + tag.substring(0, 1).toUpperCase() + tag.substring(1), String.class);
+                    method.invoke(rowModel, row.getCustomElements().getValue(tag));
+                } catch (NoSuchMethodException e) {
+                    //e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(rowModel.getAdded().toString().equals(added))
+                rows.add(rowModel);
+        }
+        if(rows.size() > 0)
+            return rows.get(0);
+        else
+            return null;
     }
 
     public List<Row> deleteRows() throws IOException, ServiceException {

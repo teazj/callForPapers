@@ -36,6 +36,11 @@ public class SpreadsheetService {
         return googleRepository.getRows();
     }
 
+    public Row getRow(String added) throws IOException, ServiceException
+    {
+        return googleRepository.getRow(added);
+    }
+
     public List<Row> deleteRows() throws IOException, ServiceException
     {
         return googleRepository.deleteRows();
