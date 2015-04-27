@@ -72,6 +72,6 @@ public class RowModelTest {
         assertEquals(social, row.getSocial());
         assertEquals(track, row.getTrack());
         assertEquals(travel, row.getTravel());
-        assertEquals(added, row.getAdded());
+        assertEquals((Long)added.getTime(),row.getAdded());
     }
 }
