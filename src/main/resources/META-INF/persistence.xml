@@ -8,6 +8,7 @@
 
 		<class>fr.sii.domain.rate.Rate</class>
 		<class>fr.sii.domain.user.User</class>
+		<class>fr.sii.domain.comment.Comment</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>
