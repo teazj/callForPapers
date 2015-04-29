@@ -5,6 +5,11 @@
 
 	<persistence-unit name="MyUnit">
 		<provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+
+		<class>fr.sii.domain.rate.Rate</class>
+		<class>fr.sii.domain.user.User</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
 		<properties>
 			<property name="datanucleus.ConnectionURL" value="appengine" />
 			<property name="datanucleus.appengine.datastoreEnableXGTransactions" value="true" />
