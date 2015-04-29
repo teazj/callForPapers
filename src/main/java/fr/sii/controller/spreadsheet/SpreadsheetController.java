@@ -24,25 +24,25 @@ public class SpreadsheetController {
     private SpreadsheetService googleService;
 
 
-    @RequestMapping(value="/{event}/session", method=RequestMethod.POST)
-    @ResponseBody public Row postGoogleSpreadsheet(@PathVariable String event, @Valid @RequestBody Row row) throws IOException, ServiceException {
+    @RequestMapping(value="/session", method=RequestMethod.POST)
+    @ResponseBody public Row postGoogleSpreadsheet(@Valid @RequestBody Row row) throws IOException, ServiceException {
         return googleService.addRow(row);
     }
 
-    @RequestMapping(value="/{event}/session", method= RequestMethod.GET)
+    @RequestMapping(value="/session", method= RequestMethod.GET)
     @ResponseBody
-    public List<Row> getGoogleSpreadsheets(@PathVariable String event) throws IOException, ServiceException {
+    public List<Row> getGoogleSpreadsheets() throws IOException, ServiceException {
         return googleService.getRows();
     }
 
-    @RequestMapping(value="/{event}/session/{added}", method= RequestMethod.GET)
+    @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
     @ResponseBody
-    public Row getGoogleSpreadsheet(@PathVariable String event, @PathVariable String added) throws IOException, ServiceException {
+    public Row getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException {
         return googleService.getRow(added);
     }
 
-    @RequestMapping(value="/{event}/session", method=RequestMethod.DELETE)
-    @ResponseBody public List<Row> deleteGoogleSpreadsheet(@PathVariable String event) throws IOException, ServiceException {
+    @RequestMapping(value="/session", method=RequestMethod.DELETE)
+    @ResponseBody public List<Row> deleteGoogleSpreadsheet() throws IOException, ServiceException {
         return googleService.deleteRows();
     }
 }

@@ -1,5 +1,6 @@
 import com.google.gdata.util.ServiceException;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
+import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
 import fr.sii.domain.spreadsheet.Row;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -120,7 +121,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))
@@ -150,7 +151,7 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(400);
     }
@@ -179,7 +180,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(400);
     }
@@ -208,32 +209,74 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(400);
     }
 
     @Test
     public void test6_getRows() {
-        test7_deleteRows();
+        test8_deleteRows();
         test1_addRowPass();
         test1_addRowPass();
         given()
                 .contentType("application/json")
                 .when()
-                .get("devfest/session")
+                .get("session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
     }
 
     @Test
-    public void test7_deleteRows() {
+    public void test7_getRow() {
+        MockMvcResponse response = given().contentType("application/json")
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"Web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("session")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin"))
+                .body("difficulty", Matchers.is(3)).extract().
+                response();
+        Long added = response.path("added");
+
         test1_addRowPass();
         given()
                 .contentType("application/json")
                 .when()
-                .delete("devfest/session")
+                .get("session/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin"));
+    }
+
+    @Test
+    public void test8_deleteRows() {
+        test1_addRowPass();
+        given()
+                .contentType("application/json")
+                .when()
+                .delete("session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(0));
