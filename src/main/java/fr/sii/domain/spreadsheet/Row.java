@@ -45,6 +45,32 @@ public class Row {
     private String hotelDate;
     private Date added;
 
+    public Row(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
+        this.email = email;
+        this.name = name;
+        this.firstname = firstname;
+        this.phone = phone;
+        this.company = company;
+        this.bio = bio;
+        this.social = social;
+        this.sessionName = sessionName;
+        this.description = description;
+        this.references = references;
+        this.difficulty = difficulty;
+        this.track = track;
+        this.coSpeaker = coSpeaker;
+        this.financial = financial;
+        this.travel = travel;
+        this.travelFrom = travelFrom;
+        this.hotel = hotel;
+        this.hotelDate = hotelDate;
+        this.added = added;
+    }
+
+    public Row()
+    {
+
+    }
 
     @JsonIgnore
     @AssertTrue(message = "You must either require financial help and fulfill the form or not require financial help.")

@@ -9,6 +9,7 @@
 		<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'Difficulté'">{{session.realDifficulty}}</td>
 		<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'Track'">{{session.track}}</td>
 		<td filter="{'description': 'text'}" data-title="'Description'">{{session.description}}</td>
+		<td sortable="'mean'" data-title="'Moyenne'">{{session.mean}}</td>
 		<td sortable="'added'" data-title="'Date'">{{session.added | date}}</td>
 	</tr>
 </table>

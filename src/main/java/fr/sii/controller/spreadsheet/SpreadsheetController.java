@@ -5,6 +5,7 @@ package fr.sii.controller.spreadsheet;
  */
 
 import com.google.gdata.util.ServiceException;
+import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.spreadsheet.SpreadsheetService;
 import fr.sii.domain.spreadsheet.Row;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,13 @@ public class SpreadsheetController {
 
     @RequestMapping(value="/session", method= RequestMethod.GET)
     @ResponseBody
-    public List<Row> getGoogleSpreadsheets() throws IOException, ServiceException {
+    public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException {
         return googleService.getRows();
     }
 
     @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
     @ResponseBody
-    public Row getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException {
+    public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException {
         return googleService.getRow(added);
     }
 
