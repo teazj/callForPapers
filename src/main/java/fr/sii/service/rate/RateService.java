@@ -2,11 +2,15 @@ package fr.sii.service.rate;
 
 import com.google.appengine.api.datastore.KeyFactory;
 import fr.sii.domain.rate.Rate;
+import fr.sii.domain.user.User;
 import fr.sii.repository.rate.RateRespository;
+import fr.sii.repository.user.UserRespository;
+import fr.sii.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,9 +22,47 @@ public class RateService {
     @Autowired
     private RateRespository rateRepository;
 
+    @Autowired
+    private UserService userService;
+
+    public List<Rate> matchUsers(List<Rate> rs)
+    {
+        List<Rate> nrs = new ArrayList<>();
+        for (Rate r : rs)
+        {
+            User u = userService.findOne(r.getUserId());
+            r.setUser(u);
+            nrs.add(r);
+        }
+        return nrs;
+    }
+    public Rate matchUser(List<Rate> rs)
+    {
+        List<Rate> nrs = new ArrayList<>();
+        if(rs.size() > 0)
+        {
+            Rate r = rs.get(0);
+            User u = userService.findOne(r.getUserId());
+            r.setUser(u);
+            return r;
+        }
+        return null;
+    }
+
+    public Rate matchUser(Rate r)
+    {
+        if(r != null)
+        {
+            User u = userService.findOne(r.getUserId());
+            r.setUser(u);
+            return r;
+        }
+        return null;
+    }
+
     public List<Rate> findAll()
     {
-        return rateRepository.findAll();
+        return matchUsers(rateRepository.findAll());
     }
 
     public void deleteAll()
@@ -33,7 +75,7 @@ public class RateService {
         Rate s = rateRepository.save(r);
         s.setEntityId(KeyFactory.stringToKey(s.getId()).getId());
         Rate s2 = rateRepository.save(s);
-        return s2;
+        return matchUser(s2);
     }
 
     public Rate put(Long id,Rate r)
@@ -43,7 +85,7 @@ public class RateService {
         {
             rateRepository._delete(id);
             r.setEntityId(id);
-            return rateRepository.save(r);
+            return matchUser(rateRepository.save(r));
         }
         return null;
     }
@@ -55,15 +97,12 @@ public class RateService {
 
     public Rate findOne(Long id)
     {
-        List<Rate> r = rateRepository.findByEntityId(id);
-        if(r.size() > 0)
-            return r.get(0);
-        else
-            return null;
+        List<Rate> rs = rateRepository.findByEntityId(id);
+        return matchUser(rs);
     }
 
     public List<Rate> findByUserId(Long id)
     {
-        return rateRepository.findByUserId(id);
+        return matchUsers(rateRepository.findByUserId(id));
     }
 }

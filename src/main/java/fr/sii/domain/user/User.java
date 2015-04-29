@@ -1,12 +1,10 @@
 package fr.sii.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.sii.domain.rate.Rate;
 import org.datanucleus.api.jpa.annotations.Extension;
 import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Component
@@ -22,10 +20,6 @@ public class User {
 	private String name;
 	@NotNull
 	private String email;
-
-	@Transient
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.MERGE)
-	private List<Rate> rates;
 
 	public User() {
 	}
@@ -61,14 +55,5 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	@JsonIgnore
-	public List<Rate> getRates() {
-		return rates;
-	}
-
-	public void setRates(List<Rate> rates) {
-		this.rates = rates;
 	}
 }

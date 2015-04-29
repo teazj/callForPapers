@@ -26,7 +26,10 @@ public class Rate {
     @NotNull
     private Integer rate;
 
-    @ManyToOne(optional=false)
+    @NotNull
+    private Long rowId;
+
+    @Transient
     private User user;
 
     @NotNull
@@ -65,14 +68,7 @@ public class Rate {
     }
 
     public void setUser(User user) {
-        //prevent endless loop
-        if (sameUser(user))
-            return ;
         this.user = user;
-    }
-
-    private boolean sameUser(User newuser) {
-        return user==null? newuser == null : user.equals(newuser);
     }
 
     public Long getUserId() {
@@ -81,5 +77,13 @@ public class Rate {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(Long rowId) {
+        this.rowId = rowId;
     }
 }

@@ -55,6 +55,7 @@ public class UserService {
     {
         List<User> r = userRespository.findByEntityId(id);
         if(r.size() > 0)
+
             return r.get(0);
         else
             return null;
