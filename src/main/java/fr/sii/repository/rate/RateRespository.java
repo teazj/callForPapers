@@ -5,9 +5,7 @@ import fr.sii.domain.rate.Rate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
-
 
 public interface RateRespository extends JpaRepository<Rate, Key> {
     @Modifying
@@ -15,4 +13,5 @@ public interface RateRespository extends JpaRepository<Rate, Key> {
     void _delete(Long id);
     List<Rate> findByEntityId(Long id);
     List<Rate> findByUserId(Long id);
+    List<Rate> findByRowId(Long id);
 }

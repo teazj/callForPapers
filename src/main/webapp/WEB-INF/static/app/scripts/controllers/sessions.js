@@ -4,7 +4,6 @@ angular.module('CallForPaper')
 	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q) {
 		var sessions = []
 		sessions = Session.query(function(sessionsTmp) {
-			console.log(sessionsTmp);
 			sessions = sessionsTmp.map(function(session) {
 				session.fullname = session.name + " " + session.firstname;
 				session.realDifficulty = (['Débutant','Confirmé','Expert'])[session.difficulty-1];

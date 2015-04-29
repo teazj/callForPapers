@@ -18,11 +18,18 @@ var app = angular.module('CallForPaper', [
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $urlRouterProvider
-    .when('/event/:eventName/form', '/event/:eventName/form/step1')
-    .when('/event/:eventName/form/', '/event/:eventName/form/step1')
-    .when('/event/:eventName', '/event/:eventName/form/step1')
-    .when('/event/:eventName/', '/event/:eventName/form/step1');
-    $urlRouterProvider.otherwise('/404');
+    .when('/event/form', '/event/form/step1')
+    .when('/event/form/', '/event/form/step1')
+    .when('/event', '/event/form/step1')
+    .when('/event/', '/event/form/step1')
+
+    .when('/admin/sessions/', '/admin/sessions')
+    .when('/admin/session/', '/admin/sessions')
+    .when('/admin/session', '/admin/sessions')
+
+    .when('/admin', '/admin/sessions')
+    .when('/admin/', '/admin/sessions');
+    $urlRouterProvider.otherwise('/event/form/step1');
     $stateProvider
       .state('admin', {
         url: '/admin',
@@ -39,7 +46,7 @@ var app = angular.module('CallForPaper', [
       })
       // Session
       .state('admin.sessions', {
-        url: '/sessions',
+        url:  '/sessions',
         templateUrl: 'views/admin/sessions.html',
         controller: 'SessionsCtrl'
       })
@@ -51,7 +58,7 @@ var app = angular.module('CallForPaper', [
 
       // Form
       .state('form', {
-        url: '/event/:eventName/form',
+        url: '/event/form',
         abstract: true,
         views : {
           '' : {

@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Component
 public class Rate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")

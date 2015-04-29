@@ -1,3 +1,6 @@
 angular.module('CallForPaper').factory('Session', function($resource) {
-  return $resource('devfest/session/:id');
+  return $resource('/session/:id', null, 
+  	{
+        update: { method:'PUT' }
+    });
 });
