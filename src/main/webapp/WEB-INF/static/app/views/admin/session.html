@@ -72,7 +72,7 @@
 					<div class="form-group">
 						<label class="control-label" for="description">{{'step2.description' | translate}}</label>
 						<div class="">
-							<textarea readonly name="description" class="form-control" ng-model="session.description" id="description" rows="5"></textarea>
+							<textarea readonly name="description" class="form-control" ng-model="session.description" id="description" rows="11"></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -98,7 +98,7 @@
 					<div class="form-group">
 						<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
 						<div class="">
-							<textarea readonly class="form-control" name="coSpeaker" id="coSpeaker" rows="9" ng-model="session.coSpeaker"></textarea>
+							<textarea readonly class="form-control" name="coSpeaker" id="coSpeaker" rows="15" ng-model="session.coSpeaker"></textarea>
 						</div>
 					</div>
 				</div>
@@ -189,11 +189,11 @@
 		<div class="col-xs-3">
 			<strong>Message :</strong>
 		</div>
-		<div class="col-xs-9">
-			<textarea row="3" class="form-control" ng-init="commentMsg = ''" ng-model="commentMsg">
+		<div class="col-xs-9" bs-has>
+			<textarea required row="3" class="form-control" ng-init="commentMsg = ''" ng-model="commentMsg">
 			</textarea>
 			<br>
-			<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || commentMsg==''" class="btn btn-success pull-right">Valider</button>
+			<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" class="btn btn-success pull-right">Valider</button>
 		</div>
 		<div class="col-xs-offset-3 ">
 		</div>
@@ -207,51 +207,27 @@
 	
 	<div class="col-xs-12">
 		<div class="col-xs-3">
-			<strong>You : </strong>
+			<strong>Vous : </strong>
 		</div>
-		<rating value="formData.session.difficulty" id="difficulty" name="difficulty" max="5" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
-		<button type="button" class="btn btn-success pull-right">Valider</button>
+		<rating value="yourRate.rate" id="difficulty" name="difficulty" max="5" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
+		<button type="button" ng-click="postRate()" class="btn btn-success pull-right">Valider</button>
 	</div>
-	<div class="col-xs-12"><hr></div>
-	<div class="col-xs-12">
+
+	<div class="col-xs-12" ng-repeat="rate in rates">
+		<div class="col-xs-12"><hr></div>
 		<div class="col-xs-3">
-			<strong>Pseudo : </strong>
+			<strong>{{rate.user.name}} : </strong>
 		</div>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		<span ng-repeat="n in [].constructor(rate.rate) track by $index">
+			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+		</span>
 	</div>
-	<div class="col-xs-12"><hr></div>
-	<div class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>Pseudo : </strong>
-		</div>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-	</div>
-	<div class="col-xs-12"><hr></div>
-	<div class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>Pseudo : </strong>
-		</div>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-	</div>
-	<div class="col-xs-12"><hr></div>
-	<div class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>Pseudo : </strong>
-		</div>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-	</div>
+
 	<div class="col-xs-12"><strong><hr></strong></div>
 	<div class="col-xs-12">
 		<div class="col-xs-3">
 			<strong>Moyenne : </strong>
 		</div>
-		2.75
+		{{mean}}
 	</div>
 </div>

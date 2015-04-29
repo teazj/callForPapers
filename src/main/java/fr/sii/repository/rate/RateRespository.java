@@ -13,5 +13,6 @@ public interface RateRespository extends JpaRepository<Rate, Key> {
     void _delete(Long id);
     List<Rate> findByEntityId(Long id);
     List<Rate> findByUserId(Long id);
-    List<Rate> findByRowId(Long id);
+    List<Rate> findByRowIdOrderByRateDesc(Long id);
+    List<Rate> findByRowIdAndUserId(Long rowId, Long userId);
 }

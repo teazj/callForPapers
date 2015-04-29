@@ -105,4 +105,12 @@ public class RateService {
     {
         return matchUsers(rateRepository.findByUserId(id));
     }
+    public List<Rate> findByRowId(Long id)
+    {
+        return matchUsers(rateRepository.findByRowIdOrderByRateDesc(id));
+    }
+    public Rate findByRowIdAndUserId(Long rowId, Long userId)
+    {
+        return matchUser(rateRepository.findByRowIdAndUserId(rowId, userId));
+    }
 }

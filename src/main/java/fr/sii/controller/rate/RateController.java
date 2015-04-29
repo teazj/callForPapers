@@ -53,6 +53,18 @@ public class RateController {
         return rateService.findByUserId(id);
     }
 
+    @RequestMapping(value="/row/{id}", method= RequestMethod.GET)
+    @ResponseBody
+    public List<Rate> getRatesByRowId(@PathVariable Long id) {
+        return rateService.findByRowId(id);
+    }
+
+    @RequestMapping(value="/row/{rowId}/user/{userId}", method= RequestMethod.GET)
+    @ResponseBody
+    public Rate getRateByRowIdAndUserId(@PathVariable Long rowId, @PathVariable Long userId) {
+        return rateService.findByRowIdAndUserId(rowId, userId);
+    }
+
     @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
     @ResponseBody
     public void deleteRate(@PathVariable Long id) {
