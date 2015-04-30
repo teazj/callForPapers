@@ -62,11 +62,11 @@ var app = angular.module('CallForPaper', [
         abstract: true,
         views : {
           '' : {
-            templateUrl: 'views/form.html',
+            templateUrl: 'views/form/form.html',
             controller: 'FormCtrl'
           },
           '@form' : {
-            templateUrl: 'views/step1.html'
+            templateUrl: 'views/form/step1.html'
           }
         },
       })
@@ -74,27 +74,27 @@ var app = angular.module('CallForPaper', [
       // each of these sections will have their own view
       .state('form.step1', {
         url: '/step1',
-        templateUrl: 'views/step1.html',
+        templateUrl: 'views/form/step1.html',
         controller: 'Step1Ctrl'
       })
       .state('form.step2', {
         url: '/step2',
-        templateUrl: 'views/step2.html',
+        templateUrl: 'views/form/step2.html',
         controller: 'Step2Ctrl'
       })
       .state('form.step3', {
         url: '/step3',
-        templateUrl: 'views/step3.html',
+        templateUrl: 'views/form/step3.html',
         controller: 'Step3Ctrl'
       })
       .state('form.result', {
         url: '/result',
-        templateUrl: 'views/result.html',
+        templateUrl: 'views/form/result.html',
         controller: 'ResultCtrl'
       })
       .state('close', {
         url: '/close',
-        templateUrl: 'views/close.html'
+        templateUrl: 'views/form/close.html'
       })
       .state('404', {
         url: '/404',
