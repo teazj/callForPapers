@@ -1,9 +1,7 @@
-import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
-import com.jayway.restassured.RestAssured;
-import fr.sii.Application;
-import fr.sii.persistance.spreadsheet.RowModel;
-import fr.sii.persistance.spreadsheet.SpreadsheetRepository;
+import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
+import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
+import fr.sii.domain.spreadsheet.Row;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -11,15 +9,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
+
 import java.io.IOException;
-import static com.jayway.restassured.RestAssured.given;
+
+import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -28,36 +25,26 @@ import static org.junit.Assert.assertNotEquals;
 /**
  * Created by tmaugin on 08/04/2015.
  */
-@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContext.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
 @WebAppConfiguration
-@IntegrationTest("server.port:0")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SpreadsheetTest {
 
     @Autowired
-    SpreadsheetRepository spreadsheetRepository;
-
-    @Value("${local.server.port}")
-    int port;
+    private fr.sii.service.spreadsheet.SpreadsheetService spreadsheetService;
 
     @Autowired
-    private Environment env;
+    WebApplicationContext webApplicationContext;
 
-    @Before
-    public void setUp() {
-        try {
-            spreadsheetRepository.login(env.getProperty("google.login"),env.getProperty("google.password"));
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-        }
-        RestAssured.port = port;
+    @Before public void
+    setUp() {
+        RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
     }
 
     @Test
     public void test1_addRowPass() {
-        RowModel row = new RowModel();
+        Row row = new Row();
         row.setBio("Bio");
         row.setCompany("SII");
         row.setCoSpeaker("moi, toi");
@@ -76,15 +63,16 @@ public class SpreadsheetTest {
         row.setTrack("Web");
         row.setTravel(false);
 
-        String spreadsheetName = env.getProperty("google.spreadsheetName");
-        RowModel returnedRow = new RowModel();
+        Row returnedRow = new Row();
 
         boolean error = false;
         try {
-            returnedRow = spreadsheetRepository.addRow(spreadsheetName,"test",row);
+            returnedRow = spreadsheetService.addRow(row);
         } catch (IOException e) {
+            e.printStackTrace();
             error = true;
         } catch (ServiceException e) {
+            e.printStackTrace();
             error = true;
         }
         assertEquals(false,error);
@@ -133,7 +121,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))
@@ -163,7 +151,7 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(400);
     }
@@ -192,7 +180,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("devfest/session")
+                .post("session")
                 .then()
                 .statusCode(400);
     }
@@ -200,53 +188,95 @@ public class SpreadsheetTest {
     @Test
     public void test5_addRowFailDifficultyRest() {
         given()
-            .contentType("application/json")
-            .body("{\n" +
-                    "\"email\" : \"email@email.fr\",\n" +
-                    "\"name\" : \"Maugin\",\n" +
-                    "\"firstname\" : \"Thomas\",\n" +
-                    "\"phone\" : \"33683653379\",\n" +
-                    "\"company\" : \"SII\",\n" +
-                    "\"bio\" : \"Bio\",\n" +
-                    "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
-                    "\"sessionName\" : \"session name\",\n" +
-                    "\"description\" : \"description\",\n" +
-                    "\"references\" : \"refs\",\n" +
-                    "\"difficulty\" : \"5\",\n" +
-                    "\"track\" : \"Web\",\n" +
-                    "\"coSpeaker\" : \"moi, toi\",\n" +
-                    "\"financial\" : \"true\",\n" +
-                    "\"travel\" : \"true\",\n" +
-                    "\"travelFrom\" : \"Angers\",\n" +
-                    "\"hotel\" : \"true\",\n" +
-                    "}")
-            .when()
-            .post("devfest/session")
-            .then()
-            .statusCode(400);
+                .contentType("application/json")
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"5\",\n" +
+                        "\"track\" : \"Web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "}")
+                .when()
+                .post("session")
+                .then()
+                .statusCode(400);
     }
 
     @Test
     public void test6_getRows() {
-        test7_deleteRows();
+        test8_deleteRows();
         test1_addRowPass();
         test1_addRowPass();
         given()
                 .contentType("application/json")
                 .when()
-                .get("devfest/session")
+                .get("session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
     }
 
     @Test
-    public void test7_deleteRows() {
+    public void test7_getRow() {
+        MockMvcResponse response = given().contentType("application/json")
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"Web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("session")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin"))
+                .body("difficulty", Matchers.is(3)).extract().
+                response();
+        Long added = response.path("added");
+
         test1_addRowPass();
         given()
                 .contentType("application/json")
                 .when()
-                .delete("devfest/session")
+                .get("session/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin"));
+    }
+
+    @Test
+    public void test8_deleteRows() {
+        test1_addRowPass();
+        given()
+                .contentType("application/json")
+                .when()
+                .delete("session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(0));

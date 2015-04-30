@@ -1,0 +1,60 @@
+<div class="col-lg-offset-2 col-lg-8">
+	<div class="form-group" bs-has ng-init="formData.steps.currentStep = 2">
+		<label class="control-label" for="sessionName">{{'step2.name' | translate}}</label>
+		<div>
+			<input required type="text" name="sessionName" class="form-control" ng-model="formData.session.sessionName" id="sessionName">
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="control-label" for="description">{{'step2.description' | translate}}</label>
+		<div>{{'step2.hintDescription' | translate}}</div>
+		<div>
+			<textarea required name="description" class="form-control" ng-model="formData.session.description" id="description" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="control-label" for="references">{{'step2.references' | translate}}</label>
+		<div>{{'step2.hintReferences' | translate}}</div>
+		<div>
+			<textarea class="form-control" name="references" id="references" ng-model="formData.session.references"  rows="3"></textarea>
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="control-label" for="difficulty">{{'step2.difficulty' | translate}}</label>
+		<div>
+			<rating value="formData.session.difficulty" id="difficulty" name="difficulty" max="3" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
+			<label>{{formData.session.difficultyLabel}}</label>
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="control-label" for="track">{{'step2.track' | translate}}</label>
+		<div>{{'step2.hintTrack' | translate}}</div>
+		<div>
+			<select ng-model="formData.session.track" id="track" name="track" required class="form-control">
+				<option>{{'step2.tracks.cloud' | translate}}</option>
+				<option>{{'step2.tracks.mobile' | translate}}</option>
+				<option>{{'step2.tracks.web' | translate}}</option>
+				<option>{{'step2.tracks.discovery' | translate}}</option>
+				<option>{{'step2.tracks.codelab' | translate}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group" bs-has>
+		<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
+		<div>{{'step2.hintCospeaker' | translate}}</div>
+		<div>
+			<textarea class="form-control" name="coSpeaker" id="coSpeaker" ng-model="formData.session.coSpeaker"  rows="3"></textarea>
+		</div>
+	</div>
+	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
+		<a ui-sref="form.step1" class="btn btn-block btn-warning" href="#/form/step1">
+			<span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
+		</a>
+	</div>
+	<br class="visible-xs-block">
+	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
+		<a ui-sref="form.step3" ng-disabled="!formData.steps.isValid[1] || !formData.steps.isValid[0]" class="btn btn-block btn-primary" href="#/form/step3">
+			{{'steps.next' | translate}} <span class="glyphicon glyphicon-circle-arrow-right pull-right"></span>
+		</a>
+	</div>
+</div>

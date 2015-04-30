@@ -1,7 +1,6 @@
 import com.github.javafaker.Faker;
-import fr.sii.persistance.spreadsheet.RowModel;
+import fr.sii.domain.spreadsheet.Row;
 import org.junit.Test;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Date;
 import java.util.Random;
@@ -11,9 +10,8 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by tmaugin on 08/04/2015.
  */
-@ActiveProfiles("test")
 public class RowModelTest {
-    RowModel row = new RowModel();
+    Row row = new Row();
 
     @Test
     public void newRowModel() {
@@ -74,8 +72,6 @@ public class RowModelTest {
         assertEquals(social, row.getSocial());
         assertEquals(track, row.getTrack());
         assertEquals(travel, row.getTravel());
-        assertEquals(added, row.getAdded());
-
-        System.out.println(row.toString());
+        assertEquals((Long)added.getTime(),row.getAdded());
     }
 }
