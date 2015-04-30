@@ -1,6 +1,5 @@
 'use strict';
 
-
 var app = angular.module('CallForPaper', [
     'ngCookies',
     'ngResource',

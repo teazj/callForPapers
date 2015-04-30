@@ -88,7 +88,8 @@ app.config(function($translateProvider) {
       "financialHelp" : "Aide financière"
     },
     "error" : {
-      "backendcommunication" : "Désolé, il y a eu un problème avec le serveur distant"
+      "backendcommunication" : "Désolé, il y a eu un problème avec le serveur distant",
+      "noInternet" : "Désolé, il y a eu une problème de connexion, êtes vous connecté à internet ?"
     }
   });
   $translateProvider.translations('en-US', {
@@ -180,7 +181,8 @@ app.config(function($translateProvider) {
       "financialHelp" : "Financial Help"
     },
     "error" : {
-      "backendcommunication" : "Sorry, a problem occure with the server"
+      "backendcommunication" : "Sorry, a problem occure with the server",
+      "noInternet" : "Sorry, it seems that your are not connected to internet"
     }
   });
   $translateProvider.preferredLanguage('fr-FR');
