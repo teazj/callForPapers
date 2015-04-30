@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q) {
+	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q, Notification) {
 		var sessions = []
 		Session.query(function(sessionsTmp) {
 			sessions = sessionsTmp.map(function(session) {
@@ -10,6 +10,8 @@ angular.module('CallForPaper')
 				return session;
 			});
 			updateTable();
+		},function(error){
+			Notification.error({message: $filter('translate')('error.backendcommunication'), delay: 3000});
 		});
 		$scope.difficulties = function(column) {
 			var def = $q.defer();

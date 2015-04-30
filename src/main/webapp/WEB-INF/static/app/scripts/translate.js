@@ -86,6 +86,9 @@ app.config(function($translateProvider) {
       "votes" : "Votes",
       "you" : "Vous",
       "financialHelp" : "Aide financière"
+    },
+    "error" : {
+      "backendcommunication" : "Désolé, il y a eu un problème avec le serveur distant"
     }
   });
   $translateProvider.translations('en-US', {
@@ -175,6 +178,9 @@ app.config(function($translateProvider) {
       "votes" : "Votes",
       "you" : "You",
       "financialHelp" : "Financial Help"
+    },
+    "error" : {
+      "backendcommunication" : "Sorry, a problem occure with the server"
     }
   });
   $translateProvider.preferredLanguage('fr-FR');

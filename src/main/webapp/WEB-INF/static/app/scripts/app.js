@@ -13,7 +13,8 @@ var app = angular.module('CallForPaper', [
     'bs-has',
     'pascalprecht.translate',
     'k8LanguagePicker',
-    'ngTable'
+    'ngTable',
+    'ui-notification'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
