@@ -3,7 +3,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.sii.repository.email.Templating;
 import org.junit.Test;
 
-
 import static org.junit.Assert.assertEquals;
 
 /**

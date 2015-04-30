@@ -1,8 +1,8 @@
 package fr.sii.repository.spreadsheet;
 
 import com.google.gdata.util.ServiceException;
-import fr.sii.domain.spreadsheet.Row;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
+import fr.sii.domain.spreadsheet.Row;
 
 import java.io.IOException;
 import java.util.List;

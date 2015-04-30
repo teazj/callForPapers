@@ -4,11 +4,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 import fr.sii.domain.rate.Rate;
 import fr.sii.domain.user.User;
 import fr.sii.repository.rate.RateRespository;
-import fr.sii.repository.user.UserRespository;
 import fr.sii.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
