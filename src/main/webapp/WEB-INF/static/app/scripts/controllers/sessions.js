@@ -6,7 +6,7 @@ angular.module('CallForPaper')
 		Session.query(function(sessionsTmp) {
 			sessions = sessionsTmp.map(function(session) {
 				session.fullname = session.name + " " + session.firstname;
-				session.realDifficulty = (['Débutant', 'Confirmé', 'Expert'])[session.difficulty - 1];
+				session.realDifficulty = ([$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')])[session.difficulty - 1];
 				return session;
 			});
 			updateTable();
@@ -15,13 +15,13 @@ angular.module('CallForPaper')
 			var def = $q.defer();
 			var difficulties = [{
 				'id': '1',
-				'title': 'Débutant'
+				'title': $filter('translate')('step2.beginner')
 			}, {
 				'id': '2',
-				'title': 'Confirmé'
+				'title': $filter('translate')('step2.confirmed')
 			}, {
 				'id': '3',
-				'title': 'Expert'
+				'title': $filter('translate')('step2.expert')
 			}];
 			def.resolve(difficulties);
 			return def;
@@ -31,19 +31,19 @@ angular.module('CallForPaper')
 			var def = $q.defer();
 			var difficulties = [{
 				'id': 'Web',
-				'title': 'Web'
+				'title': $filter('translate')('step2.tracks.web')
 			}, {
 				'id': 'Codelab',
-				'title': 'Codelab'
+				'title': $filter('translate')('step2.tracks.codelab')
 			}, {
 				'id': 'Discovery',
-				'title': 'Discovery'
+				'title': $filter('translate')('step2.tracks.discovery')
 			}, {
 				'id': 'Mobile',
-				'title': 'Mobile'
+				'title': $filter('translate')('step2.tracks.mobile')
 			}, {
 				'id': 'Cloud',
-				'title': 'Cloud'
+				'title': $filter('translate')('step2.tracks.cloud')
 			}];
 			def.resolve(difficulties);
 			return def;
