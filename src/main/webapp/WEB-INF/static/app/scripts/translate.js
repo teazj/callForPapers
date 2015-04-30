@@ -65,11 +65,32 @@ app.config(function($translateProvider) {
     "result": {
       "success": "Bravo !",
       "successMessage": "Votre présentation a été envoyée. Vous recevrez bientôt un email de confirmation. Nous vous recontacterons dès que nous raurons fait notre choix."
+    },
+    "admin": {
+      "session" : "Session",
+      "sessions" : "Sessions",
+      "administration" : "Administration",
+      "toggle" : "Ouvrir le volet",
+      "clearSorting" : "Annuler le tri",
+      "clearFilter" : "Annuler les filtres",
+      "speaker" : "Conférencier",
+      "title" : "Titre",
+      "difficulty" : "Difficulté",
+      "track" : "Track",
+      "description" : "Description",
+      "mean" : "Moyenne",
+      "date" : "Date",
+      "deliberation" : "Délibération",
+      "commentaries" : "Commentaires",
+      "message" : "Message",
+      "votes" : "Votes",
+      "you" : "Vous",
+      "financialHelp" : "Aide financière"
     }
   });
   $translateProvider.translations('en-US', {
     "lang": {
-      "fr-Fr": "French",
+      "fr-FR": "French",
       "en-US": "English"
     },
     "step1": {
@@ -133,6 +154,27 @@ app.config(function($translateProvider) {
     "result": {
       "success": "Well done !",
       "successMessage": "Your talk has been send. You will soon receive a confirmation email. We will contact you as soon as we will make our decision."
+    },
+    "admin": {
+      "session" : "Session",
+      "sessions" : "Sessions",
+      "administration" : "Administration",
+      "toggle" : "Toggle navigation",
+      "clearSorting" : "Clear sorting",
+      "clearFilter" : "Clear filters",
+      "speaker" : "Speaker",
+      "title" : "Title",
+      "difficulty" : "Difficulty",
+      "track" : "Track",
+      "description" : "Description",
+      "mean" : "Mean",
+      "date" : "Date",
+      "deliberation" : "Deliberation",
+      "commentaries" : "Commentaries",
+      "message" : "Message",
+      "votes" : "Votes",
+      "you" : "You",
+      "financialHelp" : "Financial Help"
     }
   });
   $translateProvider.preferredLanguage('fr-FR');

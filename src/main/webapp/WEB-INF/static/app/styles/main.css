@@ -151,3 +151,9 @@ strong hr
 textarea{
   max-width: 100%;
 }
+
+/*Language modal*/
+.modal-lang-picker > div.form-group
+{
+  margin-right: 28px;
+}
