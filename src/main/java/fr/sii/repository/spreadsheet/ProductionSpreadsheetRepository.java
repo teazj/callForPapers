@@ -7,14 +7,12 @@ import com.google.gdata.data.BaseEntry;
 import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
-import fr.sii.domain.spreadsheet.Row;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
+import fr.sii.domain.spreadsheet.Row;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;

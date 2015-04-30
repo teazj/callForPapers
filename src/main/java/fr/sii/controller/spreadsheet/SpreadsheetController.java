@@ -5,9 +5,9 @@ package fr.sii.controller.spreadsheet;
  */
 
 import com.google.gdata.util.ServiceException;
+import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.spreadsheet.SpreadsheetService;
-import fr.sii.domain.spreadsheet.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
 package fr.sii.domain.rate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.sii.domain.user.User;
-
 import org.datanucleus.api.jpa.annotations.Extension;
 import org.springframework.stereotype.Component;
 

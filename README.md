@@ -1,8 +1,8 @@
 # Call For Paper
 
-## Mise en place :
+## Setup :
 
-Editer le fichier `src/main/webapp/WEB-INF/appengine-web.xml` et remplacer les informations par celles qui correpondent à votre application :
+Edit `src/main/webapp/WEB-INF/appengine-web.xml` replace the informations to suit your need :
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -24,7 +24,7 @@ Editer le fichier `src/main/webapp/WEB-INF/appengine-web.xml` et remplacer les i
     </env-variables>
 </appengine-web-app>
 ```
-Editer le fichier `src/main/webapp/WEB-INF/application-prod.properties` et remplacer les informations qui correspondent à vos besoins :
+Edit `src/main/webapp/WEB-INF/application-prod.properties` replace the informations to suit your need :
 
 ```properties
 google.login=${GOOGLE_LOGIN}
@@ -33,7 +33,7 @@ google.spreadsheetName=CallForPaper // edit
 google.worksheetName=prod // edit
 google.consumerKey=${GOOGLE_CONSUMER_KEY}
 google.consumerSecret=${GOOGLE_CONSUMER_SECRET}
-database.load=false
+database.load=true
 email.smtphost=smtp.gmail.com // edit
 email.smtpport=587 // edit
 email.username=${EMAIL_USERNAME}
@@ -41,17 +41,18 @@ email.password=${EMAIL_PASSWORD}
 webapp.dir=dist
 ```
 
-## Déploiement :
+## Deployment :
 
 ```shell
+ bower install
  mvn appengine:update [-Dmaven.test.skip=true]
 ```
+Go to : YOUR_APP_ID.appspot.com
 
 ## Local :
 
 ```shell
+ bower install
  mvn appengine:devserver [-Dmaven.test.skip=true]
 ```
-*Pour tester en local, mettez les même variables d'environement que celles déclarées dans le fichier`src/main/webapp/WEB-INF/appengine-web.xml` à votre machine.*
-
-Rendez vous ensuite à l'emplacement de l'application GAE : YOUR_APP_ID.appspot.com
+*For local testing purpose, set all `appengine-web.xml` env-var in you OS with the same value.*

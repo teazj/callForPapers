@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q) {
+	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q, Notification) {
 		var sessions = []
 		Session.query(function(sessionsTmp) {
 			sessions = sessionsTmp.map(function(session) {
