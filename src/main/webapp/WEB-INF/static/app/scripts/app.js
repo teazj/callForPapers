@@ -113,4 +113,7 @@ var app = angular.module('CallForPaper', [
       loadOnDownArrow: true,
       loadOnEmpty: true
     })
+})
+.config(function($translateProvider) {
+  $translateProvider.useCookieStorage();
 });
