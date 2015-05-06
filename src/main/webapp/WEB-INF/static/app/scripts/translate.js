@@ -40,7 +40,7 @@ app.config(function($translateProvider) {
       "hintTrack": "Choisissez la catégorie dans laquelle vous pensez que votre conférence se situe. Discovery est une catégorie pour les conférences non techniques."
     },
     "step3": {
-      "header1": "Ici vous renseignerez les informations nécessaires pour votre venue. Ces informations serons très minucieusement étudiées pour notre décision. Ne choisissez oui que si vous en avez besoin.", 
+      "header1": "Ici vous renseignerez les informations nécessaires pour votre venue. Ces informations serons très minucieusement étudiées pour notre décision. Ne choisissez oui que si vous en avez besoin.",
       "header2": "Un petit déjeuner et un déjeuner est offert le jour de l'évènement.",
       "financial": "Avez-vous besoin d’une aide financière ? * :",
       "labelTravel": "Voyage :",
@@ -67,6 +67,7 @@ app.config(function($translateProvider) {
       "successMessage": "Votre présentation a été envoyée. Vous recevrez bientôt un email de confirmation. Nous vous recontacterons dès que nous raurons fait notre choix."
     },
     "admin": {
+      "logout" : "Se déconnecter",
       "session" : "Session",
       "sessions" : "Sessions",
       "administration" : "Administration",
@@ -133,7 +134,7 @@ app.config(function($translateProvider) {
       "hintTrack": "Choose the track where you think your talk will be place. Discovery is a track for non technicals presentations"
     },
     "step3": {
-      "header1": "Here is all the informations relatives to your venue. The following informations will be carefuly study for our decision. So please select Yes, only if needed.", 
+      "header1": "Here is all the informations relatives to your venue. The following informations will be carefuly study for our decision. So please select Yes, only if needed.",
       "header2": "A breakfast and lunch is offered the day of the event.",
       "financial": "Do you need financial help ? *:",
       "labelTravel": "Travel",
@@ -160,6 +161,7 @@ app.config(function($translateProvider) {
       "successMessage": "Your talk has been send. You will soon receive a confirmation email. We will contact you as soon as we will make our decision."
     },
     "admin": {
+      "logout" : "Logout",
       "session" : "Session",
       "sessions" : "Sessions",
       "administration" : "Administration",

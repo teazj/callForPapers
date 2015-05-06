@@ -31,7 +31,8 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-	<!-- 03. Dispatcher Servlet Config -->
+
+	<!-- Dispatcher Servlet Config -->
      <servlet>
           <servlet-name>dispatcherServlet</servlet-name>
           <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -39,12 +40,12 @@
                <param-name>contextConfigLocation</param-name>
                <param-value>classpath:META-INF/spring/dispatcherServlet.xml</param-value>
           </init-param>
-
      </servlet>
      <servlet-mapping>
           <servlet-name>dispatcherServlet</servlet-name>
           <url-pattern>/</url-pattern>
      </servlet-mapping>
+
      <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -56,4 +57,40 @@
 	        org.springframework.web.context.ContextLoaderListener
 	    </listener-class>
 	</listener>
+
+    <!--Security-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>admin</web-resource-name>
+            <url-pattern>/rate/*</url-pattern>
+            <url-pattern>/comment/*</url-pattern>
+            <url-pattern>/user/*</url-pattern>
+            <url-pattern>/#/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!--Allow only POST-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>admin</web-resource-name>
+            <url-pattern>/session/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>DELETE</http-method>
+            <http-method>PUT</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+
+    <!--Access denied-->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/jsp/auth.jsp</location>
+    </error-page>
+
 </web-app>

@@ -5,7 +5,7 @@
 		<li role="presentation" class=""><button href="#session" role="tab" id="session-tab" data-toggle="tab" aria-controls="session" aria-expanded="false">{{'admin.session' | translate}}</button></li>
 		<li role="presentation" class=""><button href="#help" role="tab" id="help-tab" data-toggle="tab" aria-controls="help" aria-expanded="false">{{'admin.financialHelp' | translate}}</button></li>
 	</ul>
-	<div id="tabContent" class="tab-content">
+	<div id="tabContent" class="tab-content tile">
 		<br>
 		<div role="tabpanel" class="tab-pane fade active in" id="speaker" aria-labelledby="speaker-tab">
 			<div class="row">
@@ -167,67 +167,67 @@
 		</div>
 	</div>
 </div>
-<hr>
-<h1>{{'admin.deliberation' | translate}}</h1>
-<div class="col-md-6">
-	<div class="col-xs-12">
-		<h3>{{'admin.commentaries' | translate}}</h3>
-	</div>
 
-	<div ng-repeat="comment in comments" class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>{{comment.user.name}} :</strong>
-			<div>{{comment.added | date:'yyyy-MM-dd HH:mm:ss'}}</div>
-		</div>
-		<div class="col-xs-9">
-			{{comment.comment}}
-		</div>
-		<div class="col-xs-12"><hr></div>
-	</div>
 
-	<div class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>{{'admin.message' | translate}} :</strong>
+<div class="col-xs-12 tile">
+	<h1>{{'admin.deliberation' | translate}}</h1>
+	<div class="col-md-6 left-separator">
+		<div class="col-xs-12">
+			<h3>{{'admin.commentaries' | translate}}</h3>
 		</div>
-		<div class="col-xs-9" bs-has>
-			<textarea required row="3" class="form-control" ng-init="commentMsg = ''" ng-model="commentMsg">
-			</textarea>
-			<br>
-			<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" class="btn btn-success pull-right">{{'steps.validate' | translate}}</button>
-		</div>
-		<div class="col-xs-offset-3 ">
-		</div>
-		<div class="col-xs-12"><hr></div>
-	</div>
-</div>
-<div class="col-md-6">
-	<div class="col-xs-12">
-		<h3>{{'admin.votes' | translate}}</h3>
-	</div>
 	
-	<div class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>{{'admin.you' | translate}} : </strong>
+		<div ng-repeat="comment in comments" class="col-xs-12">
+			<div class="col-xs-3">
+				<strong class="col-xs-12 noMargin dot">{{comment.user.name}} :</strong>
+				<div>{{comment.added | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+			</div>
+			<div class="col-xs-9">
+				{{comment.comment}}
+			</div>
+			<div class="col-xs-12"><hr></div>
 		</div>
-		<rating value="yourRate.rate" id="difficulty" name="difficulty" max="5" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
-		<button type="button" ng-click="postRate()" class="btn btn-success pull-right">{{'steps.validate' | translate}}</button>
+	
+		<div class="col-xs-12">
+			<div class="col-xs-3">
+				<strong>{{'admin.message' | translate}} :</strong>
+			</div>
+			<div class="col-xs-9" bs-has>
+				<textarea required row="3" class="form-control" ng-init="commentMsg = ''" ng-model="commentMsg">
+				</textarea>
+				<br>
+				<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" class="btn btn-success pull-right">{{'steps.validate' | translate}}</button>
+			</div>
+		</div>
 	</div>
-
-	<div class="col-xs-12" ng-repeat="rate in rates">
-		<div class="col-xs-12"><hr></div>
-		<div class="col-xs-3">
-			<strong>{{rate.user.name}} : </strong>
+	<div class="col-md-6 right-separator">
+		<div class="col-xs-12">
+			<h3>{{'admin.votes' | translate}}</h3>
 		</div>
-		<span ng-repeat="n in [].constructor(rate.rate) track by $index">
-			<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-		</span>
-	</div>
-
-	<div class="col-xs-12"><strong><hr></strong></div>
-	<div class="col-xs-12">
-		<div class="col-xs-3">
-			<strong>{{'admin.mean' | translate}} : </strong>
+		
+		<div class="col-xs-12">
+			<div class="col-xs-3">
+				<strong>{{'admin.you' | translate}} : </strong>
+			</div>
+			<rating value="yourRate.rate" id="difficulty" name="difficulty" max="5" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
+			<button type="button" ng-click="postRate()" class="btn btn-success pull-right">{{'steps.validate' | translate}}</button>
 		</div>
-		{{mean}}
+	
+		<div class="col-xs-12" ng-repeat="rate in rates">
+			<div class="col-xs-12"><hr></div>
+			<div class="col-xs-3">
+				<strong class="dot col-xs-12 noMargin">{{rate.user.name}} : </strong>
+			</div>
+			<span ng-repeat="n in [].constructor(rate.rate) track by $index">
+				<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+			</span>
+		</div>
+	
+		<div class="col-xs-12"><strong><hr></strong></div>
+		<div class="col-xs-12">
+			<div class="col-xs-3">
+				<strong>{{'admin.mean' | translate}} : </strong>
+			</div>
+			{{mean}}
+		</div>
 	</div>
 </div>

@@ -6,5 +6,6 @@ angular.module('CallForPaper')
 
 		$scope.changeLanguage = function (key) {
 			$translate.use(key);
+			$scope.language = $translate.use();
   		};
 	});

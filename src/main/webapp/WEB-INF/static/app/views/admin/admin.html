@@ -21,7 +21,7 @@
 				<li><a href="#/admin/sessions">{{'admin.sessions' | translate}}</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<!-- <li><a href="#">Link</a></li> -->
+        <li><a href="{{userInfo.uri}}">{{'admin.logout' | translate}}</a></li>
 				<li style="margin-top:4px">
 					<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
 				</li>

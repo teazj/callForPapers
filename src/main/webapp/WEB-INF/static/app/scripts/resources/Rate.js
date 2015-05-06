@@ -4,7 +4,7 @@ angular.module('CallForPaper').factory('Rate', function($resource) {
         update: { method:'PUT', url: 'rate/:id' },
         getByRowIdAndUserId: {
         	method:'GET',
-        	url: 'rate/row/:rowId/user/:userId'
+        	url: 'rate/row/:rowId/user/me'
         },
         getByRowId: {
         	method:'GET',

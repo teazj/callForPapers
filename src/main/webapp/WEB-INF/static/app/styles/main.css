@@ -130,3 +130,27 @@ textarea{
     color: #31708f;
     background: #d9edf7;
 }
+
+.dot{
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+.noMargin{
+  margin: 0;
+}
+
+.tile{
+  border :solid 1px rgb(221, 221, 221);
+  border-top: none;
+  padding-bottom: 40px;
+}
+
+.left-separator
+{
+  border-right :solid 1px rgb(221, 221, 221);
+}
+.right-separator
+{
+  border-left :solid 1px rgb(221, 221, 221);
+  margin-left: -1px;
+}
