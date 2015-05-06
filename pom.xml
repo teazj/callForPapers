@@ -55,6 +55,13 @@
 			<version>${appengine.jdk}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-labs</artifactId>
+			<version>${appengine.jdk}</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<!-- Spring -->
 		<dependency>
@@ -249,6 +256,7 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.jdk}</version>
 				<configuration>
+					<address>0.0.0.0</address>
 					<enableJarClasses>false</enableJarClasses>
 					<!-- Comment in the below snippet to bind to all IPs instead of just 
 						localhost -->

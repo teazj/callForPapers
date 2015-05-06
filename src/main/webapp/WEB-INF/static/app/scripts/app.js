@@ -13,8 +13,16 @@ var app = angular.module('CallForPaper', [
     'pascalprecht.translate',
     'k8LanguagePicker',
     'ngTable',
-    'ui-notification'
+    'ui-notification',
+    'customFilters'
   ])
+  app.run(function($rootScope, $state) {
+  $rootScope.$state = $state;
+  function message(to, toP, from, fromP) { return from.name  + angular.toJson(fromP) + " -> " +     to.name + angular.toJson(toP); }
+    $rootScope.$on("$stateChangeStart", function(evt, to, toP, from, fromP) { console.log("Start:   " + message(to, toP, from, fromP)); });
+    $rootScope.$on("$stateChangeSuccess", function(evt, to, toP, from, fromP) { console.log("Success: " + message(to, toP, from, fromP)); });
+    $rootScope.$on("$stateChangeError", function(evt, to, toP, from, fromP, err) {     console.log("Error:   " + message(to, toP, from, fromP), err); });
+  })
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $urlRouterProvider
@@ -37,7 +45,26 @@ var app = angular.module('CallForPaper', [
         views : {
           '' : {
             templateUrl: 'views/admin/admin.html',
-            controller: 'AdminCtrl'
+            controller: 'AdminCtrl',
+            resolve: {
+              logged: function($q, Application, $rootScope, $window) {
+                var deferred = $q.defer();
+                    Application.getCurrentUser(function(userInfo){
+                      $rootScope.userInfo = userInfo;
+                      if ($rootScope.userInfo == null) {
+                          deferred.reject();
+                      } else if($rootScope.userInfo.connected == true && $rootScope.userInfo.admin == true){
+                          deferred.resolve();
+                      }
+                      else
+                      {
+                        $window.location.href= $rootScope.userInfo.uri;
+                        deferred.reject();
+                      }
+                    })
+                return deferred.promise;
+              }
+            }
           },
           '@form' : {
             templateUrl: 'views/admin/sessions.html'
@@ -55,6 +82,13 @@ var app = angular.module('CallForPaper', [
         templateUrl: 'views/admin/session.html',
         controller: 'SessionCtrl'
       })
+      
+      // Login
+      .state('login', {
+        url: '/login',
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
 
       // Form
       .state('form', {
@@ -70,7 +104,7 @@ var app = angular.module('CallForPaper', [
           }
         },
       })
-      // nested states 
+      // nested states
       // each of these sections will have their own view
       .state('form.step1', {
         url: '/step1',
@@ -113,4 +147,7 @@ var app = angular.module('CallForPaper', [
       loadOnDownArrow: true,
       loadOnEmpty: true
     })
+})
+.config(function($translateProvider) {
+  $translateProvider.useCookieStorage();
 });

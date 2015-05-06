@@ -32,7 +32,7 @@ public class Comment {
     @NotNull
     private Long rowId;
 
-    @NotNull
+    //@NotNull
     private Long userId;
 
     @Transient

@@ -24,7 +24,6 @@ angular.module('CallForPaper')
 			$scope.commentButtonDisabled = true;
 			Comment.save({
 				'comment': $scope.commentMsg,
-				'userId': 5629499534213120,
 				'rowId': $stateParams.id
 			}, function(c) {
 				$scope.commentMsg = "";
@@ -53,7 +52,6 @@ angular.module('CallForPaper')
 		};
 		Rate.getByRowIdAndUserId({
 			'rowId': $stateParams.id,
-			'userId': 4573968371548160
 		}, function(rateTmp) {
 			if (rateTmp.id !== undefined) {
 				$scope.yourRate = rateTmp;
@@ -66,7 +64,6 @@ angular.module('CallForPaper')
 			if ($scope.yourRate.id === undefined) {
 				Rate.save({
 					'rate': $scope.yourRate.rate,
-					'userId': 4573968371548160,
 					'rowId': $stateParams.id
 				}, function(c) {
 					$scope.yourRate.id = c.id;
@@ -78,7 +75,6 @@ angular.module('CallForPaper')
 					'id': $scope.yourRate.id
 				}, {
 					'rate': $scope.yourRate.rate,
-					'userId': 4573968371548160,
 					'rowId': $stateParams.id
 				}, function(c) {
 					$scope.commentButtonDisabled = false;

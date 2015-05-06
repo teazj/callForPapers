@@ -1,5 +1,8 @@
 package fr.sii.controller.comment;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import fr.sii.domain.comment.Comment;
 import fr.sii.service.comment.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    fr.sii.service.user.UserService userServiceCustom;
+
     @RequestMapping(method= RequestMethod.GET)
     @ResponseBody
     public List<Comment> getComments() {
@@ -32,13 +38,15 @@ public class CommentController {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public Comment postComment(@Valid @RequestBody Comment rate){
-        return commentService.save(rate);
+    @ResponseBody public Comment postComment(@Valid @RequestBody Comment comment) throws Exception {
+        comment.setUserId(userServiceCustom.getCurrentUser().getEntityId());
+        return commentService.save(comment);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    @ResponseBody public Comment putComment(@PathVariable Long id, @Valid @RequestBody Comment rate){
-        return commentService.put(id, rate);
+    @ResponseBody public Comment putComment(@PathVariable Long id, @Valid @RequestBody Comment comment){
+        comment.setUserId(userServiceCustom.getCurrentUser().getEntityId());
+        return commentService.put(id, comment);
     }
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET)

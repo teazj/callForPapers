@@ -19,7 +19,8 @@
     "angular-language-picker": "k88hudson/angular-language-picker#~0.0.1",
     "iframe-resizer": "~2.8.5",
     "ng-table": "~0.5.4",
-    "angular-ui-notification": "~0.0.5"
+    "angular-ui-notification": "~0.0.5",
+    "angular-translate-storage-cookie": "~2.6.1"
   },
   "resolutions": {
     "angular": "1.3.15"

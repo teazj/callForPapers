@@ -19,6 +19,9 @@ public class RateController {
     @Autowired
     RateService rateService;
 
+    @Autowired
+    fr.sii.service.user.UserService userServiceCustom;
+
     @RequestMapping(method= RequestMethod.GET)
     @ResponseBody
     public List<Rate> getRates() {
@@ -33,11 +36,13 @@ public class RateController {
 
     @RequestMapping(method=RequestMethod.POST)
     @ResponseBody public Rate postRate(@Valid @RequestBody Rate rate){
+        rate.setUserId(userServiceCustom.getCurrentUser().getEntityId());
         return rateService.save(rate);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     @ResponseBody public Rate putRate(@PathVariable Long id, @Valid @RequestBody Rate rate){
+        rate.setUserId(userServiceCustom.getCurrentUser().getEntityId());
         return rateService.put(id, rate);
     }
 
@@ -59,9 +64,10 @@ public class RateController {
         return rateService.findByRowId(id);
     }
 
-    @RequestMapping(value="/row/{rowId}/user/{userId}", method= RequestMethod.GET)
+    @RequestMapping(value="/row/{rowId}/user/me", method= RequestMethod.GET)
     @ResponseBody
-    public Rate getRateByRowIdAndUserId(@PathVariable Long rowId, @PathVariable Long userId) {
+    public Rate getRateByRowIdAndUserId(@PathVariable Long rowId) {
+        Long userId = userServiceCustom.getCurrentUser().getEntityId();
         return rateService.findByRowIdAndUserId(rowId, userId);
     }
 
