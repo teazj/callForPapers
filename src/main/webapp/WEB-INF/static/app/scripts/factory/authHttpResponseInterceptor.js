@@ -1,5 +1,8 @@
 angular.module('CallForPaper')
     .factory('authHttpResponseInterceptor', function($q, $injector, $filter) {
+        /**
+         * Intercep every request and popup a notification if error
+         */
         return {
             response: function(response) {
                 return response || $q.when(response);
