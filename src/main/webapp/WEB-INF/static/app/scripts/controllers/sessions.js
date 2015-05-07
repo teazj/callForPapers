@@ -60,6 +60,7 @@ angular.module('CallForPaper')
 					description: ''
 				}
 			}, {
+				filterDelay : 0,
 				total: sessions.length, // length of data
 				getData: function($defer, params) {
 					// use build-in angular filter
