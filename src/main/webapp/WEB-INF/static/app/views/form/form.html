@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div id="form-container">
             <div class="text-center">
-                <h2><img src="/images/devfest.png" alt="" style="width: 20px;margin-bottom:5px;margin-right:5px">Call for paper - {{title}}</h2>
+                <h2><img src="/images/devfest.png" alt="" style="width: 20px;margin-bottom:5px;margin-right:5px">Call for paper - {{::title}}</h2>
             </div>
             <div class="col-sm-12">
                 <progressbar class="progress-striped" ng-attr-type="{{formData.steps.currentStep === 4 ? 'success' : ''}}" min="1" max="3" value="formData.steps.currentStep - (formData.steps.currentStep === 4 ? 1 : 0)">

@@ -76,9 +76,7 @@ public class CommentService {
             r.setAdded(new Date());
         }
         Comment s = commentRepository.save(r);
-        s.setEntityId(KeyFactory.stringToKey(s.getId()).getId());
-        Comment s2 = commentRepository.save(s);
-        return matchUser(s2);
+        return matchUser(s);
     }
 
     public Comment put(Long id,Comment r)

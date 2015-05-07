@@ -7,7 +7,10 @@ import org.datanucleus.api.jpa.annotations.Extension;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * Created by tmaugin on 27/04/2015.
@@ -22,6 +25,8 @@ public class Rate {
     @JsonProperty("id")
     private Long entityId;
 
+    @Max(5)
+    @Min(1)
     @NotNull
     private Integer rate;
 
@@ -31,10 +36,10 @@ public class Rate {
     @Transient
     private User user;
 
-    @NotNull
     private Long userId;
 
     public Rate() {
+        this.entityId = new Date().getTime();
     }
 
     @JsonIgnore

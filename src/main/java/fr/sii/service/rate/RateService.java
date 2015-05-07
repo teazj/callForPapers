@@ -71,9 +71,7 @@ public class RateService {
     public Rate save(Rate r)
     {
         Rate s = rateRepository.save(r);
-        s.setEntityId(KeyFactory.stringToKey(s.getId()).getId());
-        Rate s2 = rateRepository.save(s);
-        return matchUser(s2);
+        return matchUser(s);
     }
 
     public Rate put(Long id,Rate r)

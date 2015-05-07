@@ -1,4 +1,9 @@
 angular.module('customFilters', [])
+	/**
+	 * Truncate too long string to  255 chars
+	 * @param  {string}
+	 * @return {string}
+	 */
 	.filter('truncate', function() {
 		return function(input) {
 			if (input !== undefined) {

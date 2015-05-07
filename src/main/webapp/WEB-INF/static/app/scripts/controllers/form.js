@@ -10,7 +10,11 @@ angular.module('CallForPaper')
 		$scope.formData.steps.isValid = [false, false, false];
 		$scope.language = $translate.use();
 
-		// function to process the form
+		/**
+		 * Send the form to the server
+		 * @param  {Boolean}
+		 * @return {void}
+		 */
 		$scope.processForm = function(isValid) {
 			$scope.formData.sending = true;
 			var model = {};
@@ -27,7 +31,10 @@ angular.module('CallForPaper')
 			});
 		};
 
-		Application.get(function(config){
+		/**
+		 * Get eventName
+		 */
+		Application.get(function(config) {
 			$scope.title = config.eventName;
 		})
 
@@ -39,6 +46,9 @@ angular.module('CallForPaper')
 			$scope.language = args.language;
 		});
 
+		/**
+		 * Update difficulty label when over
+		 */
 		$scope.hoverDifficulty = function(value) {
 			$scope.formData.session.difficultyLabel = ([$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')])[value - 1];
 		};
