@@ -1,15 +1,19 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('SessionCtrl', function($scope, $stateParams, Session, Comment, Rate) {
+	.controller('SessionCtrl', function($scope, $stateParams, $filter, $translate,Session, Comment, Rate) {
 		$scope.session = null;
 		Session.get({
 			id: $stateParams.id
 		}, function(sessionTmp) {
 			$scope.session = sessionTmp;
 		});
-		$scope.difficulties = ["Débutant", "Confirmé", "Expert"];
+		$scope.difficulties = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 
+		/**
+		 * get comments of the session
+		 * @return {[Comment]}
+		 */
 		var updateComments = function() {
 			Comment.getByRowId({
 				rowId: $stateParams.id
@@ -32,6 +36,10 @@ angular.module('CallForPaper')
 			});
 		}
 
+		/**
+		 * get rates of the session
+		 * @return {[Rate]}
+		 */
 		var updateRates = function() {
 			Rate.getByRowId({
 				'rowId': $stateParams.id
@@ -50,6 +58,11 @@ angular.module('CallForPaper')
 			rate: 0,
 			id: undefined
 		};
+		/**
+		 * Obtain current user rate
+		 * @param  {long : rowId}
+		 * @return {Rate}
+		 */
 		Rate.getByRowIdAndUserId({
 			'rowId': $stateParams.id,
 		}, function(rateTmp) {
@@ -58,16 +71,19 @@ angular.module('CallForPaper')
 			}
 		})
 
-		$scope.ratetButtonDisabled = false;
+		$scope.rateButtonDisabled = false;
+		/*
+		 *	Post new rate
+		 */
 		$scope.postRate = function() {
-			$scope.ratetButtonDisabled = true;
+			$scope.rateButtonDisabled = true;
 			if ($scope.yourRate.id === undefined) {
 				Rate.save({
 					'rate': $scope.yourRate.rate,
 					'rowId': $stateParams.id
 				}, function(c) {
 					$scope.yourRate.id = c.id;
-					$scope.commentButtonDisabled = false;
+					$scope.rateButtonDisabled = false;
 					updateRates();
 				});
 			} else {
@@ -77,7 +93,7 @@ angular.module('CallForPaper')
 					'rate': $scope.yourRate.rate,
 					'rowId': $stateParams.id
 				}, function(c) {
-					$scope.commentButtonDisabled = false;
+					$scope.rateButtonDisabled = false;
 					updateRates();
 				});
 			}

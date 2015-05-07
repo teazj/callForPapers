@@ -1,27 +1,29 @@
 'use strict';
 
 var app = angular.module('CallForPaper', [
-    'ngCookies',
-    'ngResource',
-    'ngSanitize',
-    'ui.router',
-    'ngAnimate',
-    'ui.bootstrap',
-    'ngTagsInput',
-    'internationalPhoneNumber',
-    'bs-has',
-    'pascalprecht.translate',
-    'k8LanguagePicker',
-    'ngTable',
-    'ui-notification',
-    'customFilters'
-  ])
   app.run(function($rootScope, $state) {
   $rootScope.$state = $state;
   function message(to, toP, from, fromP) { return from.name  + angular.toJson(fromP) + " -> " +     to.name + angular.toJson(toP); }
     $rootScope.$on("$stateChangeStart", function(evt, to, toP, from, fromP) { console.log("Start:   " + message(to, toP, from, fromP)); });
     $rootScope.$on("$stateChangeSuccess", function(evt, to, toP, from, fromP) { console.log("Success: " + message(to, toP, from, fromP)); });
     $rootScope.$on("$stateChangeError", function(evt, to, toP, from, fromP, err) {     console.log("Error:   " + message(to, toP, from, fromP), err); });
+  'ngCookies',
+  'ngResource',
+  'ngSanitize',
+  'ui.router',
+  'ngAnimate',
+  'ui.bootstrap',
+  'ngTagsInput',
+  'internationalPhoneNumber',
+  'bs-has',
+  'pascalprecht.translate',
+  'k8LanguagePicker',
+  'ngTable',
+  'ui-notification',
+  'customFilters',
+  'ui.gravatar',
+  'relativeDate'
+])
   })
   .config(function($stateProvider, $urlRouterProvider) {
     //delete $httpProvider.defaults.headers.common['X-Requested-With'];

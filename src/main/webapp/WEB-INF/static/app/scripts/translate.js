@@ -91,7 +91,39 @@ app.config(function($translateProvider) {
     "error" : {
       "backendcommunication" : "Désolé, il y a eu un problème avec le serveur distant",
       "noInternet" : "Désolé, il y a eu une problème de connexion, êtes vous connecté à internet ?"
-    }
+    },
+    "login" : {
+      "wait" : "Veuillez patienter"
+    },
+    "just_now" : "à l'instant",
+    "seconds_ago" : "il y a {{time}} secondes",
+    "a_minute_ago" : "il y a une minute",
+    "minutes_ago" : "il y a {{time}} minutes",
+    "an_hour_ago" : "il y a une heure",
+    "hours_ago" : "il y a {{time}} heures",
+    "a_day_ago" : "hier",
+    "days_ago" : "il y a {{time}} jours",
+    "a_week_ago" : "il y a une semaine",
+    "weeks_ago" : "il y a {{time}} semaines",
+    "a_month_ago" : "il y a un mois",
+    "months_ago" : "il y a {{time}} mois",
+    "a_year_ago" : "il y a un an",
+    "years_ago" : "il y a {{time}} ans",
+    "over_a_year_ago" : "il y a plus d'un an",
+    "seconds_from_now" : "dans une seconde",
+    "a_minute_from_now" : "dans une minute",
+    "minutes_from_now" : "dans {{time}} minutes",
+    "an_hour_from_now" : "dans une heure",
+    "hours_from_now" : "dans {{time}} heures",
+    "a_day_from_now" : "demain",
+    "days_from_now" : "dans {{time}} jours",
+    "a_week_from_now" : "dans une semaine",
+    "weeks_from_now" : "dans {{time}} semaine",
+    "a_month_from_now" : "dansun mois",
+    "months_from_now" : "dans {{time}} mois",
+    "a_year_from_now" : "dans un an",
+    "years_from_now" : "dans {{time}} ans",
+    "over_a_year_from_now" : "dans plus d'un an"
   });
   $translateProvider.translations('en-US', {
     "lang": {
@@ -185,7 +217,39 @@ app.config(function($translateProvider) {
     "error" : {
       "backendcommunication" : "Sorry, a problem occure with the server",
       "noInternet" : "Sorry, it seems that your are not connected to internet"
-    }
+    },
+    "login" : {
+      "wait" : "Please wait"
+    },
+    "just_now" : "just now",
+    "seconds_ago" : "{{time}} seconds ago",
+    "a_minute_ago" : "a minute ago",
+    "minutes_ago" : "{{time}} minutes ago",
+    "an_hour_ago" : "an hour ago",
+    "hours_ago" : "{{time}} hours ago",
+    "a_day_ago" : "yesterday",
+    "days_ago" : "{{time}} days ago",
+    "a_week_ago" : "a week ago",
+    "weeks_ago" : "{{time}} weeks ago",
+    "a_month_ago" : "a month ago",
+    "months_ago" : "{{time}} months ago",
+    "a_year_ago" : "a year ago",
+    "years_ago" : "{{time}} years ago",
+    "over_a_year_ago" : "over a year ago",
+    "seconds_from_now" : "{{time}} seconds from now",
+    "a_minute_from_now" : "a minute from now",
+    "minutes_from_now" : "{{time}} minutes from now",
+    "an_hour_from_now" : "an hour from now",
+    "hours_from_now" : "{{time}} hours from now",
+    "a_day_from_now" : "tomorrow",
+    "days_from_now" : "{{time}} days from now",
+    "a_week_from_now" : "a week from now",
+    "weeks_from_now" : "{{time}} weeks from now",
+    "a_month_from_now" : "a month from now",
+    "months_from_now" : "{{time}} months from now",
+    "a_year_from_now" : "a year from now",
+    "years_from_now" : "{{time}} years from now",
+    "over_a_year_from_now" : "over a year from now"
   });
   $translateProvider.preferredLanguage('fr-FR');
 });

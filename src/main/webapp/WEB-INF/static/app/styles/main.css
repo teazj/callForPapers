@@ -131,10 +131,18 @@ textarea{
     background: #d9edf7;
 }
 
+/* common */
+
 .dot{
   overflow: hidden !important;
   text-overflow: ellipsis;
 }
+
+.weak{
+  color: rgb(204, 204, 204);
+  font-size: 0.9em;
+}
+
 .noMargin{
   margin: 0;
 }
@@ -145,6 +153,11 @@ textarea{
   padding-bottom: 40px;
 }
 
+.filterbuttons
+{
+  margin-bottom: 25px;
+}
+
 .left-separator
 {
   border-right :solid 1px rgb(221, 221, 221);
@@ -153,4 +166,46 @@ textarea{
 {
   border-left :solid 1px rgb(221, 221, 221);
   margin-left: -1px;
+}
+
+
+/* curved border bootstrap tables ...*/
+.table-curved {
+    border-collapse: separate;
+}
+.table-curved {
+    border: solid #ccc 1px;
+    border-radius: 6px;
+    border-left:0px;
+}
+.table-curved td, .table-curved th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+.table-curved th {
+    border-top: none;
+}
+.table-curved th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+.table-curved th.filter:first-child, .table-curved th.filter:last-child {
+    border-radius: 0px 0 0 0;
+}
+
+.table-curved th:last-child {
+    border-radius: 0 6px 0 0;
+}
+.table-curved th:only-child{
+    border-radius: 6px 6px 0 0;
+}
+.table-curved tr:last-child td:first-child {
+    border-radius: 0 0 0 6px;
+}
+.table-curved tr:last-child td:last-child {
+    border-radius: 0 0 6px 0;
+}
+
+.table > thead > tr > th.filter {
+  border-top: none;
 }
