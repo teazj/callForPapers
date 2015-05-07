@@ -54,14 +54,8 @@ public class CommentTest {
         c.setUserId(1L);
         c.setComment("Lorem ipsum");
         c.setRowId(1L);
-        c.setEntityId(1L);
         Comment savedComment = commentService.save(c);
         assertNotNull(savedComment);
-
-        Comment savedCommentRetrived = commentService.findOne(1L);
-        assertNotEquals(null, savedCommentRetrived);
-        assertEquals("Lorem ipsum", savedCommentRetrived.getComment());
-        assertEquals(1L, (long) savedCommentRetrived.getUserId());
-        assertEquals(1L, (long) savedCommentRetrived.getRowId());
+        assertNotNull(savedComment.getEntityId());
     }
 }
