@@ -26,7 +26,8 @@ public class User {
 	@NotNull
 	private String email;
 
-	public User() {
+	public User(Long entityId) {
+		this.entityId = entityId;
 	}
 
 	@JsonIgnore

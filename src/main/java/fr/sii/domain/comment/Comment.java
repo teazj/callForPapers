@@ -32,11 +32,14 @@ public class Comment {
     @NotNull
     private Long rowId;
 
-    //@NotNull
     private Long userId;
 
     @Transient
     private User user;
+
+    public Comment() {
+        this.entityId = new Date().getTime();
+    }
 
     @JsonIgnore
     public String getId() {

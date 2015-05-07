@@ -60,8 +60,7 @@ public class UserService {
         String idParsed = id.substring(0, id.length() - 2);
         Long userId = Long.parseLong(idParsed);
 
-        User user = new User();
-        user.setEntityId(userId);
+        User user = new User(userId);
         user.setName(u.getNickname());
         user.setEmail(u.getEmail());
 
