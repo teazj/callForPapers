@@ -1,11 +1,17 @@
 package fr.sii.controller.user;
 
+import com.google.appengine.api.users.UserServiceFactory;
+import fr.sii.config.application.ApplicationSettings;
+import fr.sii.domain.application.Login;
+import fr.sii.domain.application.UserInfo;
 import fr.sii.domain.user.User;
 import fr.sii.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -13,43 +19,55 @@ import java.util.List;
  * Created by tmaugin on 24/04/2015.
  */
 @Controller
-@RequestMapping(value="/user")
-public class UserController {
+@RequestMapping(value="/application")
+public class ApplicationController {
 
     @Autowired
-    UserService userService;
+    ApplicationSettings applicationSettings;
 
     @RequestMapping(method= RequestMethod.GET)
     @ResponseBody
-    public List<User> getUsers() {
-        return userService.findAll();
+    public ApplicationSettings getApplicationSettings() {
+        return applicationSettings;
     }
 
-    @RequestMapping(method= RequestMethod.DELETE)
+    @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     @ResponseBody
-    public void deleteUsers() {
-        userService.deleteAll();
+    public UserInfo getCurrentUser( HttpServletRequest req, HttpServletResponse resp){
+        com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
+        if (req.getUserPrincipal() != null) {
+            return new UserInfo(true, userService.isUserAdmin(),userService.createLogoutURL("/"));
+        }
+        else
+        {
+            return new UserInfo(false, false,userService.createLoginURL("/"));
+        }
     }
 
-    @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public User postUser(@Valid @RequestBody User user){
-        return userService.save(user);
-    }
-
-    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    @ResponseBody public User putUser(@PathVariable Long id, @Valid @RequestBody User user){
-        return userService.put(id, user);
-    }
-
-    @RequestMapping(value="/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="/currentUser/login", method= RequestMethod.POST)
     @ResponseBody
-    public User getUser(@PathVariable Long id) {
-        return userService.findOne(id);
+    public Login postLogin(@RequestBody String redirect, HttpServletRequest req, HttpServletResponse resp){
+        com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
+        if (req.getUserPrincipal() != null) {
+            return new Login(null);
+        }
+        else
+        {
+            return new Login(userService.createLoginURL(redirect));
+        }
     }
 
-    @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
+
+    @RequestMapping(value="/currentUser/logout", method= RequestMethod.POST)
     @ResponseBody
-    public void deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+    public Login postLogout(@RequestBody String redirect, HttpServletRequest req, HttpServletResponse resp){
+        com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
+        if (req.getUserPrincipal() != null) {
+            return new Login(userService.createLogoutURL(redirect));
+        }
+        else
+        {
+            return new Login(null);
+        }
     }
 }
