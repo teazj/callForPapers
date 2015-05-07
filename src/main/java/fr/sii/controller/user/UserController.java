@@ -1,35 +1,22 @@
 package fr.sii.controller.user;
 
 import com.google.appengine.api.users.UserServiceFactory;
-import fr.sii.config.application.ApplicationSettings;
-import fr.sii.domain.application.Login;
-import fr.sii.domain.application.UserInfo;
-import fr.sii.domain.user.User;
-import fr.sii.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.sii.domain.common.Redirect;
+import fr.sii.domain.common.Uri;
+import fr.sii.domain.user.UserInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by tmaugin on 24/04/2015.
  */
 @Controller
-@RequestMapping(value="/application")
-public class ApplicationController {
-
-    @Autowired
-    ApplicationSettings applicationSettings;
-
-    @RequestMapping(method= RequestMethod.GET)
-    @ResponseBody
-    public ApplicationSettings getApplicationSettings() {
-        return applicationSettings;
-    }
+@RequestMapping(value="/user")
+public class UserController {
 
     @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     @ResponseBody
@@ -44,30 +31,30 @@ public class ApplicationController {
         }
     }
 
-    @RequestMapping(value="/currentUser/login", method= RequestMethod.POST)
+    @RequestMapping(value="/login", method= RequestMethod.POST)
     @ResponseBody
-    public Login postLogin(@RequestBody String redirect, HttpServletRequest req, HttpServletResponse resp){
+    public Uri postLogin(@RequestBody @Valid Redirect redirect, HttpServletRequest req, HttpServletResponse resp){
         com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
         if (req.getUserPrincipal() != null) {
-            return new Login(null);
+            return new Uri(null);
         }
         else
         {
-            return new Login(userService.createLoginURL(redirect));
+            return new Uri(userService.createLoginURL(redirect.getRedirect()));
         }
     }
 
 
-    @RequestMapping(value="/currentUser/logout", method= RequestMethod.POST)
+    @RequestMapping(value="/logout", method= RequestMethod.POST)
     @ResponseBody
-    public Login postLogout(@RequestBody String redirect, HttpServletRequest req, HttpServletResponse resp){
+    public Uri postLogout(@RequestBody @Valid Redirect redirect, HttpServletRequest req, HttpServletResponse resp){
         com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
         if (req.getUserPrincipal() != null) {
-            return new Login(userService.createLogoutURL(redirect));
+            return new Uri(userService.createLogoutURL(redirect.getRedirect()));
         }
         else
         {
-            return new Login(null);
+            return new Uri(null);
         }
     }
 }

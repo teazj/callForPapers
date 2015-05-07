@@ -64,7 +64,6 @@
             <web-resource-name>admin</web-resource-name>
             <url-pattern>/rate/*</url-pattern>
             <url-pattern>/comment/*</url-pattern>
-            <url-pattern>/user/*</url-pattern>
             <url-pattern>/#/admin/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
