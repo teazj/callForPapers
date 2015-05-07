@@ -55,14 +55,8 @@ public class RateTest {
         r.setUserId(1L);
         r.setRate(4);
         r.setRowId(1L);
-        r.setEntityId(1L);
         Rate savedRate = rateService.save(r);
         assertNotNull(savedRate);
-
-        Rate savedRateRetrived = rateService.findOne(1L);
-        assertNotEquals(null, savedRateRetrived);
-        assertEquals(4, (int) savedRateRetrived.getRate());
-        assertEquals(1L, (long) savedRateRetrived.getUserId());
-        assertEquals(1L, (long) savedRateRetrived.getRowId());
+        assertNotNull(savedRate.getEntityId());
     }
 }
