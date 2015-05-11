@@ -16,7 +16,8 @@ var app = angular.module('CallForPaper', [
   'ui-notification',
   'customFilters',
   'ui.gravatar',
-  'relativeDate'
+  'relativeDate',
+  'matchMedia'
 ])
 app.run(function(AuthService) {
     AuthService.init();

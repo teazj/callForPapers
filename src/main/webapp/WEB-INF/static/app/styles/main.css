@@ -209,3 +209,12 @@ textarea{
 .table > thead > tr > th.filter {
   border-top: none;
 }
+
+.table-responsive
+{
+  border:none;
+}
+
+.table-responsive > .table {
+  margin-bottom: 20px !important;
+}
