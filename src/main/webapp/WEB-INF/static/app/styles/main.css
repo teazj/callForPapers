@@ -146,6 +146,9 @@ textarea{
 .noMargin{
   margin: 0;
 }
+.noPadding{
+  padding: 0;
+}
 
 .tile{
   border :solid 1px rgb(221, 221, 221);
