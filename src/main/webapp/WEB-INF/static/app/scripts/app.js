@@ -118,6 +118,10 @@ app.run(function(AuthService) {
         url: '/close',
         templateUrl: 'views/form/close.html'
       })
+      .state('403', {
+        url: '/403',
+        templateUrl: '403.html'
+      })
       .state('404', {
         url: '/404',
         templateUrl: '404.html'
