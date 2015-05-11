@@ -18,6 +18,8 @@ public class EmailingSettings {
     private String password;
     @Value("${email.username}")
     private String username;
+    @Value("${email.send}")
+    private boolean send;
 
     public String getSmtphost() {
         return smtphost;
@@ -51,13 +53,11 @@ public class EmailingSettings {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "EmailingSettings{" +
-                "smtphost='" + smtphost + '\'' +
-                ", smtpport='" + smtpport + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                '}';
+    public boolean isSend() {
+        return send;
+    }
+
+    public void setSend(boolean send) {
+        this.send = send;
     }
 }

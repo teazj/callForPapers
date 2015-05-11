@@ -1,27 +1,25 @@
 package fr.sii.domain.email;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 
 /**
  * Created by tmaugin on 09/04/2015.
  */
 public class Email {
     @NotNull
-    public String from;
-    @NotNull
     public String to;
     @NotNull
     public String subject;
     @NotNull
     public String template;
-    public Object data;
+    public HashMap<String, String> data;
 
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
+    public Email(String to, String subject, String template, HashMap<String, String> data) {
+        this.to = to;
+        this.subject = subject;
+        this.template = template;
+        this.data = data;
     }
 
     public String getTo() {
@@ -48,19 +46,18 @@ public class Email {
         this.template = template;
     }
 
-    public Object getData() {
+    public HashMap<String, String> getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(HashMap<String, String> data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
         return "Email{" +
-                "from='" + from + '\'' +
-                ", to='" + to + '\'' +
+                "to='" + to + '\'' +
                 ", subject='" + subject + '\'' +
                 ", template='" + template + '\'' +
                 ", data=" + data +

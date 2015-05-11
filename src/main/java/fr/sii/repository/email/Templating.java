@@ -9,12 +9,14 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class Templating
 {
     private VelocityEngine ve;
-    private Object data;
+    private HashMap<String, String> data;
     private String templatePath;
 
     public Templating(String templatePath) throws Exception {
@@ -28,17 +30,19 @@ public class Templating
 
         this.ve.init();
         VelocityContext context = new VelocityContext();
-        context.put("data",this.data);
+        for (  Map.Entry<String,String> item : this.data.entrySet()) {
+            context.put(item.getKey(),item.getValue());
+        }
         Template t = ve.getTemplate(this.templatePath,"UTF-8");
         StringWriter writer = new StringWriter();
         t.merge(context, writer);
         return writer.toString();
     }
-    public Object getData() {
+    public HashMap<String, String> getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(HashMap<String, String> data) {
         this.data = data;
     }
 
