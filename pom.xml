@@ -240,12 +240,16 @@
 				<version>2.4</version>
 				<configuration>
 					<archiveClasses>true</archiveClasses>
+					<warSourceExcludes>WEB-INF/static/node_modules/</warSourceExcludes>
 					<webResources>
 						<!-- in order to interpolate version from pom into appengine-web.xml -->
 						<resource>
 							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
 							<filtering>true</filtering>
 							<targetPath>WEB-INF</targetPath>
+							<excludes>
+								<exclude>static/node_modules/</exclude>
+							</excludes>
 						</resource>
 					</webResources>
 				</configuration>

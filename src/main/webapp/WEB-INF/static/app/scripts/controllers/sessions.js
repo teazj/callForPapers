@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q, Notification) {
+	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q, Notification, screenSize) {
 		var sessions = []
+		$scope.screenSize = screenSize;
 		Session.query(function(sessionsTmp) {
 			sessions = sessionsTmp.map(function(session) {
 				session.fullname = session.name + " " + session.firstname;

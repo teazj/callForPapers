@@ -16,7 +16,8 @@ var app = angular.module('CallForPaper', [
   'ui-notification',
   'customFilters',
   'ui.gravatar',
-  'relativeDate'
+  'relativeDate',
+  'matchMedia'
 ])
 app.run(function(AuthService) {
     AuthService.init();
@@ -117,6 +118,10 @@ app.run(function(AuthService) {
       .state('close', {
         url: '/close',
         templateUrl: 'views/form/close.html'
+      })
+      .state('403', {
+        url: '/403',
+        templateUrl: '403.html'
       })
       .state('404', {
         url: '/404',

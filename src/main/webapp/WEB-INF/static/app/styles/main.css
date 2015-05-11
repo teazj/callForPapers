@@ -146,6 +146,9 @@ textarea{
 .noMargin{
   margin: 0;
 }
+.noPadding{
+  padding: 0;
+}
 
 .tile{
   border :solid 1px rgb(221, 221, 221);
@@ -208,4 +211,13 @@ textarea{
 
 .table > thead > tr > th.filter {
   border-top: none;
+}
+
+.table-responsive
+{
+  border:none;
+}
+
+.table-responsive > .table {
+  margin-bottom: 20px !important;
 }

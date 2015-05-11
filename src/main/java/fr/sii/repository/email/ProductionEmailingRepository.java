@@ -30,6 +30,8 @@ public class ProductionEmailingRepository implements EmailingRepository {
     }
 
     public void send(Email email) throws Exception {
+        if(emailingSettings.isSend() == false)
+            return;
         Templating t = new Templating(email.getTemplate());
         t.setData(email.getData());
 
@@ -40,7 +42,7 @@ public class ProductionEmailingRepository implements EmailingRepository {
                     }
                 });
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(email.getFrom()));
+            message.setFrom(new InternetAddress(emailingSettings.getUsername()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getTo()));
             message.setSubject(MimeUtility.encodeText(email.getSubject(), "utf-8", "B"));
             message.setContent(t.getTemplate(), "text/html");

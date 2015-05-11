@@ -121,7 +121,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("session")
+                .post("postSession")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))
@@ -151,7 +151,7 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("session")
+                .post("postSession")
                 .then()
                 .statusCode(400);
     }
@@ -180,7 +180,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("session")
+                .post("postSession")
                 .then()
                 .statusCode(400);
     }
@@ -209,7 +209,7 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("session")
+                .post("postSession")
                 .then()
                 .statusCode(400);
     }
@@ -252,7 +252,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("session")
+                .post("postSession")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))

@@ -7,11 +7,18 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
   grunt.initConfig({
+    bower: {
+      install: {
+        options : {
+          copy : false
+        }
+      }
+    },
     yeoman: {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
@@ -155,7 +162,7 @@ module.exports = function (grunt) {
       }
     },
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: ['<%= yeoman.dist %>/{,*/}*.html', '<%= yeoman.dist %>/views/**/*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
         dirs: ['<%= yeoman.dist %>']
@@ -210,7 +217,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/*.html'],
+          src: ['*.html', 'views/**/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -226,13 +233,15 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            'bower_components/**/*',
             'images/{,*/}*.{gif,webp,png,jpg}',
             'styles/fonts/*'
           ]
-        },
-        {expand: true, cwd: '<%= yeoman.app %>/styles/fonts/', src: ['**'], dest: '<%= yeoman.dist %>/fonts/'},
-        {
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/styles/fonts/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/fonts/'
+        }, {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
@@ -273,7 +282,7 @@ module.exports = function (grunt) {
     },
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.dist %>/*.html', '<%= yeoman.dist %>/views/**/*.html']
       }
     },
     ngmin: {
@@ -297,7 +306,9 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('server', function (target) {
+  grunt.loadNpmTasks('grunt-bower-task');
+
+  grunt.registerTask('server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
@@ -320,6 +331,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'bower:install',
     'clean:dist',
     'useminPrepare',
     'concurrent:dist',

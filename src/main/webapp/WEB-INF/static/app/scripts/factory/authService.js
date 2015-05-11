@@ -80,7 +80,7 @@ angular.module('CallForPaper')
             // not admin
           } else {
             // not autorized
-            $state.go("form.step1");
+            $state.go("403");
             deferred.reject();
           }
         } else {

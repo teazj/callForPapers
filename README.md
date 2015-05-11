@@ -29,30 +29,39 @@ Edit `src/main/webapp/WEB-INF/application-prod.properties` replace the informati
 ```properties
 google.login=${GOOGLE_LOGIN}
 google.password=${GOOGLE_PASSWORD}
-google.spreadsheetName=CallForPaper // edit
-google.worksheetName=prod // edit
-google.consumerKey=${GOOGLE_CONSUMER_KEY}
-google.consumerSecret=${GOOGLE_CONSUMER_SECRET}
-database.load=true
-email.smtphost=smtp.gmail.com // edit
-email.smtpport=587 // edit
+google.spreadsheetName=CallForPaper //edit here
+google.worksheetName=prod //edit here
+google.consumerKey: ${GOOGLE_CONSUMER_KEY}
+google.consumerSecret: ${GOOGLE_CONSUMER_SECRET}
+
+database.loaded=true
+
+email.smtphost=smtp.gmail.com //edit here
+email.smtpport=587 //edit here
 email.username=${EMAIL_USERNAME}
 email.password=${EMAIL_PASSWORD}
+email.send=true
+
 webapp.dir=dist
+
+app.eventName=DevFest 2015 //edit here
+app.community=GDG Nantes //edit here
+app.date=06/11/2015 //edit here
+app.releasedate=01/09/2015 //edit here
 ```
 
 ## Deployment :
 
 ```shell
- bower install
- mvn appengine:update [-Dmaven.test.skip=true]
+grunt build
+mvn appengine:update [-Dmaven.test.skip=true]
 ```
 Go to : YOUR_APP_ID.appspot.com
 
 ## Local :
 
 ```shell
- bower install
- mvn appengine:devserver [-Dmaven.test.skip=true]
+grunt build
+mvn appengine:devserver [-Dmaven.test.skip=true]
 ```
 *For local testing purpose, set all `appengine-web.xml` env-var in you OS with the same value.*
