@@ -44,15 +44,15 @@ webapp.dir=dist
 ## Deployment :
 
 ```shell
- bower install
- mvn appengine:update [-Dmaven.test.skip=true]
+grunt build
+mvn appengine:update [-Dmaven.test.skip=true]
 ```
 Go to : YOUR_APP_ID.appspot.com
 
 ## Local :
 
 ```shell
- bower install
- mvn appengine:devserver [-Dmaven.test.skip=true]
+grunt build
+mvn appengine:devserver [-Dmaven.test.skip=true]
 ```
 *For local testing purpose, set all `appengine-web.xml` env-var in you OS with the same value.*
