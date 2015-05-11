@@ -24,6 +24,7 @@ public class SpreadsheetController {
     @Autowired
     private SpreadsheetService googleService;
 
+    @RequestMapping(value="/postSession", method=RequestMethod.POST)
 
     @RequestMapping(value="/session", method=RequestMethod.POST)
     @ResponseBody public Row postGoogleSpreadsheet(@Valid @RequestBody Row row) throws IOException, ServiceException {
