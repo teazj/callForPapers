@@ -23,9 +23,23 @@ public class Templating
         Properties props = new Properties();
         props.setProperty("resource.loader", "class");
         props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
         this.ve = new VelocityEngine(props);
         this.templatePath = templatePath;
     }
+
+    public Templating(String templatePath, boolean isTesting) throws Exception {
+        Properties props = new Properties();
+
+        props.setProperty("resource.loader", "file");
+        props.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+        props.setProperty("file.resource.loader.path","src/main/webapp/WEB-INF/classes");
+
+        this.ve = new VelocityEngine(props);
+        this.templatePath = templatePath;
+    }
+
+
     public String getTemplate() throws Exception {
 
         this.ve.init();
