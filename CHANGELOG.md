@@ -1,3 +1,23 @@
+<a name"rev-69"></a>
+### rev-69 (2015-05-12)
+
+
+#### Bug Fixes
+
+* accept post session to anonyme user ([741ef61e](https://github.com/SII-Nantes/callForPaper/commit/741ef61e))
+* remove useless file declaration ([1ef2675f](https://github.com/SII-Nantes/callForPaper/commit/1ef2675f))
+
+
+#### Features
+
+* add CHANGELOG.md with grunt task ([63591ac5](https://github.com/SII-Nantes/callForPaper/commit/63591ac5))
+* emailing on talk post ([0d9b8add](https://github.com/SII-Nantes/callForPaper/commit/0d9b8add))
+* ie scripts compiled with grunt ([48e0640b](https://github.com/SII-Nantes/callForPaper/commit/48e0640b))
+* exclude node_modules from war ([b342c21e](https://github.com/SII-Nantes/callForPaper/commit/b342c21e))
+* use webapp.dir property as webapp directory ([55c20ded](https://github.com/SII-Nantes/callForPaper/commit/55c20ded))
+* error 403 page ([1d83f6a5](https://github.com/SII-Nantes/callForPaper/commit/1d83f6a5))
+
+
 <a name"rev-63"></a>
 ### rev-63 (2015-05-07)
 
