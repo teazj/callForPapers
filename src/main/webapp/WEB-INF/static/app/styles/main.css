@@ -17,7 +17,7 @@ html, body{
     margin-left: 0; 
 }
 
-.iti-flag {background-image: url("../bower_components/intl-tel-input/build/img/flags.png");}
+.iti-flag {background-image: url("../images/flags.png");}
 
 .alert{
     text-align: center;
