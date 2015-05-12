@@ -55,7 +55,7 @@
             }
             element.intlTelInput(options);
             if (!(attrs.skipUtilScriptDownload !== void 0 || options.utilsScript)) {
-              element.intlTelInput('loadUtils', '/scripts/directives/utils.js');
+              element.intlTelInput('loadUtils', '/lib/utils.js');
             }
             return watchOnce();
           });
