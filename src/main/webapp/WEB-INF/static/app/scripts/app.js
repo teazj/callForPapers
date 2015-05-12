@@ -1,28 +1,25 @@
 'use strict';
 
-var app = angular.module('CallForPaper', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ui.router',
-  'ngAnimate',
-  'ui.bootstrap',
-  'ngTagsInput',
-  'internationalPhoneNumber',
-  'bs-has',
-  'pascalprecht.translate',
-  'k8LanguagePicker',
-  'ngTable',
-  'ui-notification',
-  'customFilters',
-  'ui.gravatar',
-  'relativeDate',
-  'matchMedia'
-])
-app.run(function(AuthService) {
-    AuthService.init();
-  })
-  .config(function($stateProvider, $urlRouterProvider, AuthServiceProvider) {
+angular.module('CallForPaper', [
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
+    'ui.router',
+    'ngAnimate',
+    'ui.bootstrap',
+    'ngTagsInput',
+    'internationalPhoneNumber',
+    'bs-has',
+    'pascalprecht.translate',
+    'k8LanguagePicker',
+    'ngTable',
+    'ui-notification',
+    'customFilters',
+    'ui.gravatar',
+    'relativeDate',
+    'matchMedia'
+  ])
+  .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider) {
     $urlRouterProvider
       .when('/event/form', '/event/form/step1')
       .when('/event/form/', '/event/form/step1')
@@ -34,8 +31,9 @@ app.run(function(AuthService) {
       .when('/admin/session', '/admin/sessions')
 
     .when('/admin', '/admin/sessions')
-      .when('/admin/', '/admin/sessions');
-    $urlRouterProvider.otherwise('/event/form/step1');
+      .when('/admin/', '/admin/sessions')
+
+    .otherwise('/event/form/step1');
     $stateProvider
       .state('admin', {
         url: '/admin',
@@ -45,7 +43,7 @@ app.run(function(AuthService) {
             templateUrl: 'views/admin/admin.html',
             controller: 'AdminCtrl',
             resolve: {
-              isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedAdmin
+              isAutorizedAdmin: ['$q', '$window', '$state', AuthServiceProvider.$get().isAutorizedAdmin]
             }
           },
           '@form': {
@@ -127,8 +125,8 @@ app.run(function(AuthService) {
         url: '/404',
         templateUrl: '404.html'
       });
-  })
-  .config(function(tagsInputConfigProvider) {
+  }])
+  .config(['tagsInputConfigProvider', function(tagsInputConfigProvider) {
     tagsInputConfigProvider
       .setDefaults('tagsInput', {
         placeholder: '',
@@ -140,7 +138,10 @@ app.run(function(AuthService) {
         loadOnDownArrow: true,
         loadOnEmpty: true
       })
-  })
-  .config(function($translateProvider) {
+  }])
+  .config(['$translateProvider', function($translateProvider) {
     $translateProvider.useCookieStorage();
-  });
+  }])
+  .run(['AuthService', function(AuthService) {
+    AuthService.init();
+  }]);

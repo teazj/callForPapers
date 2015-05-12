@@ -1,4 +1,4 @@
-angular.module('CallForPaper').factory('Rate', function($resource) {
+angular.module('CallForPaper').factory('Rate',['$resource', function($resource) {
   return $resource('rate/:id', null, 
   	{
         update: { method:'PUT', url: 'rate/:id' },
@@ -12,4 +12,4 @@ angular.module('CallForPaper').factory('Rate', function($resource) {
         	isArray: true
         }
     });
-});
+}]);

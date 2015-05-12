@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminCtrl', function($scope, $rootScope, $translate) {
+	.controller('AdminCtrl', ['$scope', '$rootScope', '$translate', function($scope, $rootScope, $translate) {
 		$scope.language = $translate.use();
 
 		$scope.changeLanguage = function(key) {
@@ -11,4 +11,4 @@ angular.module('CallForPaper')
 		$rootScope.$on('$translateChangeEnd', function(event, args) {
 			$scope.language = args.language;
 		});
-	});
+	}]);

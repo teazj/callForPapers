@@ -1,4 +1,4 @@
-angular.module('CallForPaper').factory('Comment', function($resource) {
+angular.module('CallForPaper').factory('Comment', ['$resource', function($resource) {
   return $resource('comment/:id',{},
   	{
   		getAll :{
@@ -12,4 +12,4 @@ angular.module('CallForPaper').factory('Comment', function($resource) {
   		},
   		update: { method:'PUT' }
   	});
-});
+}]);

@@ -1,5 +1,5 @@
 angular.module('bs-has', [])
-  .factory('bsProcessValidator', function($timeout) {
+  .factory('bsProcessValidator', ['$timeout', function($timeout) {
     return function(scope, element, ngClass, bsClass) {
       $timeout(function() {
         var input = element.find('input');
@@ -14,24 +14,24 @@ angular.module('bs-has', [])
         }
       });
     };
-  })
-  .directive('bsHasSuccess', function(bsProcessValidator) {
+  }])
+  .directive('bsHasSuccess', ['bsProcessValidator', function(bsProcessValidator) {
     return {
       restrict: 'A',
       link: function(scope, element) {
         bsProcessValidator(scope, element, 'ng-valid', 'has-success');
       }
     };
-  })
-  .directive('bsHasError', function(bsProcessValidator) {
+  }])
+  .directive('bsHasError', ['bsProcessValidator', function(bsProcessValidator) {
     return {
       restrict: 'A',
       link: function(scope, element) {
         bsProcessValidator(scope, element, 'ng-invalid', 'has-error');
       }
     };
-  })
-  .directive('bsHas', function(bsProcessValidator) {
+  }])
+  .directive('bsHas', ['bsProcessValidator', function(bsProcessValidator) {
     return {
       restrict: 'A',
       link: function(scope, element) {
@@ -39,4 +39,4 @@ angular.module('bs-has', [])
         bsProcessValidator(scope, element, 'ng-invalid', 'has-error');
       }
     };
-  });
+  }]);

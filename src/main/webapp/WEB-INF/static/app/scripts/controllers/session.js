@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('SessionCtrl', function($scope, $stateParams, $filter, $translate,Session, Comment, Rate) {
+	.controller('SessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'Session', 'Comment', 'Rate', function($scope, $stateParams, $filter, $translate,Session, Comment, Rate) {
 		$scope.session = null;
 		Session.get({
 			id: $stateParams.id
@@ -98,4 +98,4 @@ angular.module('CallForPaper')
 				});
 			}
 		}
-	});
+	}]);

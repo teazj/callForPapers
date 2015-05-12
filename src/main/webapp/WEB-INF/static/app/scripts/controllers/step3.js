@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('Step3Ctrl', function($scope) {
+	.controller('Step3Ctrl', ['$scope', function($scope) {
 	  $scope.$parent.formData.help = {};
 		$scope.$watch(function(){
  			var financial = $scope.$parent.formData.help.financial;
@@ -31,4 +31,4 @@ angular.module('CallForPaper')
 		},function(isValid){
 			$scope.$parent.formData.steps.isValid[2]= isValid;
 		})
-	});
+	}]);

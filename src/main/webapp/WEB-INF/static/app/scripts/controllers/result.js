@@ -1,5 +1,5 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('ResultCtrl', function($scope) {
-	});
+	.controller('ResultCtrl', ['$scope', function($scope) {
+	}]);

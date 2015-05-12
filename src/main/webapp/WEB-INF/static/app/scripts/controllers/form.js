@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('FormCtrl', function($scope, $filter, $translate, $rootScope, Session, Application, $state) {
+	.controller('FormCtrl', ['$scope', '$filter', '$translate', '$rootScope', 'Session', 'Application', '$state', function($scope, $filter, $translate, $rootScope, Session, Application, $state) {
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
@@ -52,4 +52,4 @@ angular.module('CallForPaper')
 		$scope.hoverDifficulty = function(value) {
 			$scope.formData.session.difficultyLabel = ([$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')])[value - 1];
 		};
-	});
+	}]);

@@ -1,5 +1,5 @@
 angular.module('CallForPaper')
-  .factory('AuthService', function($q, User, $window, $state) {
+  .factory('AuthService', ['$q', 'User', '$window', '$state', function($q, User, $window, $state) {
     var authService = {};
     authService.user = null;
 
@@ -154,4 +154,4 @@ angular.module('CallForPaper')
       return promise.promise;
     }
     return authService;
-  })
+  }])
