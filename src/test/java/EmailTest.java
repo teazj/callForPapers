@@ -22,7 +22,7 @@ public class EmailTest {
 
     @Test
     public void test1_emailTemplate() throws Exception {
-        Templating t = new Templating("test.html");
+        Templating t = new Templating("test.html",true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("var1", "test1");
         map.put("var2", "test2");
@@ -32,7 +32,7 @@ public class EmailTest {
 
     @Test
     public void test2_emailTemplateConfirmed() throws Exception {
-        Templating t = new Templating("confirmed.html");
+        Templating t = new Templating("confirmed.html",true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
@@ -51,11 +51,13 @@ public class EmailTest {
 
     @Test
     public void test3_emailTemplateNotSelectionned() throws Exception {
-        Templating t = new Templating("notSelectionned.html");
+        Templating t = new Templating("notSelectionned.html", true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
         map.put("community", "GDG Nantes");
+        map.put("event", "DevFest 2015");
+
         t.setData(map);
         assertEquals("<html>\r\n" +
                 "<head>\r\n" +
@@ -64,7 +66,7 @@ public class EmailTest {
                 "<body>\r\n" +
                 "  <h2>Désolé Thomas !</h2>\r\n" +
                 "  <p>\r\n" +
-                "    Votre talk Google App Engine pour les nuls  n'a été retenu pour le $event. Nous avons en effet reçu beaucoup de propositions et nous avons du faire des choix.\r\n" +
+                "    Votre talk Google App Engine pour les nuls  n'a été retenu pour le DevFest 2015. Nous avons en effet reçu beaucoup de propositions et nous avons du faire des choix.\r\n" +
                 "  </p>\r\n" +
                 "  <p>\r\n" +
                 "\tCependant votre proposition a retenu notre attention et nous ne manquerons pas de vous recontacter pour venir présenter votre sujet au cours de l'année dans le cadre du GDG Nantes.\r\n" +
@@ -78,7 +80,7 @@ public class EmailTest {
 
     @Test
     public void test4_emailTemplatePending() throws Exception {
-        Templating t = new Templating("pending.html");
+        Templating t = new Templating("pending.html", true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
@@ -106,7 +108,7 @@ public class EmailTest {
 
     @Test
     public void test5_emailTemplateSelectionned() throws Exception {
-        Templating t = new Templating("selectionned.html");
+        Templating t = new Templating("selectionned.html", true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
@@ -131,6 +133,4 @@ public class EmailTest {
                 "</body>\r\n" +
                 "</html>", t.getTemplate());
     }
-
-
 }
