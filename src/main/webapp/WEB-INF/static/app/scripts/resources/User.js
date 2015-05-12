@@ -1,4 +1,4 @@
-angular.module('CallForPaper').factory('User', function($resource) {
+angular.module('CallForPaper').factory('User', ['$resource', function($resource) {
 	return $resource('user/:id', null, {
 		getCurrentUser: {
 			url: 'user/currentUser',
@@ -14,4 +14,4 @@ angular.module('CallForPaper').factory('User', function($resource) {
 			method: 'POST'
 		}
 	});
-});
+}]);

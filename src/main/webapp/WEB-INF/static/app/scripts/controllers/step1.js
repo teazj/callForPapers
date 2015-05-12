@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('Step1Ctrl', function($scope) {
+	.controller('Step1Ctrl', ['$scope', function($scope) {
 	  $scope.$parent.formData.speaker = {};
 	  $scope.$parent.formData.speaker.phone = "";
 		$scope.$watch(function(){
@@ -19,4 +19,4 @@ angular.module('CallForPaper')
 				$scope.$parent.formData.speaker.social = $scope.$parent.formData.speaker.socialArray.map(function(elem){return elem.text;}).join(", ");
 			}
 		})
-	});
+	}]);

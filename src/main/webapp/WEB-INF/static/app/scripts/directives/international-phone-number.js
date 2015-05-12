@@ -1,6 +1,6 @@
 (function() {
   "use strict";
-  angular.module("internationalPhoneNumber", []).directive('internationalPhoneNumber', function($timeout) {
+  angular.module("internationalPhoneNumber", []).directive('internationalPhoneNumber', ['$timeout', function($timeout) {
     return {
       restrict: 'A',
       require: '^ngModel',
@@ -92,6 +92,6 @@
         });
       }
     };
-  });
+  }]);
 
 }).call(this);

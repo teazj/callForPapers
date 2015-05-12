@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('LoginCtrl', function($scope, $interval, AuthService) {
+	.controller('LoginCtrl', ['$scope', '$interval', 'AuthService', function($scope, $interval, AuthService) {
 		$scope.dots = "...";
 		var updateDots = function() {
 			$scope.dots = $scope.dots + ".";
@@ -12,4 +12,4 @@ angular.module('CallForPaper')
 		}
 		var loading = $interval(updateDots, 1000);
 		AuthService.login('form.step1', 'admin.sessions');
-	});
+	}]);

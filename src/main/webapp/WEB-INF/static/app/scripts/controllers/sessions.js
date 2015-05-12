@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('SessionsCtrl', function($scope, Session, $filter, ngTableParams, $q, Notification, screenSize) {
+	.controller('SessionsCtrl', ['$scope', 'Session', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', function($scope, Session, $filter, ngTableParams, $q, Notification, screenSize) {
 		var sessions = []
 		$scope.screenSize = screenSize;
 		Session.query(function(sessionsTmp) {
@@ -76,4 +76,4 @@ angular.module('CallForPaper')
 				}
 			});
 		}
-	});
+	}]);
