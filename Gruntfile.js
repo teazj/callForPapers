@@ -12,7 +12,8 @@ module.exports = function(grunt) {
         changelog: {
             options: {
                 repository: 'https://github.com/SII-Nantes/callForPaper',
-                version: "rev-" + grunt.option("rev")
+                version: grunt.option("rev") != undefined ? grunt.option("rev") : "",
+                from : grunt.option("from") 
             }
         }
     });
