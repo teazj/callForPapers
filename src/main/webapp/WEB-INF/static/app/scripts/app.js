@@ -21,10 +21,8 @@ angular.module('CallForPaper', [
   ])
   .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider) {
     $urlRouterProvider
-      .when('/event/form', '/event/form/step1')
-      .when('/event/form/', '/event/form/step1')
-      .when('/event', '/event/form/step1')
-      .when('/event/', '/event/form/step1')
+      .when('', '/form')
+      .when('/', '/form')
 
     .when('/admin/sessions/', '/admin/sessions')
       .when('/admin/session/', '/admin/sessions')
@@ -33,7 +31,7 @@ angular.module('CallForPaper', [
     .when('/admin', '/admin/sessions')
       .when('/admin/', '/admin/sessions')
 
-    .otherwise('/event/form/step1');
+    .otherwise('/form');
     $stateProvider
       .state('admin', {
         url: '/admin',
@@ -79,44 +77,31 @@ angular.module('CallForPaper', [
 
     // Form
     .state('form', {
-        url: '/event/form',
-        abstract: true,
+        url: '/form',
         views: {
           '': {
             templateUrl: 'views/form/form.html',
             controller: 'FormCtrl'
           },
           '@form': {
-            templateUrl: 'views/form/step1.html'
+            templateUrl: 'views/form/step1.html',
+            controller: 'Step1Ctrl'
           }
         },
       })
-      // nested states
-      // each of these sections will have their own view
-      .state('form.step1', {
-        url: '/step1',
-        templateUrl: 'views/form/step1.html',
-        controller: 'Step1Ctrl'
-      })
       .state('form.step2', {
-        url: '/step2',
         templateUrl: 'views/form/step2.html',
         controller: 'Step2Ctrl'
       })
       .state('form.step3', {
-        url: '/step3',
         templateUrl: 'views/form/step3.html',
         controller: 'Step3Ctrl'
       })
       .state('form.result', {
-        url: '/result',
         templateUrl: 'views/form/result.html',
         controller: 'ResultCtrl'
       })
-      .state('close', {
-        url: '/close',
-        templateUrl: 'views/form/close.html'
-      })
+
       .state('403', {
         url: '/403',
         templateUrl: '403.html'

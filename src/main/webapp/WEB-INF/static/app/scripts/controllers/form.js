@@ -10,6 +10,10 @@ angular.module('CallForPaper')
 		$scope.formData.steps.isValid = [false, false, false];
 		$scope.language = $translate.use();
 
+		$scope.formData.speaker = {};
+		$scope.formData.speaker.phone = "";
+		$scope.formData.session = {};
+ 		$scope.formData.help = {};
 		/**
 		 * Send the form to the server
 		 * @param  {Boolean}
