@@ -7,20 +7,24 @@ Edit `src/main/webapp/WEB-INF/appengine-web.xml` replace the informations to sui
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>YOUR_APP_ID</application>
+    <application>aesthetic-fx-89513</application>
     <version>1</version>
     <threadsafe>true</threadsafe>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
+    <sessions-enabled>true</sessions-enabled>
     <env-variables>
-        <env-var name="ENV" value="prod"/>
-        <env-var name="GOOGLE_LOGIN" value="YOUR_GOOGLE_LOGIN"/>
-        <env-var name="GOOGLE_PASSWORD" value="YOUR_GOOGLE_PASSWORD" />
-        <env-var name="GOOGLE_CONSUMER_KEY" value="YOUR_GOOGLE_CONSUMER_KEY"/>
-        <env-var name="GOOGLE_CONSUMER_SECRET" value="YOUR_GOOGLE_CONSUMER_SECRET"/>
-        <env-var name="EMAIL_USERNAME" value="YOUR_EMAIL_USERNAME"/>
-        <env-var name="EMAIL_PASSWORD" value="YOUR_EMAIL_PASSWORD"/>
+        <env-var name="ENV" value="dev"/>
+        <env-var name="GOOGLE_LOGIN" value="yourGoogleLogin"/>
+        <env-var name="GOOGLE_PASSWORD" value="yourGooglePassword" />
+        <env-var name="GOOGLE_CLIENT_ID" value="yourGoogleClientId"/>
+        <env-var name="GOOGLE_CLIENT_SECRET" value="youtGoogleClientSecret"/>
+        <env-var name="GITHUB_CLIENT_ID" value="yourGithubClientId"/>
+        <env-var name="GITHUB_CLIENT_SECRET" value="youtGithubClientSecret"/>
+        <env-var name="EMAIL_USERNAME" value="yourEmailUsername"/>
+        <env-var name="EMAIL_PASSWORD" value="yourEmailPassword"/>
+        <env-var name="AUTH_SECRET_TOKEN" value="yourRandomSecretToken"/>
     </env-variables>
 </appengine-web-app>
 ```
@@ -29,25 +33,30 @@ Edit `src/main/webapp/WEB-INF/application-prod.properties` replace the informati
 ```properties
 google.login=${GOOGLE_LOGIN}
 google.password=${GOOGLE_PASSWORD}
-google.spreadsheetName=CallForPaper //edit here
-google.worksheetName=prod //edit here
-google.consumerKey: ${GOOGLE_CONSUMER_KEY}
-google.consumerSecret: ${GOOGLE_CONSUMER_SECRET}
+google.spreadsheetName=CallForPaper // edit here
+google.worksheetName=prod
+google.clientid=${GOOGLE_CLIENT_ID}
+google.clientsecret=${GOOGLE_CLIENT_SECRET}
 
-database.loaded=true
+github.clientid=${GITHUB_CLIENT_ID}
+github.clientsecret=${GITHUB_CLIENT_SECRET}
 
-email.smtphost=smtp.gmail.com //edit here
-email.smtpport=587 //edit here
+auth.secrettoken=${AUTH_SECRET_TOKEN}
+
+database.loaded=true // edit here
+
+email.smtphost=smtp.gmail.com // edit here
+email.smtpport=587 // edit here
 email.username=${EMAIL_USERNAME}
 email.password=${EMAIL_PASSWORD}
 email.send=true
 
 webapp.dir=dist
 
-app.eventName=DevFest 2015 //edit here
-app.community=GDG Nantes //edit here
-app.date=06/11/2015 //edit here
-app.releasedate=01/09/2015 //edit here
+app.eventName=DevFest 2015 // edit here
+app.community=GDG Nantes // edit here
+app.date=06/11/2015 // edit here
+app.releasedate=01/09/2015 // edit here
 ```
 
 ## Deployment :

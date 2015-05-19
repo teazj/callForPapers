@@ -6,13 +6,17 @@
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
+    <sessions-enabled>true</sessions-enabled>
     <env-variables>
         <env-var name="ENV" value="${ENV}"/>
         <env-var name="GOOGLE_LOGIN" value="${GOOGLE_LOGIN}"/>
         <env-var name="GOOGLE_PASSWORD" value="${GOOGLE_PASSWORD}" />
-        <env-var name="GOOGLE_CONSUMER_KEY" value="${GOOGLE_CONSUMER_KEY}"/>
-        <env-var name="GOOGLE_CONSUMER_SECRET" value="${GOOGLE_CONSUMER_SECRET}"/>
+        <env-var name="GOOGLE_CLIENT_ID" value="${GOOGLE_CLIENT_ID}"/>
+        <env-var name="GOOGLE_CLIENT_SECRET" value="${GOOGLE_CLIENT_SECRET}"/>
+        <env-var name="GITHUB_CLIENT_ID" value="${GITHUB_CLIENT_ID}"/>
+        <env-var name="GITHUB_CLIENT_SECRET" value="${GITHUB_CLIENT_SECRET}"/>
         <env-var name="EMAIL_USERNAME" value="${EMAIL_USERNAME}"/>
         <env-var name="EMAIL_PASSWORD" value="${EMAIL_PASSWORD}"/>
+        <env-var name="AUTH_SECRET_TOKEN" value="${AUTH_SECRET_TOKEN}"/>
     </env-variables>
 </appengine-web-app>

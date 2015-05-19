@@ -1,15 +1,14 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('LogoutCtrl', ['$scope', '$interval', 'AuthService', function($scope, $interval, AuthService) {
-		$scope.dots = "...";
-		var updateDots = function() {
-			$scope.dots = $scope.dots + ".";
-			if ($scope.dots.length === 4) {
-				$scope.dots = "";
-				return;
-			}
+	.controller('LogoutCtrl', ['$auth', '$state', '$scope', function($auth, $state, $scope) {
+		if (!$auth.isAuthenticated()) {
+			$scope.$emit('authenticate');
+			$state.go('app.login');
+			return;
 		}
-		var loading = $interval(updateDots, 1000);
-		AuthService.logout('form.step1');
+		$auth.logout().then(function(){
+			$scope.$emit('authenticate');
+			$state.go('app.login');
+		});
 	}]);

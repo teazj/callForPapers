@@ -11,10 +11,16 @@ angular.module('CallForPaper')
                 var Notification = $injector.get('Notification');
                 if (rejection.status === 0) {
                     Notification.error({
-                        message: $filter('translate')('error.backendcommunication'),
+                        message: $filter('translate')('error.noInternet'),
                         delay: 3000
                     });
 
+                } else if (rejection.status === 401) {
+                    $injector.get('$state').go('app.login');
+                } else if (rejection.status === 403) {
+                    $injector.get('$state').go('403');
+                } else if (rejection.status === 409) {
+                    // Nothing
                 } else {
                     Notification.error({
                         message: $filter('translate')('error.backendcommunication'),
@@ -25,7 +31,3 @@ angular.module('CallForPaper')
             }
         }
     }])
-    .config(['$httpProvider', function($httpProvider) {
-        //Http Intercpetor to check auth failures for xhr requests
-        $httpProvider.interceptors.push('authHttpResponseInterceptor');
-    }]);

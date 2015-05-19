@@ -42,6 +42,66 @@
 			<version>1.2</version>
 		</dependency>
 
+		<!--OAuth-->
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-appengine</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-appengine</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-plus</artifactId>
+            <version>v1-rev219-1.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.mylyn.github</groupId>
+            <artifactId>org.eclipse.egit.github.core</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>0.3m</version>
+		</dependency>
+
+
+		<!--Token-->
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>nimbus-jose-jwt</artifactId>
+			<version>3.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.7</version>
+		</dependency>
+
+
 		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>com.google.appengine</groupId>
@@ -160,6 +220,20 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4.1</version>
+			<scope>test</scope>
+		</dependency>
+
+
 		<!--Google-->
 		<dependency>
 			<groupId>com.google.gdata</groupId>
@@ -245,7 +319,7 @@
 						<!-- in order to interpolate version from pom into appengine-web.xml -->
 						<resource>
 							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
-							<filtering>true</filtering>
+							<filtering>false</filtering>
 							<targetPath>WEB-INF</targetPath>
 							<excludes>
 								<exclude>static/node_modules/</exclude>
@@ -282,6 +356,7 @@
 					<persistenceUnitName>MyUnit</persistenceUnitName>
 					<log4jConfiguration>${basedir}/src/main/resources/log4j.properties</log4jConfiguration>
 					<verbose>true</verbose>
+                    <fork>false</fork>   <!-- Solve windows line too long error -->
 				</configuration>
 				<executions>
 					<execution>

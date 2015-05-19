@@ -60,7 +60,7 @@ public class SpreadsheetTest {
         row.setReferences("refs");
         row.setSessionName("session name");
         row.setSocial("www.thomas-maugin.fr, https://github.com/Thom-x");
-        row.setTrack("Web");
+        row.setTrack("web");
         row.setTravel(false);
 
         Row returnedRow = new Row();
@@ -92,7 +92,7 @@ public class SpreadsheetTest {
         assertEquals("refs",returnedRow.getReferences());
         assertEquals("session name",returnedRow.getSessionName());
         assertEquals("www.thomas-maugin.fr, https://github.com/Thom-x",returnedRow.getSocial());
-        assertEquals("Web",returnedRow.getTrack());
+        assertEquals("web",returnedRow.getTrack());
         assertEquals(false,returnedRow.getTravel());
         assertNotEquals(null, returnedRow.getAdded());
     }
@@ -112,7 +112,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
-                        "\"track\" : \"Web\",\n" +
+                        "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"true\",\n" +
@@ -121,7 +121,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("postSession")
+                .post("/api/restricted/session")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))
@@ -143,7 +143,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
-                        "\"track\" : \"Web\",\n" +
+                        "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"true\",\n" +
@@ -151,7 +151,7 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("postSession")
+                .post("/api/restricted/session")
                 .then()
                 .statusCode(400);
     }
@@ -171,7 +171,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
-                        "\"track\" : \"Web\",\n" +
+                        "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"false\",\n" +
@@ -180,7 +180,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("postSession")
+                .post("/api/restricted/session")
                 .then()
                 .statusCode(400);
     }
@@ -201,7 +201,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"5\",\n" +
-                        "\"track\" : \"Web\",\n" +
+                        "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"true\",\n" +
@@ -209,7 +209,7 @@ public class SpreadsheetTest {
                         "\"hotel\" : \"true\",\n" +
                         "}")
                 .when()
-                .post("postSession")
+                .post("/api/restricted/session")
                 .then()
                 .statusCode(400);
     }
@@ -222,7 +222,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("session")
+                .get("/api/admin/session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
@@ -233,7 +233,7 @@ public class SpreadsheetTest {
         MockMvcResponse response = given().contentType("application/json")
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
-                        "\"name\" : \"Maugin\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
                         "\"firstname\" : \"Thomas\",\n" +
                         "\"phone\" : \"33683653379\",\n" +
                         "\"company\" : \"SII\",\n" +
@@ -243,7 +243,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
-                        "\"track\" : \"Web\",\n" +
+                        "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"true\",\n" +
@@ -252,10 +252,10 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("postSession")
+                .post("/api/restricted/session")
                 .then()
                 .statusCode(200)
-                .body("name", Matchers.is("Maugin"))
+                .body("name", Matchers.is("Maugin1"))
                 .body("difficulty", Matchers.is(3)).extract().
                 response();
         Long added = response.path("added");
@@ -264,10 +264,10 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("session/" + added.toString())
+                .get("/api/admin/session/" + added.toString())
                 .then()
                 .statusCode(200)
-                .body("name", Matchers.is("Maugin"));
+                .body("name", Matchers.is("Maugin1"));
     }
 
     @Test
@@ -276,7 +276,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .delete("session")
+                .delete("/api/admin/session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(0));
