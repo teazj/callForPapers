@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('FormCtrl', ['$scope', '$filter', '$translate', '$rootScope', 'Session', 'Application', '$state', function($scope, $filter, $translate, $rootScope, Session, Application, $state) {
+	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', '$state', function($scope, $filter, $translate, RestrictedSession, Application, $state) {
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
@@ -10,6 +10,10 @@ angular.module('CallForPaper')
 		$scope.formData.steps.isValid = [false, false, false];
 		$scope.language = $translate.use();
 
+		$scope.formData.speaker = {};
+		$scope.formData.speaker.phone = "";
+		$scope.formData.session = {};
+ 		$scope.formData.help = {};
 		/**
 		 * Send the form to the server
 		 * @param  {Boolean}
@@ -22,7 +26,7 @@ angular.module('CallForPaper')
 			angular.extend(model, $scope.formData.speaker);
 			angular.extend(model, $scope.formData.session);
 
-			Session.save(model, function(success) {
+			RestrictedSession.save(model, function(success) {
 				$scope.formData.sending = false;
 				$state.go('form.result');
 			}, function(error) {
@@ -30,21 +34,6 @@ angular.module('CallForPaper')
 				$scope.sendError = true;
 			});
 		};
-
-		/**
-		 * Get eventName
-		 */
-		Application.get(function(config) {
-			$scope.title = config.eventName;
-		})
-
-		$scope.changeLanguage = function(key) {
-			$translate.use(key);
-		};
-
-		$rootScope.$on('$translateChangeEnd', function(event, args) {
-			$scope.language = args.language;
-		});
 
 		/**
 		 * Update difficulty label when over

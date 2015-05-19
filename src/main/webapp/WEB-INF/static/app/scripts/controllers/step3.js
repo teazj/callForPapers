@@ -2,7 +2,6 @@
 
 angular.module('CallForPaper')
 	.controller('Step3Ctrl', ['$scope', function($scope) {
-	  $scope.$parent.formData.help = {};
 		$scope.$watch(function(){
  			var financial = $scope.$parent.formData.help.financial;
  			var hotel = $scope.$parent.formData.help.hotel;

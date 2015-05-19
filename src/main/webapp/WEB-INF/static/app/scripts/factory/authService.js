@@ -1,5 +1,5 @@
 angular.module('CallForPaper')
-  .factory('AuthService', ['$q', 'User', '$window', '$state', function($q, User, $window, $state) {
+  .factory('AuthService', ['$q', 'AdminUser', '$window', '$state', function($q, AdminUser, $window, $state) {
     var authService = {};
     authService.user = null;
 
@@ -8,7 +8,7 @@ angular.module('CallForPaper')
      * @return {void}
      */
     authService.init = function() {
-      User.getCurrentUser(function(userInfo) {
+      AdminUser.getCurrentUser(function(userInfo) {
         authService.user = userInfo;
       })
     }
@@ -20,7 +20,7 @@ angular.module('CallForPaper')
      */
     authService.getCustomLoginUrl = function(data) {
       var promise = $q.defer();
-      User.getLoginUrl(data, function(uri) {
+      AdminUser.getLoginUrl(data, function(uri) {
         promise.resolve(uri);
       }, function() {
         promise.reject();
@@ -35,7 +35,7 @@ angular.module('CallForPaper')
      */
     authService.getCustomLogoutUrl = function(data) {
       var promise = $q.defer();
-      User.getLogoutUrl(data, function(uri) {
+      AdminUser.getLogoutUrl(data, function(uri) {
         promise.resolve(uri);
       }, function() {
         promise.reject();
@@ -104,6 +104,41 @@ angular.module('CallForPaper')
     }
 
     /**
+     * Verify if the user is currently logged and has confirmed his email (or logged with provider)
+     */
+    authService.verified = function($q, $location, $auth, jwtHelper) {
+      var deferred = $q.defer();
+      if (!$auth.isAuthenticated()) {
+        $location.path('/login');
+      } else {
+        if (jwtHelper.isTokenExpired($auth.getToken())) {
+          $location.path('/login');
+        } else if($auth.getPayload().verified === false){
+          $location.path('/login');
+        } else {
+          deferred.resolve();
+        }
+      }
+      return deferred.promise;
+    }
+    /**
+     * Verify if the user is currently logged
+     */
+    authService.authenticated = function($q, $location, $auth, jwtHelper) {
+      var deferred = $q.defer();
+      if (!$auth.isAuthenticated()) {
+        $location.path('/login');
+      } else {
+        if (jwtHelper.isTokenExpired($auth.getToken())) {
+          $location.path('/login');
+        } else {
+          deferred.resolve();
+        }
+      }
+      return deferred.promise;
+    }
+
+    /**
      * Login the user and redirect to the given state
      * @param  {string : stateName}
      * @param  {string : stateNameIfAdmin}
@@ -145,7 +180,7 @@ angular.module('CallForPaper')
      */
     authService.getCurrentUser = function() {
       var promise = $q.defer();
-      User.getCurrentUser(function(userInfo) {
+      AdminUser.getCurrentUser(function(userInfo) {
         authService.user = userInfo;
         promise.resolve(userInfo);
       }, function() {

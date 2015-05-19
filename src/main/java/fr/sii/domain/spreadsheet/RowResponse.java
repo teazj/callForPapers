@@ -1,7 +1,7 @@
 package fr.sii.domain.spreadsheet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fr.sii.domain.rate.Rate;
+import fr.sii.domain.admin.rate.AdminRate;
 
 import java.util.Date;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
  * Created by tmaugin on 29/04/2015.
  */
 public class RowResponse extends Row {
-    private List<Rate> rates;
+    private List<AdminRate> adminRates;
 
-    public RowResponse(Row row, List<Rate> rates)
+    public RowResponse(Row row, List<AdminRate> adminRates)
     {
         super(
                 row.getEmail(),
@@ -35,21 +35,21 @@ public class RowResponse extends Row {
                 row.getHotelDate(),
                 new Date(row.getAdded())
         );
-        this.rates = rates;
+        this.adminRates = adminRates;
     }
 
     public Double getMean()
     {
         Double mean = 0D;
-        if(rates != null)
+        if(adminRates != null)
         {
-            if(rates.size() > 0 )
+            if(adminRates.size() > 0 )
             {
-                for(Rate rate : rates)
+                for(AdminRate adminRate : adminRates)
                 {
-                    mean+= rate.getRate();
+                    mean+= adminRate.getRate();
                 }
-                return mean/rates.size();
+                return mean/ adminRates.size();
             }
             else
             {
@@ -60,11 +60,11 @@ public class RowResponse extends Row {
     }
 
     @JsonIgnore
-    public List<Rate> getRates() {
-        return rates;
+    public List<AdminRate> getAdminRates() {
+        return adminRates;
     }
 
-    public void setRates(List<Rate> rates) {
-        this.rates = rates;
+    public void setAdminRates(List<AdminRate> adminRates) {
+        this.adminRates = adminRates;
     }
 }

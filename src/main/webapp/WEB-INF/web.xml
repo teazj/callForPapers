@@ -58,35 +58,31 @@
 	    </listener-class>
 	</listener>
 
-    <!--Security-->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>admin</web-resource-name>
-            <url-pattern>/rate/*</url-pattern>
-            <url-pattern>/comment/*</url-pattern>
-            <url-pattern>/#/admin/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>
+    <!--Admin Security-->
+        <security-constraint>
+            <web-resource-collection>
+                <web-resource-name>admin</web-resource-name>
+                <url-pattern>/api/admin/*</url-pattern>
+            </web-resource-collection>
+            <auth-constraint>
+                <role-name>admin</role-name>
+            </auth-constraint>
+        </security-constraint>
 
-    <!--Allow only POST-->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>admin</web-resource-name>
-            <url-pattern>/session/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>
+        <!--Access denied-->
+        <error-page>
+            <error-code>403</error-code>
+            <location>/WEB-INF/jsp/403.jsp</location>
+        </error-page>
 
-
-    <!--Access denied-->
-    <error-page>
-        <error-code>403</error-code>
-        <location>/WEB-INF/jsp/auth.jsp</location>
-    </error-page>
+    <!--User Security-->
+    <filter>
+        <filter-name>authFilter</filter-name>
+        <filter-class>fr.sii.config.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <url-pattern>/api/restricted/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

@@ -22,7 +22,6 @@
 		<property name="packagesToScan" value="fr.sii.domain" />
 		 <property name="loadTimeWeaver">
 			<bean class="org.springframework.instrument.classloading.SimpleLoadTimeWeaver" />
-		</property> 
+		</property>
 	</bean>
-
 </beans>

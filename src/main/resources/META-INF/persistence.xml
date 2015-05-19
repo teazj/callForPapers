@@ -6,9 +6,13 @@
 	<persistence-unit name="MyUnit">
 		<provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
 
-		<class>fr.sii.domain.rate.Rate</class>
+		<class>fr.sii.domain.admin.rate.AdminRate</class>
+		<class>fr.sii.domain.admin.user.AdminUser</class>
+		<class>fr.sii.domain.admin.comment.AdminComment</class>
+
 		<class>fr.sii.domain.user.User</class>
-		<class>fr.sii.domain.comment.Comment</class>
+
+
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

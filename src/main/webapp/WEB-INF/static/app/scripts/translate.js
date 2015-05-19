@@ -7,11 +7,48 @@ angular.module('CallForPaper')
         "fr-FR": "Français",
         "en-US": "Anglais"
       },
+      "header": {
+        "login": "Se connecter",
+        "logout": "Se déconnecter"
+      },
+      "login" : {
+        "email" : "Email",
+        "password" : "Mot de passe",
+        "login" : "Se connecter",
+        "noAccount" : "Vous n'avez pas encore de compte ?",
+        "signup" : "S'enregistrer",
+        "or" : "Ou",
+        "signGoogle" : "Se connecter avec Google",
+        "signGithub" : "Se connecter avec Github",
+        "wait": "Veuillez patienter",
+        "badCredentials": "Login ou mot de passe incorrect",
+        "alreadyLinked" : "Il existe déjà un utilisateur associé à ce fournisseur"
+      },
+      "signup" : {
+        "signup" : "S'enregistrer",
+        "email" : "Email",
+        "password" : "Mot de passe",
+        "confirmPassword" : "Confirmez le mot de passe",
+        "yesAccount" : "Vous avez déjà un compte ?",
+        "loginNow" : "Se connecter",
+        "emailRequired" : "L'adresse email est obligatoire",
+        "emailPattern" : "Votre adresse email est invalide",
+        "passwordRequired" : "Le mot de passe est obligatoire",
+        "passwordMatch" : "Les mots de passes doivent êtres indentiques",
+        "alreadyExists" : "Il existe déjà un utilisateur associé à cet e-mail"
+      },
+      "verify" : {
+        "title" : "Verification de l'email",
+        "verified" : "Votre email a été vérifié",
+        "alreadyVerified" : "Ce compte a déjà été vérifié",
+        "notVerified" : "Erreur de vérification"
+      },
       "step1": {
         "email": "Adresse email * :",
         "name": "Nom * :",
         "firstname": "Prénom * :",
         "phone": "Téléphone :",
+        "errorPhone": "Entrez un numéro de téléphone correct",
         "company": "Entreprise :",
         "bio": "Bio * :",
         "hintBio": "Décrivez vous en quelques mots. Cette description sera utilisée sur le site web",
@@ -33,9 +70,9 @@ angular.module('CallForPaper')
         "expert": "Expert",
         "tracks": {
           "cloud": "Cloud",
-          "mobile": "Mobile",
+          "mobile": "Objets connectés",
           "web": "Web",
-          "discovery": "Discovery",
+          "discovery": "Découverte",
           "codelab": "Codelab"
         },
         "hintTrack": "Choisissez la catégorie dans laquelle vous pensez que votre conférence se situe. Discovery est une catégorie pour les conférences non techniques."
@@ -93,9 +130,6 @@ angular.module('CallForPaper')
         "backendcommunication": "Désolé, il y a eu un problème avec le serveur distant",
         "noInternet": "Désolé, il y a eu une problème de connexion, êtes vous connecté à internet ?"
       },
-      "login": {
-        "wait": "Veuillez patienter"
-      },
       "just_now": "à l'instant",
       "seconds_ago": "il y a {{time}} secondes",
       "a_minute_ago": "il y a une minute",
@@ -131,17 +165,53 @@ angular.module('CallForPaper')
         "fr-FR": "French",
         "en-US": "English"
       },
+      "header": {
+        "login": "Login",
+        "logout": "Logout"
+      },
+      "login" : {
+        "email" : "Email",
+        "password" : "Password",
+        "login" : "Login",
+        "noAccount" : "Don't have an account yet?",
+        "signup" : "Signup",
+        "or" : "Or",
+        "signGoogle" : "Sign in with Google",
+        "signGithub" : "Sign in with Github",
+        "wait": "Please wait",
+        "badCredentials": "Incorrect login or password",
+        "alreadyLinked" : "There is already a user associated with this  provider"
+      },
+      "signup" : {
+        "signup" : "Sign up",
+        "email" : "Email",
+        "password" : "Password",
+        "confirmPassword" : "Confirm Password",
+        "yesAccount" : "Already have an account?",
+        "loginNow" : "Log in now",
+        "emailRequired" : "Your email address is required.",
+        "emailPattern" : "Your email address is invalid.",
+        "passwordRequired" : "Password is required.",
+        "passwordMatch" : "Password must match.",
+        "alreadyExists" : "There is already a user associated with this email"
+      },
+      "verify" : {
+        "title" : "Email ",
+        "verified" : "Your email has been verified",
+        "alreadyVerified" : "This account is already verified",
+        "notVerified" : "Errror during verification"
+      },
       "step1": {
         "email": "Email *:",
         "name": "Name *:",
         "firstname": "Firstname *:",
         "phone": "Phone:",
+        "errorPhone": "Please enter a correct phone number",
         "company": "Company:",
         "bio": "Bio *:",
         "hintBio": "Describe yourself with a few words. This description will be use to fill the website",
         "social": "URL (Google, Github, etc):",
         "hintSocial": "Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog"
-
       },
       "step2": {
         "name": "Session name *",
@@ -159,7 +229,7 @@ angular.module('CallForPaper')
         "expert": "Expert",
         "tracks": {
           "cloud": "Cloud",
-          "mobile": "Mobile",
+          "mobile": "Internet of things",
           "web": "Web",
           "discovery": "Discovery",
           "codelab": "Codelab"
@@ -218,9 +288,6 @@ angular.module('CallForPaper')
       "error": {
         "backendcommunication": "Sorry, a problem occure with the server",
         "noInternet": "Sorry, it seems that your are not connected to internet"
-      },
-      "login": {
-        "wait": "Please wait"
       },
       "just_now": "just now",
       "seconds_ago": "{{time}} seconds ago",

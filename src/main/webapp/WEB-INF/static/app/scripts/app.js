@@ -17,14 +17,18 @@ angular.module('CallForPaper', [
     'customFilters',
     'ui.gravatar',
     'relativeDate',
-    'matchMedia'
+    'matchMedia',
+    'satellizer',
+    'angular-jwt'
   ])
+  .config(['$httpProvider', function($httpProvider) {
+    //Http Intercpetor to check auth failures for xhr requests
+    $httpProvider.interceptors.push('authHttpResponseInterceptor');
+  }])
   .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider) {
     $urlRouterProvider
-      .when('/event/form', '/event/form/step1')
-      .when('/event/form/', '/event/form/step1')
-      .when('/event', '/event/form/step1')
-      .when('/event/', '/event/form/step1')
+      .when('', '/dashboard')
+      .when('/', '/dashboard')
 
     .when('/admin/sessions/', '/admin/sessions')
       .when('/admin/session/', '/admin/sessions')
@@ -33,7 +37,7 @@ angular.module('CallForPaper', [
     .when('/admin', '/admin/sessions')
       .when('/admin/', '/admin/sessions')
 
-    .otherwise('/event/form/step1');
+    .otherwise('/login');
     $stateProvider
       .state('admin', {
         url: '/admin',
@@ -44,10 +48,11 @@ angular.module('CallForPaper', [
             controller: 'AdminCtrl',
             resolve: {
               isAutorizedAdmin: ['$q', '$window', '$state', AuthServiceProvider.$get().isAutorizedAdmin]
+            },
+            '@admin': {
+              templateUrl: 'views/admin/sessions.html',
+              controller: 'AdminSessionsCtrl'
             }
-          },
-          '@form': {
-            templateUrl: 'views/admin/sessions.html'
           }
         },
       })
@@ -55,69 +60,101 @@ angular.module('CallForPaper', [
       .state('admin.sessions', {
         url: '/sessions',
         templateUrl: 'views/admin/sessions.html',
-        controller: 'SessionsCtrl'
+        controller: 'AdminSessionsCtrl'
       })
       .state('admin.session', {
         url: '/session/:id',
         templateUrl: 'views/admin/session.html',
-        controller: 'SessionCtrl'
+        controller: 'AdminSessionCtrl'
+      })
+      // Login
+      .state('loginAdmin', {
+        url: '/admin/login',
+        templateUrl: 'views/admin/login.html',
+        controller: 'AdminLoginCtrl'
+      })
+      // Logout
+      .state('logoutAdmin', {
+        url: '/admin/logout',
+        templateUrl: 'views/admin/login.html',
+        controller: 'AdminLogoutCtrl'
       })
 
-    // Login
-    .state('login', {
-      url: '/login',
-      templateUrl: 'views/login.html',
-      controller: 'LoginCtrl'
-    })
-
-    // Login
-    .state('logout', {
-      url: '/logout',
-      templateUrl: 'views/login.html',
-      controller: 'LogoutCtrl'
-    })
-
-    // Form
-    .state('form', {
-        url: '/event/form',
+    // Public
+    .state('app', {
         abstract: true,
         views: {
           '': {
-            templateUrl: 'views/form/form.html',
-            controller: 'FormCtrl'
+            templateUrl: 'views/header.html',
+            controller: 'HeaderCtrl'
           },
-          '@form': {
-            templateUrl: 'views/form/step1.html'
+          '@app': {
+            templateUrl: 'views/restricted/dashboard.html'
           }
         },
       })
-      // nested states
-      // each of these sections will have their own view
-      .state('form.step1', {
-        url: '/step1',
-        templateUrl: 'views/form/step1.html',
-        controller: 'Step1Ctrl'
+      .state('app.dashboard', {
+        url: '/dashboard',
+        templateUrl: 'views/restricted/dashboard.html',
+        resolve: {
+          authenticated: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().authenticated]
+        }
       })
-      .state('form.step2', {
-        url: '/step2',
+      // Auth
+      .state('app.login', {
+        url: '/login',
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
+      .state('app.verify', {
+        url: '/verify?token&id',
+        templateUrl: 'views/verify.html',
+        controller: 'VerifyCtrl'
+      })
+      .state('app.logout', {
+        url: '/logout',
+        template: null,
+        controller: 'LogoutCtrl'
+      })
+      .state('app.signup', {
+        url: '/signup',
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl'
+      })
+
+
+    // Form
+    .state('app.form', {
+      url: '/form',
+      views: {
+        '': {
+          templateUrl: 'views/form/form.html',
+          controller: 'FormCtrl',
+          resolve: {
+            verified: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().verified]
+          }
+        },
+        '@app.form': {
+          templateUrl: 'views/form/step1.html',
+          controller: 'Step1Ctrl'
+        }
+      },
+    })
+
+    .state('app.form.step2', {
         templateUrl: 'views/form/step2.html',
         controller: 'Step2Ctrl'
       })
-      .state('form.step3', {
-        url: '/step3',
+      .state('app.form.step3', {
         templateUrl: 'views/form/step3.html',
         controller: 'Step3Ctrl'
       })
-      .state('form.result', {
-        url: '/result',
+      .state('app.form.result', {
         templateUrl: 'views/form/result.html',
         controller: 'ResultCtrl'
       })
-      .state('close', {
-        url: '/close',
-        templateUrl: 'views/form/close.html'
-      })
-      .state('403', {
+
+    .state('403', {
         url: '/403',
         templateUrl: '403.html'
       })
@@ -141,6 +178,16 @@ angular.module('CallForPaper', [
   }])
   .config(['$translateProvider', function($translateProvider) {
     $translateProvider.useCookieStorage();
+  }])
+  .config(['$authProvider', function($authProvider) {
+    $authProvider.google({
+      clientId: '891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com'
+    });
+
+    $authProvider.github({
+      clientId: 'c21492ca67471ebdfdd7'
+    });
+
   }])
   .run(['AuthService', function(AuthService) {
     AuthService.init();

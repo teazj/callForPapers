@@ -31,11 +31,11 @@
 		<div>{{'step2.hintTrack' | translate}}</div>
 		<div>
 			<select ng-model="formData.session.track" id="track" name="track" required class="form-control">
-				<option>{{'step2.tracks.cloud' | translate}}</option>
-				<option>{{'step2.tracks.mobile' | translate}}</option>
-				<option>{{'step2.tracks.web' | translate}}</option>
-				<option>{{'step2.tracks.discovery' | translate}}</option>
-				<option>{{'step2.tracks.codelab' | translate}}</option>
+				<option value="cloud">{{'step2.tracks.cloud' | translate}}</option>
+				<option value="mobile">{{'step2.tracks.mobile' | translate}}</option>
+				<option value="web">{{'step2.tracks.web' | translate}}</option>
+				<option value="discovery">{{'step2.tracks.discovery' | translate}}</option>
+				<option value="codelab">{{'step2.tracks.codelab' | translate}}</option>
 			</select>
 		</div>
 	</div>
@@ -47,7 +47,7 @@
 		</div>
 	</div>
 	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-		<a ui-sref="form.step1" class="btn btn-block btn-warning" href="#/form/step1">
+		<a ui-sref="form" class="btn btn-block btn-warning" href="#/form">
 			<span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
 		</a>
 	</div>

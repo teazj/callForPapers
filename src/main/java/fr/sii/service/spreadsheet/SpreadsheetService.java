@@ -6,11 +6,11 @@ package fr.sii.service.spreadsheet;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
-import fr.sii.domain.rate.Rate;
+import fr.sii.domain.admin.rate.AdminRate;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
-import fr.sii.service.rate.RateService;
+import fr.sii.service.admin.rate.AdminRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class SpreadsheetService {
     private SpreadsheetRepository googleRepository;
 
     @Autowired
-    private RateService rateService;
+    private AdminRateService adminRateService;
 
     @Autowired
     private GlobalSettings globalSettings;
@@ -42,12 +42,12 @@ public class SpreadsheetService {
 
             if(globalSettings.getDatabaseLoaded().equals("true"))
             {
-                List<Rate> lrs = rateService.findByRowId(r.getAdded());
+                List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
                 rr = new RowResponse(r, lrs);
             }
             else
             {
-                rr = new RowResponse(r, new ArrayList<Rate>());
+                rr = new RowResponse(r, new ArrayList<AdminRate>());
             }
             nrs.add(rr);
         }
@@ -57,12 +57,12 @@ public class SpreadsheetService {
     public RowResponse matchRates(Row r)
     {
         if(globalSettings.getDatabaseLoaded().equals("true")) {
-            List<Rate> lrs = rateService.findByRowId(r.getAdded());
+            List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
             return new RowResponse(r, lrs);
         }
         else
         {
-            return new RowResponse(r, new ArrayList<Rate>());
+            return new RowResponse(r, new ArrayList<AdminRate>());
         }
     }
 
