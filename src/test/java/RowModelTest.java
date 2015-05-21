@@ -1,5 +1,6 @@
 import com.github.javafaker.Faker;
 import fr.sii.domain.spreadsheet.Row;
+import fr.sii.domain.spreadsheet.RowSession;
 import org.junit.Test;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertEquals;
  * Created by tmaugin on 08/04/2015.
  */
 public class RowModelTest {
-    Row row = new Row();
+    Row row = new RowSession();
 
     @Test
     public void newRowModel() {
@@ -34,6 +35,7 @@ public class RowModelTest {
         String social = faker.internet().url() + ", " + faker.internet().url();
         String track= faker.name().lastName();
         boolean travel = false;
+        boolean draft = false;
         Date added = new Date();
 
         row.setBio(bio);
@@ -73,5 +75,6 @@ public class RowModelTest {
         assertEquals(track, row.getTrack());
         assertEquals(travel, row.getTravel());
         assertEquals((Long)added.getTime(),row.getAdded());
+        assertEquals(draft,row.getDraft());
     }
 }

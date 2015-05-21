@@ -1,7 +1,13 @@
 import com.google.gdata.util.ServiceException;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
+import com.jayway.restassured.response.Header;
+import com.nimbusds.jose.JOSEException;
 import fr.sii.domain.spreadsheet.Row;
+import fr.sii.domain.spreadsheet.RowDraft;
+import fr.sii.domain.spreadsheet.RowSession;
+import fr.sii.domain.token.Token;
+import fr.sii.service.auth.AuthUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -17,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -37,14 +44,53 @@ public class SpreadsheetTest {
     @Autowired
     WebApplicationContext webApplicationContext;
 
-    @Before public void
-    setUp() {
+    String secretToken = "secretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTest";
+
+    @Before
+    public void setUp() {
+        AuthUtils.TOKEN_SECRET = secretToken;
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+    }
+
+    public Header getHeader()
+    {
+        Token token = null;
+        try {
+            token = AuthUtils.createToken("testHost","1",true);
+            token.getToken();
+        } catch (JOSEException e) {
+            e.printStackTrace();
+        }
+        return new Header("Authorization", "Bearer " + token.getToken());
+    }
+
+    public Header getHeaderOtherAccount()
+    {
+        Token token = null;
+        try {
+            token = AuthUtils.createToken("testHost","2",true);
+            token.getToken();
+        } catch (JOSEException e) {
+            e.printStackTrace();
+        }
+        return new Header("Authorization", "Bearer " + token.getToken());
+    }
+
+    public Header getHeaderNotVerified()
+    {
+        Token token = null;
+        try {
+            token = AuthUtils.createToken("testHost","1",false);
+            token.getToken();
+        } catch (JOSEException e) {
+            e.printStackTrace();
+        }
+        return new Header("Authorization", "Bearer " + token.getToken());
     }
 
     @Test
     public void test1_addRowPass() {
-        Row row = new Row();
+        Row row = new RowSession();
         row.setBio("Bio");
         row.setCompany("SII");
         row.setCoSpeaker("moi, toi");
@@ -62,8 +108,10 @@ public class SpreadsheetTest {
         row.setSocial("www.thomas-maugin.fr, https://github.com/Thom-x");
         row.setTrack("web");
         row.setTravel(false);
+        row.setDraft(false);
+        row.setUserId(1L);
 
-        Row returnedRow = new Row();
+        Row returnedRow = new RowSession();
 
         boolean error = false;
         try {
@@ -95,11 +143,40 @@ public class SpreadsheetTest {
         assertEquals("web",returnedRow.getTrack());
         assertEquals(false,returnedRow.getTravel());
         assertNotEquals(null, returnedRow.getAdded());
+        assertEquals(false, returnedRow.getDraft());
+        assertEquals((Long) 1L, returnedRow.getUserId());
     }
 
     @Test
-    public void test2_addRowPassRest() {
+    public void test2_addRowDraftPass() {
+        Row row = new RowDraft();
+        row.setDraft(true);
+        row.setUserId(1L);
+
+        Row returnedRow = new RowSession();
+
+        boolean error = false;
+        try {
+            returnedRow = spreadsheetService.addRow(row);
+        } catch (IOException e) {
+            e.printStackTrace();
+            error = true;
+        } catch (ServiceException e) {
+            e.printStackTrace();
+            error = true;
+        }
+        assertEquals(false,error);
+
+        assertEquals(true,returnedRow.getDraft());
+        assertEquals((Long)1L,returnedRow.getUserId());
+        assertNotEquals(null, returnedRow.getAdded());
+    }
+
+    @Test
+    public void test3_addRowPassRest() {
+
         given().contentType("application/json")
+                .header(getHeader())
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
                         "\"name\" : \"Maugin\",\n" +
@@ -125,12 +202,110 @@ public class SpreadsheetTest {
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))
+                .body("draft", Matchers.is(false))
+                .body("userId", Matchers.is(1))
                 .body("difficulty", Matchers.is(3));
     }
 
     @Test
-    public void test3_addRowFailFinancialRest() {
+    public void test4_addRowNotVerifiedRest() {
+
         given().contentType("application/json")
+                .header(getHeaderNotVerified())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/session")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test5_addRowNotAuthenticatedRest() {
+        given().contentType("application/json")
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/session")
+                .then()
+                .statusCode(403);
+    }
+
+
+    @Test
+    public void test6_addRowDraftPassRest() {
+        given().contentType("application/json")
+                .header(getHeader())
+                .body("{}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("draft", Matchers.is(true))
+                .body("userId", Matchers.is(1));
+    }
+
+    @Test
+    public void test7_addRowDraftNotVerifiedRest() {
+        given().contentType("application/json")
+                .header(getHeaderNotVerified())
+                .body("{}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test8_addRowDraftNotAuthenticatedRest() {
+        given().contentType("application/json")
+                .body("{}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test9_addRowFailFinancialRest() {
+        given().contentType("application/json")
+                .header(getHeader())
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
                         "\"name\" : \"Maugin\",\n" +
@@ -157,8 +332,9 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test4_addRowFailFinancial2Rest() {
+    public void test10_addRowFailFinancial2Rest() {
         given().contentType("application/json")
+                .header(getHeader())
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
                         "\"name\" : \"Maugin\",\n" +
@@ -186,9 +362,10 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test5_addRowFailDifficultyRest() {
+    public void test11_addRowFailDifficultyRest() {
         given()
                 .contentType("application/json")
+                .header(getHeader())
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
                         "\"name\" : \"Maugin\",\n" +
@@ -215,22 +392,60 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test6_getRows() {
-        test8_deleteRows();
+    public void test12_getRows() {
+        test36_deleteRows();
         test1_addRowPass();
         test1_addRowPass();
         given()
+                .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/admin/session")
+                .get("/api/restricted/session")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
     }
 
     @Test
-    public void test7_getRow() {
+    public void test13_getRowsOtherAccount() {
+        test36_deleteRows();
+        test1_addRowPass();
+        test1_addRowPass();
+        given()
+                .header(getHeaderOtherAccount())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/session")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(0));
+    }
+
+    @Test
+    public void test14_getRowsNotVerified() {
+        given()
+                .header(getHeaderNotVerified())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/session")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test15_getRowsNotAuthenticated() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/session")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test16_getRow() {
         MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
                         "\"name\" : \"Maugin1\",\n" +
@@ -256,6 +471,53 @@ public class SpreadsheetTest {
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                response();
+        Long added = response.path("added");
+
+        test1_addRowPass();
+        given()
+                .header(getHeader())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/session/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("userId", Matchers.is(1))
+                .body("name", Matchers.is("Maugin1"));
+    }
+
+    @Test
+    public void test17_getRowOtherAccount() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/session")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
                 .body("difficulty", Matchers.is(3)).extract().
                 response();
         Long added = response.path("added");
@@ -263,22 +525,523 @@ public class SpreadsheetTest {
         test1_addRowPass();
         given()
                 .contentType("application/json")
+                .header(getHeaderOtherAccount())
                 .when()
-                .get("/api/admin/session/" + added.toString())
+                .get("/api/restricted/session/" + added.toString())
                 .then()
                 .statusCode(200)
+                .body(isEmptyString());
+    }
+
+    @Test
+    public void test18_getRowNotVerified() {
+        given()
+                .header(getHeaderNotVerified())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/session/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test19_getRowNotAuthenticated() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/session/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test20_getRowsDraft() {
+        test36_deleteRows();
+        test2_addRowDraftPass();
+        test1_addRowPass();
+        test2_addRowDraftPass();
+        given()
+                .header(getHeader())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(2));
+    }
+
+    @Test
+    public void test21_getRowsDraftOtherAccount() {
+        test36_deleteRows();
+        test2_addRowDraftPass();
+        test1_addRowPass();
+        test2_addRowDraftPass();
+        given()
+                .header(getHeaderOtherAccount())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(0));
+    }
+
+    @Test
+    public void test22_getRowsDraftNotVerified() {
+        given()
+                .header(getHeaderNotVerified())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft")
+                .then()
+                .statusCode(403);
+    }
+
+
+    @Test
+    public void test23_getRowsDraftNotAuthenticated() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test24_getRowDraft() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+
+        test2_addRowDraftPass();
+        given()
+                .header(getHeader())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("userId", Matchers.is(1))
                 .body("name", Matchers.is("Maugin1"));
     }
 
     @Test
-    public void test8_deleteRows() {
-        test1_addRowPass();
+    public void test25_getRowDraftOtherAccount() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+
+        test2_addRowDraftPass();
+        given()
+                .header(getHeaderOtherAccount())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body(isEmptyString());
+    }
+
+    @Test
+    public void test26_getRowDraftNotVerified() {
+        given()
+                .header(getHeaderNotVerified())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test27_getRowDraftNotAuthenticated() {
         given()
                 .contentType("application/json")
                 .when()
-                .delete("/api/admin/session")
+                .get("/api/restricted/draft/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test28_putRow() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/draft")
                 .then()
                 .statusCode(200)
-                .body("size()", equalTo(0));
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+        given()
+                .contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin2\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .put("/api/restricted/session/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin2"))
+                .body("userId", Matchers.is(1))
+                .body("draft", Matchers.is(false));
+    }
+
+    @Test
+    public void test29_putRowOtherAccount() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+        given()
+                .contentType("application/json")
+                .header(getHeaderOtherAccount())
+                .body("{\n" +
+                        "\"email\" : \"emailOtherAccount@email.fr\",\n" +
+                        "\"name\" : \"Maugin2\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .put("/api/restricted/session/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body(isEmptyString());
+
+        given()
+                .header(getHeader())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("email", Matchers.is("email@email.fr"));
+    }
+
+    @Test
+    public void test30_putRowNotVerified() {
+        given()
+                .contentType("application/json")
+                .header(getHeaderNotVerified())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin2\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .put("/api/restricted/session/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test31_putRowNotAuthenticated() {
+        given()
+                .contentType("application/json")
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin2\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .put("/api/restricted/session/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test32_deleteDraft() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+        given()
+                .contentType("application/json")
+                .header(getHeader())
+                .delete("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200);
+
+        given()
+                .header(getHeader())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body(isEmptyString());
+    }
+
+    @Test
+    public void test33_deleteDraftOtherAccount() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/draft")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("userId", Matchers.is(1))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+        given()
+                .contentType("application/json")
+                .header(getHeaderOtherAccount())
+                .delete("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200);
+
+        given()
+                .header(getHeader())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("userId",Matchers.is(1));
+    }
+
+    @Test
+    public void test34_deleteDraftNotVerified() {
+        given()
+                .contentType("application/json")
+                .header(getHeaderNotVerified())
+                .delete("/api/restricted/draft/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test35_deleteDraftNotAuthorized() {
+        given()
+                .contentType("application/json")
+                .delete("/api/restricted/draft/1")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    public void test36_deleteRows() {
+        given()
+                .contentType("application/json")
+                .when()
+                .delete("/api/admin/session");
     }
 }
