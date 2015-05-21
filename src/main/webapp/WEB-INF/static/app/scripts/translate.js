@@ -85,7 +85,11 @@ angular.module('CallForPaper')
           "cloud": "Cloud",
           "mobile": "Objets connectés",
           "web": "Web",
-          "discovery": "Découverte",
+          "discovery": "Découverte"
+        },
+        "type": "Type * :",
+        "types": {
+          "conference": "Conférence",
           "codelab": "Codelab"
         },
         "hintTrack": "Choisissez la catégorie dans laquelle vous pensez que votre conférence se situe. Discovery est une catégorie pour les conférences non techniques."
@@ -259,7 +263,11 @@ angular.module('CallForPaper')
           "cloud": "Cloud",
           "mobile": "Internet of things",
           "web": "Web",
-          "discovery": "Discovery",
+          "discovery": "Discovery"
+        },
+        "type": "Type *:",
+        "types": {
+          "conference": "Conference",
           "codelab": "Codelab"
         },
         "hintTrack": "Choose the track where you think your talk will be place. Discovery is a track for non technicals presentations"

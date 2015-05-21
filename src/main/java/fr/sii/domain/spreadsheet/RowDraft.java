@@ -25,6 +25,7 @@ public class RowDraft implements Row {
     @Min(value = 1,message = "Difficulty must be higher than 0")
     @Max(value = 3,message = "Difficulty must be lower than 4")
     private Integer difficulty;
+    private String type;
     private String track;
     private String coSpeaker;
     private Boolean financial;
@@ -192,6 +193,14 @@ public class RowDraft implements Row {
         this.difficulty = Integer.valueOf(difficulty);
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getTrack() {
         return track;
     }
@@ -319,7 +328,7 @@ public class RowDraft implements Row {
 
     @Override
     public String toString() {
-        return "Row{" +
+        return "RowDraft{" +
                 "email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", firstname='" + firstname + '\'' +
@@ -338,6 +347,9 @@ public class RowDraft implements Row {
                 ", travelFrom='" + travelFrom + '\'' +
                 ", hotel=" + hotel +
                 ", hotelDate='" + hotelDate + '\'' +
+                ", added=" + added +
+                ", draft=" + draft +
+                ", userId=" + userId +
                 '}';
     }
 }

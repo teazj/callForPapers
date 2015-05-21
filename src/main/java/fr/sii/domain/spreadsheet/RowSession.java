@@ -34,6 +34,8 @@ public class RowSession implements Row{
     @Min(value = 1,message = "Difficulty must be higher than 0")
     @Max(value = 3,message = "Difficulty must be lower than 4")
     private Integer difficulty;
+    @NotNull(message = "Type field is required")
+    private String type;
     @NotNull(message = "Track field is required")
     private String track;
     private String coSpeaker;
@@ -50,7 +52,7 @@ public class RowSession implements Row{
     @JsonIgnore
     private Long userId;
 
-    public RowSession(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
+    public RowSession(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String type, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
         this.email = email;
         this.name = name;
         this.firstname = firstname;
@@ -62,6 +64,7 @@ public class RowSession implements Row{
         this.description = description;
         this.references = references;
         this.difficulty = difficulty;
+        this.type = type;
         this.track = track;
         this.coSpeaker = coSpeaker;
         this.financial = financial;
@@ -201,6 +204,14 @@ public class RowSession implements Row{
     @JsonIgnore
     public void setDifficulty(String difficulty) {
         this.difficulty = Integer.valueOf(difficulty);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTrack() {

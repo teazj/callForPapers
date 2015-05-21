@@ -26,6 +26,7 @@ public class RowResponse extends RowSession {
                 row.getDescription(),
                 row.getReferences(),
                 row.getDifficulty(),
+                row.getType(),
                 row.getTrack(),
                 row.getCoSpeaker(),
                 row.getFinancial(),

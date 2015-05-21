@@ -36,9 +36,6 @@ angular.module('CallForPaper')
 				'id': 'web',
 				'title': $filter('translate')('step2.tracks.web')
 			}, {
-				'id': 'codelab',
-				'title': $filter('translate')('step2.tracks.codelab')
-			}, {
 				'id': 'discovery',
 				'title': $filter('translate')('step2.tracks.discovery')
 			}, {
