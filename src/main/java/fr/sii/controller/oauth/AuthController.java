@@ -82,10 +82,11 @@ public class AuthController {
         User savedUser = userService.save(user);
 
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("link", globalSettings.getHostname() + "#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
-        System.out.println(globalSettings.getHostname() + "#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+        map.put("link", globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+        map.put("hostname", globalSettings.getHostname());
+        System.out.println(globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
 
-        Email email = new Email(savedUser.getEmail(),"Confirmation de votre adresse email","verify.html",map);
+        Email email = new Email(savedUser.getEmail(),"Confirmation de votre adresse e-mail","verify.html",map);
         emailingService.send(email);
 
         token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEntityId().toString(), savedUser.isVerified());

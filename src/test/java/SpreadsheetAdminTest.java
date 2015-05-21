@@ -125,7 +125,7 @@ public class SpreadsheetAdminTest {
 
     @Test
     public void test2_getRows() {
-        test4_deleteRows();
+        deleteRows();
         test1_addRowPass();
         test1_addRowPass();
         given()
@@ -181,15 +181,14 @@ public class SpreadsheetAdminTest {
                 .body("name", Matchers.is("Maugin1"));
     }
 
-    @Test
-    public void test4_deleteRows() {
-        test1_addRowPass();
-        given()
-                .contentType("application/json")
-                .when()
-                .delete("/api/admin/session")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(0));
+    public void deleteRows()
+    {
+        try {
+            spreadsheetService.deleteRows();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 }

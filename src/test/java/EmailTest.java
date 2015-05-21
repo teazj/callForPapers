@@ -29,6 +29,7 @@ public class EmailTest {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
+        map.put("hostname", "http://yourappid.appspot.com/");
         t.setData(map);
         assertEquals(false,t.getTemplate().contains("$"));
     }
@@ -41,6 +42,7 @@ public class EmailTest {
         map.put("talk", "Google App Engine pour les nuls");
         map.put("community", "GDG Nantes");
         map.put("event", "DevFest 2015");
+        map.put("hostname", "http://yourappid.appspot.com/");
 
         t.setData(map);
         assertEquals(false,t.getTemplate().contains("$"));
@@ -54,6 +56,7 @@ public class EmailTest {
         map.put("talk", "Google App Engine pour les nuls");
         map.put("event", "DevFest 2015");
         map.put("date", "13/11/1992");
+        map.put("hostname", "http://yourappid.appspot.com/");
         t.setData(map);
         assertEquals(false,t.getTemplate().contains("$"));
     }
@@ -67,6 +70,7 @@ public class EmailTest {
         map.put("event", "DevFest 2015");
         map.put("date", "13/11/1992");
         map.put("releaseDate", "12/11/1992");
+        map.put("hostname", "http://yourappid.appspot.com/");
 
         t.setData(map);
         assertEquals(false, t.getTemplate().contains("$"));
@@ -77,6 +81,7 @@ public class EmailTest {
         Templating t = new Templating("verify.html", true);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("link", "http://google.fr");
+        map.put("hostname", "http://yourappid.appspot.com/");
 
         t.setData(map);
         assertEquals(false, t.getTemplate().contains("$"));

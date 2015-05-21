@@ -401,7 +401,7 @@ public class SpreadsheetTest {
 
     @Test
     public void test12_getRows() {
-        test36_deleteRows();
+        deleteRows();
         test1_addRowPass();
         test1_addRowPass();
         given()
@@ -416,7 +416,7 @@ public class SpreadsheetTest {
 
     @Test
     public void test13_getRowsOtherAccount() {
-        test36_deleteRows();
+        deleteRows();
         test1_addRowPass();
         test1_addRowPass();
         given()
@@ -566,7 +566,7 @@ public class SpreadsheetTest {
 
     @Test
     public void test20_getRowsDraft() {
-        test36_deleteRows();
+        deleteRows();
         test2_addRowDraftPass();
         test1_addRowPass();
         test2_addRowDraftPass();
@@ -582,7 +582,7 @@ public class SpreadsheetTest {
 
     @Test
     public void test21_getRowsDraftOtherAccount() {
-        test36_deleteRows();
+        deleteRows();
         test2_addRowDraftPass();
         test1_addRowPass();
         test2_addRowDraftPass();
@@ -1057,11 +1057,14 @@ public class SpreadsheetTest {
                 .statusCode(403);
     }
 
-    @Test
-    public void test36_deleteRows() {
-        given()
-                .contentType("application/json")
-                .when()
-                .delete("/api/admin/session");
+    public void deleteRows()
+    {
+        try {
+            spreadsheetService.deleteRows();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 }
