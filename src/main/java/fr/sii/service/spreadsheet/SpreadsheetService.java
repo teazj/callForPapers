@@ -75,6 +75,14 @@ public class SpreadsheetService {
         return googleRepository.addRow(row);
     }
 
+    public Row putRowDraft(Row row, Long userId, Long added) throws ServiceException, IOException {
+        return googleRepository.putRowDraft(row, userId, added);
+    }
+
+    public Row putRowDraftToSession(Row row, Long userId, Long added) throws ServiceException, IOException {
+        return googleRepository.putRowDraftToSession(row, userId, added);
+    }
+
     public List<RowResponse> getRows() throws IOException, ServiceException
     {
         return matchRates(googleRepository.getRows());
@@ -85,8 +93,38 @@ public class SpreadsheetService {
         return matchRates(googleRepository.getRow(added));
     }
 
+    public Row getRow(String added, Long userId) throws IOException, ServiceException
+    {
+        return googleRepository.getRow(added, userId);
+    }
+
     public List<Row> deleteRows() throws IOException, ServiceException
     {
         return googleRepository.deleteRows();
+    }
+
+    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException
+    {
+        googleRepository.deleteRowDraft(added, userId);
+    }
+
+    public List<RowResponse> getRowsSession() throws IOException, ServiceException
+    {
+        return matchRates(googleRepository.getRowsSession());
+    }
+
+    public List<Row> getRowsSession(Long userId) throws IOException, ServiceException
+    {
+        return googleRepository.getRowsSession(userId);
+    }
+
+    public List<Row> getRowsDraft() throws IOException, ServiceException
+    {
+        return googleRepository.getRowsDraft();
+    }
+
+    public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException
+    {
+        return googleRepository.getRowsDraft(userId);
     }
 }

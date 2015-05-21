@@ -46,15 +46,20 @@
 			<textarea class="form-control" name="coSpeaker" id="coSpeaker" ng-model="formData.session.coSpeaker"  rows="3"></textarea>
 		</div>
 	</div>
-	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-		<a ui-sref="form" class="btn btn-block btn-warning" href="#/form">
+	<p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-left" style="padding-bottom: 10px">
+		<a ui-sref="app.form" class="btn btn-block btn-warning">
 			<span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
 		</a>
 	</div>
-	<br class="visible-xs-block">
-	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-		<a ui-sref="form.step3" ng-disabled="!formData.steps.isValid[1] || !formData.steps.isValid[0]" class="btn btn-block btn-primary" href="#/form/step3">
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right" style="padding-bottom: 10px">
+		<a ui-sref="app.form.step3" ng-disabled="!formData.steps.isValid[1] || !formData.steps.isValid[0]" class="btn btn-block btn-primary">
 			{{'steps.next' | translate}} <span class="glyphicon glyphicon-circle-arrow-right pull-right"></span>
 		</a>
 	</div>
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right">
+        <a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
+            Enregistrer en brouillon <span class="glyphicon glyphicon-floppy-disk pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-floppy-disk' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
+        </a>
+    </div>
 </div>

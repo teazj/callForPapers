@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by tmaugin on 29/04/2015.
  */
-public class RowResponse extends Row {
+public class RowResponse extends RowSession {
     private List<AdminRate> adminRates;
 
     public RowResponse(Row row, List<AdminRate> adminRates)

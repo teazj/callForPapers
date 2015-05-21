@@ -9,6 +9,7 @@ import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.spreadsheet.Row;
+import fr.sii.domain.spreadsheet.RowDraft;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -117,32 +118,15 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         {
             postedRow.setAdded(new Date());
         }
-
         // Create a local representation of the new row.
-        ListEntry row = new ListEntry();
-
-        java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
-        for (java.lang.reflect.Field field : fields) {
-            try {
-                Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
-                String key = field.getName().toString();
-                Object value = method.invoke(postedRow);
-                if (value != null) {
-                    row.getCustomElements().setValueLocal(key, value.toString());
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        ListEntry row;
+        row = spreadsheetConnector.rowToListEntry(postedRow);
         // Send the new row to the API for insertion.
-        row = service.insert(listFeedUrl, row);
+        service.insert(listFeedUrl, row);
         return postedRow;
     }
 
+    @Override
     public List<Row> getRows() throws IOException, ServiceException {
         if(spreadsheet == null)
         {
@@ -165,21 +149,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
 
         // Iterate through each row, printing its cell values.
         for (ListEntry row : listFeed.getEntries()) {
-            // Iterate over the remaining columns, and print each cell value
-            Row rowModel = new Row();
-            for (String tag : row.getCustomElements().getTags()) {
-                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
-                try {
-                    Method method = Row.class.getMethod("set" + tag.substring(0, 1).toUpperCase() + tag.substring(1), String.class);
-                    method.invoke(rowModel, row.getCustomElements().getValue(tag));
-                } catch (NoSuchMethodException e) {
-                    //e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
             rows.add(rowModel);
         }
         return rows;
@@ -209,20 +179,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         // Iterate through each row, printing its cell values.
         for (ListEntry row : listFeed.getEntries()) {
             // Iterate over the remaining columns, and print each cell value
-            Row rowModel = new Row();
-            for (String tag : row.getCustomElements().getTags()) {
-                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
-                try {
-                    Method method = Row.class.getMethod("set" + tag.substring(0, 1).toUpperCase() + tag.substring(1), String.class);
-                    method.invoke(rowModel, row.getCustomElements().getValue(tag));
-                } catch (NoSuchMethodException e) {
-                    //e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
             if(rowModel.getAdded().toString().equals(added))
                 rows.add(rowModel);
         }
@@ -232,6 +189,162 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             return null;
     }
 
+    @Override
+    public Row getRow(String added, Long userId) throws IOException, ServiceException {
+        if(spreadsheet == null)
+        {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getAdded().toString().equals(added) && rowModel.getUserId().toString().equals(userId.toString()))
+                rows.add(rowModel);
+        }
+        if(rows.size() > 0)
+            return rows.get(0);
+        else
+            return null;
+    }
+
+    @Override
+    public List<Row> getRowsSession() throws IOException, ServiceException {
+        if(spreadsheet == null)
+        {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(!rowModel.getDraft())
+                rows.add(rowModel);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<Row> getRowsSession(Long userId) throws IOException, ServiceException {
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(!rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+                rows.add(rowModel);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<Row> getRowsDraft() throws IOException, ServiceException {
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getDraft())
+                rows.add(rowModel);
+        }
+        return rows;
+    }
+
+    @Override
+    public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException {
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+                rows.add(rowModel);
+        }
+        return rows;
+    }
+
+    @Override
     public List<Row> deleteRows() throws IOException, ServiceException {
         if(spreadsheet == null)
         {
@@ -256,5 +369,141 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             rows.get(i).delete();
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException {
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getAdded().toString().equals(added) && rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+            {
+                row.delete();
+                return;
+            }
+        }
+        return;
+    }
+
+    @Override
+    public Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException {
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getAdded().toString().equals(added.toString()) && rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+            {
+                // updating row
+                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+                for (java.lang.reflect.Field field : fields) {
+                    try {
+                        Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
+                        String key = field.getName().toString();
+                        Object value = method.invoke(rowToPut);
+                        if (value != null) {
+                            row.getCustomElements().setValueLocal(key, value.toString());
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                row.update();
+                return rowToPut;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException {
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getAdded().toString().equals(added.toString()) && rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+            {
+                // change draft to session
+                rowToPut.setDraft(false);
+                // updating row
+                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+                for (java.lang.reflect.Field field : fields) {
+                    try {
+                        Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
+                        String key = field.getName().toString();
+                        Object value = method.invoke(rowToPut);
+                        if (value != null) {
+                            row.getCustomElements().setValueLocal(key, value.toString());
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                row.update();
+                return rowToPut;
+            }
+        }
+        return null;
     }
 }

@@ -21,7 +21,7 @@
 		<tr ng-repeat="session in $data" ui-sref="admin.session({ id: session.added })">
 			<td filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.name}} {{::session.firstname}}</td>
 			<td filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
-			<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{::session.realDifficulty}}</td>
+			<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 		</tr>
 	</table>
 </div>

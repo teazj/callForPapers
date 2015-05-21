@@ -12,317 +12,134 @@ import java.util.Date;
 /**
  * Created by tmaugin on 03/04/2015.
  */
-public class Row {
+public interface Row {
 
-    @NotNull(message = "Email field is required")
-    private String email;
-    @NotNull(message = "Name field is required")
-    private String name;
-    @NotNull(message = "Firstname field is required")
-    private String firstname;
-    private String phone;
-    private String company;
-    @NotNull(message = "Bio field is required")
-    private String bio;
-    private String social;
-    @NotNull(message = "Session name field is required")
-    private String sessionName;
-    @NotNull(message = "Description field is required")
-    private String description;
-    private String references;
-    @NotNull(message = "Difficulty field is required")
-    @Min(value = 1,message = "Difficulty must be higher than 0")
-    @Max(value = 3,message = "Difficulty must be lower than 4")
-    private Integer difficulty;
-    @NotNull(message = "Track field is required")
-    private String track;
-    private String coSpeaker;
-    @NotNull(message = "Financial field is required")
-    private Boolean financial;
-    private Boolean travel = false;
-    private String travelFrom;
-    private Boolean hotel = false;
-    private String hotelDate;
-    private Date added;
+    // Needed for automatic spreadsheet creation
+    String email = null;
+    String name = null;
+    String firstname = null;
+    String phone = null;
+    String company = null;
+    String bio = null;
+    String social = null;
+    String sessionName = null;
+    String description = null;
+    String references = null;
+    Integer difficulty = null;
+    String track = null;
+    String coSpeaker = null;
+    Boolean financial = null;
+    Boolean travel = null;
+    String travelFrom = null;
+    Boolean hotel = null;
+    String hotelDate = null;
+    Date added = null;
+    boolean draft = false;
+    Long userId = null;
 
-    public Row(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
-        this.email = email;
-        this.name = name;
-        this.firstname = firstname;
-        this.phone = phone;
-        this.company = company;
-        this.bio = bio;
-        this.social = social;
-        this.sessionName = sessionName;
-        this.description = description;
-        this.references = references;
-        this.difficulty = difficulty;
-        this.track = track;
-        this.coSpeaker = coSpeaker;
-        this.financial = financial;
-        this.travel = travel;
-        this.travelFrom = travelFrom;
-        this.hotel = hotel;
-        this.hotelDate = hotelDate;
-        this.added = added;
-    }
+   String getEmail();
 
-    public Row()
-    {
+   void setEmail(String email);
 
-    }
+   String getName();
 
-    @JsonIgnore
-    @AssertTrue(message = "You must either require financial help and fulfill the form or not require financial help.")
-    public boolean getfinancialRequested(){
-        boolean financial = this.getFinancial().equals(null) ? false : this.financial;
-        boolean hotel = this.getHotel().equals(null) ? false : this.hotel;
-        String hotelDate = this.hotelDate == null ? "" : this.hotelDate;
-        boolean travel = this.getTravel().equals(null) ? false : this.travel;
-        String travelFrom = this.travelFrom == null ? "" : this.travelFrom;
+   void setName(String name);
 
-        if(!financial){
-            return true;
-        }
-        else
-        {
-            // One or more field need to be fulfill
-            if(!hotel && !travel)
-            {
-                return false;
-            }
-            else
-            {
-                return (hotel && !hotelDate.equals("")) || (travel && !travelFrom.equals(""));
-            }
-        }
-    }
+   String getFirstname();
 
-    public String getEmail() {
-        return email;
-    }
+   void setFirstname(String firstname);
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+   String getPhone();
 
-    public String getName() {
-        return name;
-    }
+   void setPhone(String phone);
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   String getCompany();
 
-    public String getFirstname() {
-        return firstname;
-    }
+   void setCompany(String company);
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
+   String getBio();
 
-    public String getPhone() {
-        return phone;
-    }
+   void setBio(String bio);
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+   String getSocial();
 
-    public String getCompany() {
-        return company;
-    }
+   void setSocial(String social);
 
-    public void setCompany(String company) {
-        this.company = company;
-    }
+   String getSessionName();
 
-    public String getBio() {
-        return bio;
-    }
+   void setSessionName(String sessionName);
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
+   void setSessionname(String sessionName);
 
-    public String getSocial() {
-        return social;
-    }
+   String getDescription();
 
-    public void setSocial(String social) {
-        this.social = social;
-    }
+   void setDescription(String description);
 
-    public String getSessionName() {
-        return sessionName;
-    }
+   String getReferences();
 
-    public void setSessionName(String sessionName) {
-        this.sessionName = sessionName;
-    }
+   void setReferences(String references);
 
-    public void setSessionname(String sessionName) {
-        this.sessionName = sessionName;
-    }
+   Integer getDifficulty();
 
-    public String getDescription() {
-        return description;
-    }
+    void setDifficulty(Integer difficulty);
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    void setDifficulty(String difficulty);
 
-    public String getReferences() {
-        return references;
-    }
+    String getTrack();
 
-    public void setReferences(String references) {
-        this.references = references;
-    }
+    void setTrack(String track);
 
-    public Integer getDifficulty() {
-        return difficulty;
-    }
+    String getCoSpeaker();
 
-    @JsonProperty
-    public void setDifficulty(Integer difficulty) {
-        this.difficulty = difficulty;
-    }
+    void setCoSpeaker(String coSpeaker);
 
-    @JsonIgnore
-    public void setDifficulty(String difficulty) {
-        this.difficulty = Integer.valueOf(difficulty);
-    }
+    void setCospeaker(String coSpeaker);
 
-    public String getTrack() {
-        return track;
-    }
+    Boolean getFinancial();
 
-    public void setTrack(String track) {
-        this.track = track;
-    }
+    void setFinancial(Boolean financial);
 
-    public String getCoSpeaker() {
-        return coSpeaker;
-    }
+    void setFinancial(String financial);
 
-    public void setCoSpeaker(String coSpeaker) {
-        this.coSpeaker = coSpeaker;
-    }
+    Boolean getTravel();
 
-    public void setCospeaker(String coSpeaker) {
-        this.coSpeaker = coSpeaker;
-    }
+    void setTravel(Boolean travel);
 
-    public Boolean getFinancial() {
-        return financial;
-    }
+    void setTravel(String travel);
 
-    @JsonProperty
-    public void setFinancial(Boolean financial) {
-        this.financial = financial;
-    }
+    String getTravelFrom();
 
-    @JsonIgnore
-    public void setFinancial(String financial) {
-        this.financial = financial.toLowerCase().equals("true");
-    }
+    void setTravelFrom(String travelFrom);
 
-    public Boolean getTravel() {
-        return travel;
-    }
+    void setTravelfrom(String travelFrom);
 
-    @JsonProperty
-    public void setTravel(Boolean travel) { this.travel = travel; }
+    Boolean getHotel();
 
-    @JsonIgnore
-    public void setTravel(String travel) {
-        this.travel = travel.toLowerCase().equals("true");
-    }
+    void setHotel(Boolean hotel);
 
-    public String getTravelFrom() {
-        return travelFrom;
-    }
+    void setHotel(String hotel);
 
-    public void setTravelFrom(String travelFrom) {
-        this.travelFrom = travelFrom;
-    }
+    String getHotelDate();
 
-    public void setTravelfrom(String travelFrom) {
-        this.travelFrom = travelFrom;
-    }
+    void setHotelDate(String hotelDate);
 
-    public Boolean getHotel() {
-        return hotel;
-    }
+    void setHoteldate(String hotelDate);
 
-    @JsonProperty
-    public void setHotel(Boolean hotel) {
-        this.hotel = hotel;
-    }
+    Long getAdded();
 
-    @JsonIgnore
-    public void setHotel(String hotel) {
-        this.hotel = hotel.toLowerCase().equals("true");
-    }
+    void setAdded(Date added);
 
-    public String getHotelDate() {
-        return hotelDate;
-    }
+    void setAdded(String added);
 
-    public void setHotelDate(String hotelDate) {
-        this.hotelDate = hotelDate;
-    }
+    Boolean getDraft();
 
-    public void setHoteldate(String hotelDate) {
-        this.hotelDate = hotelDate;
-    }
+    void setDraft(Boolean draft);
 
-    public Long getAdded() {
-        return (added != null) ? added.getTime() : null;
-    }
+    void setDraft(String draft);
 
-    @JsonProperty
-    public void setAdded(Date added) {
-        this.added = added;
-    }
+    Long getUserId();
 
-    @JsonIgnore
-    public void setAdded(String added) {
-        Date date = null;
-        try
-        {
-            date = new Date(Long.parseLong(added));
-        }catch(NumberFormatException e)
-        {
-            e.printStackTrace();
-        }
-        this.added = date;
-    }
+    void setUserid(String userId);
 
-    @Override
-    public String toString() {
-        return "Row{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", phone='" + phone + '\'' +
-                ", company='" + company + '\'' +
-                ", bio='" + bio + '\'' +
-                ", social='" + social + '\'' +
-                ", sessionName='" + sessionName + '\'' +
-                ", description='" + description + '\'' +
-                ", references='" + references + '\'' +
-                ", difficulty=" + difficulty +
-                ", track='" + track + '\'' +
-                ", coSpeaker='" + coSpeaker + '\'' +
-                ", financial=" + financial +
-                ", travel=" + travel +
-                ", travelFrom='" + travelFrom + '\'' +
-                ", hotel=" + hotel +
-                ", hotelDate='" + hotelDate + '\'' +
-                '}';
-    }
+    void setUserId(Long userId);
 }

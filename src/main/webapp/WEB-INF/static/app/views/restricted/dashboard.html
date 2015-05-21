@@ -1,66 +1,82 @@
+<div ng-if="isVerified">
+  <div class="row">
+    <div class="col-sm-4 col-lg-3">
+    <a ui-sref="app.form" class="btn btn-block btn-primary">{{'dashboard.createNewSession' | translate}}</span>
+  </a>
+</div>
+</div>
+<br>
 <div class="row">
-	<div class="col-md-6">
-		<table class="table table-striped table-curved">
-			<thead>
-				<tr>
-					<th>Talks en cours d'édition</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<span>Mark</span>
-						<span class="action glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
-						<span class="pull-right">&nbsp;&nbsp;</span>
-						<span class="action glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<span>Mark</span>
-						<span class="action glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
-						<span class="pull-right">&nbsp;&nbsp;</span>
-						<span class="action glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<span>Mark</span>
-						<span class="action glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
-						<span class="pull-right">&nbsp;&nbsp;</span>
-						<span class="action glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="col-md-6">
-		<table class="table table-striped table-curved">
-			<thead>
-				<tr>
-					<th>Talks envoyés</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<span>Mark</span>
-						<span class="action glyphicon glyphicon-zoom-in pull-right" aria-hidden="true"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<span>Mark</span>
-						<span class="action glyphicon glyphicon-zoom-in pull-right" aria-hidden="true"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<span>Mark</span>
-						<span class="action glyphicon glyphicon-zoom-in pull-right" aria-hidden="true"></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+<div class="col-md-6">
+  <table class="table table-striped table-curved">
+    <thead>
+      <tr>
+        <th>{{'dashboard.editionTalks' | translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="draft in drafts">
+        <td>
+          <span>{{'dashboard.draftModifiedAt' | translate}} {{draft.added | date:"dd/MM/yyyy, HH:mm:ss"}}</span>
+          <a ui-sref='app.form({id: draft.added})'><span class="action glyphicon glyphicon-pencil pull-right white" aria-hidden="true"></span></a>
+          <span class="pull-right">&nbsp;&nbsp;</span>
+          <span ng-click="delete(draft.added)" class="action glyphicon glyphicon-remove pull-right white" aria-hidden="true"></span>
+        </td>
+      </tr>
+      <tr ng-show="drafts.length === 0 && sessionsLoaded">
+        <td>
+          <span>{{'dashboard.noEditionTalks' | translate}}</span>
+        </td>
+      </tr>
+      <tr ng-show="!sessionsLoaded">
+        <td>
+          <span class="loading glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="col-md-6">
+  <table class="table table-striped table-curved">
+    <thead>
+      <tr>
+        <th>{{'dashboard.sendedTalks' | translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="session in sessions">
+        <td>
+          <span>{{session.sessionName}}, {{'dashboard.postedAt' | translate}} {{session.added | date:"dd/MM/yyyy, HH:mm:ss"}}</span>
+          <a ui-sref='app.session({id: session.added})'><span class="action glyphicon glyphicon-zoom-in pull-right white" aria-hidden="true"></span></a>
+        </td>
+      </tr>
+      <tr ng-show="sessions.length === 0 && draftsLoaded">
+        <td>
+          <span>{{'dashboard.noSendedTalks' | translate}}</span>
+        </td>
+      </tr>
+      <tr ng-show="!draftsLoaded">
+        <td>
+          <span class="loading glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+<div class="container" ng-if="!isVerified">
+<style>
+html, body {
+background-color: rgba(237, 237, 237, 1);
+}
+</style>
+<div class="row">
+<div class="center-form panel col-md-6 col-md-offset-3">
+  <div class="panel-body">
+    <h2 class="text-center">{{'dashboard.verification' | translate}}</h2>
+    <div class="alert alert-danger">{{'dashboard.verificationNeeded' | translate}}</div>
+  </div>
+</div>
+</div>
 </div>

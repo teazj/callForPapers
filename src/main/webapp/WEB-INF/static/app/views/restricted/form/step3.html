@@ -8,19 +8,19 @@
 		<div>
 			<div class="radio">
 				<label>
-					<input ng-model="formData.help.financial" id="financial" type="radio" name="financial" value="true">
+					<input ng-model="formData.help.financial" id="financial" type="radio" name="financial" ng-value="true">
 					{{'steps.yes' | translate}}
 				</label>
 			</div>
 			<div class="radio">
 				<label>
-					<input ng-model="formData.help.financial" type="radio" name="financial" value="false">
+					<input ng-model="formData.help.financial" type="radio" name="financial" ng-value="false">
 					{{'steps.no' | translate}}
 				</label>
 			</div>
 		</div>
 	</div>
-	<div ng-show="formData.help.financial === 'true'">
+	<div ng-show="formData.help.financial === true">
 		<div class="form-group" bs-has>
 			<label class="control-label" for="travel">{{'step3.labelTravel' | translate}}</label>
 			<div>
@@ -57,15 +57,19 @@
 		</div>
 	</div>
 	<p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
-	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
-		<a ui-sref="form.step2" class="btn btn-block btn-warning" href="#/form/step2">
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-left" style="padding-bottom: 10px">
+		<a ui-sref="app.form.step2" class="btn btn-block btn-warning">
 			<span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
 		</a>
 	</div>
-	<br class="visible-xs-block">
-	<div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-3">
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right" style="padding-bottom: 10px">
 		<button class="btn btn-block btn-success" ng-disabled="!formData.steps.isValid[2] || !formData.steps.isValid[1] || !formData.steps.isValid[0] || formData.sending">
 		{{'steps.validate' | translate}} <span class="glyphicon glyphicon-ok pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-ok' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
 		</button>
 	</div>
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right">
+        <a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
+            Enregistrer en brouillon <span class="glyphicon glyphicon-floppy-disk pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-floppy-disk' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
+        </a>
+    </div>
 </div>

@@ -1,3 +1,8 @@
+<style>
+html, body {
+background-color: rgba(237, 237, 237, 1);
+}
+</style>
 <div class="container">
   <div class="row">
     <div class="center-form panel col-md-6 col-md-offset-3">
@@ -13,7 +18,6 @@
               <div ng-show="signupForm.email.$error.pattern" ng-message="pattern">{{'signup.emailPattern' | translate}}</div>
             </div>
           </div>
-
           <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.password.$invalid && signupForm.password.$dirty }">
             <input class="form-control input-lg" type="password" name="password" ng-model="password" placeholder="{{'signup.password' | translate}}" required>
             <span class="ion-key form-control-feedback"></span>
@@ -21,7 +25,6 @@
               <div ng-show="signupForm.password.$error.required" ng-message="required">{{'signup.passwordRequired' | translate}}</div>
             </div>
           </div>
-
           <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.confirmPassword.$invalid && signupForm.confirmPassword.$dirty }">
             <input password-match="password" class="form-control input-lg" type="password" name="confirmPassword" ng-model="confirmPassword" placeholder="{{'signup.confirmPassword' | translate}}">
             <span class="ion-key form-control-feedback"></span>
@@ -29,14 +32,11 @@
               <div ng-show="confirmPassword !== password" ng-message="compareTo">{{'signup.passwordMatch' | translate}}</div>
             </div>
           </div>
-
           <!-- <p class="text-center text-muted"><small>By clicking on Sign up, you agree to <a href="#">terms & conditions</a> and <a href="#">privacy policy</a></small></p> -->
           <div ng-show="alreadyExists" class="alert alert-danger">{{'signup.alreadyExists' | translate}}</div>
-
           <button type="submit" ng-disabled="signupForm.$invalid || (confirmPassword !== password) || loading"  class="btn btn-lg btn-block btn-primary">{{'signup.signup' | translate}} <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate pull-right" ng-show="loading"></span>
           </button>
           <br/>
-
           <p class="text-center text-muted">{{'signup.yesAccount' | translate}}<a href="/#/login"> {{'signup.loginNow' | translate}}</a></p>
         </form>
       </div>

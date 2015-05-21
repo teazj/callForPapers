@@ -33,21 +33,10 @@ public class AdminSessionController {
     @Autowired
     private ApplicationSettings applicationSettings;
 
-    @RequestMapping(value="/session", method=RequestMethod.POST)
-    @ResponseBody public Row postGoogleSpreadsheet(@Valid @RequestBody Row row) throws Exception {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("name", row.getFirstname());
-        map.put("talk", row.getSessionName());
-
-        Email email = new Email(row.getEmail(),"Confirmation de votre talk","confirmed.html",map);
-        emailingService.send(email);
-        return googleService.addRow(row);
-    }
-
     @RequestMapping(value="/session", method= RequestMethod.GET)
     @ResponseBody
     public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException {
-        return googleService.getRows();
+        return googleService.getRowsSession();
     }
 
     @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
