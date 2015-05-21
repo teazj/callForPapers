@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sii.domain.CustomException;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 

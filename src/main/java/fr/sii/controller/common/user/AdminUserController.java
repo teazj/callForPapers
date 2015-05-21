@@ -1,11 +1,14 @@
 package fr.sii.controller.common.user;
 
 import com.google.appengine.api.users.UserServiceFactory;
+import fr.sii.domain.admin.user.AdminUserInfo;
 import fr.sii.domain.common.Redirect;
 import fr.sii.domain.common.Uri;
-import fr.sii.domain.admin.user.AdminUserInfo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
