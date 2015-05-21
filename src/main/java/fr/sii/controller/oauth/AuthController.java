@@ -1,11 +1,14 @@
 package fr.sii.controller.oauth;
 
 import com.nimbusds.jose.JOSEException;
+import fr.sii.config.global.GlobalSettings;
+import fr.sii.domain.email.Email;
 import fr.sii.domain.token.Token;
 import fr.sii.domain.user.LoginUser;
 import fr.sii.domain.user.User;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.auth.PasswordService;
+import fr.sii.service.email.EmailingService;
 import fr.sii.service.user.UserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashMap;
 
 /**
  * Created by tmaugin on 15/05/2015.
@@ -35,6 +39,12 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GlobalSettings globalSettings;
+
+    @Autowired
+    private EmailingService emailingService;
 
     @RequestMapping(value="/login", method=RequestMethod.POST)
     @ResponseBody
@@ -54,7 +64,7 @@ public class AuthController {
 
     @RequestMapping(value="/signup", method=RequestMethod.POST)
     @ResponseBody
-    public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser loginUser) throws JOSEException, IOException {
+    public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser loginUser) throws Exception {
         Token token = null;
         User foundUser = userService.findByemail(loginUser.getEmail());
         if (foundUser != null) {
@@ -71,8 +81,12 @@ public class AuthController {
         user.setEmail(loginUser.getEmail());
         User savedUser = userService.save(user);
 
-        System.out.println(savedUser.getVerifyToken());
-        System.out.println(savedUser.getEntityId());
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("link", globalSettings.getHostname() + "#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+        System.out.println(globalSettings.getHostname() + "#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+
+        Email email = new Email(savedUser.getEmail(),"Confirmation de votre adresse email","verify.html",map);
+        emailingService.send(email);
 
         token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEntityId().toString(), savedUser.isVerified());
         return token;

@@ -9,7 +9,20 @@ angular.module('CallForPaper')
       },
       "header": {
         "login": "Se connecter",
-        "logout": "Se déconnecter"
+        "logout": "Se déconnecter",
+        "dashboard": "Dashboard"
+      },
+      "dashboard" :
+      {
+        "createNewSession" : "Créer un nouveau talk",
+        "editionTalks" : "Talks en cours d'édition",
+        "noEditionTalks" : "Vous n'avez pas de talk en cours d'édition",
+        "sendedTalks" : "Talks envoyés",
+        "draftModifiedAt" : "Brouillon modifié le ",
+        "postedAt" : "ajouté le ",
+        "noSendedTalks" : "Vous n'avez pas encore proposé de talk",
+        "verification" : "Vérification",
+        "verificationNeeded" : "Vous devez vérifier votre adresse email pour pouvoir poster un talk",
       },
       "login" : {
         "email" : "Email",
@@ -90,6 +103,7 @@ angular.module('CallForPaper')
         "sendError": "Error lors de l'envoi veuillez réessayer"
       },
       "steps": {
+        "saveAsDraft" : "Enregistrer brouillon",
         "previous": "Etape précédente",
         "next": "Etape suivante",
         "validate": "Valider",
@@ -106,8 +120,8 @@ angular.module('CallForPaper')
       },
       "admin": {
         "logout": "Se déconnecter",
-        "session": "Session",
-        "sessions": "Sessions",
+        "session": "Talk",
+        "sessions": "Talks",
         "administration": "Administration",
         "toggle": "Ouvrir le volet",
         "clearSorting": "Annuler le tri",
@@ -167,7 +181,21 @@ angular.module('CallForPaper')
       },
       "header": {
         "login": "Login",
-        "logout": "Logout"
+        "logout": "Logout",
+        "dashboard": "Dashboard"
+
+      },
+      "dashboard" :
+      {
+        "createNewSession" : "Create a new talk",
+        "editionTalks" : "Talks available for editing",
+        "noEditionTalks" : "You don't have any draft",
+        "sendedTalks" : "Talks submitted",
+        "draftModifiedAt" : "Draft modified the ",
+        "postedAt" : "submited the ",
+        "noSendedTalks" : "You don't have submitted any talk yet",
+        "verification" : "Verification",
+        "verificationNeeded" : "Yoo need to verify your e-mail to post a talk",
       },
       "login" : {
         "email" : "Email",
@@ -249,6 +277,7 @@ angular.module('CallForPaper')
         "sendError": "An error occurred during the submission, please retry."
       },
       "steps": {
+        "saveAsDraft" : "Save as draft",
         "previous": "Previous step",
         "next": "Next step",
         "validate": "Submit",
@@ -265,8 +294,8 @@ angular.module('CallForPaper')
       },
       "admin": {
         "logout": "Logout",
-        "session": "Session",
-        "sessions": "Sessions",
+        "session": "Talk",
+        "sessions": "Talks",
         "administration": "Administration",
         "toggle": "Toggle navigation",
         "clearSorting": "Clear sorting",

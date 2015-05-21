@@ -12,11 +12,22 @@ public class GlobalSettings {
     @Value("${database.loaded}")
     private String databaseLoaded;
 
+    @Value("${app.hostname}")
+    private String hostname;
+
     public String getDatabaseLoaded() {
         return databaseLoaded;
     }
 
     public void setDatabaseLoaded(String databaseLoaded) {
         this.databaseLoaded = databaseLoaded;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }

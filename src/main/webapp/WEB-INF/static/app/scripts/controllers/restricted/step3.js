@@ -8,7 +8,7 @@ angular.module('CallForPaper')
  			var hotelDate = $scope.form.hotelDate.$valid;
  			var travel = $scope.$parent.formData.help.travel;
  			var travelFrom = $scope.form.travelFrom.$valid;
- 			if(financial === "true")
+ 			if(financial === true)
  			{
  				if(!hotel && !travel)
  				{
@@ -19,7 +19,7 @@ angular.module('CallForPaper')
  					return !(hotel && !hotelDate) && !(travel && !travelFrom);
  				}
  			}
- 			else if(financial === "false")
+ 			else if(financial === false)
  			{
  				return true;
  			}

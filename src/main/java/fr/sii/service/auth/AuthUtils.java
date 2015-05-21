@@ -10,9 +10,13 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.ReadOnlyJWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import fr.sii.domain.token.Token;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
+import java.util.Map;
 
 /**
  * Created by tmaugin on 15/05/2015.
@@ -26,6 +30,24 @@ public final class AuthUtils {
 
     public static String getSubject(String authHeader) throws ParseException, JOSEException {
         return decodeToken(authHeader).getSubject();
+    }
+
+    public static JWTClaimsSet getTokenBody(HttpServletRequest httpRequest)
+    {
+        String authHeader = httpRequest.getHeader(AuthUtils.AUTH_HEADER_KEY);
+        if (StringUtils.isBlank(authHeader) || authHeader.split(" ").length != 2) {
+        } else {
+            JWTClaimsSet claimSet = null;
+            try {
+                claimSet = (JWTClaimsSet) AuthUtils.decodeToken(authHeader);
+                return claimSet;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (JOSEException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public static ReadOnlyJWTClaimsSet decodeToken(String authHeader) throws ParseException, JOSEException {

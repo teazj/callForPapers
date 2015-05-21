@@ -37,6 +37,8 @@ angular.module('CallForPaper', [
     .when('/admin', '/admin/sessions')
       .when('/admin/', '/admin/sessions')
 
+    .when('/form', '/form/')
+
     .otherwise('/login');
     $stateProvider
       .state('admin', {
@@ -96,6 +98,7 @@ angular.module('CallForPaper', [
       .state('app.dashboard', {
         url: '/dashboard',
         templateUrl: 'views/restricted/dashboard.html',
+        controller: 'DashboardCtrl',
         resolve: {
           authenticated: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().authenticated]
         }
@@ -125,34 +128,43 @@ angular.module('CallForPaper', [
 
     // Form
     .state('app.form', {
-      url: '/form',
+      url: '/form/:id',
       views: {
         '': {
-          templateUrl: 'views/form/form.html',
+          templateUrl: 'views/restricted/form/form.html',
           controller: 'FormCtrl',
           resolve: {
             verified: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().verified]
           }
         },
         '@app.form': {
-          templateUrl: 'views/form/step1.html',
+          templateUrl: 'views/restricted/form/step1.html',
           controller: 'Step1Ctrl'
         }
       },
     })
 
     .state('app.form.step2', {
-        templateUrl: 'views/form/step2.html',
+        templateUrl: 'views/restricted/form/step2.html',
         controller: 'Step2Ctrl'
       })
       .state('app.form.step3', {
-        templateUrl: 'views/form/step3.html',
+        templateUrl: 'views/restricted/form/step3.html',
         controller: 'Step3Ctrl'
       })
       .state('app.form.result', {
-        templateUrl: 'views/form/result.html',
+        templateUrl: 'views/restricted/form/result.html',
         controller: 'ResultCtrl'
       })
+
+    .state('app.session', {
+      url: '/session/:id',
+      templateUrl: 'views/restricted/session.html',
+      controller: 'RestrictedSessionCtrl',
+      resolve: {
+        verified: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().verified]
+      }
+    })
 
     .state('403', {
         url: '/403',

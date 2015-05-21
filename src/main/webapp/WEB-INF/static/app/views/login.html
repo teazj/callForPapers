@@ -1,3 +1,8 @@
+<style>
+html, body {
+background-color: rgba(237, 237, 237, 1);
+}
+</style>
 <div class="container">
   <div class="row">
     <div class="center-form panel col-md-6 col-md-offset-3">
@@ -8,7 +13,6 @@
             <input class="form-control input-lg" type="text" name="email" ng-model="email" placeholder="{{'login.email' | translate}}" required autofocus>
             <span class="ion-at form-control-feedback"></span>
           </div>
-
           <div class="form-group has-feedback">
             <input class="form-control input-lg" type="password" name="password" ng-model="password" placeholder="{{'login.password' | translate}}" required>
             <span class="ion-key form-control-feedback"></span>
@@ -16,29 +20,24 @@
           <div ng-show="badCredentials" class="alert alert-danger">{{'login.badCredentials' | translate}}</div>
           <button type="submit" ng-disabled="loginForm.$invalid || loading" class="btn btn-lg  btn-block btn-success">{{'login.login' | translate}} <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate pull-right" ng-show="loading"></span>
           </button>
-
           <br/>
-
-<!--           <p class="text-center">
+          <!--           <p class="text-center">
             <a href="#">Forgot your password?</a>
           </p> -->
-
           <p class="text-center text-muted">
             <span>{{'login.noAccount' | translate}} <a href="/#/signup">{{'login.signup' | translate}}</a></span>
           </p>
-
           <div class="signup-or-separator">
             <h6 class="text-center">{{'login.or' | translate}}</h6>
             <hr>
           </div>
         </form>
-
         <div ng-show="alreadyLinked" class="alert alert-danger">{{'login.alreadyLinked' | translate}}</div>
         <button class="btn btn-block btn-google-plus" ng-disabled="loading" ng-click="authenticate('google')">
-          <span class="ion-social-googleplus"></span> {{'login.signGoogle' | translate}}
+        <span class="ion-social-googleplus"></span> {{'login.signGoogle' | translate}}
         </button>
         <button class="btn btn-block btn-github" ng-disabled="loading" ng-click="authenticate('github')">
-          <i class="ion-social-github"></i> {{'login.signGithub' | translate}}
+        <i class="ion-social-github"></i> {{'login.signGithub' | translate}}
         </button>
       </div>
     </div>

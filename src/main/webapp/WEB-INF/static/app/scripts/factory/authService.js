@@ -1,5 +1,5 @@
 angular.module('CallForPaper')
-  .factory('AuthService', ['$q', 'AdminUser', '$window', '$state', function($q, AdminUser, $window, $state) {
+  .factory('AuthService', ['$q', 'AdminUser', '$window', '$state', '$auth', 'jwtHelper', function($q, AdminUser, $window, $state, $auth, jwtHelper) {
     var authService = {};
     authService.user = null;
 
@@ -120,6 +120,23 @@ angular.module('CallForPaper')
         }
       }
       return deferred.promise;
+    }
+
+    /**
+     * Verify if the user is currently logged and has confirmed his email (or logged with provider)
+     */
+    authService.isVerified = function() {
+      if (!$auth.isAuthenticated()) {
+        return false;
+      } else {
+        if (jwtHelper.isTokenExpired($auth.getToken())) {
+          return false;
+        } else if($auth.getPayload().verified === false){
+          return false;
+        } else {
+          return true;
+        }
+      }
     }
     /**
      * Verify if the user is currently logged

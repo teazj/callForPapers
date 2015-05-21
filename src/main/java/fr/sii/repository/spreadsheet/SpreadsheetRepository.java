@@ -15,5 +15,22 @@ public interface SpreadsheetRepository {
     Row addRow(Row row) throws IOException, ServiceException;
     List<Row> getRows() throws IOException, ServiceException;
     Row getRow(String added) throws IOException, ServiceException;
+
+    Row getRow(String added, Long userId) throws IOException, ServiceException;
+
+    List<Row> getRowsSession() throws IOException, ServiceException;
+
+    List<Row> getRowsSession(Long userId) throws IOException, ServiceException;
+
+    List<Row> getRowsDraft() throws IOException, ServiceException;
+
+    List<Row> getRowsDraft(Long userId) throws IOException, ServiceException;
+
     List<Row> deleteRows() throws IOException, ServiceException;
+
+    void deleteRowDraft(String added, Long userId) throws IOException, ServiceException;
+
+    Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException;
+
+    Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException;
 }

@@ -9,15 +9,16 @@ import com.google.gdata.client.spreadsheet.CellQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.docs.DocumentListEntry;
-import com.google.gdata.data.spreadsheet.CellEntry;
-import com.google.gdata.data.spreadsheet.CellFeed;
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.google.gdata.data.spreadsheet.WorksheetEntry;
+import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
+import fr.sii.domain.spreadsheet.Row;
+import fr.sii.domain.spreadsheet.RowDraft;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,5 +178,46 @@ public class SpreadsheetConnector {
             }
         }
         return result;
+    }
+
+    public ListEntry rowToListEntry(Row row)
+    {
+        ListEntry listEntry = new ListEntry();
+        java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+        for (java.lang.reflect.Field field : fields) {
+            try {
+                Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
+                String key = field.getName().toString();
+                Object value = method.invoke(row);
+                if (value != null) {
+                    listEntry.getCustomElements().setValueLocal(key, value.toString());
+                }
+            } catch (NoSuchMethodException e) {
+                //e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                //e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                //e.printStackTrace();
+            }
+        }
+        return listEntry;
+    }
+    public Row listEntryToRow(ListEntry row)
+    {
+        Row rowModel = new RowDraft();
+        for (String tag : row.getCustomElements().getTags()) {
+            java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+            try {
+                Method method = Row.class.getMethod("set" + tag.substring(0, 1).toUpperCase() + tag.substring(1), String.class);
+                method.invoke(rowModel, row.getCustomElements().getValue(tag));
+            } catch (NoSuchMethodException e) {
+                //e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                //e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                //e.printStackTrace();
+            }
+        }
+        return rowModel;
     }
 }
