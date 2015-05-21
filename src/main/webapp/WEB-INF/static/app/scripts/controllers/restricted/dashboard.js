@@ -30,7 +30,6 @@ angular.module('CallForPaper')
 				id: added
 			}, function() {
 				queryDraft();
-				console.log("ayai");
 			});
 		}
 

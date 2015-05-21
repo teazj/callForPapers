@@ -75,6 +75,9 @@ angular.module('CallForPaper')
 									case "track":
 										if (draft[key] !== null) $scope.formData.session.track = draft[key];
 										break;
+									case "type":
+										if (draft[key] !== null) $scope.formData.session.type = draft[key];
+										break;
 									case "travel":
 										if (draft[key] !== null) $scope.formData.help.travel = draft[key];
 										break;

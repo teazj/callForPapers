@@ -1,4 +1,13 @@
 <div class="col-lg-offset-2 col-lg-8">
+	<div class="form-group" bs-has>
+		<label class="control-label" for="track">{{'step2.type' | translate}}</label>
+		<div>
+			<select ng-model="formData.session.type" id="type" name="type" required class="form-control">
+				<option value="conference">{{'step2.types.conference' | translate}}</option>
+				<option value="codelab">{{'step2.types.codelab' | translate}}</option>
+			</select>
+		</div>
+	</div>
 	<div class="form-group" bs-has ng-init="formData.steps.currentStep = 2">
 		<label class="control-label" for="sessionName">{{'step2.name' | translate}}</label>
 		<div>
@@ -35,7 +44,6 @@
 				<option value="mobile">{{'step2.tracks.mobile' | translate}}</option>
 				<option value="web">{{'step2.tracks.web' | translate}}</option>
 				<option value="discovery">{{'step2.tracks.discovery' | translate}}</option>
-				<option value="codelab">{{'step2.tracks.codelab' | translate}}</option>
 			</select>
 		</div>
 	</div>
@@ -58,8 +66,8 @@
 		</a>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right">
-        <a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
-            Enregistrer en brouillon <span class="glyphicon glyphicon-floppy-disk pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-floppy-disk' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
-        </a>
-    </div>
+		<a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
+			Enregistrer en brouillon <span class="glyphicon glyphicon-floppy-disk pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-floppy-disk' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
+		</a>
+	</div>
 </div>

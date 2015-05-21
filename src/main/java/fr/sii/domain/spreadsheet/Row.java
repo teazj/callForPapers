@@ -19,6 +19,7 @@ public interface Row {
     String description = null;
     String references = null;
     Integer difficulty = null;
+    String type = null;
     String track = null;
     String coSpeaker = null;
     Boolean financial = null;
@@ -81,6 +82,10 @@ public interface Row {
     String getTrack();
 
     void setTrack(String track);
+
+    String getType();
+
+    void setType(String track);
 
     String getCoSpeaker();
 

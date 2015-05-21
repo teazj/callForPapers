@@ -64,6 +64,12 @@
 			<div class="row">
 				<div class="col-xs-12 col-md-6">
 					<div class="form-group">
+						<label class="control-label" for="type">{{'step2.type' | translate}}</label>
+						<div class="">
+							<input readonly type="text" name="type" class="form-control" ng-value="'step2.types.' + session.type | translate" id="type">
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="control-label col-md-6" for="sessionName">{{'step2.name' | translate}}</label>
 						<div class="">
 							<input readonly type="text" name="sessionName" class="form-control" ng-model="session.sessionName" id="sessionName">
@@ -72,7 +78,7 @@
 					<div class="form-group">
 						<label class="control-label" for="description">{{'step2.description' | translate}}</label>
 						<div class="">
-							<textarea readonly name="description" class="form-control" ng-model="session.description" id="description" rows="11"></textarea>
+							<textarea readonly name="description" class="form-control" ng-model="session.description" id="description" rows="10"></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -98,7 +104,7 @@
 					<div class="form-group">
 						<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
 						<div class="">
-							<textarea readonly class="form-control" name="coSpeaker" id="coSpeaker" rows="15" ng-model="session.coSpeaker"></textarea>
+							<textarea readonly class="form-control" name="coSpeaker" id="coSpeaker" rows="18" ng-model="session.coSpeaker"></textarea>
 						</div>
 					</div>
 				</div>
