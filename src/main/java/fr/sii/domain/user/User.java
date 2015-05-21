@@ -7,7 +7,6 @@ import org.datanucleus.api.jpa.annotations.Extension;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.stereotype.Component;
 
-import javax.jdo.annotations.Unique;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

@@ -9,7 +9,6 @@ import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.spreadsheet.Row;
-import fr.sii.domain.spreadsheet.RowDraft;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
