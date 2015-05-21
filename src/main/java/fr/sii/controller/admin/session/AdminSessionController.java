@@ -6,7 +6,6 @@ package fr.sii.controller.admin.session;
 
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
-import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.spreadsheet.SpreadsheetService;
