@@ -72,7 +72,6 @@ public class GoogleAuthController {
                             .setClientAuthentication(
                                     new BasicAuthentication(client_id, client_secret))
                             .execute();
-            System.out.println("Access token: " + response.getAccessToken());
 
             HttpTransport httpTransport = new UrlFetchTransport();
             JsonFactory jsonFactory = new JacksonFactory();
@@ -87,10 +86,6 @@ public class GoogleAuthController {
                     .build();
 
             Person profile = service.people().get("me").execute();
-            if(profile.getEmails().size() > 0)
-            {
-                System.out.println("Email: " + profile.getEmails().get(0).getValue());
-            }
 
             String email = profile.getEmails().get(0).getValue();
             String userId = profile.getId();

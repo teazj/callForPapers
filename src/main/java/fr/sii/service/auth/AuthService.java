@@ -29,7 +29,7 @@ public class AuthService {
                 UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
         Token token = null;
-        User user = userService.findByProvider(User.Provider.GOOGLE, providerId);
+        User user = userService.findByProvider(provider, providerId);
 
         // If user is already signed in then link accounts.
         User userToSave;
@@ -37,7 +37,7 @@ public class AuthService {
         if (StringUtils.isNotBlank(authHeader)) {
             if (user != null) {
                 res.setStatus(HttpServletResponse.SC_CONFLICT);
-                res.getWriter().write(String.format(CONFLICT_MSG, User.Provider.GOOGLE.capitalize()));
+                res.getWriter().write(String.format(CONFLICT_MSG, provider.capitalize()));
                 res.getWriter().flush();
                 res.getWriter().close();
                 return token;
