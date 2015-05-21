@@ -57,6 +57,7 @@ app.eventName=DevFest 2015 // edit here
 app.community=GDG Nantes // edit here
 app.date=06/11/2015 // edit here
 app.releasedate=01/09/2015 // edit here
+app.hostname=http://aesthetic-fx-89513.appspot.com/ // edit here
 ```
 
 ## Deployment :

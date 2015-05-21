@@ -1,3 +1,28 @@
+<a name"rev-82"></a>
+### rev-82 (2015-05-21)
+
+
+#### Bug Fixes
+
+* use right provider parameter not hardcoded wrong one ([7c549577](https://github.com/SII-Nantes/callForPaper/commit/7c549577))
+* misspelling in configure-appengine-web-app.sh ([be23c646](https://github.com/SII-Nantes/callForPaper/commit/be23c646))
+* remember steps, show phone error message ([aa103a22](https://github.com/SII-Nantes/callForPaper/commit/aa103a22))
+* utils.js loaded with grunt build ([0458965c](https://github.com/SII-Nantes/callForPaper/commit/0458965c))
+* minification compatibility ([1d8ec1d0](https://github.com/SII-Nantes/callForPaper/commit/1d8ec1d0))
+* update grunt-contrib-imagemin for linux compatibility ([5ea82f00](https://github.com/SII-Nantes/callForPaper/commit/5ea82f00))
+* load utils.js/flags.png even with grunt dist ([04c9d777](https://github.com/SII-Nantes/callForPaper/commit/04c9d777))
+
+
+#### Features
+
+* new design for emails ([f733703c](https://github.com/SII-Nantes/callForPaper/commit/f733703c))
+* add "type" field for session ([65888ec7](https://github.com/SII-Nantes/callForPaper/commit/65888ec7))
+* add save as draft ([a6ea2fe9](https://github.com/SII-Nantes/callForPaper/commit/a6ea2fe9))
+* disable signup button while registering ([8ae16c59](https://github.com/SII-Nantes/callForPaper/commit/8ae16c59))
+* oauth authentificationwith Google & Github ([e3395824](https://github.com/SII-Nantes/callForPaper/commit/e3395824))
+* add args to grunt publish command ([b38710df](https://github.com/SII-Nantes/callForPaper/commit/b38710df))
+
+
 <a name"rev-69"></a>
 ### rev-69 (2015-05-12)
 
