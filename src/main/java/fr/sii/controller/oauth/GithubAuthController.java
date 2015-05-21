@@ -57,8 +57,6 @@ public class GithubAuthController {
 
         Token token = null;
 
-        System.out.println(info.get("code"));
-
         try {
             TokenResponse response =
                     new AuthorizationCodeTokenRequest(

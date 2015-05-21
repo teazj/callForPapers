@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Created by tmaugin on 15/05/2015.
@@ -29,6 +30,8 @@ import java.util.HashMap;
 @Controller
 @RequestMapping(value="/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
+
+    private static Logger logger = Logger.getLogger(AuthController.class.getName());
 
     public static final String CONFLICT_MSG = "There is already a %s account that belongs to you",
             CONFLICT_MSG_EMAIL = "There is already account associated with this email",
@@ -84,7 +87,7 @@ public class AuthController {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("link", globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
         map.put("hostname", globalSettings.getHostname());
-        System.out.println(globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+        logger.info(globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
 
         Email email = new Email(savedUser.getEmail(),"Confirmation de votre adresse e-mail","verify.html",map);
         emailingService.send(email);
