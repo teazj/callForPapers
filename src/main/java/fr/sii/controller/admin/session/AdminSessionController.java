@@ -45,9 +45,4 @@ public class AdminSessionController {
     public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException {
         return googleService.getRow(added);
     }
-
-    @RequestMapping(value="/session", method=RequestMethod.DELETE)
-    @ResponseBody public List<Row> deleteGoogleSpreadsheet() throws IOException, ServiceException {
-        return googleService.deleteRows();
-    }
 }

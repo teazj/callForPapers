@@ -6,6 +6,7 @@ package fr.sii.controller.restricted.session;
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.config.application.ApplicationSettings;
+import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.NotVerifiedException;
 import fr.sii.domain.email.Email;
 import fr.sii.domain.spreadsheet.Row;
@@ -37,6 +38,9 @@ public class SessionController {
     private EmailingService emailingService;
 
     @Autowired
+    private GlobalSettings globalSettings;
+
+    @Autowired
     private ApplicationSettings applicationSettings;
 
     /**
@@ -54,8 +58,9 @@ public class SessionController {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", row.getFirstname());
         map.put("talk", row.getSessionName());
+        map.put("hostname", globalSettings.getHostname());
 
-        Email email = new Email(row.getEmail(),"Confirmation de votre talk","confirmed.html",map);
+        Email email = new Email(row.getEmail(),"Confirmation de votre session","confirmed.html",map);
         emailingService.send(email);
         return googleService.addRow(row);
     }
@@ -100,8 +105,9 @@ public class SessionController {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", row.getFirstname());
         map.put("talk", row.getSessionName());
+        map.put("hostname", globalSettings.getHostname());
 
-        Email email = new Email(row.getEmail(),"Confirmation de votre talk","confirmed.html",map);
+        Email email = new Email(row.getEmail(),"Confirmation de votre session","confirmed.html",map);
         emailingService.send(email);
         return googleService.putRowDraftToSession(row, row.getUserId(), Long.parseLong(added));
     }
