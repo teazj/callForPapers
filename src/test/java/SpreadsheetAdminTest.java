@@ -80,6 +80,7 @@ public class SpreadsheetAdminTest {
         row.setReferences("refs");
         row.setSessionName("session name");
         row.setSocial("www.thomas-maugin.fr, https://github.com/Thom-x");
+        row.setType("conference");
         row.setTrack("web");
         row.setTravel(false);
         row.setDraft(false);
@@ -114,6 +115,7 @@ public class SpreadsheetAdminTest {
         assertEquals("refs",returnedRow.getReferences());
         assertEquals("session name",returnedRow.getSessionName());
         assertEquals("www.thomas-maugin.fr, https://github.com/Thom-x",returnedRow.getSocial());
+        assertEquals("conference",returnedRow.getType());
         assertEquals("web",returnedRow.getTrack());
         assertEquals(false,returnedRow.getTravel());
         assertNotEquals(null, returnedRow.getAdded());
@@ -151,6 +153,7 @@ public class SpreadsheetAdminTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +

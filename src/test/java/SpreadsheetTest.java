@@ -106,6 +106,7 @@ public class SpreadsheetTest {
         row.setReferences("refs");
         row.setSessionName("session name");
         row.setSocial("www.thomas-maugin.fr, https://github.com/Thom-x");
+        row.setType("conference");
         row.setTrack("web");
         row.setTravel(false);
         row.setDraft(false);
@@ -141,6 +142,7 @@ public class SpreadsheetTest {
         assertEquals("session name",returnedRow.getSessionName());
         assertEquals("www.thomas-maugin.fr, https://github.com/Thom-x",returnedRow.getSocial());
         assertEquals("web",returnedRow.getTrack());
+        assertEquals("conference",returnedRow.getType());
         assertEquals(false,returnedRow.getTravel());
         assertNotEquals(null, returnedRow.getAdded());
         assertEquals(false, returnedRow.getDraft());
@@ -189,6 +191,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -224,6 +227,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -253,6 +257,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -318,6 +323,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -347,6 +353,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -378,6 +385,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"5\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -458,6 +466,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -504,6 +513,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -624,6 +634,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -670,6 +681,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -736,6 +748,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -768,6 +781,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -801,6 +815,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -833,6 +848,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -874,6 +890,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -904,6 +921,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -934,6 +952,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
@@ -984,6 +1003,7 @@ public class SpreadsheetTest {
                         "\"description\" : \"description\",\n" +
                         "\"references\" : \"refs\",\n" +
                         "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
                         "\"track\" : \"web\",\n" +
                         "\"coSpeaker\" : \"moi, toi\",\n" +
                         "\"financial\" : \"true\",\n" +
