@@ -1,6 +1,8 @@
 package fr.sii.config;
 
-import fr.sii.domain.NotVerifiedException;
+import fr.sii.domain.exception.ForbiddenException;
+import fr.sii.domain.exception.NotFoundException;
+import fr.sii.domain.exception.NotVerifiedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -25,6 +27,24 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(NotVerifiedException.class)
     public ResponseEntity<Object> handleException(NotVerifiedException e) {
+        ErrorResponse resp = new ErrorResponse(e);
+        resp.setStatus(HttpStatus.FORBIDDEN.value());
+        resp.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
+        resp.setMessage(e.getMessage());
+        return new ResponseEntity<Object>(resp, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleException(NotFoundException e) {
+        ErrorResponse resp = new ErrorResponse(e);
+        resp.setStatus(HttpStatus.NOT_FOUND.value());
+        resp.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+        resp.setMessage(e.getMessage());
+        return new ResponseEntity<Object>(resp, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<Object> handleException(ForbiddenException e) {
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.FORBIDDEN.value());
         resp.setError(HttpStatus.FORBIDDEN.getReasonPhrase());

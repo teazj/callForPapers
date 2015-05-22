@@ -7,7 +7,9 @@ import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.config.application.ApplicationSettings;
 import fr.sii.config.global.GlobalSettings;
-import fr.sii.domain.NotVerifiedException;
+import fr.sii.domain.exception.ForbiddenException;
+import fr.sii.domain.exception.NotFoundException;
+import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.domain.email.Email;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowDraft;
@@ -80,7 +82,7 @@ public class SessionController {
 
     @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
     @ResponseBody
-    public Row getGoogleSpreadsheet(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException {
+    public Row getGoogleSpreadsheet(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -141,7 +143,7 @@ public class SessionController {
 
     @RequestMapping(value="/draft/{added}", method= RequestMethod.GET)
     @ResponseBody
-    public Row getGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException {
+    public Row getGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -153,7 +155,7 @@ public class SessionController {
     }
 
     @RequestMapping(value="/draft/{added}", method=RequestMethod.DELETE)
-    @ResponseBody public void deleteGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException {
+    @ResponseBody public void deleteGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {

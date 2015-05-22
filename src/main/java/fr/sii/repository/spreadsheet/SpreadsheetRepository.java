@@ -2,6 +2,8 @@ package fr.sii.repository.spreadsheet;
 
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
+import fr.sii.domain.exception.ForbiddenException;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 
 import java.io.IOException;
@@ -14,9 +16,9 @@ public interface SpreadsheetRepository {
     void login(SpreadsheetSettings s) throws ServiceException, IOException;
     Row addRow(Row row) throws IOException, ServiceException;
     List<Row> getRows() throws IOException, ServiceException;
-    Row getRow(String added) throws IOException, ServiceException;
+    Row getRow(String added) throws IOException, ServiceException, NotFoundException;
 
-    Row getRow(String added, Long userId) throws IOException, ServiceException;
+    Row getRow(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException;
 
     List<Row> getRowsSession() throws IOException, ServiceException;
 
@@ -28,9 +30,9 @@ public interface SpreadsheetRepository {
 
     List<Row> deleteRows() throws IOException, ServiceException;
 
-    void deleteRowDraft(String added, Long userId) throws IOException, ServiceException;
+    void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException;
 
-    Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException;
+    Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException;
 
-    Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException;
+    Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException;
 }

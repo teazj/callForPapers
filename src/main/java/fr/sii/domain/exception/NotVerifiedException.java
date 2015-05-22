@@ -1,4 +1,4 @@
-package fr.sii.domain;
+package fr.sii.domain.exception;
 
 /**
  * Created by tmaugin on 20/05/2015.

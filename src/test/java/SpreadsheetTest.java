@@ -23,7 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -42,9 +41,9 @@ public class SpreadsheetTest {
     private fr.sii.service.spreadsheet.SpreadsheetService spreadsheetService;
 
     @Autowired
-    WebApplicationContext webApplicationContext;
+    private WebApplicationContext webApplicationContext;
 
-    String secretToken = "secretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTest";
+    private String secretToken = "secretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTest";
 
     @Before
     public void setUp() {
@@ -539,12 +538,22 @@ public class SpreadsheetTest {
                 .when()
                 .get("/api/restricted/session/" + added.toString())
                 .then()
-                .statusCode(200)
-                .body(isEmptyString());
+                .statusCode(403);
     }
 
     @Test
-    public void test18_getRowNotVerified() {
+    public void test18_getRowNotFound() {
+                given()
+                .contentType("application/json")
+                .header(getHeaderOtherAccount())
+                .when()
+                .get("/api/restricted/session/1")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void test19_getRowNotVerified() {
         given()
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
@@ -555,7 +564,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test19_getRowNotAuthenticated() {
+    public void test20_getRowNotAuthenticated() {
         given()
                 .contentType("application/json")
                 .when()
@@ -565,7 +574,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test20_getRowsDraft() {
+    public void test21_getRowsDraft() {
         deleteRows();
         test2_addRowDraftPass();
         test1_addRowPass();
@@ -581,7 +590,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test21_getRowsDraftOtherAccount() {
+    public void test22_getRowsDraftOtherAccount() {
         deleteRows();
         test2_addRowDraftPass();
         test1_addRowPass();
@@ -597,7 +606,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test22_getRowsDraftNotVerified() {
+    public void test23_getRowsDraftNotVerified() {
         given()
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
@@ -609,7 +618,7 @@ public class SpreadsheetTest {
 
 
     @Test
-    public void test23_getRowsDraftNotAuthenticated() {
+    public void test24_getRowsDraftNotAuthenticated() {
         given()
                 .contentType("application/json")
                 .when()
@@ -619,7 +628,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test24_getRowDraft() {
+    public void test25_getRowDraft() {
         MockMvcResponse response = given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -666,7 +675,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test25_getRowDraftOtherAccount() {
+    public void test26_getRowDraftOtherAccount() {
         MockMvcResponse response = given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -707,12 +716,22 @@ public class SpreadsheetTest {
                 .when()
                 .get("/api/restricted/draft/" + added.toString())
                 .then()
-                .statusCode(200)
-                .body(isEmptyString());
+                .statusCode(403);
     }
 
     @Test
-    public void test26_getRowDraftNotVerified() {
+    public void test27_getRowDraftNotFound() {
+        given()
+                .header(getHeaderOtherAccount())
+                .contentType("application/json")
+                .when()
+                .get("/api/restricted/draft/1")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void test28_getRowDraftNotVerified() {
         given()
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
@@ -723,7 +742,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test27_getRowDraftNotAuthenticated() {
+    public void test29_getRowDraftNotAuthenticated() {
         given()
                 .contentType("application/json")
                 .when()
@@ -733,7 +752,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test28_putRow() {
+    public void test30_putRow() {
         MockMvcResponse response = given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -800,7 +819,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test29_putRowOtherAccount() {
+    public void test31_putRowOtherAccount() {
         MockMvcResponse response = given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -860,21 +879,43 @@ public class SpreadsheetTest {
                 .when()
                 .put("/api/restricted/session/" + added.toString())
                 .then()
-                .statusCode(200)
-                .body(isEmptyString());
-
-        given()
-                .header(getHeader())
-                .contentType("application/json")
-                .when()
-                .get("/api/restricted/draft/" + added.toString())
-                .then()
-                .statusCode(200)
-                .body("email", Matchers.is("email@email.fr"));
+                .statusCode(403);
     }
 
     @Test
-    public void test30_putRowNotVerified() {
+    public void test32_putRowNotFound() {
+        given()
+                .contentType("application/json")
+                .header(getHeaderOtherAccount())
+                .body("{\n" +
+                        "\"email\" : \"emailOtherAccount@email.fr\",\n" +
+                        "\"name\" : \"Maugin2\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .put("/api/restricted/session/1")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void test33_putRowNotVerified() {
         given()
                 .contentType("application/json")
                 .header(getHeaderNotVerified())
@@ -906,7 +947,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test31_putRowNotAuthenticated() {
+    public void test34_putRowNotAuthenticated() {
         given()
                 .contentType("application/json")
                 .body("{\n" +
@@ -937,7 +978,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test32_deleteDraft() {
+    public void test35_deleteDraft() {
         MockMvcResponse response = given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -983,12 +1024,21 @@ public class SpreadsheetTest {
                 .when()
                 .get("/api/restricted/draft/" + added.toString())
                 .then()
-                .statusCode(200)
-                .body(isEmptyString());
+                .statusCode(404);
     }
 
     @Test
-    public void test33_deleteDraftOtherAccount() {
+    public void test36_deleteDraftNotFound() {
+        given()
+                .contentType("application/json")
+                .header(getHeader())
+                .delete("/api/restricted/draft/1")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void test37_deleteDraftOtherAccount() {
         MockMvcResponse response = given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -1026,7 +1076,7 @@ public class SpreadsheetTest {
                 .header(getHeaderOtherAccount())
                 .delete("/api/restricted/draft/" + added.toString())
                 .then()
-                .statusCode(200);
+                .statusCode(403);
 
         given()
                 .header(getHeader())
@@ -1034,12 +1084,11 @@ public class SpreadsheetTest {
                 .when()
                 .get("/api/restricted/draft/" + added.toString())
                 .then()
-                .statusCode(200)
-                .body("userId",Matchers.is(1));
+                .statusCode(200);
     }
 
     @Test
-    public void test34_deleteDraftNotVerified() {
+    public void test38_deleteDraftNotVerified() {
         given()
                 .contentType("application/json")
                 .header(getHeaderNotVerified())
@@ -1049,7 +1098,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test35_deleteDraftNotAuthorized() {
+    public void test39_deleteDraftNotAuthorized() {
         given()
                 .contentType("application/json")
                 .delete("/api/restricted/draft/1")

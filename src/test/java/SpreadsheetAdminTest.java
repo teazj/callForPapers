@@ -181,6 +181,16 @@ public class SpreadsheetAdminTest {
                 .body("name", Matchers.is("Maugin1"));
     }
 
+    @Test
+    public void test4_getRowNotFound() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/api/admin/session/1")
+                .then()
+                .statusCode(404);
+    }
+
     public void deleteRows()
     {
         try {
