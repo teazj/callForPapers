@@ -1,6 +1,7 @@
 package fr.sii.controller.admin.comment;
 
 import fr.sii.domain.admin.comment.AdminComment;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.user.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +43,14 @@ public class AdminCommentController {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    @ResponseBody public AdminComment putComment(@PathVariable Long id, @Valid @RequestBody AdminComment adminComment){
+    @ResponseBody public AdminComment putComment(@PathVariable Long id, @Valid @RequestBody AdminComment adminComment) throws NotFoundException {
         adminComment.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         return adminCommentService.put(id, adminComment);
     }
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     @ResponseBody
-    public AdminComment getComment(@PathVariable Long id) {
+    public AdminComment getComment(@PathVariable Long id) throws NotFoundException {
         return adminCommentService.findOne(id);
     }
 
@@ -67,7 +68,7 @@ public class AdminCommentController {
 
     @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
     @ResponseBody
-    public void deleteComment(@PathVariable Long id) {
+    public void deleteComment(@PathVariable Long id) throws NotFoundException {
         adminCommentService.delete(id);
     }
 }

@@ -12,7 +12,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.nimbusds.jose.JOSEException;
 import fr.sii.config.github.GithubSettings;
-import fr.sii.domain.CustomException;
+import fr.sii.domain.exception.CustomException;
 import fr.sii.domain.token.Token;
 import fr.sii.domain.user.User;
 import fr.sii.service.auth.AuthService;

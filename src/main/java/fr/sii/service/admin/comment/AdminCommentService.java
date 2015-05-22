@@ -2,6 +2,7 @@ package fr.sii.service.admin.comment;
 
 import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.user.AdminUser;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.repository.admin.comment.AdminCommentRepository;
 import fr.sii.service.admin.user.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,34 +29,39 @@ public class AdminCommentService {
         List<AdminComment> nrs = new ArrayList<>();
         for (AdminComment r : rs)
         {
-            AdminUser u = adminUserService.findOne(r.getUserId());
-            r.setUser(u);
-            nrs.add(r);
+            try {
+                AdminUser u = adminUserService.findOne(r.getUserId());
+                r.setUser(u);
+                nrs.add(r);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return nrs;
     }
-    public AdminComment matchUser(List<AdminComment> rs)
-    {
-        List<AdminComment> nrs = new ArrayList<>();
+    public AdminComment matchUser(List<AdminComment> rs) throws NotFoundException {
         if(rs.size() > 0)
         {
             AdminComment r = rs.get(0);
-            AdminUser u = adminUserService.findOne(r.getUserId());
-            r.setUser(u);
+            try {
+                AdminUser u = adminUserService.findOne(r.getUserId());
+                r.setUser(u);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
             return r;
         }
-        return null;
+        throw new NotFoundException("Comment not found");
     }
 
-    public AdminComment matchUser(AdminComment r)
-    {
-        if(r != null)
-        {
+    public AdminComment matchUser(AdminComment r){
+        try {
             AdminUser u = adminUserService.findOne(r.getUserId());
             r.setUser(u);
-            return r;
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
-        return null;
+        return r;
     }
 
     public List<AdminComment> findAll()
@@ -68,41 +74,31 @@ public class AdminCommentService {
         adminCommentRepository.deleteAll();
     }
 
-    public AdminComment save(AdminComment r)
-    {
+    public AdminComment save(AdminComment r) {
         if(r.getAdded() == null)
         {
             r.setAdded(new Date());
         }
-        AdminComment s = adminCommentRepository.save(r);
-        return matchUser(s);
+        return matchUser(adminCommentRepository.save(r));
     }
 
-    public AdminComment put(Long id,AdminComment r)
-    {
-        AdminComment pr = findOne(id);
-        if(pr != null)
+    public AdminComment put(Long id,AdminComment r) throws NotFoundException {
+        if(r.getAdded() == null)
         {
-            if(r.getAdded() == null)
-            {
-                r.setAdded(new Date());
-            }
-            adminCommentRepository._delete(id);
-            r.setEntityId(id);
-            return matchUser(adminCommentRepository.save(r));
+            r.setAdded(new Date());
         }
-        return null;
+        delete(id);
+        r.setEntityId(id);
+        return matchUser(adminCommentRepository.save(r));
     }
 
-    public void delete(Long id)
-    {
+    public void delete(Long id) throws NotFoundException {
+        findOne(id);
         adminCommentRepository._delete(id);
     }
 
-    public AdminComment findOne(Long id)
-    {
-        List<AdminComment> rs = adminCommentRepository.findByEntityId(id);
-        return matchUser(rs);
+    public AdminComment findOne(Long id) throws NotFoundException {
+        return matchUser(adminCommentRepository.findByEntityId(id));
     }
 
     public List<AdminComment> findByUserId(Long id)

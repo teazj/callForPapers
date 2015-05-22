@@ -8,6 +8,8 @@ import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
+import fr.sii.domain.exception.ForbiddenException;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 
 import java.io.IOException;
@@ -155,7 +157,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public Row getRow(String added) throws IOException, ServiceException {
+    public Row getRow(String added) throws IOException, ServiceException, NotFoundException {
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -185,11 +187,11 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         if(rows.size() > 0)
             return rows.get(0);
         else
-            return null;
+            throw new NotFoundException("Session not found");
     }
 
     @Override
-    public Row getRow(String added, Long userId) throws IOException, ServiceException {
+    public Row getRow(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException {
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -213,13 +215,19 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         for (ListEntry row : listFeed.getEntries()) {
             // Iterate over the remaining columns, and print each cell value
             Row rowModel = spreadsheetConnector.listEntryToRow(row);
-            if(rowModel.getAdded().toString().equals(added) && rowModel.getUserId().toString().equals(userId.toString()))
-                rows.add(rowModel);
+            if(rowModel.getAdded().toString().equals(added))
+            {
+                if(rowModel.getUserId().toString().equals(userId.toString()))
+                    rows.add(rowModel);
+                else
+                    throw new ForbiddenException("Forbidden");
+            }
+
         }
         if(rows.size() > 0)
             return rows.get(0);
         else
-            return null;
+            throw new NotFoundException("Session not found");
     }
 
     @Override
@@ -371,7 +379,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException {
+    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException {
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -394,17 +402,23 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         for (ListEntry row : listFeed.getEntries()) {
             // Iterate over the remaining columns, and print each cell value
             Row rowModel = spreadsheetConnector.listEntryToRow(row);
-            if(rowModel.getAdded().toString().equals(added) && rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+            if(rowModel.getAdded().toString().equals(added) && rowModel.getDraft())
             {
-                row.delete();
-                return;
+                if(rowModel.getUserId().toString().equals(userId.toString()))
+                {
+                    row.delete();
+                    return;
+                }
+                else
+                    throw new ForbiddenException("Forbidden");
             }
+
         }
-        return;
+        throw new NotFoundException("Draft not found");
     }
 
     @Override
-    public Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException {
+    public Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException {
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -427,35 +441,40 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         for (ListEntry row : listFeed.getEntries()) {
             // Iterate over the remaining columns, and print each cell value
             Row rowModel = spreadsheetConnector.listEntryToRow(row);
-            if(rowModel.getAdded().toString().equals(added.toString()) && rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+            if(rowModel.getAdded().toString().equals(added.toString()) && rowModel.getDraft())
             {
-                // updating row
-                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
-                for (java.lang.reflect.Field field : fields) {
-                    try {
-                        Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
-                        String key = field.getName().toString();
-                        Object value = method.invoke(rowToPut);
-                        if (value != null) {
-                            row.getCustomElements().setValueLocal(key, value.toString());
+                if(rowModel.getUserId().toString().equals(userId.toString()))
+                {
+                    // updating row
+                    java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+                    for (java.lang.reflect.Field field : fields) {
+                        try {
+                            Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
+                            String key = field.getName().toString();
+                            Object value = method.invoke(rowToPut);
+                            if (value != null) {
+                                row.getCustomElements().setValueLocal(key, value.toString());
+                            }
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
                         }
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
                     }
+                    row.update();
+                    return rowToPut;
                 }
-                row.update();
-                return rowToPut;
+                else
+                    throw new ForbiddenException("Forbidden");
             }
         }
-        return null;
+        throw new NotFoundException("Draft not found");
     }
 
     @Override
-    public Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException {
+    public Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException {
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -477,32 +496,37 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         // Iterate through each row, printing its cell values.
         for (ListEntry row : listFeed.getEntries()) {
             Row rowModel = spreadsheetConnector.listEntryToRow(row);
-            if(rowModel.getAdded().toString().equals(added.toString()) && rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString()))
+            if(rowModel.getAdded().toString().equals(added.toString()) && rowModel.getDraft())
             {
-                // change draft to session
-                rowToPut.setDraft(false);
-                // updating row
-                java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
-                for (java.lang.reflect.Field field : fields) {
-                    try {
-                        Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
-                        String key = field.getName().toString();
-                        Object value = method.invoke(rowToPut);
-                        if (value != null) {
-                            row.getCustomElements().setValueLocal(key, value.toString());
+                if(rowModel.getUserId().toString().equals(userId.toString()))
+                {
+                    // change draft to session
+                    rowToPut.setDraft(false);
+                    // updating row
+                    java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+                    for (java.lang.reflect.Field field : fields) {
+                        try {
+                            Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
+                            String key = field.getName().toString();
+                            Object value = method.invoke(rowToPut);
+                            if (value != null) {
+                                row.getCustomElements().setValueLocal(key, value.toString());
+                            }
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
                         }
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
                     }
+                    row.update();
+                    return rowToPut;
                 }
-                row.update();
-                return rowToPut;
+                else
+                    throw new ForbiddenException("Forbidden");
             }
         }
-        return null;
+        throw new NotFoundException("Draft not found");
     }
 }

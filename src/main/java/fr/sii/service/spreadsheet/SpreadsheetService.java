@@ -7,6 +7,8 @@ import com.google.gdata.util.ServiceException;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.admin.rate.AdminRate;
+import fr.sii.domain.exception.ForbiddenException;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
@@ -75,11 +77,11 @@ public class SpreadsheetService {
         return googleRepository.addRow(row);
     }
 
-    public Row putRowDraft(Row row, Long userId, Long added) throws ServiceException, IOException {
+    public Row putRowDraft(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException {
         return googleRepository.putRowDraft(row, userId, added);
     }
 
-    public Row putRowDraftToSession(Row row, Long userId, Long added) throws ServiceException, IOException {
+    public Row putRowDraftToSession(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException {
         return googleRepository.putRowDraftToSession(row, userId, added);
     }
 
@@ -88,13 +90,11 @@ public class SpreadsheetService {
         return matchRates(googleRepository.getRows());
     }
 
-    public RowResponse getRow(String added) throws IOException, ServiceException
-    {
+    public RowResponse getRow(String added) throws IOException, ServiceException, NotFoundException {
         return matchRates(googleRepository.getRow(added));
     }
 
-    public Row getRow(String added, Long userId) throws IOException, ServiceException
-    {
+    public Row getRow(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException {
         return googleRepository.getRow(added, userId);
     }
 
@@ -103,8 +103,7 @@ public class SpreadsheetService {
         return googleRepository.deleteRows();
     }
 
-    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException
-    {
+    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException {
         googleRepository.deleteRowDraft(added, userId);
     }
 

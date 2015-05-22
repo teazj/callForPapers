@@ -2,7 +2,7 @@ package fr.sii.service.github;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.sii.domain.CustomException;
+import fr.sii.domain.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;

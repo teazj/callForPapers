@@ -82,7 +82,7 @@ angular.module('CallForPaper', [
         controller: 'AdminLogoutCtrl'
       })
 
-    // Public
+    // Restricted
     .state('app', {
         abstract: true,
         views: {
@@ -103,6 +103,7 @@ angular.module('CallForPaper', [
           authenticated: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().authenticated]
         }
       })
+      
       // Auth
       .state('app.login', {
         url: '/login',

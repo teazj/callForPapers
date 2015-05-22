@@ -6,6 +6,7 @@ package fr.sii.controller.admin.session;
 
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.spreadsheet.SpreadsheetService;
@@ -41,7 +42,7 @@ public class AdminSessionController {
 
     @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
     @ResponseBody
-    public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException {
+    public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException {
         return googleService.getRow(added);
     }
 }
