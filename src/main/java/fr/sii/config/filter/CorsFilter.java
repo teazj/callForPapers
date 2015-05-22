@@ -1,4 +1,4 @@
-package fr.sii.config;
+package fr.sii.config.filter;
 
 
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -13,6 +13,15 @@ import java.io.IOException;
  * Created by tmaugin on 03/04/2015.
  */
 public class CorsFilter extends OncePerRequestFilter {
+
+    /**
+     * CORS Filter
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

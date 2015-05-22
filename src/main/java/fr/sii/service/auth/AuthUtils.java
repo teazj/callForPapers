@@ -26,10 +26,22 @@ public final class AuthUtils {
 
     public static String TOKEN_SECRET;
 
+    /**
+     * Get sub from JWT header
+     * @param authHeader
+     * @return JWT sub param
+     * @throws ParseException
+     * @throws JOSEException
+     */
     public static String getSubject(String authHeader) throws ParseException, JOSEException {
         return decodeToken(authHeader).getSubject();
     }
 
+    /**
+     * Return get JWT claims set from http request
+     * @param httpRequest
+     * @return JWT claims set
+     */
     public static JWTClaimsSet getTokenBody(HttpServletRequest httpRequest)
     {
         String authHeader = httpRequest.getHeader(AuthUtils.AUTH_HEADER_KEY);
@@ -48,6 +60,13 @@ public final class AuthUtils {
         return null;
     }
 
+    /**
+     * Return get JWT claims set from jwt header
+     * @param authHeader
+     * @return
+     * @throws ParseException
+     * @throws JOSEException
+     */
     public static ReadOnlyJWTClaimsSet decodeToken(String authHeader) throws ParseException, JOSEException {
         SignedJWT signedJWT = SignedJWT.parse(getSerializedToken(authHeader));
         if (signedJWT.verify(new MACVerifier(TOKEN_SECRET))) {
@@ -57,6 +76,14 @@ public final class AuthUtils {
         }
     }
 
+    /**
+     * Create JWT token
+     * @param host
+     * @param sub
+     * @param verified
+     * @return
+     * @throws JOSEException
+     */
     public static Token createToken(String host, String sub, boolean verified) throws JOSEException {
         JWTClaimsSet claim = new JWTClaimsSet();
         claim.setSubject(sub);
@@ -72,6 +99,11 @@ public final class AuthUtils {
         return new Token(jwt.serialize());
     }
 
+    /**
+     * get serialized part of JWT header
+     * @param authHeader
+     * @return Serialized part of JWT header
+     */
     public static String getSerializedToken(String authHeader) {
         return authHeader.split(" ")[1];
     }

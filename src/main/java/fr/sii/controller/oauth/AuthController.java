@@ -69,7 +69,9 @@ public class AuthController {
     @ResponseBody
     public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser loginUser) throws Exception {
         Token token = null;
+
         User foundUser = userService.findByemail(loginUser.getEmail());
+        // Verify if user already exists
         if (foundUser != null) {
                 res.setStatus(HttpServletResponse.SC_CONFLICT);
                 res.getWriter().write(CONFLICT_MSG_EMAIL);
@@ -77,13 +79,18 @@ public class AuthController {
                 res.getWriter().close();
                 return token;
         }
+
+        // Create new user
         User user = new User();
+        // Setup verification token for email validation
         String verifyToken = RandomStringUtils.randomAlphanumeric(100);
         user.setVerifyToken(verifyToken);
         user.setPassword(PasswordService.hashPassword(loginUser.getPassword()));
         user.setEmail(loginUser.getEmail());
+        // Save user
         User savedUser = userService.save(user);
 
+        // Send validation email
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("link", globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
         map.put("hostname", globalSettings.getHostname());
@@ -92,6 +99,7 @@ public class AuthController {
         Email email = new Email(savedUser.getEmail(),"Confirmation de votre adresse e-mail","verify.html",map);
         emailingService.send(email);
 
+        // Return JWT
         token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEntityId().toString(), savedUser.isVerified());
         return token;
     }
@@ -100,6 +108,8 @@ public class AuthController {
     @ResponseBody
     public Token verify(HttpServletResponse res,HttpServletRequest req, @RequestParam("id") String id, @RequestParam("token") String verifyToken) throws JOSEException, IOException {
         Token token = null;
+
+        // Search user
         User foundUser = userService.findById(Long.parseLong(id));
         if (foundUser == null) {
                 res.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -110,6 +120,7 @@ public class AuthController {
         }
         else
         {
+            // Verify if account already verified
             if(foundUser.isVerified())
             {
                 res.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -119,6 +130,7 @@ public class AuthController {
                 return token;
             }
 
+            // Verify if token match
             if(foundUser.getVerifyToken().equals(verifyToken))
             {
                 foundUser.setVerified(true);

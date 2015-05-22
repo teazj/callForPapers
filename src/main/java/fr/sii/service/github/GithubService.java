@@ -16,6 +16,14 @@ import java.net.URLConnection;
  */
 @Service
 public class GithubService {
+
+    /**
+     * Get account email using access token and Github API
+     * @param access_token
+     * @return Email
+     * @throws IOException
+     * @throws CustomException
+     */
     public String getEmail(String access_token) throws IOException, CustomException {
         String url = "https://api.github.com/user/emails";
         URLConnection connection = new URL(url).openConnection();
@@ -54,6 +62,13 @@ public class GithubService {
         return email;
     }
 
+    /**
+     * Get account id using access token and Github API
+     * @param access_token
+     * @return
+     * @throws IOException
+     * @throws CustomException
+     */
     public String getUserId(String access_token) throws IOException, CustomException {
         String url = "https://api.github.com/user";
         URLConnection connection = new URL(url).openConnection();

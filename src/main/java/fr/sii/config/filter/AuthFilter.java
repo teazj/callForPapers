@@ -22,6 +22,14 @@ public class AuthFilter implements Filter {
             JWT_ERROR_MSG = "Unable to parse JWT",
             JWT_INVALID_MSG = "Invalid JWT token";
 
+    /**
+     * Do Auth filter according to JWT token
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {

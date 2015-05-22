@@ -1,5 +1,6 @@
-package fr.sii.config;
+package fr.sii.config.exception;
 
+import fr.sii.domain.exception.ErrorResponse;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;

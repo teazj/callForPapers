@@ -1,4 +1,4 @@
-package fr.sii.config;
+package fr.sii.domain.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -9,13 +9,13 @@ import java.util.Date;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
-    Date timestamp;
-    Integer status;
-    String error;
-    String exception;
-    String message;
+    private Date timestamp;
+    private Integer status;
+    private String error;
+    private String exception;
+    private String message;
 
-    ErrorResponse(Exception e)
+    public ErrorResponse(Exception e)
     {
         this.exception = e.getClass().toString();
         this.message = e.toString();
