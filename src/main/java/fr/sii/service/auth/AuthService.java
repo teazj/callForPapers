@@ -22,6 +22,18 @@ public class AuthService {
     @Autowired
     UserService userService;
 
+    /**
+     * Return JWT token and eventually persist user according to providerId and provider
+     * @param res
+     * @param req
+     * @param provider
+     * @param providerId
+     * @param email
+     * @return JWT Token
+     * @throws IOException
+     * @throws ParseException
+     * @throws JOSEException
+     */
     public Token processUser(HttpServletResponse res, HttpServletRequest req, User.Provider provider, String providerId, String email) throws IOException, ParseException, JOSEException {
 
         final String CONFLICT_MSG = "There is already a %s account that belongs to you",

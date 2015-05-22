@@ -21,6 +21,14 @@ public class CsrfFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * Do filter for CSRF
+     * @param servletRequest
+     * @param servletResponse
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
