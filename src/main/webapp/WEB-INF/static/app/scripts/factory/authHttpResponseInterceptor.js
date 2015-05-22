@@ -19,6 +19,8 @@ angular.module('CallForPaper')
                     $injector.get('$state').go('app.login');
                 } else if (rejection.status === 403) {
                     $injector.get('$state').go('403');
+                } else if (rejection.status === 404) {
+                    $injector.get('$state').go('404');
                 } else if (rejection.status === 409) {
                     // Nothing
                 } else {
