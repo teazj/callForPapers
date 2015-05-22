@@ -55,6 +55,7 @@ public class AuthFilter implements Filter {
             // ensure that the token is not expired
             if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
                 httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, EXPIRE_ERROR_MSG);
+                return;
             } else {
                 chain.doFilter(request, response);
             }
