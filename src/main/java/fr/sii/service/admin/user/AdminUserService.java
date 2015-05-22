@@ -2,6 +2,7 @@ package fr.sii.service.admin.user;
 
 import com.google.appengine.api.users.UserServiceFactory;
 import fr.sii.domain.admin.user.AdminUser;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.repository.admin.user.AdminUserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,12 @@ public class AdminUserService {
         String id = user.getUserId();
         String idParsed = id.substring(0, id.length() - 2);
         Long userId = Long.parseLong(idParsed);
-        AdminUser adminUserCustom = findOne(userId);
+        AdminUser adminUserCustom = null;
+        try {
+            adminUserCustom = findOne(userId);
+        } catch (NotFoundException e) {
+            // User not found
+        }
 
         if(adminUserCustom == null)
         {
@@ -49,8 +55,7 @@ public class AdminUserService {
 
     public AdminUser save(AdminUser u)
     {
-        AdminUser s = adminUserRespository.save(u);
-        return s;
+        return adminUserRespository.save(u);
     }
 
     public AdminUser save(com.google.appengine.api.users.User u)
@@ -63,35 +68,26 @@ public class AdminUserService {
         adminUser.setName(u.getNickname());
         adminUser.setEmail(u.getEmail());
 
-        AdminUser s = adminUserRespository.save(adminUser);
-        return s;
+        return adminUserRespository.save(adminUser);
     }
 
-    public AdminUser put(Long id,AdminUser u)
-    {
-        AdminUser pu = findOne(id);
-        if(pu != null)
-        {
-            adminUserRespository._delete(id);
-            u.setEntityId(pu.getEntityId());
-            return adminUserRespository.save(u);
-        }
-        return null;
+    public AdminUser put(Long id,AdminUser u) throws NotFoundException {
+        delete(id);
+        u.setEntityId(id);
+        return adminUserRespository.save(u);
     }
 
-    public void delete(Long id)
-    {
+    public void delete(Long id) throws NotFoundException {
+        findOne(id);
         adminUserRespository._delete(id);
     }
 
-    public AdminUser findOne(Long id)
-    {
+    public AdminUser findOne(Long id) throws NotFoundException {
         List<AdminUser> r = adminUserRespository.findByEntityId(id);
         if(r.size() > 0)
-
             return r.get(0);
         else
-            return null;
+            throw new NotFoundException("User not found");
     }
 
     public List<AdminUser> findByemail(String email)

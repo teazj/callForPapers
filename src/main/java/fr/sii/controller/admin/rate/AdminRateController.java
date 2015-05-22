@@ -1,6 +1,7 @@
 package fr.sii.controller.admin.rate;
 
 import fr.sii.domain.admin.rate.AdminRate;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.service.admin.rate.AdminRateService;
 import fr.sii.service.admin.user.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,20 +37,20 @@ public class AdminRateController {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminRate postRate(@Valid @RequestBody AdminRate adminRate){
+    @ResponseBody public AdminRate postRate(@Valid @RequestBody AdminRate adminRate) {
         adminRate.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         return adminRateService.save(adminRate);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    @ResponseBody public AdminRate putRate(@PathVariable Long id, @Valid @RequestBody AdminRate adminRate){
+    @ResponseBody public AdminRate putRate(@PathVariable Long id, @Valid @RequestBody AdminRate adminRate) throws NotFoundException {
         adminRate.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         return adminRateService.put(id, adminRate);
     }
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     @ResponseBody
-    public AdminRate getRate(@PathVariable Long id) {
+    public AdminRate getRate(@PathVariable Long id) throws NotFoundException {
         return adminRateService.findOne(id);
     }
 
@@ -74,7 +75,7 @@ public class AdminRateController {
 
     @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
     @ResponseBody
-    public void deleteRate(@PathVariable Long id) {
+    public void deleteRate(@PathVariable Long id) throws NotFoundException {
         adminRateService.delete(id);
     }
 }
