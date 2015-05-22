@@ -22,7 +22,7 @@ angular.module('CallForPaper')
         "postedAt" : "ajouté le ",
         "noSendedTalks" : "Vous n'avez pas encore proposé de talk",
         "verification" : "Vérification",
-        "verificationNeeded" : "Vous devez vérifier votre adresse email pour pouvoir poster un talk",
+        "verificationNeeded" : "Un e-mail vous a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
       },
       "login" : {
         "email" : "Email",
@@ -200,6 +200,7 @@ angular.module('CallForPaper')
         "noSendedTalks" : "You don't have submitted any talk yet",
         "verification" : "Verification",
         "verificationNeeded" : "Yoo need to verify your e-mail to post a talk",
+        "verificationNeeded" : "An email has been sent to your address, click the link in it to confirm your account.",
       },
       "login" : {
         "email" : "Email",

@@ -24,6 +24,7 @@ angular.module('CallForPaper', [
   .config(['$httpProvider', function($httpProvider) {
     //Http Intercpetor to check auth failures for xhr requests
     $httpProvider.interceptors.push('authHttpResponseInterceptor');
+    $httpProvider.interceptors.push('csrfInterceptor');
   }])
   .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider) {
     $urlRouterProvider
@@ -103,9 +104,9 @@ angular.module('CallForPaper', [
           authenticated: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().authenticated]
         }
       })
-      
-      // Auth
-      .state('app.login', {
+
+    // Auth
+    .state('app.login', {
         url: '/login',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
@@ -202,6 +203,8 @@ angular.module('CallForPaper', [
     });
 
   }])
-  .run(['AuthService', function(AuthService) {
+  .run(['AuthService', '$http', function(AuthService, $http) {
     AuthService.init();
+    $http.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+    $http.defaults.xsrfCookieName = 'CSRF-TOKEN';
   }]);
