@@ -47,6 +47,7 @@ angular.module('CallForPaper')
         "emailRequired" : "L'adresse email est obligatoire",
         "emailPattern" : "Votre adresse email est invalide",
         "passwordRequired" : "Le mot de passe est obligatoire",
+        "passwordMinLength" : "Le mot de passe doit contenir au moins 6 caractères",
         "passwordMatch" : "Les mots de passes doivent êtres indentiques",
         "alreadyExists" : "Il existe déjà un utilisateur associé à cet e-mail"
       },
@@ -224,6 +225,7 @@ angular.module('CallForPaper')
         "loginNow" : "Log in now",
         "emailRequired" : "Your email address is required.",
         "emailPattern" : "Your email address is invalid.",
+        "passwordMinLength" : "Password must be at least 6 characters long",
         "passwordRequired" : "Password is required.",
         "passwordMatch" : "Password must match.",
         "alreadyExists" : "There is already a user associated with this email"

@@ -88,7 +88,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test1_addRowPass() {
+    public void test01_addRowPass() {
         Row row = new RowSession();
         row.setBio("Bio");
         row.setCompany("SII");
@@ -149,7 +149,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test2_addRowDraftPass() {
+    public void test02_addRowDraftPass() {
         Row row = new RowDraft();
         row.setDraft(true);
         row.setUserId(1L);
@@ -174,7 +174,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test3_addRowPassRest() {
+    public void test03_addRowPassRest() {
 
         given().contentType("application/json")
                 .header(getHeader())
@@ -210,7 +210,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test4_addRowNotVerifiedRest() {
+    public void test04_addRowNotVerifiedRest() {
 
         given().contentType("application/json")
                 .header(getHeaderNotVerified())
@@ -242,7 +242,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test5_addRowNotAuthenticatedRest() {
+    public void test05_addRowNotAuthenticatedRest() {
         given().contentType("application/json")
                 .body("{\n" +
                         "\"email\" : \"email@email.fr\",\n" +
@@ -273,7 +273,7 @@ public class SpreadsheetTest {
 
 
     @Test
-    public void test6_addRowDraftPassRest() {
+    public void test06_addRowDraftPassRest() {
         given().contentType("application/json")
                 .header(getHeader())
                 .body("{}")
@@ -286,7 +286,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test7_addRowDraftNotVerifiedRest() {
+    public void test07_addRowDraftNotVerifiedRest() {
         given().contentType("application/json")
                 .header(getHeaderNotVerified())
                 .body("{}")
@@ -297,7 +297,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test8_addRowDraftNotAuthenticatedRest() {
+    public void test08_addRowDraftNotAuthenticatedRest() {
         given().contentType("application/json")
                 .body("{}")
                 .when()
@@ -307,7 +307,7 @@ public class SpreadsheetTest {
     }
 
     @Test
-    public void test9_addRowFailFinancialRest() {
+    public void test09_addRowFailFinancialRest() {
         given().contentType("application/json")
                 .header(getHeader())
                 .body("{\n" +
@@ -401,8 +401,8 @@ public class SpreadsheetTest {
     @Test
     public void test12_getRows() {
         deleteRows();
-        test1_addRowPass();
-        test1_addRowPass();
+        test01_addRowPass();
+        test01_addRowPass();
         given()
                 .header(getHeader())
                 .contentType("application/json")
@@ -416,8 +416,8 @@ public class SpreadsheetTest {
     @Test
     public void test13_getRowsOtherAccount() {
         deleteRows();
-        test1_addRowPass();
-        test1_addRowPass();
+        test01_addRowPass();
+        test01_addRowPass();
         given()
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")
@@ -484,7 +484,7 @@ public class SpreadsheetTest {
                 response();
         Long added = response.path("added");
 
-        test1_addRowPass();
+        test01_addRowPass();
         given()
                 .header(getHeader())
                 .contentType("application/json")
@@ -531,7 +531,7 @@ public class SpreadsheetTest {
                 response();
         Long added = response.path("added");
 
-        test1_addRowPass();
+        test01_addRowPass();
         given()
                 .contentType("application/json")
                 .header(getHeaderOtherAccount())
@@ -576,9 +576,9 @@ public class SpreadsheetTest {
     @Test
     public void test21_getRowsDraft() {
         deleteRows();
-        test2_addRowDraftPass();
-        test1_addRowPass();
-        test2_addRowDraftPass();
+        test02_addRowDraftPass();
+        test01_addRowPass();
+        test02_addRowDraftPass();
         given()
                 .header(getHeader())
                 .contentType("application/json")
@@ -592,9 +592,9 @@ public class SpreadsheetTest {
     @Test
     public void test22_getRowsDraftOtherAccount() {
         deleteRows();
-        test2_addRowDraftPass();
-        test1_addRowPass();
-        test2_addRowDraftPass();
+        test02_addRowDraftPass();
+        test01_addRowPass();
+        test02_addRowDraftPass();
         given()
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")
@@ -662,7 +662,7 @@ public class SpreadsheetTest {
                         response();
         Long added = response.path("added");
 
-        test2_addRowDraftPass();
+        test02_addRowDraftPass();
         given()
                 .header(getHeader())
                 .contentType("application/json")
@@ -709,7 +709,7 @@ public class SpreadsheetTest {
                         response();
         Long added = response.path("added");
 
-        test2_addRowDraftPass();
+        test02_addRowDraftPass();
         given()
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")

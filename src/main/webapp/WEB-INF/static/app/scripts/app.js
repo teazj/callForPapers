@@ -19,8 +19,14 @@ angular.module('CallForPaper', [
     'relativeDate',
     'matchMedia',
     'satellizer',
-    'angular-jwt'
+    'angular-jwt',
+    'vcRecaptcha'
   ])
+  .constant('Config', {
+    'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
+    'googleClientId': '891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com',
+    'githubClientId': 'c21492ca67471ebdfdd7'
+  })
   .config(['$httpProvider', function($httpProvider) {
     //Http Intercpetor to check auth failures for xhr requests
     $httpProvider.interceptors.push('authHttpResponseInterceptor');
@@ -193,13 +199,13 @@ angular.module('CallForPaper', [
   .config(['$translateProvider', function($translateProvider) {
     $translateProvider.useCookieStorage();
   }])
-  .config(['$authProvider', function($authProvider) {
+  .config(['$authProvider', 'Config', function($authProvider, Config) {
     $authProvider.google({
-      clientId: '891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com'
+      clientId: Config.googleClientId
     });
 
     $authProvider.github({
-      clientId: 'c21492ca67471ebdfdd7'
+      clientId: Config.githubClientId
     });
 
   }])

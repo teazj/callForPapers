@@ -1,14 +1,18 @@
 package fr.sii.controller.oauth;
 
 import com.nimbusds.jose.JOSEException;
+import fr.sii.config.auth.AuthSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.email.Email;
+import fr.sii.domain.exception.CustomException;
+import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.token.Token;
 import fr.sii.domain.user.LoginUser;
 import fr.sii.domain.user.User;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.auth.PasswordService;
 import fr.sii.service.email.EmailingService;
+import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.user.UserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -33,8 +37,7 @@ public class AuthController {
 
     private static Logger logger = Logger.getLogger(AuthController.class.getName());
 
-    public static final String CONFLICT_MSG = "There is already a %s account that belongs to you",
-            CONFLICT_MSG_EMAIL = "There is already account associated with this email",
+    public static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email",
             ALREADY_VERIFIED = "This account is already verified",
             BAD_TOKEN = "Bad token",
             NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
@@ -48,6 +51,9 @@ public class AuthController {
 
     @Autowired
     private EmailingService emailingService;
+
+    @Autowired
+    private AuthSettings authSettings;
 
     @RequestMapping(value="/login", method=RequestMethod.POST)
     @ResponseBody
@@ -69,6 +75,11 @@ public class AuthController {
     @ResponseBody
     public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser loginUser) throws Exception {
         Token token = null;
+
+        ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), loginUser.getCaptcha());
+        if (!rep.getSuccess()) {
+            throw new CustomException("Bad captcha");
+        }
 
         User foundUser = userService.findByemail(loginUser.getEmail());
         // Verify if user already exists

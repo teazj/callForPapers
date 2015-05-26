@@ -38,10 +38,6 @@ import java.util.Map;
 @RequestMapping(value="/auth/google", produces = "application/json; charset=utf-8")
 public class GoogleAuthController {
 
-    public static final String CONFLICT_MSG = "There is already a %s account that belongs to you",
-            NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
-            UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
-
     @Autowired
     GoogleSettings googleSettings;
 
