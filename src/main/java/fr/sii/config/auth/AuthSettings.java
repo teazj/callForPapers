@@ -10,9 +10,15 @@ import javax.annotation.PostConstruct;
  * Created by tmaugin on 19/05/2015.
  */
 @Configuration
-public class AuthConfig {
+public class AuthSettings {
     @Value("${auth.secrettoken}")
     String secretToken;
+
+    @Value("${auth.captchasecret}")
+    String captchaSecret;
+
+    @Value("${auth.captchapublic}")
+    String captchaPublic;
 
     @PostConstruct
     public void setToken()
@@ -26,5 +32,21 @@ public class AuthConfig {
 
     public void setSecretToken(String secretToken) {
         this.secretToken = secretToken;
+    }
+
+    public String getCaptchaSecret() {
+        return captchaSecret;
+    }
+
+    public void setCaptchaSecret(String captchaSecret) {
+        this.captchaSecret = captchaSecret;
+    }
+
+    public String getCaptchaPublic() {
+        return captchaPublic;
+    }
+
+    public void setCaptchaPublic(String captchaPublic) {
+        this.captchaPublic = captchaPublic;
     }
 }
