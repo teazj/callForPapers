@@ -6,6 +6,7 @@ package fr.sii.domain.admin.user;
 public class AdminUserInfo {
     boolean connected;
     boolean admin;
+    boolean config;
     String uri;
 
     public boolean isConnected() {
@@ -16,14 +17,6 @@ public class AdminUserInfo {
         this.connected = connected;
     }
 
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
     public boolean isAdmin() {
         return admin;
     }
@@ -32,9 +25,26 @@ public class AdminUserInfo {
         this.admin = admin;
     }
 
-    public AdminUserInfo(boolean connected, boolean admin, String uri) {
+    public boolean isConfig() {
+        return config;
+    }
+
+    public void setConfig(boolean config) {
+        this.config = config;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public AdminUserInfo(String uri, boolean connected, boolean admin, boolean config) {
+        this.uri = uri;
         this.connected = connected;
         this.admin = admin;
-        this.uri = uri;
+        this.config = config;
     }
 }

@@ -20,6 +20,8 @@ public class ApplicationSettings {
     @Value("${app.releasedate}")
     private String releaseDate;
 
+    private boolean configured = false;
+
     public String getEventName() {
         return eventName;
     }
@@ -50,5 +52,13 @@ public class ApplicationSettings {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public boolean isConfigured() {
+        return configured;
+    }
+
+    public void setConfigured(boolean configured) {
+        this.configured = configured;
     }
 }

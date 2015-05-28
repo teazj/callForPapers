@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  * Created by tmaugin on 08/04/2015.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContext.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
+@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContextTest.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PropertyTest {
@@ -34,7 +34,7 @@ public class PropertyTest {
 
     @Test
          public void test2_getApplicationPropertyGoogleLogin() {
-        assertEquals("maugin.thomas",spreadsheetSettings.getLogin());
+        assertEquals("maugin.thomas@gmail.com",spreadsheetSettings.getLogin());
     }
 
     @Test

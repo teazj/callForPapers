@@ -3,14 +3,15 @@ package fr.sii.controller.restricted.session;
 /**
  * Created by tmaugin on 15/05/2015.
  */
+
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.config.application.ApplicationSettings;
 import fr.sii.config.global.GlobalSettings;
+import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
-import fr.sii.domain.email.Email;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowDraft;
 import fr.sii.domain.spreadsheet.RowSession;
@@ -118,7 +119,7 @@ public class SessionController {
      * DRAFT
      */
     @RequestMapping(value="/draft", method=RequestMethod.POST)
-    @ResponseBody public Row postGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row) throws Exception {
+    @ResponseBody public Row postGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row) throws NotVerifiedException, IOException, ServiceException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -167,7 +168,7 @@ public class SessionController {
     }
 
     @RequestMapping(value="/draft/{added}", method=RequestMethod.PUT)
-    @ResponseBody public Row putGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row, @PathVariable String added) throws Exception {
+    @ResponseBody public Row putGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row, @PathVariable String added) throws NotVerifiedException, ServiceException, ForbiddenException, NotFoundException, IOException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {

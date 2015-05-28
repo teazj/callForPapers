@@ -11,5 +11,5 @@ angular.module('CallForPaper')
 			}
 		}
 		var loading = $interval(updateDots, 1000);
-		AuthService.logout('form.step1');
+		AuthService.logout('app.login');
 	}]);

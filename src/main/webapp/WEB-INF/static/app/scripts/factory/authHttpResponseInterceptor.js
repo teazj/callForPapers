@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper')
     .factory('authHttpResponseInterceptor', ['$q', '$injector', '$filter', function($q, $injector, $filter) {
         /**
