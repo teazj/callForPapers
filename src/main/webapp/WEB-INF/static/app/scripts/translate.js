@@ -151,6 +151,8 @@ angular.module('CallForPaper')
         "config": "Configuration",
         "linkMyAccount" : "Lier mon compte Google Drive avec Call For Paper",
         "configurationNeeded" : "L'administrateur doit configurer l'application avant que vous puissiez l'utiliser",
+        "success" : "Votre compte est maintenant lié",
+        "error" : "Error lors de la configuration",
         "configureLink" : "Configurer l'application"
       },
       "error": {
@@ -339,6 +341,8 @@ angular.module('CallForPaper')
         "config": "Configuration",
         "linkMyAccount" : "Link my Google Drive account with Call For Paper",
         "configurationNeeded" : "Administrator must configure the application before you use it",
+        "success" : "Your account has been linked",
+        "error" : "Error linking your account with Google Drive",
         "configureLink" : "Configure the application"
       },
       "error": {
