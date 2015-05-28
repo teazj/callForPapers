@@ -18,5 +18,7 @@
         <env-var name="EMAIL_USERNAME" value="${EMAIL_USERNAME}"/>
         <env-var name="EMAIL_PASSWORD" value="${EMAIL_PASSWORD}"/>
         <env-var name="AUTH_SECRET_TOKEN" value="${AUTH_SECRET_TOKEN}"/>
+        <env-var name="AUTH_CAPTCHA_PUBLIC" value="${AUTH_CAPTCHA_PUBLIC}"/>
+        <env-var name="AUTH_CAPTCHA_SECRET" value="${AUTH_CAPTCHA_SECRET}"/>
     </env-variables>
 </appengine-web-app>
