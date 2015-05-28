@@ -20,13 +20,17 @@ angular.module('CallForPaper', [
     'matchMedia',
     'satellizer',
     'angular-jwt',
-    'vcRecaptcha'
+    'vcRecaptcha',
+    'angular-loading-bar'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
     'googleClientId': '891245656445-7djmtfr3c4fo3giuc7t89sgee0co4vjh.apps.googleusercontent.com',
     'githubClientId': 'c21492ca67471ebdfdd7'
   })
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+  }])
   .config(['$httpProvider', function($httpProvider) {
     //Http Intercpetor to check auth failures for xhr requests
     $httpProvider.interceptors.push('authHttpResponseInterceptor');
