@@ -37,7 +37,7 @@ public class AdminCommentController {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminComment postComment(@Valid @RequestBody AdminComment adminComment) throws Exception {
+    @ResponseBody public AdminComment postComment(@Valid @RequestBody AdminComment adminComment) {
         adminComment.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         return adminCommentService.save(adminComment);
     }

@@ -36,7 +36,7 @@ angular.module('CallForPaper', [
     $httpProvider.interceptors.push('authHttpResponseInterceptor');
     $httpProvider.interceptors.push('csrfInterceptor');
   }])
-  .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', 'AppConfigProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider, AppConfigProvider) {
     $urlRouterProvider
       .when('', '/dashboard')
       .when('/', '/dashboard')
@@ -51,6 +51,7 @@ angular.module('CallForPaper', [
     .when('/form', '/form/')
 
     .otherwise('/login');
+
     $stateProvider
       .state('admin', {
         url: '/admin',
@@ -60,7 +61,7 @@ angular.module('CallForPaper', [
             templateUrl: 'views/admin/admin.html',
             controller: 'AdminCtrl',
             resolve: {
-              isAutorizedAdmin: ['$q', '$window', '$state', AuthServiceProvider.$get().isAutorizedAdmin]
+              isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedAdmin
             },
             '@admin': {
               templateUrl: 'views/admin/sessions.html',
@@ -80,13 +81,41 @@ angular.module('CallForPaper', [
         templateUrl: 'views/admin/session.html',
         controller: 'AdminSessionCtrl'
       })
-      // Login
-      .state('loginAdmin', {
+
+    // App configuration
+    .state('config', {
+        abstract: true,
+        views: {
+          '': {
+            templateUrl: 'views/config/config.html',
+            controller: 'ConfigCtrl'
+          }
+        }
+      })
+      .state('config.autorize', {
+        url: '/config',
+        templateUrl: 'views/config/autorize.html',
+        controller: 'AutorizeCtrl',
+        resolve: {
+          isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedConfig
+        }
+      })
+      .state('config.about', {
+        url: '/config/about',
+        templateUrl: 'views/config/about.html'
+      })
+      .state('config.403', {
+        templateUrl: 'views/config/403.html'
+      })
+
+
+    // Login Admin
+    .state('loginAdmin', {
         url: '/admin/login',
         templateUrl: 'views/admin/login.html',
         controller: 'AdminLoginCtrl'
       })
-      // Logout
+      // Logout Admin
       .state('logoutAdmin', {
         url: '/admin/logout',
         templateUrl: 'views/admin/login.html',
@@ -99,10 +128,10 @@ angular.module('CallForPaper', [
         views: {
           '': {
             templateUrl: 'views/header.html',
-            controller: 'HeaderCtrl'
-          },
-          '@app': {
-            templateUrl: 'views/restricted/dashboard.html'
+            controller: 'HeaderCtrl',
+            resolve: {
+              isConfigured: AppConfigProvider.$get().isConfigured
+            }
           }
         },
       })
@@ -111,7 +140,7 @@ angular.module('CallForPaper', [
         templateUrl: 'views/restricted/dashboard.html',
         controller: 'DashboardCtrl',
         resolve: {
-          authenticated: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().authenticated]
+          authenticated: AuthServiceProvider.$get().authenticated
         }
       })
 
@@ -146,7 +175,7 @@ angular.module('CallForPaper', [
           templateUrl: 'views/restricted/form/form.html',
           controller: 'FormCtrl',
           resolve: {
-            verified: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().verified]
+            verified: AuthServiceProvider.$get().verified
           }
         },
         '@app.form': {
@@ -174,18 +203,19 @@ angular.module('CallForPaper', [
       templateUrl: 'views/restricted/session.html',
       controller: 'RestrictedSessionCtrl',
       resolve: {
-        verified: ['$q', '$location', '$auth', 'jwtHelper', AuthServiceProvider.$get().verified]
+        verified: AuthServiceProvider.$get().verified
       }
     })
 
     .state('403', {
-        url: '/403',
-        templateUrl: '403.html'
-      })
-      .state('404', {
-        url: '/404',
-        templateUrl: '404.html'
-      });
+      url: '/403',
+      templateUrl: '403.html'
+    })
+
+    .state('404', {
+      url: '/404',
+      templateUrl: '404.html'
+    });
   }])
   .config(['tagsInputConfigProvider', function(tagsInputConfigProvider) {
     tagsInputConfigProvider
@@ -210,6 +240,26 @@ angular.module('CallForPaper', [
 
     $authProvider.github({
       clientId: Config.githubClientId
+    });
+
+    $authProvider.oauth2({
+      name: 'spreadsheet',
+      url: '/auth/spreadsheet',
+      authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+      redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+      scope: ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds'],
+      clientId: Config.googleClientId,
+      scopeDelimiter: ' ',
+      accessType: 'offline',
+      approvalPrompt: 'force',
+      requiredUrlParams: ['scope', 'access_type', 'approval_prompt'],
+      optionalUrlParams: ['display'],
+      display: 'popup',
+      type: '2.0',
+      popupOptions: {
+        width: 580,
+        height: 400
+      }
     });
 
   }])

@@ -69,7 +69,7 @@
             </auth-constraint>
         </security-constraint>
 
-        <!--Access denied-->
+    <!--Access denied-->
         <error-page>
             <error-code>403</error-code>
             <location>/WEB-INF/jsp/403.jsp</location>
@@ -84,6 +84,17 @@
         <filter-name>authFilter</filter-name>
         <url-pattern>/api/restricted/*</url-pattern>
     </filter-mapping>
+
+    <!--Spreadsheet autorisation-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>spreadsheet</web-resource-name>
+            <url-pattern>/auth/spreadsheet/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
 
     <!--Csrf-->
     <filter>

@@ -145,6 +145,14 @@ angular.module('CallForPaper')
         "you": "Vous",
         "financialHelp": "Aide financière"
       },
+      "config": {
+        "logout": "Se déconnecter",
+        "login": "Se connecter",
+        "config": "Configuration",
+        "linkMyAccount" : "Lier mon compte Google Drive avec Call For Paper",
+        "configurationNeeded" : "L'administrateur doit configurer l'application avant que vous puissiez l'utiliser",
+        "configureLink" : "Configurer l'application"
+      },
       "error": {
         "backendcommunication": "Désolé, il y a eu un problème avec le serveur distant",
         "noInternet": "Désolé, il y a eu une problème de connexion, êtes vous connecté à internet ?"
@@ -324,6 +332,14 @@ angular.module('CallForPaper')
         "votes": "Votes",
         "you": "You",
         "financialHelp": "Financial Help"
+      },
+      "config": {
+        "login": "Login",
+        "logout": "Logout",
+        "config": "Configuration",
+        "linkMyAccount" : "Link my Google Drive account with Call For Paper",
+        "configurationNeeded" : "Administrator must configure the application before you use it",
+        "configureLink" : "Configure the application"
       },
       "error": {
         "backendcommunication": "Sorry, a problem occure with the server",

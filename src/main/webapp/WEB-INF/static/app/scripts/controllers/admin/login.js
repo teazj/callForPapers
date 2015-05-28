@@ -11,5 +11,5 @@ angular.module('CallForPaper')
 			}
 		}
 		var loading = $interval(updateDots, 1000);
-		AuthService.login('form.step1', 'admin.sessions');
+		AuthService.login('app.login', 'admin.sessions');
 	}]);

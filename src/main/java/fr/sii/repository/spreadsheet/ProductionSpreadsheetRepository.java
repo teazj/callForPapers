@@ -1,5 +1,16 @@
 package fr.sii.repository.spreadsheet;
 
+import com.google.api.client.auth.oauth2.RefreshTokenRequest;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.BasicAuthentication;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.appengine.api.datastore.*;
 import com.google.gdata.client.docs.DocsService;
 import com.google.gdata.client.spreadsheet.FeedURLFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
@@ -7,10 +18,13 @@ import com.google.gdata.data.BaseEntry;
 import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
+import fr.sii.config.global.GlobalSettings;
+import fr.sii.config.google.GoogleSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -40,15 +54,73 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
      */
     private FeedURLFactory factory;
 
+    @Autowired
+    GlobalSettings globalSettings;
+
 
     @Override
-    public void login(SpreadsheetSettings s)
-            throws ServiceException, IOException {
+    public void login(SpreadsheetSettings s, GoogleSettings gs) throws EntityNotFoundException, IOException, ServiceException {
+        if(globalSettings.getDatabaseLoaded().equals("false"))
+            return;
+        String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
         // Authenticate
-        spreadsheetSettings = s;
-        service.setUserCredentials(s.getLogin(), s.getPassword());
+        HttpTransport httpTransport = new UrlFetchTransport();
+        JsonFactory jsonFactory = new JacksonFactory();
+        Key spreadsheetTokenKey = KeyFactory.createKey("Token", "Spreadsheet");
+        Entity spreadsheetToken = new Entity(spreadsheetTokenKey);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity refreshToken = datastore.get(spreadsheetTokenKey);
+        String parsedRefreshToken = (String) refreshToken.getProperty("refresh_token");
+
+        TokenResponse response =
+                new RefreshTokenRequest(
+                        new NetHttpTransport(),
+                        new JacksonFactory(),
+                        new GenericUrl(accessTokenUrl),parsedRefreshToken)
+                        .setGrantType("refresh_token")
+                        .setRefreshToken(parsedRefreshToken)
+                        .setClientAuthentication(
+                                new BasicAuthentication(gs.getClientId(), gs.getClientSecret()))
+                        .execute();
+
+        GoogleCredential credential = new GoogleCredential.Builder()
+                .setJsonFactory(jsonFactory)
+                .setTransport(httpTransport)
+                .setClientSecrets(gs.getClientId(), gs.getClientSecret()).build()
+                .setFromTokenResponse(response);
+
+        service.setOAuth2Credentials(credential);
+        docsService.setOAuth2Credentials(credential);
         spreadsheetConnector = new SpreadsheetConnector(service,docsService);
-        docsService.setUserCredentials(s.getLogin(), s.getPassword());
+        setWorksheet(s.getSpreadsheetName(),s.getWorksheetName());
+    }
+
+    @Override
+    public void login(SpreadsheetSettings s, GoogleSettings gs, String refreshToken) throws IOException, ServiceException {
+        String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+        // Authenticate
+        HttpTransport httpTransport = new UrlFetchTransport();
+        JsonFactory jsonFactory = new JacksonFactory();
+        TokenResponse response =
+                new RefreshTokenRequest(
+                        new NetHttpTransport(),
+                        new JacksonFactory(),
+                        new GenericUrl(accessTokenUrl),refreshToken)
+                        .setGrantType("refresh_token")
+                        .setRefreshToken(refreshToken)
+                        .setClientAuthentication(
+                                new BasicAuthentication(gs.getClientId(), gs.getClientSecret()))
+                        .execute();
+
+        GoogleCredential credential = new GoogleCredential.Builder()
+                .setJsonFactory(jsonFactory)
+                .setTransport(httpTransport)
+                .setClientSecrets(gs.getClientId(), gs.getClientSecret()).build()
+                .setFromTokenResponse(response);
+
+        service.setOAuth2Credentials(credential);
+        docsService.setOAuth2Credentials(credential);
+        spreadsheetConnector = new SpreadsheetConnector(service,docsService);
         setWorksheet(s.getSpreadsheetName(),s.getWorksheetName());
     }
 

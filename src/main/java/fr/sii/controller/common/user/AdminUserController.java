@@ -1,9 +1,11 @@
 package fr.sii.controller.common.user;
 
 import com.google.appengine.api.users.UserServiceFactory;
+import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.admin.user.AdminUserInfo;
 import fr.sii.domain.common.Redirect;
 import fr.sii.domain.common.Uri;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,16 +23,19 @@ import javax.validation.Valid;
 @RequestMapping(value="/api/adminUser")
 public class AdminUserController {
 
+    @Autowired
+    SpreadsheetSettings spreadsheetSettings;
+
     @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     @ResponseBody
     public AdminUserInfo getCurrentUser( HttpServletRequest req, HttpServletResponse resp){
         com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
         if (req.getUserPrincipal() != null) {
-            return new AdminUserInfo(true, userService.isUserAdmin(),userService.createLogoutURL("/"));
+            return new AdminUserInfo(userService.createLogoutURL("/"), true, userService.isUserAdmin(), userService.getCurrentUser().getEmail().equals(spreadsheetSettings.getLogin()));
         }
         else
         {
-            return new AdminUserInfo(false, false,userService.createLoginURL("/"));
+            return new AdminUserInfo(userService.createLogoutURL("/"), false, false, false);
         }
     }
 

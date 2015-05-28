@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper')
   .factory('AuthService', ['$q', 'AdminUser', '$window', '$state', '$auth', 'jwtHelper', function($q, AdminUser, $window, $state, $auth, jwtHelper) {
     var authService = {};
@@ -69,7 +71,7 @@ angular.module('CallForPaper')
     /**
      * Redirect user if not admin
      */
-    authService.isAutorizedAdmin = function($q, $window, $state) {
+    authService.isAutorizedAdmin = ['$q', '$window', '$state', function($q, $window, $state) {
       var deferred = $q.defer();
       authService.getCurrentUser().then(function(userInfo) {
         // connected
@@ -95,18 +97,55 @@ angular.module('CallForPaper')
             }
           }, function() {
             // error 
-            $state.go("form.step1");
+            $state.go("app.login");
             deferred.reject();
           })
         }
       })
       return deferred.promise;
-    }
+    }]
+
+    /**
+     * Redirect user if not connected to google and can't configure the app
+     */
+    authService.isAutorizedConfig = ['$q', '$window', '$state', function($q, $window, $state) {
+      var deferred = $q.defer();
+      authService.getCurrentUser().then(function(userInfo) {
+        // connected
+        if (userInfo.connected === true) {
+          if(userInfo.config === true)
+          {
+            deferred.resolve();
+          }
+          else
+          {
+            deferred.reject();
+            $state.go("config.403");
+          }
+        } else {
+          // login with admin redirection
+          authService.getCustomLoginUrl({
+            "redirect": "/#/config"
+          }).then(function(login) {
+            if (login.uri !== null) {
+              // go to login page
+              $window.location.href = login.uri;
+              deferred.reject();
+            }
+          }, function() {
+            // error 
+            $state.go("app.login");
+            deferred.reject();
+          })
+        }
+      })
+      return deferred.promise;
+    }]
 
     /**
      * Verify if the user is currently logged and has confirmed his email (or logged with provider)
      */
-    authService.verified = function($q, $location, $auth, jwtHelper) {
+    authService.verified = ['$q', '$location', '$auth', 'jwtHelper', function($q, $location, $auth, jwtHelper) {
       var deferred = $q.defer();
       if (!$auth.isAuthenticated()) {
         $location.path('/login');
@@ -120,7 +159,7 @@ angular.module('CallForPaper')
         }
       }
       return deferred.promise;
-    }
+    }]
 
     /**
      * Verify if the user is currently logged and has confirmed his email (or logged with provider)
@@ -141,7 +180,7 @@ angular.module('CallForPaper')
     /**
      * Verify if the user is currently logged
      */
-    authService.authenticated = function($q, $location, $auth, jwtHelper) {
+    authService.authenticated = ['$q', '$location', '$auth', 'jwtHelper', function($q, $location, $auth, jwtHelper) {
       var deferred = $q.defer();
       if (!$auth.isAuthenticated()) {
         $location.path('/login');
@@ -153,7 +192,7 @@ angular.module('CallForPaper')
         }
       }
       return deferred.promise;
-    }
+    }]
 
     /**
      * Login the user and redirect to the given state

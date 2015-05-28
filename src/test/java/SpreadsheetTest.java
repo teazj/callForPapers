@@ -1,15 +1,31 @@
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
+import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.http.BasicAuthentication;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gdata.util.ServiceException;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
 import com.jayway.restassured.response.Header;
 import com.nimbusds.jose.JOSEException;
+import fr.sii.config.google.GoogleSettings;
+import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowDraft;
 import fr.sii.domain.spreadsheet.RowSession;
 import fr.sii.domain.token.Token;
 import fr.sii.service.auth.AuthUtils;
+import fr.sii.service.spreadsheet.SpreadsheetService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +36,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -32,21 +50,107 @@ import static org.junit.Assert.assertNotEquals;
  * Created by tmaugin on 08/04/2015.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContext.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
+@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContextTest.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SpreadsheetTest {
 
     @Autowired
-    private fr.sii.service.spreadsheet.SpreadsheetService spreadsheetService;
+    private SpreadsheetService spreadsheetService;
+
+    @Autowired
+    private SpreadsheetSettings spreadsheetSettings;
+
+    @Autowired
+    private GoogleSettings googleSettings;
+
+    private static boolean init = false;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private String secretToken = "secretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTestsecretTest";
 
+    private void getOAuth()
+    {
+        if(init)
+            return;
+        init = true;
+        HttpTransport httpTransport = new NetHttpTransport();
+        JsonFactory jsonFactory = new JacksonFactory();
+        GoogleAuthorizationCodeFlow flow =
+                new GoogleAuthorizationCodeFlow.Builder(
+                        httpTransport,
+                        jsonFactory,
+                        googleSettings.getClientId(),
+                        googleSettings.getClientSecret(),
+                        Arrays.asList("https://www.googleapis.com/auth/drive", "https://spreadsheets.google.com/feeds"))
+                        .setAccessType("offline")
+                        .setApprovalPrompt("force")
+                        .build();
+        String url = flow.newAuthorizationUrl().setRedirectUri("urn:ietf:wg:oauth:2.0:oob").build();
+
+        WebClient webClient = new WebClient(BrowserVersion.CHROME);
+        webClient.getOptions().setCssEnabled(false);
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+        webClient.getOptions().setPrintContentOnFailingStatusCode(false);
+
+        HtmlPage page = null;
+        try {
+            page = webClient.getPage(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HtmlSubmitInput signInButton = page.getElementByName("signIn");
+        HtmlTextInput userNameField = page.getElementByName("Email");
+        HtmlPasswordInput passwordField = page.getElementByName("Passwd");
+        userNameField.setValueAttribute(spreadsheetSettings.getLogin());
+        passwordField.setValueAttribute(spreadsheetSettings.getPassword());
+        HtmlPage allowAccessPage = null;
+        try {
+            allowAccessPage = signInButton.click();
+        } catch (IOException e) {
+        }
+        HtmlButton allowAccessButton = (HtmlButton)allowAccessPage.getElementById("submit_approve_access");
+        allowAccessButton.removeAttribute("disabled");
+        HtmlPage tokenPage = null;
+        try {
+            tokenPage = allowAccessButton.click();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HtmlTextInput tokenElement = (HtmlTextInput)tokenPage.getElementById("code");
+        String code = tokenElement.getText();
+        webClient.close();
+
+        String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+
+        try {
+            TokenResponse tokenResponse = new AuthorizationCodeTokenRequest(
+                    new NetHttpTransport(),
+                    new com.google.api.client.json.jackson.JacksonFactory(),
+                    new GenericUrl(accessTokenUrl), code)
+                    .setRedirectUri("urn:ietf:wg:oauth:2.0:oob")
+                    .setCode(code)
+                    .setGrantType("authorization_code")
+                    .setClientAuthentication(
+                            new BasicAuthentication(googleSettings.getClientId(),googleSettings.getClientSecret()))
+                    .execute();
+
+            if(tokenResponse.getRefreshToken() != null && !tokenResponse.getRefreshToken().equals(""))
+            {
+                spreadsheetService.login(tokenResponse.getRefreshToken());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @Before
     public void setUp() {
+        getOAuth();
         AuthUtils.TOKEN_SECRET = secretToken;
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
     }
