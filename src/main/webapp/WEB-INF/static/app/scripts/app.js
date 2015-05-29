@@ -248,7 +248,7 @@ angular.module('CallForPaper', [
       url: '/auth/spreadsheet',
       authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
       redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-      scope: ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds'],
+      scope: ['https://www.googleapis.com/auth/drive.file', 'https://spreadsheets.google.com/feeds'],
       clientId: Config.googleClientId,
       scopeDelimiter: ' ',
       accessType: 'offline',
