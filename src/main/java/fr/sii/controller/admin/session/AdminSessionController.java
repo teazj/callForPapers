@@ -4,6 +4,7 @@ package fr.sii.controller.admin.session;
  * Created by tmaugin on 15/05/2015.
  */
 
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
 import fr.sii.domain.exception.NotFoundException;
@@ -36,13 +37,13 @@ public class AdminSessionController {
 
     @RequestMapping(value="/session", method= RequestMethod.GET)
     @ResponseBody
-    public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException {
+    public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException, EntityNotFoundException {
         return googleService.getRowsSession();
     }
 
     @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
     @ResponseBody
-    public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException {
+    public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
         return googleService.getRow(added);
     }
 }
