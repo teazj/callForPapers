@@ -12,12 +12,12 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
 import com.google.appengine.api.datastore.*;
-import com.google.gdata.client.docs.DocsService;
 import com.google.gdata.client.spreadsheet.FeedURLFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.BaseEntry;
-import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
@@ -50,7 +50,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
      * Our view of Google Spreadsheets as an authenticated Google user.
      */
     private SpreadsheetService service;
-    private DocsService docsService;
+    private Drive driveService;
     private SpreadsheetConnector spreadsheetConnector;
 
     private TokenResponse accessToken;
@@ -134,7 +134,6 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             HttpTransport httpTransport = new UrlFetchTransport();
             JsonFactory jsonFactory = new JacksonFactory();
             Key spreadsheetTokenKey = KeyFactory.createKey("Token", "Spreadsheet");
-            Entity spreadsheetToken = new Entity(spreadsheetTokenKey);
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             Entity refreshToken = datastore.get(spreadsheetTokenKey);
             String parsedRefreshToken = (String) refreshToken.getProperty("refresh_token");
@@ -159,12 +158,12 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
                     .setFromTokenResponse(response);
 
             service.setOAuth2Credentials(credential);
-            docsService.setOAuth2Credentials(credential);
-            spreadsheetConnector = new SpreadsheetConnector(service, docsService);
 
             // Check if token valid
             if(!isTokenExpired(response)){
                 try {
+                    driveService = getDriveService(credential);
+                    spreadsheetConnector = new SpreadsheetConnector(service, driveService);
                     setWorksheet(spreadsheetSettings.getSpreadsheetName(),spreadsheetSettings.getWorksheetName());
                     applicationSettings.setConfigured(true);
                 } catch (IOException | ServiceException | EntityNotFoundException e) {
@@ -185,6 +184,13 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             applicationSettings.setConfigured(false);
             throw e;
         }
+    }
+
+    private Drive getDriveService(GoogleCredential credential)
+    {
+        return new Drive.Builder(new NetHttpTransport(), new com.google.api.client.json.jackson2.JacksonFactory(), credential)
+                .setApplicationName("CallForPaper-v3")
+                .build();
     }
 
     /**
@@ -220,13 +226,13 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
                     .setFromTokenResponse(response);
 
             service.setOAuth2Credentials(credential);
-            docsService.setOAuth2Credentials(credential);
-            spreadsheetConnector = new SpreadsheetConnector(service,docsService);
 
             // Check if token valid
             if(!isTokenExpired(response)){
                 try {
-                    setWorksheet(spreadsheetSettings.getSpreadsheetName(),spreadsheetSettings.getWorksheetName());
+                    driveService = getDriveService(credential);
+                    spreadsheetConnector = new SpreadsheetConnector(service, driveService);
+                    setWorksheet(spreadsheetSettings.getSpreadsheetName(), spreadsheetSettings.getWorksheetName());
                     applicationSettings.setConfigured(true);
                 } catch (IOException | ServiceException | EntityNotFoundException e) {
                     logger.log(Level.WARNING, "Google Drive account not linked");
@@ -250,7 +256,6 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
 
     public ProductionSpreadsheetRepository() {
         this.service = new SpreadsheetService("CallForPaper-v3");
-        this.docsService = new DocsService("CallForPaper-v3");
         this.factory = FeedURLFactory.getDefault();
     }
 
@@ -269,8 +274,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         // Not existing, creating it
         if(spreadsheet == null)
         {
-            DocumentListEntry documentListEntry = spreadsheetConnector.createSpreadsheet(spreadsheetName);
-            String spreadsheetURL = "https://spreadsheets.google.com/feeds/spreadsheets/" + documentListEntry.getDocId();
+            File newSpreadsheet = spreadsheetConnector.insertFile(spreadsheetName,"Call For Paper spreadsheet",null,"application/vnd.google-apps.spreadsheet");
+            String spreadsheetURL = "https://spreadsheets.google.com/feeds/spreadsheets/" + newSpreadsheet.getId();
             spreadsheet = service.getEntry(new URL(spreadsheetURL), SpreadsheetEntry.class);
         }
 

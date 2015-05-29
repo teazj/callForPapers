@@ -4,11 +4,12 @@ package fr.sii.repository.spreadsheet;
  * Created by tmaugin on 16/04/2015.
  */
 
-import com.google.gdata.client.docs.DocsService;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.ParentReference;
 import com.google.gdata.client.spreadsheet.CellQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.PlainTextConstruct;
-import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.domain.spreadsheet.Row;
@@ -21,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,32 +35,44 @@ import java.util.List;
 public class SpreadsheetConnector {
 
     private SpreadsheetService service;
-    private DocsService docsService;
+    private Drive driveService;
     private static Log log = LogFactory
             .getLog(SpreadsheetConnector.class);
 
-    public SpreadsheetConnector(SpreadsheetService service, DocsService docsService) {
+    public SpreadsheetConnector(SpreadsheetService service, Drive driveService) {
         this.service = service;
-        this.docsService = docsService;
+        this.driveService = driveService;
     }
 
-
     /**
-     * Create new spreadsheet with the given name
+     * Insert new file.
      *
-     * @param spreadsheetName the spreadsheet name
-     * @throws ServiceException when the request causes an error in the Google
-     *         Spreadsheets service.
-     * @throws IOException when an error occurs in communication with the Google
-     *         Spreadsheets service.
+     * @param title Title of the file to insert, including the extension.
+     * @param description Description of the file to insert.
+     * @param parentId Optional parent folder's ID.
+     * @param mimeType MIME type of the file to insert.
+     * @return Inserted file metadata if successful, throw @throws otherwise.
+     * @throws IOException
      */
-    public DocumentListEntry createSpreadsheet(String spreadsheetName) throws IOException, ServiceException {
-        URL GOOGLE_DRIVE_FEED_URL = new URL("https://docs.google.com/feeds/default/private/full/");
-        DocumentListEntry documentListEntry = new com.google.gdata.data.docs.SpreadsheetEntry();
-        documentListEntry.setTitle(new PlainTextConstruct(spreadsheetName));
-        documentListEntry = docsService.insert(GOOGLE_DRIVE_FEED_URL, documentListEntry);
-        log.info(String.format("Spreadsheet %s created",spreadsheetName));
-        return documentListEntry;
+    public File insertFile(String title, String description,
+                                   String parentId, String mimeType) throws IOException {
+        // File's metadata.
+        File body = new File();
+        body.setTitle(title);
+        body.setDescription(description);
+        body.setMimeType(mimeType);
+
+        // Set the parent folder.
+        if (parentId != null && parentId.length() > 0) {
+            body.setParents(
+                    Arrays.asList(new ParentReference().setId(parentId)));
+        }
+
+        // File's content.
+        File file = driveService.files().insert(body).execute();
+        // Uncomment the following line to print the File ID.
+        // System.out.println("File ID: " + file.getId());
+        return file;
     }
 
     /**
