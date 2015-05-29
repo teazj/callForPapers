@@ -34,7 +34,7 @@ public class AdminCommentService {
                 r.setUser(u);
                 nrs.add(r);
             } catch (NotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         return nrs;
@@ -47,7 +47,7 @@ public class AdminCommentService {
                 AdminUser u = adminUserService.findOne(r.getUserId());
                 r.setUser(u);
             } catch (NotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             return r;
         }
@@ -59,7 +59,7 @@ public class AdminCommentService {
             AdminUser u = adminUserService.findOne(r.getUserId());
             r.setUser(u);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return r;
     }

@@ -33,7 +33,7 @@ public class AdminRateService {
                 r.setUser(u);
                 nrs.add(r);
             } catch (NotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         return nrs;
@@ -46,7 +46,7 @@ public class AdminRateService {
                 AdminUser u = adminUserService.findOne(r.getUserId());
                 r.setUser(u);
             } catch (NotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             return r;
         }
@@ -58,7 +58,7 @@ public class AdminRateService {
             AdminUser u = adminUserService.findOne(r.getUserId());
             r.setUser(u);
         } catch (NotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return r;
     }

@@ -1,5 +1,7 @@
 package fr.sii.repository.spreadsheet;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.RefreshTokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
@@ -18,6 +20,7 @@ import com.google.gdata.data.BaseEntry;
 import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
+import fr.sii.config.application.ApplicationSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.config.google.GoogleSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
@@ -25,26 +28,32 @@ import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by tmaugin on 02/04/2015.
  */
 public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
+
+    private static Logger logger = Logger.getLogger(ProductionSpreadsheetRepository.class.getName());
+
     /**
      * Our view of Google Spreadsheets as an authenticated Google user.
      */
     private SpreadsheetService service;
     private DocsService docsService;
-    private SpreadsheetSettings spreadsheetSettings;
     private SpreadsheetConnector spreadsheetConnector;
+
+    private TokenResponse accessToken;
 
     private SpreadsheetEntry spreadsheet;
     private WorksheetEntry worksheet;
@@ -55,73 +64,188 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     private FeedURLFactory factory;
 
     @Autowired
-    GlobalSettings globalSettings;
+    private GlobalSettings globalSettings;
 
+    @Autowired
+    private SpreadsheetSettings spreadsheetSettings;
 
-    @Override
-    public void login(SpreadsheetSettings s, GoogleSettings gs) throws EntityNotFoundException, IOException, ServiceException {
-        if(globalSettings.getDatabaseLoaded().equals("false"))
-            return;
-        String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
-        // Authenticate
-        HttpTransport httpTransport = new UrlFetchTransport();
-        JsonFactory jsonFactory = new JacksonFactory();
-        Key spreadsheetTokenKey = KeyFactory.createKey("Token", "Spreadsheet");
-        Entity spreadsheetToken = new Entity(spreadsheetTokenKey);
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Entity refreshToken = datastore.get(spreadsheetTokenKey);
-        String parsedRefreshToken = (String) refreshToken.getProperty("refresh_token");
+    @Autowired
+    private GoogleSettings googleSettings;
 
-        TokenResponse response =
-                new RefreshTokenRequest(
-                        new NetHttpTransport(),
-                        new JacksonFactory(),
-                        new GenericUrl(accessTokenUrl),parsedRefreshToken)
-                        .setGrantType("refresh_token")
-                        .setRefreshToken(parsedRefreshToken)
-                        .setClientAuthentication(
-                                new BasicAuthentication(gs.getClientId(), gs.getClientSecret()))
-                        .execute();
+    @Autowired
+    private ApplicationSettings applicationSettings;
 
-        GoogleCredential credential = new GoogleCredential.Builder()
-                .setJsonFactory(jsonFactory)
-                .setTransport(httpTransport)
-                .setClientSecrets(gs.getClientId(), gs.getClientSecret()).build()
-                .setFromTokenResponse(response);
+    private Map<String,String> getTokenInfo(TokenResponse token)
+    {
+        RestTemplate restTemplate = new RestTemplate();
+        String tokenInfo;
+        try
+        {
+            tokenInfo = restTemplate.getForObject("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + token.getAccessToken(),String.class);
+        }catch (HttpClientErrorException e)
+        {
+            return new HashMap<String,String>();
+        }
+        Map<String,String> map = new HashMap<String,String>();
+        ObjectMapper mapper = new ObjectMapper();
 
-        service.setOAuth2Credentials(credential);
-        docsService.setOAuth2Credentials(credential);
-        spreadsheetConnector = new SpreadsheetConnector(service,docsService);
-        setWorksheet(s.getSpreadsheetName(),s.getWorksheetName());
+        try {
+            //convert JSON string to Map
+            map = mapper.readValue(tokenInfo, new TypeReference<HashMap<String,String>>(){});
+        } catch (Exception e) {
+        }
+        return map;
     }
 
+    private boolean isTokenExpired(TokenResponse token)
+    {
+        if(token == null)
+            return true;
+        Map<String,String> tokenInfo = getTokenInfo(token);
+        String expiration = tokenInfo.get("expires_in");
+        if(expiration != null)
+        {
+            Integer expirationParsed = Integer.valueOf(expiration);
+            return !(expirationParsed > 10);
+        }
+        return true;
+    }
+
+    private void checkExpiredAccessToken() throws EntityNotFoundException, IOException, ServiceException {
+        if(isTokenExpired(accessToken))
+        {
+            login();
+        }
+    }
+
+    /**
+     * Login to google services (set applicationSettings configured option according to the connexion state)
+     * @throws EntityNotFoundException
+     * @throws ServiceException
+     * @throws IOException
+     */
     @Override
-    public void login(SpreadsheetSettings s, GoogleSettings gs, String refreshToken) throws IOException, ServiceException {
-        String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
-        // Authenticate
-        HttpTransport httpTransport = new UrlFetchTransport();
-        JsonFactory jsonFactory = new JacksonFactory();
-        TokenResponse response =
-                new RefreshTokenRequest(
-                        new NetHttpTransport(),
-                        new JacksonFactory(),
-                        new GenericUrl(accessTokenUrl),refreshToken)
-                        .setGrantType("refresh_token")
-                        .setRefreshToken(refreshToken)
-                        .setClientAuthentication(
-                                new BasicAuthentication(gs.getClientId(), gs.getClientSecret()))
-                        .execute();
+    public void login() throws EntityNotFoundException, ServiceException, IOException {
+        try {
+            if (globalSettings.getDatabaseLoaded().equals("false"))
+                return;
+            String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+            // Authenticate
+            HttpTransport httpTransport = new UrlFetchTransport();
+            JsonFactory jsonFactory = new JacksonFactory();
+            Key spreadsheetTokenKey = KeyFactory.createKey("Token", "Spreadsheet");
+            Entity spreadsheetToken = new Entity(spreadsheetTokenKey);
+            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+            Entity refreshToken = datastore.get(spreadsheetTokenKey);
+            String parsedRefreshToken = (String) refreshToken.getProperty("refresh_token");
 
-        GoogleCredential credential = new GoogleCredential.Builder()
-                .setJsonFactory(jsonFactory)
-                .setTransport(httpTransport)
-                .setClientSecrets(gs.getClientId(), gs.getClientSecret()).build()
-                .setFromTokenResponse(response);
+            TokenResponse response =
+                    new RefreshTokenRequest(
+                            new NetHttpTransport(),
+                            new JacksonFactory(),
+                            new GenericUrl(accessTokenUrl), parsedRefreshToken)
+                            .setGrantType("refresh_token")
+                            .setRefreshToken(parsedRefreshToken)
+                            .setClientAuthentication(
+                                    new BasicAuthentication(googleSettings.getClientId(), googleSettings.getClientSecret()))
+                            .execute();
 
-        service.setOAuth2Credentials(credential);
-        docsService.setOAuth2Credentials(credential);
-        spreadsheetConnector = new SpreadsheetConnector(service,docsService);
-        setWorksheet(s.getSpreadsheetName(),s.getWorksheetName());
+            accessToken = response;
+
+            GoogleCredential credential = new GoogleCredential.Builder()
+                    .setJsonFactory(jsonFactory)
+                    .setTransport(httpTransport)
+                    .setClientSecrets(googleSettings.getClientId(), googleSettings.getClientSecret()).build()
+                    .setFromTokenResponse(response);
+
+            service.setOAuth2Credentials(credential);
+            docsService.setOAuth2Credentials(credential);
+            spreadsheetConnector = new SpreadsheetConnector(service, docsService);
+
+            // Check if token valid
+            if(!isTokenExpired(response)){
+                try {
+                    setWorksheet(spreadsheetSettings.getSpreadsheetName(),spreadsheetSettings.getWorksheetName());
+                    applicationSettings.setConfigured(true);
+                } catch (IOException | ServiceException | EntityNotFoundException e) {
+                    logger.log(Level.WARNING, "Google Drive account not linked");
+                    logger.log(Level.WARNING, e.getMessage());
+                    applicationSettings.setConfigured(false);
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                logger.log(Level.WARNING, "Google Drive account not linked");
+                applicationSettings.setConfigured(false);
+            }
+        } catch(EntityNotFoundException | IOException e){
+            logger.log(Level.WARNING, "Google Drive account not linked");
+            logger.log(Level.WARNING, e.getMessage());
+            applicationSettings.setConfigured(false);
+            throw e;
+        }
+    }
+
+    /**
+     * Login to google services unsing given refresh token (set applicationSettings configured option according to the connexion state)
+     * @param refreshToken
+     * @throws IOException
+     * @throws ServiceException
+     */
+    @Override
+    public void login(String refreshToken) throws IOException, ServiceException {
+        try{
+            String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+            // Authenticate
+            HttpTransport httpTransport = new UrlFetchTransport();
+            JsonFactory jsonFactory = new JacksonFactory();
+            TokenResponse response =
+                    new RefreshTokenRequest(
+                            new NetHttpTransport(),
+                            new JacksonFactory(),
+                            new GenericUrl(accessTokenUrl),refreshToken)
+                            .setGrantType("refresh_token")
+                            .setRefreshToken(refreshToken)
+                            .setClientAuthentication(
+                                    new BasicAuthentication(googleSettings.getClientId(), googleSettings.getClientSecret()))
+                            .execute();
+
+            accessToken = response;
+
+            GoogleCredential credential = new GoogleCredential.Builder()
+                    .setJsonFactory(jsonFactory)
+                    .setTransport(httpTransport)
+                    .setClientSecrets(googleSettings.getClientId(), googleSettings.getClientSecret()).build()
+                    .setFromTokenResponse(response);
+
+            service.setOAuth2Credentials(credential);
+            docsService.setOAuth2Credentials(credential);
+            spreadsheetConnector = new SpreadsheetConnector(service,docsService);
+
+            // Check if token valid
+            if(!isTokenExpired(response)){
+                try {
+                    setWorksheet(spreadsheetSettings.getSpreadsheetName(),spreadsheetSettings.getWorksheetName());
+                    applicationSettings.setConfigured(true);
+                } catch (IOException | ServiceException | EntityNotFoundException e) {
+                    logger.log(Level.WARNING, "Google Drive account not linked");
+                    logger.log(Level.WARNING, e.getMessage());
+                    applicationSettings.setConfigured(false);
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                logger.log(Level.WARNING, "Google Drive account not linked");
+                applicationSettings.setConfigured(false);
+            }
+        } catch(IOException e){
+            logger.log(Level.WARNING, "Google Drive account not linked");
+            logger.log(Level.WARNING, e.getMessage());
+            applicationSettings.setConfigured(false);
+            throw e;
+        }
     }
 
     public ProductionSpreadsheetRepository() {
@@ -130,8 +254,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         this.factory = FeedURLFactory.getDefault();
     }
 
-    public void setWorksheet(String spreadsheetName,String worksheetName)
-            throws IOException, ServiceException {
+    public void setWorksheet(String spreadsheetName,String worksheetName) throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         // Get the spreadsheet to load
         SpreadsheetFeed feed = service.getFeed(factory.getSpreadsheetsFeedUrl(), SpreadsheetFeed.class);
         List<SpreadsheetEntry> spreadsheets = feed.getEntries();
@@ -182,8 +306,9 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public Row addRow(Row postedRow) throws IOException, ServiceException {
-        // Fetch the list feed of the worksheet.
+    public Row addRow(Row postedRow) throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
+      // Fetch the list feed of the worksheet.
         URL listFeedUrl = worksheet.getListFeedUrl();
         ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
 
@@ -200,7 +325,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public List<Row> getRows() throws IOException, ServiceException {
+    public List<Row> getRows() throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -229,7 +355,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public Row getRow(String added) throws IOException, ServiceException, NotFoundException {
+    public Row getRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -263,7 +390,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public Row getRow(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException {
+    public Row getRow(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -303,7 +431,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public List<Row> getRowsSession() throws IOException, ServiceException {
+    public List<Row> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -334,7 +463,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public List<Row> getRowsSession(Long userId) throws IOException, ServiceException {
+    public List<Row> getRowsSession(Long userId) throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -364,7 +494,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public List<Row> getRowsDraft() throws IOException, ServiceException {
+    public List<Row> getRowsDraft() throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -394,7 +525,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException {
+    public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -424,7 +556,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public List<Row> deleteRows() throws IOException, ServiceException {
+    public List<Row> deleteRows() throws IOException, ServiceException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null)
         {
             throw new ServiceException("Spreadsheet doesn't exists");
@@ -451,7 +584,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException {
+    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -490,7 +624,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException {
+    public Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }
@@ -546,7 +681,8 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
     }
 
     @Override
-    public Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException {
+    public Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException {
+        checkExpiredAccessToken();
         if(spreadsheet == null) {
             throw new ServiceException("Spreadsheet doesn't exists");
         }

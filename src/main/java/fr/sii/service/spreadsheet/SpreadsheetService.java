@@ -4,12 +4,10 @@ package fr.sii.service.spreadsheet;
  * Created by tmaugin on 02/04/2015.
  * SII
  */
+
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
-import fr.sii.config.application.ApplicationSettings;
 import fr.sii.config.global.GlobalSettings;
-import fr.sii.config.google.GoogleSettings;
-import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.admin.rate.AdminRate;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
@@ -28,12 +26,6 @@ import java.util.List;
 public class SpreadsheetService {
 
     @Autowired
-    private SpreadsheetSettings spreadsheetSettings;
-
-    @Autowired
-    private GoogleSettings googleSettings;
-
-    @Autowired
     private SpreadsheetRepository spreadsheetRepository;
 
     @Autowired
@@ -41,9 +33,6 @@ public class SpreadsheetService {
 
     @Autowired
     private GlobalSettings globalSettings;
-
-    @Autowired
-    ApplicationSettings applicationSettings;
 
     private boolean configured;
 
@@ -95,75 +84,65 @@ public class SpreadsheetService {
     @Autowired
     public void login() {
         try {
-            spreadsheetRepository.login(spreadsheetSettings, googleSettings);
-            applicationSettings.setConfigured(true);
-        } catch (ServiceException | IOException | EntityNotFoundException e) {
-            applicationSettings.setConfigured(false);
-            e.printStackTrace();
+            spreadsheetRepository.login();
+        } catch (EntityNotFoundException | ServiceException | IOException e) {
+            //e.printStackTrace();
         }
     }
 
     public void login(String refreshToken) {
         try {
-            spreadsheetRepository.login(spreadsheetSettings, googleSettings, refreshToken);
-            applicationSettings.setConfigured(true);
-        } catch (ServiceException | IOException e) {
-            applicationSettings.setConfigured(false);
-            e.printStackTrace();
+            spreadsheetRepository.login(refreshToken);
+        } catch (IOException | ServiceException e) {
+            //e.printStackTrace();
         }
     }
 
-    public Row addRow(Row row) throws ServiceException, IOException {
+    public Row addRow(Row row) throws ServiceException, IOException, EntityNotFoundException {
         return spreadsheetRepository.addRow(row);
     }
 
-    public Row putRowDraft(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException {
+    public Row putRowDraft(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException, EntityNotFoundException {
         return spreadsheetRepository.putRowDraft(row, userId, added);
     }
 
-    public Row putRowDraftToSession(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException {
+    public Row putRowDraftToSession(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException, EntityNotFoundException {
         return spreadsheetRepository.putRowDraftToSession(row, userId, added);
     }
 
-    public List<RowResponse> getRows() throws IOException, ServiceException
-    {
+    public List<RowResponse> getRows() throws IOException, ServiceException, EntityNotFoundException {
         return matchRates(spreadsheetRepository.getRows());
     }
 
-    public RowResponse getRow(String added) throws IOException, ServiceException, NotFoundException {
+    public RowResponse getRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
         return matchRates(spreadsheetRepository.getRow(added));
     }
 
-    public Row getRow(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException {
+    public Row getRow(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException, EntityNotFoundException {
         return spreadsheetRepository.getRow(added, userId);
     }
 
-    public List<Row> deleteRows() throws IOException, ServiceException
-    {
+    public List<Row> deleteRows() throws IOException, ServiceException, EntityNotFoundException {
         return spreadsheetRepository.deleteRows();
     }
 
-    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException {
+    public void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException, EntityNotFoundException {
         spreadsheetRepository.deleteRowDraft(added, userId);
     }
 
-    public List<RowResponse> getRowsSession() throws IOException, ServiceException
-    {
+    public List<RowResponse> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
         return matchRates(spreadsheetRepository.getRowsSession());
     }
 
-    public List<Row> getRowsSession(Long userId) throws IOException, ServiceException
-    {
+    public List<Row> getRowsSession(Long userId) throws IOException, ServiceException, EntityNotFoundException {
         return spreadsheetRepository.getRowsSession(userId);
     }
 
-    public List<Row> getRowsDraft() throws IOException, ServiceException
-    {
+    public List<Row> getRowsDraft() throws IOException, ServiceException, EntityNotFoundException {
         return spreadsheetRepository.getRowsDraft();
     }
 
-    public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException
-    {
+    public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException, EntityNotFoundException {
         return spreadsheetRepository.getRowsDraft(userId);
     }
 }

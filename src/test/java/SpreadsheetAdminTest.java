@@ -10,6 +10,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
@@ -194,10 +195,7 @@ public class SpreadsheetAdminTest {
         boolean error = false;
         try {
             returnedRow = spreadsheetService.addRow(row);
-        } catch (IOException e) {
-            e.printStackTrace();
-            error = true;
-        } catch (ServiceException e) {
+        } catch (IOException | EntityNotFoundException | ServiceException e) {
             e.printStackTrace();
             error = true;
         }
@@ -298,9 +296,7 @@ public class SpreadsheetAdminTest {
     {
         try {
             spreadsheetService.deleteRows();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServiceException e) {
+        } catch (IOException | EntityNotFoundException | ServiceException e) {
             e.printStackTrace();
         }
     }
