@@ -61,7 +61,8 @@ angular.module('CallForPaper', [
             templateUrl: 'views/admin/admin.html',
             controller: 'AdminCtrl',
             resolve: {
-              isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedAdmin
+              isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedAdmin,
+              isConfigured: AppConfigProvider.$get().isConfigured
             },
             '@admin': {
               templateUrl: 'views/admin/sessions.html',
