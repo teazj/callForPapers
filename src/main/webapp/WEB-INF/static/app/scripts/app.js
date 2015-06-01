@@ -268,4 +268,5 @@ angular.module('CallForPaper', [
     AuthService.init();
     $http.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
     $http.defaults.xsrfCookieName = 'CSRF-TOKEN';
+    $.material.init();
   }]);

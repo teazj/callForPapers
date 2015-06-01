@@ -20,7 +20,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="isConnected === true"><a ui-sref="loginAdmin">{{'config.login' | translate}}</a></li>
         <li ng-show="isConnected === true"><a ui-sref="logoutAdmin">{{'config.logout' | translate}}</a></li>
-        <li style="margin-top:4px">
+        <li>
           <lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
         </li>
       </ul>
@@ -28,4 +28,4 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-<div class="col-xs-12" ui-view></div>
+<div ui-view></div>

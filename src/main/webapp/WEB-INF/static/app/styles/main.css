@@ -1,6 +1,11 @@
 html, body{
-    background-color : rgba(255, 255, 255, 0);
+    background-color: rgba(237, 237, 237, 1);
     padding-bottom: 30px; 
+}
+
+.navbar a
+{
+  color: white;
 }
 
 .modal-backdrop {
@@ -112,6 +117,11 @@ textarea{
 .modal-lang-picker > div.form-group
 {
   margin-right: 28px;
+}
+
+.lang-picker
+{
+  margin: 0;
 }
 
 /*ui notification*/
@@ -231,6 +241,14 @@ textarea{
   margin-bottom: 20px !important;
 }
 
+/**
+ * Login
+ */
+
+.login-input{
+  height: 45px !important;
+}
+
 /*********************
 * Social Buttons
 *********************/
@@ -286,4 +304,33 @@ textarea{
 .glyphicon.action:hover
 {
   opacity: 0.5
+}
+
+/**
+ * Tags Input
+ */
+tags-input .tags {
+  border: none !important;
+  box-shadow: none !important;
+}
+tags-input .tags.focused {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/**
+ * Progress bar
+ */
+
+.progress
+{
+  background: #F5F5F5;
+  height: 20px;
+}
+
+/**
+ * Tabs
+ */
+.nav-tabs {
+background: none;
 }
