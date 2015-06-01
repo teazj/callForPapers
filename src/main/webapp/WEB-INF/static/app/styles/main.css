@@ -31,6 +31,10 @@ html, body{
     border-radius: 5px
 }
 
+.bg-danger {
+  background-color: #f2dede !important;
+}
+
 .ng-hide-add-active {
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
