@@ -59,17 +59,17 @@
 	<p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
 	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-left" style="padding-bottom: 10px">
 		<a ui-sref="app.form.step2" class="btn btn-block btn-warning">
-			<span class="glyphicon glyphicon-circle-arrow-left pull-left"></span> {{'steps.previous' | translate}}
+			<span class="mdi-navigation-arrow-back pull-left"></span> {{'steps.previous' | translate}}
 		</a>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right" style="padding-bottom: 10px">
 		<button class="btn btn-block btn-success" ng-disabled="!formData.steps.isValid[2] || !formData.steps.isValid[1] || !formData.steps.isValid[0] || formData.sending">
-		{{'steps.validate' | translate}} <span class="glyphicon glyphicon-ok pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-ok' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
+		{{'steps.validate' | translate}} <span class="mdi-navigation-check pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'mdi-navigation-check' : !formData.sending, 'mdi-navigation-refresh' : formData.sending}"></span>
 		</button>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right">
         <a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
-            Enregistrer en brouillon <span class="glyphicon glyphicon-floppy-disk pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'glyphicon-floppy-disk' : !formData.sending, 'glyphicon-refresh' : formData.sending}"></span>
+            Enregistrer en brouillon <span class="mdi-content-save pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'mdi-content-save' : !formData.sending, 'mdi-navigation-refresh' : formData.sending}"></span>
         </a>
     </div>
 </div>

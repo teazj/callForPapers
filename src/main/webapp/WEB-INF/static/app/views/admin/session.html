@@ -206,7 +206,7 @@
 							<textarea required row="3" class="form-control" ng-init="commentMsg = ''" ng-model="commentMsg">
 							</textarea>
 							<br>
-							<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" class="btn btn-success pull-right">{{'steps.validate' | translate}}&nbsp;<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate pull-right" ng-show="commentButtonDisabled"></span>
+							<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" class="btn btn-success pull-right">{{'steps.validate' | translate}}&nbsp;<span class="mdi-navigation-refresh glyphicon-refresh-animate pull-right" ng-show="commentButtonDisabled"></span>
 							</button>
 						</div>
 					</div>
@@ -221,7 +221,7 @@
 							<strong>{{'admin.you' | translate}}&nbsp;:&nbsp;</strong>
 						</div>
 						<rating value="yourRate.rate" id="difficulty" name="difficulty" max="5" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
-						<button type="button" ng-click="postRate()" ng-disabled="rateButtonDisabled || yourRate.rate <= 0 || yourRate.rate > 5" class="btn btn-success pull-right">{{'steps.validate' | translate}}&nbsp;<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate pull-right" ng-show="rateButtonDisabled"></span>
+						<button type="button" ng-click="postRate()" ng-disabled="rateButtonDisabled || yourRate.rate <= 0 || yourRate.rate > 5" class="btn btn-success pull-right">{{'steps.validate' | translate}}&nbsp;<span class="mdi-navigation-refresh glyphicon-refresh-animate pull-right" ng-show="rateButtonDisabled"></span>
 						</button>
 					</div>
 					<div class="col-xs-12"><strong><hr></strong></div>

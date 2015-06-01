@@ -50,7 +50,11 @@ html, body{
 }
 
 .btn .glyphicon{
-    line-height: 19px;
+    line-height: 20px;
+}
+
+.btn [class^='mdi'] {
+  margin-top: -2px;
 }
 
 .white{
@@ -335,7 +339,7 @@ tags-input .tags.focused {
  */
 .nav-tabs {
 background: none;
-}}
+}
 
 /**
  * Loading bar
