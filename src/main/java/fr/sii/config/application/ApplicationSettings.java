@@ -6,6 +6,9 @@ package fr.sii.config.application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Public application settings
+ */
 @Component
 public class ApplicationSettings {
     @Value("${app.eventName}")

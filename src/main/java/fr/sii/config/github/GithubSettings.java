@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 /**
  * Created by tmaugin on 13/05/2015.
  */
+
+/**
+ * Github provider settings
+ */
 @Component
 public class GithubSettings {
     @Value("${github.clientid}")
