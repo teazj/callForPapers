@@ -1,6 +1,8 @@
 
 # Call For Paper
 
+<img src="https://raw.githubusercontent.com/SII-Nantes/callForPaper/master/readme/screenshot.png" alt="alt text" height="50%">
+
 ## Features :
 
  - Powered by App Engine
