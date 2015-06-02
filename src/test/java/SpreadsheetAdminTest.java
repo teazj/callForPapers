@@ -226,16 +226,20 @@ public class SpreadsheetAdminTest {
 
     @Test
     public void test2_getRows() {
-        deleteRows();
-        test1_addRowPass();
-        test1_addRowPass();
-        given()
-                .contentType("application/json")
-                .when()
-                .get("/api/admin/session")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(2));
+        try {
+            deleteRows();
+            test1_addRowPass();
+            test1_addRowPass();
+            given()
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/admin/session")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(2));
+        } catch (ServiceException | IOException | EntityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -292,12 +296,7 @@ public class SpreadsheetAdminTest {
                 .statusCode(404);
     }
 
-    public void deleteRows()
-    {
-        try {
-            spreadsheetService.deleteRows();
-        } catch (IOException | EntityNotFoundException | ServiceException e) {
-            e.printStackTrace();
-        }
+    public void deleteRows() throws ServiceException, EntityNotFoundException, IOException {
+        spreadsheetService.deleteRows();
     }
 }

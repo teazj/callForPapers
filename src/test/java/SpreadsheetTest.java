@@ -499,32 +499,40 @@ public class SpreadsheetTest {
 
     @Test
     public void test12_getRows() {
-        deleteRows();
-        test01_addRowPass();
-        test01_addRowPass();
-        given()
-                .header(getHeader())
-                .contentType("application/json")
-                .when()
-                .get("/api/restricted/session")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(2));
+        try {
+            deleteRows();
+            test01_addRowPass();
+            test01_addRowPass();
+            given()
+                    .header(getHeader())
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/restricted/session")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(2));
+        } catch (ServiceException | EntityNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void test13_getRowsOtherAccount() {
-        deleteRows();
-        test01_addRowPass();
-        test01_addRowPass();
-        given()
-                .header(getHeaderOtherAccount())
-                .contentType("application/json")
-                .when()
-                .get("/api/restricted/session")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(0));
+        try {
+            deleteRows();
+            test01_addRowPass();
+            test01_addRowPass();
+            given()
+                    .header(getHeaderOtherAccount())
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/restricted/session")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(0));
+        } catch (ServiceException | EntityNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -674,34 +682,42 @@ public class SpreadsheetTest {
 
     @Test
     public void test21_getRowsDraft() {
-        deleteRows();
-        test02_addRowDraftPass();
-        test01_addRowPass();
-        test02_addRowDraftPass();
-        given()
-                .header(getHeader())
-                .contentType("application/json")
-                .when()
-                .get("/api/restricted/draft")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(2));
+        try {
+            deleteRows();
+            test02_addRowDraftPass();
+            test01_addRowPass();
+            test02_addRowDraftPass();
+            given()
+                    .header(getHeader())
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/restricted/draft")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(2));
+        } catch (ServiceException | EntityNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void test22_getRowsDraftOtherAccount() {
-        deleteRows();
-        test02_addRowDraftPass();
-        test01_addRowPass();
-        test02_addRowDraftPass();
-        given()
-                .header(getHeaderOtherAccount())
-                .contentType("application/json")
-                .when()
-                .get("/api/restricted/draft")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(0));
+        try {
+            deleteRows();
+            test02_addRowDraftPass();
+            test01_addRowPass();
+            test02_addRowDraftPass();
+            given()
+                    .header(getHeaderOtherAccount())
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/restricted/draft")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(0));
+        } catch (ServiceException | EntityNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -1205,12 +1221,7 @@ public class SpreadsheetTest {
                 .statusCode(403);
     }
 
-    public void deleteRows()
-    {
-        try {
-            spreadsheetService.deleteRows();
-        } catch (IOException | EntityNotFoundException | ServiceException e) {
-            e.printStackTrace();
-        }
+    public void deleteRows() throws ServiceException, EntityNotFoundException, IOException {
+        spreadsheetService.deleteRows();
     }
 }
