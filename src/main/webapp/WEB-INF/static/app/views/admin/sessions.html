@@ -5,7 +5,7 @@
 				<button ng-click="tableParams.sorting({})" class="btn btn-default">{{'admin.clearSorting' | translate}}</button>
 				<button ng-click="tableParams.filter({})" class="btn btn-default">{{'admin.clearFilter' | translate}}</button>
 			</div>
-			<div ng-if="!screenSize.is('xs, sm')" class="table-responsive" style="display:initial">
+			<div ng-if="!screenSize.is('xs, sm')">
 				<table ng-table="tableParams" show-filter="true" class="table table-striped table-hover table-bordered">
 					<tr ng-repeat="session in $data" ui-sref="admin.session({ id: session.added })">
 						<td filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.name}} {{::session.firstname}}</td>
@@ -18,7 +18,7 @@
 					</tr>
 				</table>
 			</div>
-			<div ng-if="screenSize.is('xs, sm')" class="table-responsive" style="display:initial">
+			<div ng-if="screenSize.is('xs, sm')" class="table-responsive">
 				<table ng-table="tableParams" show-filter="true" class="table table-striped table-hover table-bordered">
 					<tr ng-repeat="session in $data" ui-sref="admin.session({ id: session.added })">
 						<td filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.name}} {{::session.firstname}}</td>

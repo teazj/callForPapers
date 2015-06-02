@@ -50,7 +50,7 @@ import static org.junit.Assert.assertNotEquals;
  * Created by tmaugin on 08/04/2015.
  */
 
-@Ignore
+@Ignore("Google Spreadsheet Service throwing random 502 errors...")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:META-INF/spring/applicationContextTest.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
 @WebAppConfiguration

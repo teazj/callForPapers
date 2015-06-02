@@ -1,3 +1,52 @@
+<a name"rev-126"></a>
+### rev-126 (2015-06-02)
+
+
+#### Bug Fixes
+
+* scrollable admin table for mobile ([54e74b6d](https://github.com/SII-Nantes/callForPaper/commit/54e74b6d))
+* login active menu button ([efdecd0f](https://github.com/SII-Nantes/callForPaper/commit/efdecd0f))
+* overflow y ([de93d90d](https://github.com/SII-Nantes/callForPaper/commit/de93d90d))
+* temporary ignoring test with google services due to error 502 ([3b20c1fb](https://github.com/SII-Nantes/callForPaper/commit/3b20c1fb))
+* revert failing test due to google service error 502 ([b6c3c702](https://github.com/SII-Nantes/callForPaper/commit/b6c3c702))
+* failing test due to google service error 502 ([6f7723f7](https://github.com/SII-Nantes/callForPaper/commit/6f7723f7))
+* change android status bar color ([6ba0bcac](https://github.com/SII-Nantes/callForPaper/commit/6ba0bcac))
+* github/google login button color ([cfce9338](https://github.com/SII-Nantes/callForPaper/commit/cfce9338))
+* notif background color ([e259c64d](https://github.com/SII-Nantes/callForPaper/commit/e259c64d))
+* commented code ([d99de184](https://github.com/SII-Nantes/callForPaper/commit/d99de184))
+* screenshot height ([6c86a12e](https://github.com/SII-Nantes/callForPaper/commit/6c86a12e))
+* jquery version ([bc2b2ce1](https://github.com/SII-Nantes/callForPaper/commit/bc2b2ce1))
+* jquery version ([723eadb2](https://github.com/SII-Nantes/callForPaper/commit/723eadb2))
+* change from deprecated google doc api to drive api ([3639354a](https://github.com/SII-Nantes/callForPaper/commit/3639354a))
+* add redirect if app not configured for admin panel ([3247cf5a](https://github.com/SII-Nantes/callForPaper/commit/3247cf5a))
+* check access token expiration ([8fb9814a](https://github.com/SII-Nantes/callForPaper/commit/8fb9814a))
+* inversed loading icons ([4b4d46ac](https://github.com/SII-Nantes/callForPaper/commit/4b4d46ac))
+* javascript minimizing error ([4eca2ccf](https://github.com/SII-Nantes/callForPaper/commit/4eca2ccf))
+* add maven Htmlunit dependency ([cbc7a8f8](https://github.com/SII-Nantes/callForPaper/commit/cbc7a8f8))
+* add captcha environment vars ([10702647](https://github.com/SII-Nantes/callForPaper/commit/10702647))
+* custom satellizer module for config autorization ([400f7975](https://github.com/SII-Nantes/callForPaper/commit/400f7975))
+* no csrf filter for dev admin page ([dc4547dd](https://github.com/SII-Nantes/callForPaper/commit/dc4547dd))
+* remove dashboard link for unlogged user ([fe4ad5b1](https://github.com/SII-Nantes/callForPaper/commit/fe4ad5b1))
+* remove bad links in emails ([625c9731](https://github.com/SII-Nantes/callForPaper/commit/625c9731))
+* images in emails ([98e69986](https://github.com/SII-Nantes/callForPaper/commit/98e69986))
+
+
+#### Features
+
+* side menu for mobile ([2eefe6b7](https://github.com/SII-Nantes/callForPaper/commit/2eefe6b7))
+* fade transition between views ([0e393e3d](https://github.com/SII-Nantes/callForPaper/commit/0e393e3d))
+* material design ([a3e51e4b](https://github.com/SII-Nantes/callForPaper/commit/a3e51e4b))
+* add active menu link ([7e79a3d5](https://github.com/SII-Nantes/callForPaper/commit/7e79a3d5))
+* oauth autorization for spreadsheet database ([1efc6fb7](https://github.com/SII-Nantes/callForPaper/commit/1efc6fb7))
+* loading bar during requests ([820dd265](https://github.com/SII-Nantes/callForPaper/commit/820dd265))
+* add reCAPTCHA for signup form ([bd58b3b1](https://github.com/SII-Nantes/callForPaper/commit/bd58b3b1))
+* add csrf protection ([222c22a7](https://github.com/SII-Nantes/callForPaper/commit/222c22a7))
+* add 404 error handler in AngularJS ([acd363a5](https://github.com/SII-Nantes/callForPaper/commit/acd363a5))
+* add 404 not found exception to rate/comment ([6c601036](https://github.com/SII-Nantes/callForPaper/commit/6c601036))
+* add 404 and 403 HTTP status ([24d7b72a](https://github.com/SII-Nantes/callForPaper/commit/24d7b72a))
+* enable loggin ([d037b445](https://github.com/SII-Nantes/callForPaper/commit/d037b445))
+
+
 <a name"rev-82"></a>
 ### rev-82 (2015-05-21)
 
