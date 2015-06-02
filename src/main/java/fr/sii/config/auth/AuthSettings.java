@@ -9,6 +9,10 @@ import javax.annotation.PostConstruct;
 /**
  * Created by tmaugin on 19/05/2015.
  */
+
+/**
+ * Authentification settings
+ */
 @Configuration
 public class AuthSettings {
     @Value("${auth.secrettoken}")

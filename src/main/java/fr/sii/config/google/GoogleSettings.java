@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 /**
  * Created by tmaugin on 13/05/2015.
  */
+
+/**
+ * Google provider settings
+ */
 @Component
 public class GoogleSettings {
     @Value("${google.clientid}")

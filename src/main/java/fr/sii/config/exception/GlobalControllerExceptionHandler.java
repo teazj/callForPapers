@@ -16,6 +16,10 @@ import java.util.List;
 /**
  * Created by tmaugin on 09/04/2015.
  */
+
+/**
+ * Exception handler
+ */
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
