@@ -21,7 +21,8 @@ angular.module('CallForPaper', [
     'satellizer',
     'angular-jwt',
     'vcRecaptcha',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'ngFx'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
