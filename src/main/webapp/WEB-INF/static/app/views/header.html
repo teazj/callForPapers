@@ -10,7 +10,7 @@
 		<ul>
         	<li ui-sref-active="active" ng-show="isAuthenticated === true"><a ui-sref="app.dashboard">{{'header.dashboard' | translate}}</a></li>
             <li ng-show="isAuthenticated === true"><a ui-sref="app.logout">{{'header.logout' | translate}}</a></li>
-			<li ng-show="isAuthenticated === false"><a ui-sref="app.login">{{'header.login' | translate}}</a></li>
+			<li ui-sref-active="active" ng-show="isAuthenticated === false"><a ui-sref="app.login">{{'header.login' | translate}}</a></li>
 			<li>
 				<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
 			</li>
@@ -45,7 +45,7 @@
 							</ul>
 							<ul class="nav navbar-nav navbar-right">
 								<li ng-show="isAuthenticated === true"><a ui-sref="app.logout">{{'header.logout' | translate}}</a></li>
-								<li ng-show="isAuthenticated === false"><a ui-sref="app.login">{{'header.login' | translate}}</a></li>
+								<li ui-sref-active="active" ng-show="isAuthenticated === false"><a ui-sref="app.login">{{'header.login' | translate}}</a></li>
 								<li>
 									<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
 								</li>
