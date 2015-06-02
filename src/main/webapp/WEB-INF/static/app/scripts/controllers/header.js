@@ -21,5 +21,4 @@ angular.module('CallForPaper')
 		Application.get(function(config) {
 			$scope.title = config.eventName;
 		})
-
 	}]);
