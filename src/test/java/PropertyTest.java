@@ -39,8 +39,6 @@ public class PropertyTest {
 
     @Test
     public void test3_getApplicationPropertyEmail() {
-        assertEquals("smtp.gmail.com",emailingSettings.getSmtphost());
-        assertEquals("587",emailingSettings.getSmtpport());
-        assertEquals("maugin.thomas@gmail.com",emailingSettings.getUsername());
+        assertEquals("maugin.thomas@gmail.com",emailingSettings.getEmailSender());
     }
 }

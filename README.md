@@ -50,8 +50,7 @@ Edit `src/main/webapp/WEB-INF/appengine-web.xml` replace the informations to sui
         <env-var name="GOOGLE_CLIENT_SECRET" value="youtGoogleClientSecret"/> <!--app secret-->
         <env-var name="GITHUB_CLIENT_ID" value="yourGithubClientId"/> <!--github app id-->
         <env-var name="GITHUB_CLIENT_SECRET" value="youtGithubClientSecret"/> <!--github app secret-->
-        <env-var name="EMAIL_USERNAME" value="yourEmailUsername"/> <!--sender's email address-->
-        <env-var name="EMAIL_PASSWORD" value="yourEmailPassword"/> <!--sender's email password-->
+        <env-var name="EMAIL_SENDER" value="yourEmailUsername"/> <!--sender's email address-->
         <env-var name="AUTH_SECRET_TOKEN" value="yourRandomSecretToken"/> <!--random secret token-->
         <env-var name="AUTH_CAPTCHA_PUBLIC" value="yourRecaptchaPublicToken"/> <!--recaptcha public key-->
         <env-var name="AUTH_CAPTCHA_SECRET" value="yourRecaptchaSecretToken"/> <!--recaptcha private key-->
