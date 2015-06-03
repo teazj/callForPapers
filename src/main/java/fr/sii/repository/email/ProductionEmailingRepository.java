@@ -4,7 +4,6 @@ import fr.sii.config.email.EmailingSettings;
 import fr.sii.domain.email.Email;
 
 import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -23,27 +22,20 @@ public class ProductionEmailingRepository implements EmailingRepository {
     {
         this.emailingSettings = emailingSettings;
         this.props = new Properties();
-        this.props.put("mail.smtp.auth", "true");
-        this.props.put("mail.smtp.starttls.enable", "true");
-        this.props.put("mail.smtp.host", emailingSettings.getSmtphost());
-        this.props.put("mail.smtp.port", emailingSettings.getSmtpport());
     }
 
     public void send(Email email) throws Exception {
+
         if(emailingSettings.isSend() == false)
             return;
         Templating t = new Templating(email.getTemplate());
         t.setData(email.getData());
 
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(emailingSettings.getUsername(), emailingSettings.getPassword());
-                    }
-                });
+        Session session = Session.getInstance(props,null);
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(emailingSettings.getUsername()));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getTo()));
+            message.setFrom(new InternetAddress(emailingSettings.getEmailSender()));
+            message.addRecipient(Message.RecipientType.TO,
+                    new InternetAddress(email.getTo()));
             message.setSubject(MimeUtility.encodeText(email.getSubject(), "utf-8", "B"));
             message.setContent(t.getTemplate(), "text/html");
             Transport.send(message);
