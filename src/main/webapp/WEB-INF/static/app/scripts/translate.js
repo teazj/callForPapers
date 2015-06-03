@@ -121,7 +121,8 @@ angular.module('CallForPaper')
       },
       "result": {
         "success": "Bravo !",
-        "successMessage": "Votre présentation a été envoyée. Vous recevrez bientôt un email de confirmation. Nous vous recontacterons dès que nous raurons fait notre choix."
+        "successMessage": "Votre présentation a été envoyée. Vous recevrez bientôt un email de confirmation. Nous vous recontacterons dès que nous aurons fait notre choix.",
+        "goToHome": "Retour à la page principale"
       },
       "admin": {
         "logout": "Se déconnecter",
@@ -311,7 +312,8 @@ angular.module('CallForPaper')
       },
       "result": {
         "success": "Well done !",
-        "successMessage": "Your talk has been send. You will soon receive a confirmation email. We will contact you as soon as we will make our decision."
+        "successMessage": "Your talk has been send. You will soon receive a confirmation email. We will contact you as soon as we will make our decision.",
+        "goToHome": "Back to main page"
       },
       "admin": {
         "logout": "Logout",
