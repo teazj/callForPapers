@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.1.3.RELEASE</spring.version>
 		<spring.data.jpa>1.3.0.RELEASE</spring.data.jpa>
-		<appengine.jdk>1.9.19</appengine.jdk>
+		<appengine.jdk>1.9.21</appengine.jdk>
 	</properties>
 
 	<prerequisites>
