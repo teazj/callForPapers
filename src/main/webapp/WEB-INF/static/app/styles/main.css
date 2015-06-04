@@ -344,16 +344,6 @@ background: none;
 }
 
 /**
- * Add button
- */
-.btn-add
-{
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-}
-
-/**
  * Loading bar
  */
 
