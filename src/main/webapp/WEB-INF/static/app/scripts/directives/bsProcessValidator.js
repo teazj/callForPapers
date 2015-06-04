@@ -7,12 +7,29 @@ angular.module('bs-has', [])
         if(!input.length) { input = element.find('textarea'); }
         if (input.length) {
             scope.$watch(function() {
-                return input.hasClass(ngClass) && input.hasClass('ng-dirty');
+                return input.hasClass(ngClass) && (input.hasClass('ng-dirty') || input.hasClass('ng-verify'));
             }, function(isValid) {
                 element.toggleClass(bsClass, isValid);
             });
         }
       });
+    };
+  }])
+  .factory('bsSubmitValidator', ['$timeout', function($timeout) {
+    return function(scope, element, ngClass, bsClass, state) {
+      $timeout(function() {
+        var input = element.find('input');
+        if(!input.length) { input = element.find('select'); }
+        if(!input.length) { input = element.find('textarea'); }
+        if (input.length) {
+          scope.$watch(element.attr('verify'),function(value){
+              if(value)
+              {
+                element.toggleClass(bsClass, input.hasClass(ngClass));
+              }
+          })
+        }
+      },100);
     };
   }])
   .directive('bsHasSuccess', ['bsProcessValidator', function(bsProcessValidator) {
@@ -31,12 +48,13 @@ angular.module('bs-has', [])
       }
     };
   }])
-  .directive('bsHas', ['bsProcessValidator', function(bsProcessValidator) {
+  .directive('bsHas', ['bsProcessValidator', 'bsSubmitValidator', function(bsProcessValidator, bsSubmitValidator) {
     return {
       restrict: 'A',
-      link: function(scope, element) {
+      link: function(scope, element, attrs) {
         bsProcessValidator(scope, element, 'ng-valid', 'has-success');
         bsProcessValidator(scope, element, 'ng-invalid', 'has-error');
+        bsSubmitValidator(scope, element, 'ng-invalid', 'has-error');
       }
     };
   }]);

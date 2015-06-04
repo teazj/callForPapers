@@ -105,7 +105,7 @@ angular.module('CallForPaper')
         "labelHotel": "Hébergement",
         "hotel": "J'ai besoin d’une aide financière pour l’hotel.",
         "date": "Pour quelle(s) date(s) ? :",
-        "sendError": "Error lors de l'envoi veuillez réessayer"
+        "sendError": "Erreur lors de l'envoi veuillez réessayer"
       },
       "steps": {
         "saveAsDraft" : "Enregistrer brouillon",
