@@ -11,7 +11,7 @@
       link: function(scope, element, attrs, ctrl) {
         var handleWhatsSupposedToBeAnArray, options, read, watchOnce;
         read = function() {
-          return ctrl.$setViewValue(element.val());
+          //return ctrl.$setViewValue(element.val());
         };
         handleWhatsSupposedToBeAnArray = function(value) {
           if (value instanceof Array) {
