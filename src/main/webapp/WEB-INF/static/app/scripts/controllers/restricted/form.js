@@ -112,7 +112,7 @@ angular.module('CallForPaper')
 
 			if (id !== "") {
 				// put
-				RestrictedSession.update({id : id}, model, function(success) {
+				RestrictedSession.update({id : id}, model).$promise.then(function(success) {
 					$scope.formData.sending = false;
 					$state.go('app.form.result');
 				}, function(error) {
@@ -123,7 +123,7 @@ angular.module('CallForPaper')
 			else
 			{
 				// save
-				RestrictedSession.save(model, function(success) {
+				RestrictedSession.save(model).$promise.then(function(success) {
 					$scope.formData.sending = false;
 					$state.go('app.form.result');
 				}, function(error) {

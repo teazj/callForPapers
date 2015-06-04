@@ -3,6 +3,7 @@
 angular.module('CallForPaper', [
     'ngCookies',
     'ngResource',
+    'ngResourceRetries',
     'ngSanitize',
     'ui.router',
     'ngAnimate',
