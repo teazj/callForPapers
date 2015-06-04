@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('Step1Ctrl', ['$scope', function($scope) {
+	.controller('Step1Ctrl', ['$scope', '$state', function($scope, $state) {
 		$scope.$watch(function() {
 			return $scope.form.email.$valid && $scope.form.name.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.$parent.formData.speaker.phone == "") && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid;
 		}, function(isValid) {
@@ -18,4 +18,14 @@ angular.module('CallForPaper')
 				}).join(", ");
 			}
 		})
+
+		$scope.verify = false;
+		$scope.doVerify = function()
+		{
+			$scope.verify = true;
+			if($scope.$parent.formData.steps.isValid[0])
+			{
+				$state.go('app.form.step2');
+			}
+		}
 	}]);

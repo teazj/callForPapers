@@ -30,4 +30,14 @@ angular.module('CallForPaper')
 		},function(isValid){
 			$scope.$parent.formData.steps.isValid[2]= isValid;
 		})
+
+		$scope.verify = false;
+		$scope.doVerify = function()
+		{
+			$scope.verify = true;
+			if($scope.$parent.formData.steps.isValid[2] && $scope.$parent.formData.steps.isValid[1] && $scope.$parent.formData.steps.isValid[0])
+			{
+				$scope.$parent.processForm();
+			}
+		}
 	}]);
