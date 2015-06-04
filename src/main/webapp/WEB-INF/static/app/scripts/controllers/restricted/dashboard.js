@@ -38,4 +38,11 @@ angular.module('CallForPaper')
 			queryDraft();
 			querySession();
 		}
+
+		$scope.konamiCode = false;
+		$scope.launchKonami = function()
+		{
+			$scope.konamiCode = !$scope.konamiCode;
+			$scope.$apply();
+		}
 	}]);
