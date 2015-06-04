@@ -49,9 +49,9 @@
     </div>
     <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right" style="padding-bottom: 10px">
-        <div ng-click="doVerify()" class="btn btn-block btn-primary">
+        <a ng-click="doVerify()" class="btn btn-block btn-primary">
             {{'steps.next' | translate}} <span class="mdi-navigation-arrow-forward pull-right"></span>
-        </div>
+        </a>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right">
         <a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
