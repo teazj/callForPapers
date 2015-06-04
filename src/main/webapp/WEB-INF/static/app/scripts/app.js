@@ -3,6 +3,7 @@
 angular.module('CallForPaper', [
     'ngCookies',
     'ngResource',
+    'ngResourceRetries',
     'ngSanitize',
     'ui.router',
     'ngAnimate',
@@ -23,7 +24,8 @@ angular.module('CallForPaper', [
     'vcRecaptcha',
     'angular-loading-bar',
     'ngFx',
-    'offClick'
+    'offClick',
+    'konami'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',

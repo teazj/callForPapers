@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by tmaugin on 09/04/2015.
@@ -22,12 +24,14 @@ import java.util.List;
  */
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
+    private static Logger logger = Logger.getLogger(GlobalControllerExceptionHandler.class.getName());
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
         ErrorResponse resp = new ErrorResponse(e);
-        resp.setStatus(HttpStatus.BAD_REQUEST.value());
-        resp.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        return new ResponseEntity<Object>(resp, HttpStatus.BAD_REQUEST);
+        resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        resp.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        logger.log(Level.WARNING, e.toString());
+        return new ResponseEntity<Object>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NotVerifiedException.class)
