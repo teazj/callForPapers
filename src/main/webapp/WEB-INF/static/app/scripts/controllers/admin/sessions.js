@@ -56,8 +56,7 @@ angular.module('CallForPaper')
 					nafullnameme: '', // initial filter
 					description: '',
 					difficulty: '',
-					track: '',
-					description: ''
+					track: ''
 				}
 			}, {
 				filterDelay : 0,

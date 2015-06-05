@@ -30,6 +30,7 @@ public class User implements Cloneable {
     {
         this.entityId = new Date().getTime();
         this.verified = false;
+        this.profile = "{}";
     }
 
     public Object clone() {
@@ -47,7 +48,7 @@ public class User implements Cloneable {
 
     private String password;
 
-    private String displayName;
+    private String profile;
 
     private String google;
 
@@ -101,9 +102,6 @@ public class User implements Cloneable {
         return password;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 
     public String getGoogle() {
         return google;
@@ -121,8 +119,12 @@ public class User implements Cloneable {
         this.password = password;
     }
 
-    public void setDisplayName(final String name) {
-        this.displayName = name;
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     public void setProviderId(final Provider provider, final String value) {
