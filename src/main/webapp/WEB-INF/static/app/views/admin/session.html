@@ -220,7 +220,7 @@
 						<div class="col-xs-3">
 							<strong>{{'admin.you' | translate}}&nbsp;:&nbsp;</strong>
 						</div>
-						<rating ng-value="yourRate.rate" id="difficulty" name="difficulty" max="5" readonly="false" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
+						<rating ng-model="yourRate.rate" id="difficulty" name="difficulty" max="5" readonly="false" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
 						<button type="button" ng-click="postRate()" ng-disabled="rateButtonDisabled || yourRate.rate <= 0 || yourRate.rate > 5" class="btn btn-success pull-right">{{'steps.validate' | translate}}&nbsp;<span class="mdi-navigation-refresh glyphicon-refresh-animate pull-right" ng-show="rateButtonDisabled"></span>
 						</button>
 					</div>
