@@ -24,33 +24,8 @@ module.exports = function(grunt) {
       app: require('./bower.json').appPath || 'app',
       dist: 'dist'
     },
-    watch: {
-      coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:dist']
-      },
-      coffeeTest: {
-        files: ['test/spec/{,*/}*.coffee'],
-        tasks: ['coffee:test']
-      },
-      styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['copy:styles', 'autoprefixer']
-      },
-      livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
-        files: [
-          '<%= yeoman.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-        ]
-      }
-    },
     autoprefixer: {
-      options: ['last 1 version'],
+      options: ['last 1 version, > 5%'],
       dist: {
         files: [{
           expand: true,
@@ -58,38 +33,6 @@ module.exports = function(grunt) {
           src: '{,*/}*.css',
           dest: '.tmp/styles/'
         }]
-      }
-    },
-    connect: {
-      options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
-        livereload: 35729
-      },
-      livereload: {
-        options: {
-          open: true,
-          base: [
-            '.tmp',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
-      test: {
-        options: {
-          port: 9001,
-          base: [
-            '.tmp',
-            'test',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
-      dist: {
-        options: {
-          base: '<%= yeoman.dist %>'
-        }
       }
     },
     clean: {
@@ -104,15 +47,6 @@ module.exports = function(grunt) {
         }]
       },
       server: '.tmp'
-    },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ]
     },
     coffee: {
       options: {
@@ -276,12 +210,6 @@ module.exports = function(grunt) {
         'htmlmin'
       ]
     },
-    karma: {
-      unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true
-      }
-    },
     cdnify: {
       dist: {
         html: ['<%= yeoman.dist %>/*.html', '<%= yeoman.dist %>/views/**/*.html']
@@ -310,28 +238,6 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-bower-task');
 
-  grunt.registerTask('server', function(target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
-    }
-
-    grunt.task.run([
-      'clean:server',
-      'concurrent:server',
-      'autoprefixer',
-      'connect:livereload',
-      'watch'
-    ]);
-  });
-
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma'
-  ]);
-
   grunt.registerTask('build', [
     'bower:install',
     'clean:dist',
@@ -349,8 +255,6 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'jshint',
-    'test',
     'build'
   ]);
 };
