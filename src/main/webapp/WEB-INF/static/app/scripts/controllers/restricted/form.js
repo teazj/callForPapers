@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', 'RestrictedDraft', '$state', '$stateParams', function($scope, $filter, $translate, RestrictedSession, RestrictedDraft, $state, $stateParams) {
+	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', 'RestrictedDraft', 'RestrictedUser', '$state', '$stateParams', function($scope, $filter, $translate, RestrictedSession, RestrictedDraft, RestrictedUser, $state, $stateParams) {
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
@@ -93,6 +93,12 @@ angular.module('CallForPaper')
 						// not existing
 						$state.go("404");
 					}
+				})
+			}
+			else
+			{
+				RestrictedUser.query(function(data) {
+					$scope.formData.speaker.email = data.email;
 				})
 			}
 		}
