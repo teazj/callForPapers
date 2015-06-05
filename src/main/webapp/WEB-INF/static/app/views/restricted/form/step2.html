@@ -31,7 +31,7 @@
 	<div class="form-group" bs-has verify="verify">
 		<label class="control-label" for="difficulty">{{'step2.difficulty' | translate}}</label>
 		<div>
-			<rating value="formData.session.difficulty" id="difficulty" name="difficulty" max="3" readonly="isReadonly" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
+			<rating ng-model="formData.session.difficulty" id="difficulty" name="difficulty" max="3" readonly="false" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></rating>
 			<label>{{formData.session.difficultyLabel}}</label>
 		</div>
 	</div>
