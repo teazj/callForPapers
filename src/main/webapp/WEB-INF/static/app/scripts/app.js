@@ -148,6 +148,14 @@ angular.module('CallForPaper', [
           authenticated: AuthServiceProvider.$get().authenticated
         }
       })
+      .state('app.profile', {
+        url: '/profile',
+        templateUrl: 'views/restricted/profile.html',
+        controller: 'ProfileCtrl',
+        resolve: {
+          authenticated: AuthServiceProvider.$get().authenticated
+        }
+      })
 
     // Auth
     .state('app.login', {

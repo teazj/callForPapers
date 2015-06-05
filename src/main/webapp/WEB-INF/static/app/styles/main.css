@@ -36,6 +36,17 @@ html, body{
   background-color: #f2dede !important;
 }
 
+.alert.bg-success{
+    text-align: center;
+    color: rgb(0, 69, 0);
+    padding: 20px;
+    border-radius: 5px
+}
+
+.bg-success {
+  background-color: #DEF2DF !important;
+}
+
 .ng-hide-add-active {
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;

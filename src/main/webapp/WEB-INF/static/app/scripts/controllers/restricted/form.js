@@ -97,8 +97,40 @@ angular.module('CallForPaper')
 			}
 			else
 			{
-				RestrictedUser.query(function(data) {
-					$scope.formData.speaker.email = data.email;
+				RestrictedUser.query(function(profile) {
+					if (profile !== undefined) {
+						for (var key in profile) {
+							if (profile.hasOwnProperty(key)) {
+								switch (key) {
+									case "bio":
+										if (profile[key] !== null) $scope.formData.speaker.bio = profile[key];
+										break;
+									case "company":
+										if (profile[key] !== null) $scope.formData.speaker.company = profile[key];
+										break;
+									case "email":
+										if (profile[key] !== null) $scope.formData.speaker.email = profile[key];
+										break;
+									case "firstname":
+										if (profile[key] !== null) $scope.formData.speaker.firstname = profile[key];
+										break;
+									case "name":
+										if (profile[key] !== null) $scope.formData.speaker.name = profile[key];
+										break;
+									case "phone":
+										if (profile[key] !== null) $scope.formData.speaker.phone = profile[key];
+										break;
+									case "social":
+										if (profile[key] !== null && profile[key] != "") $scope.formData.speaker.socialArray = profile[key].split(", ").map(function(value) {
+											return {
+												text: value
+											};
+										});
+										break;
+								}
+							}
+						}
+					}
 				})
 			}
 		}

@@ -10,7 +10,8 @@ angular.module('CallForPaper')
       "header": {
         "login": "Se connecter",
         "logout": "Se déconnecter",
-        "dashboard": "Dashboard"
+        "dashboard": "Dashboard",
+        "profile" : "Profile"
       },
       "dashboard" :
       {
@@ -23,6 +24,12 @@ angular.module('CallForPaper')
         "noSendedTalks" : "Vous n'avez pas encore proposé de talk",
         "verification" : "Vérification",
         "verificationNeeded" : "Un e-mail vous a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
+      },
+      "profile" :
+      {
+        "save" : "Sauvegarder",
+        "success" : "Profile sauvegardé",
+        "error" : "Erreur lors de l'enregistrement",
       },
       "login" : {
         "email" : "Email",
@@ -198,8 +205,8 @@ angular.module('CallForPaper')
       "header": {
         "login": "Login",
         "logout": "Logout",
-        "dashboard": "Dashboard"
-
+        "dashboard": "Dashboard",
+        "profile": "Profile"
       },
       "dashboard" :
       {
@@ -211,8 +218,13 @@ angular.module('CallForPaper')
         "postedAt" : "submited the ",
         "noSendedTalks" : "You don't have submitted any talk yet",
         "verification" : "Verification",
-        "verificationNeeded" : "Yoo need to verify your e-mail to post a talk",
         "verificationNeeded" : "An email has been sent to your address, click the link in it to confirm your account.",
+      },
+      "profile" :
+      {
+        "save" : "Save",
+        "success" : "Profile saved",
+        "error" : "Error saving the profile",
       },
       "login" : {
         "email" : "Email",
