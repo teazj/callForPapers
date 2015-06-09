@@ -5,8 +5,6 @@ import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.repository.admin.rate.AdminRateRespository;
 import fr.sii.service.admin.user.AdminUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +12,19 @@ import java.util.List;
 /**
  * Created by tmaugin on 27/04/2015.
  */
-@Service
 public class AdminRateService {
 
-    @Autowired
-    private AdminRateRespository rateRepository;
+    private AdminRateRespository adminRateRespository;
 
-    @Autowired
     private AdminUserService adminUserService;
+
+    public void setAdminRateRespository(AdminRateRespository adminRateRespository) {
+        this.adminRateRespository = adminRateRespository;
+    }
+
+    public void setAdminUserService(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
+    }
 
     public List<AdminRate> matchUsers(List<AdminRate> rs)
     {
@@ -65,45 +68,45 @@ public class AdminRateService {
 
     public List<AdminRate> findAll()
     {
-        return matchUsers(rateRepository.findAll());
+        return matchUsers(adminRateRespository.findAll());
     }
 
     public void deleteAll()
     {
-        rateRepository.deleteAll();
+        adminRateRespository.deleteAll();
     }
 
     public AdminRate save(AdminRate r) {
-        return matchUser(rateRepository.save(r));
+        return matchUser(adminRateRespository.save(r));
     }
 
     public AdminRate put(Long id,AdminRate r) throws NotFoundException {
         delete(id);
         r.setEntityId(id);
-        return matchUser(rateRepository.save(r));
+        return matchUser(adminRateRespository.save(r));
     }
 
     public void delete(Long id) throws NotFoundException {
         findOne(id);
-        rateRepository._delete(id);
+        adminRateRespository._delete(id);
     }
 
     public AdminRate findOne(Long id) throws NotFoundException {
-        return matchUser(rateRepository.findByEntityId(id));
+        return matchUser(adminRateRespository.findByEntityId(id));
     }
 
     public List<AdminRate> findByUserId(Long id)
     {
-        return matchUsers(rateRepository.findByUserId(id));
+        return matchUsers(adminRateRespository.findByUserId(id));
     }
     public List<AdminRate> findByRowId(Long id)
     {
-        return matchUsers(rateRepository.findByRowIdOrderByRateDesc(id));
+        return matchUsers(adminRateRespository.findByRowIdOrderByRateDesc(id));
     }
     public AdminRate findByRowIdAndUserId(Long rowId, Long userId)
     {
         try {
-            return matchUser(rateRepository.findByRowIdAndUserId(rowId, userId));
+            return matchUser(adminRateRespository.findByRowIdAndUserId(rowId, userId));
         } catch (NotFoundException e) {
             return null;
         }

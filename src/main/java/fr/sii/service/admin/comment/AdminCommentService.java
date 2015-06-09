@@ -5,8 +5,6 @@ import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.repository.admin.comment.AdminCommentRepository;
 import fr.sii.service.admin.user.AdminUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,14 +13,19 @@ import java.util.List;
 /**
  * Created by tmaugin on 29/04/2015.
  */
-@Service
 public class AdminCommentService {
 
-    @Autowired
     private AdminCommentRepository adminCommentRepository;
 
-    @Autowired
     private AdminUserService adminUserService;
+
+    public void setAdminCommentRepository(AdminCommentRepository adminCommentRepository) {
+        this.adminCommentRepository = adminCommentRepository;
+    }
+
+    public void setAdminUserService(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
+    }
 
     public List<AdminComment> matchUsers(List<AdminComment> rs)
     {

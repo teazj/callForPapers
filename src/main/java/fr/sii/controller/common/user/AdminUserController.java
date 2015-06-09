@@ -5,7 +5,6 @@ import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.admin.user.AdminUserInfo;
 import fr.sii.domain.common.Redirect;
 import fr.sii.domain.common.Uri;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,11 @@ import javax.validation.Valid;
 @RequestMapping(value="/api/adminUser")
 public class AdminUserController {
 
-    @Autowired
     SpreadsheetSettings spreadsheetSettings;
+
+    public void setSpreadsheetSettings(SpreadsheetSettings spreadsheetSettings) {
+        this.spreadsheetSettings = spreadsheetSettings;
+    }
 
     @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     @ResponseBody

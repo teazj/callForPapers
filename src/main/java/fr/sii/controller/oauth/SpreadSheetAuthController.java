@@ -13,8 +13,7 @@ import com.nimbusds.jose.JOSEException;
 import fr.sii.config.google.GoogleSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.exception.ForbiddenException;
-import fr.sii.service.auth.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.sii.service.spreadsheet.SpreadsheetService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,17 +35,23 @@ import java.util.Map;
 @RequestMapping(value="/auth/spreadsheet", produces = "application/json; charset=utf-8")
 public class SpreadSheetAuthController {
 
-    @Autowired
     GoogleSettings googleSettings;
 
-    @Autowired
     SpreadsheetSettings spreadsheetSettings;
 
-    @Autowired
     fr.sii.service.spreadsheet.SpreadsheetService spreadsheetService;
 
-    @Autowired
-    AuthService authService;
+    public void setGoogleSettings(GoogleSettings googleSettings) {
+        this.googleSettings = googleSettings;
+    }
+
+    public void setSpreadsheetSettings(SpreadsheetSettings spreadsheetSettings) {
+        this.spreadsheetSettings = spreadsheetSettings;
+    }
+
+    public void setSpreadsheetService(SpreadsheetService spreadsheetService) {
+        this.spreadsheetService = spreadsheetService;
+    }
 
     @RequestMapping(method= RequestMethod.POST)
     @ResponseBody

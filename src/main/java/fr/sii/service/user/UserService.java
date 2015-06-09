@@ -2,21 +2,21 @@ package fr.sii.service.user;
 
 import fr.sii.domain.user.User;
 import fr.sii.repository.user.UserRespository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by tmaugin on 15/05/2015.
  */
-@Service
 public class UserService {
 
-        @Autowired
-        private UserRespository userRespository;
+    private UserRespository userRespository;
 
-        public User save(User u)
+    public void setUserRespository(UserRespository userRespository) {
+        this.userRespository = userRespository;
+    }
+
+    public User save(User u)
         {
             User s = userRespository.save(u);
             return s;

@@ -15,24 +15,26 @@ import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
 import fr.sii.service.admin.rate.AdminRateService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class SpreadsheetService {
 
-    @Autowired
     private SpreadsheetRepository spreadsheetRepository;
 
-    @Autowired
     private AdminRateService adminRateService;
 
-    @Autowired
     private GlobalSettings globalSettings;
+
+    public void setAdminRateService(AdminRateService adminRateService) {
+        this.adminRateService = adminRateService;
+    }
+
+    public void setGlobalSettings(GlobalSettings globalSettings) {
+        this.globalSettings = globalSettings;
+    }
 
     private boolean configured;
 
@@ -81,7 +83,6 @@ public class SpreadsheetService {
         }
     }
 
-    @Autowired
     public void login() {
         try {
             spreadsheetRepository.login();

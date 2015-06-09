@@ -16,7 +16,6 @@ import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.user.UserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,17 +42,29 @@ public class AuthController {
             NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
             UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private GlobalSettings globalSettings;
 
-    @Autowired
     private EmailingService emailingService;
 
-    @Autowired
     private AuthSettings authSettings;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setGlobalSettings(GlobalSettings globalSettings) {
+        this.globalSettings = globalSettings;
+    }
+
+    public void setEmailingService(EmailingService emailingService) {
+        this.emailingService = emailingService;
+    }
+
+    public void setAuthSettings(AuthSettings authSettings) {
+        this.authSettings = authSettings;
+    }
 
     @RequestMapping(value="/login", method=RequestMethod.POST)
     @ResponseBody

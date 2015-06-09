@@ -1,7 +1,6 @@
 package fr.sii.config.github;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by tmaugin on 13/05/2015.
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 /**
  * Github provider settings
  */
-@Component
 public class GithubSettings {
     @Value("${github.clientid}")
     String clientId;

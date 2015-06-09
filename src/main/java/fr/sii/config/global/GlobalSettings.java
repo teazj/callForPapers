@@ -5,12 +5,10 @@ package fr.sii.config.global;
  */
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * Application settings (dev, prod, test)
  */
-@Component
 public class GlobalSettings {
     @Value("${database.loaded}")
     private String databaseLoaded;

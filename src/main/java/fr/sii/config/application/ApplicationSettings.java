@@ -3,13 +3,12 @@ package fr.sii.config.application;
 /**
  * Created by tmaugin on 30/04/2015.
  */
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * Public application settings
  */
-@Component
 public class ApplicationSettings {
     @Value("${app.eventName}")
     private String eventName;

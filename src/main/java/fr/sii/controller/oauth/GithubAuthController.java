@@ -17,7 +17,6 @@ import fr.sii.domain.token.Token;
 import fr.sii.domain.user.User;
 import fr.sii.service.auth.AuthService;
 import fr.sii.service.github.GithubService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,14 +36,23 @@ import java.util.Map;
 @RequestMapping(value="/auth/github", produces = "application/json; charset=utf-8")
 public class GithubAuthController {
 
-    @Autowired
     GithubService githubService;
 
-    @Autowired
     GithubSettings githubSettings;
 
-    @Autowired
     AuthService authService;
+
+    public void setGithubService(GithubService githubService) {
+        this.githubService = githubService;
+    }
+
+    public void setGithubSettings(GithubSettings githubSettings) {
+        this.githubSettings = githubSettings;
+    }
+
+    public void setAuthService(AuthService authService) {
+        this.authService = authService;
+    }
 
     @RequestMapping(method= RequestMethod.POST)
     @ResponseBody

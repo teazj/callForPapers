@@ -18,7 +18,6 @@ import fr.sii.config.google.GoogleSettings;
 import fr.sii.domain.token.Token;
 import fr.sii.domain.user.User;
 import fr.sii.service.auth.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,11 +37,17 @@ import java.util.Map;
 @RequestMapping(value="/auth/google", produces = "application/json; charset=utf-8")
 public class GoogleAuthController {
 
-@Autowired
-GoogleSettings googleSettings;
+    GoogleSettings googleSettings;
 
-@Autowired
-AuthService authService;
+    AuthService authService;
+
+    public void setGoogleSettings(GoogleSettings googleSettings) {
+        this.googleSettings = googleSettings;
+    }
+
+    public void setAuthService(AuthService authService) {
+        this.authService = authService;
+    }
 
     @RequestMapping(method= RequestMethod.POST)
     @ResponseBody

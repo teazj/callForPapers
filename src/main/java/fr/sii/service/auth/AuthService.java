@@ -5,8 +5,6 @@ import fr.sii.domain.token.Token;
 import fr.sii.domain.user.User;
 import fr.sii.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,11 +14,13 @@ import java.text.ParseException;
 /**
  * Created by tmaugin on 15/05/2015.
  */
-@Service
 public class AuthService {
 
-    @Autowired
     UserService userService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * Return JWT token and eventually persist user according to providerId and provider

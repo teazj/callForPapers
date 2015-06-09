@@ -19,7 +19,6 @@ import fr.sii.domain.spreadsheet.RowSession;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.spreadsheet.SpreadsheetService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,17 +34,29 @@ import java.util.List;
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
 public class SessionController {
 
-    @Autowired
     private SpreadsheetService googleService;
 
-    @Autowired
     private EmailingService emailingService;
 
-    @Autowired
     private GlobalSettings globalSettings;
 
-    @Autowired
     private ApplicationSettings applicationSettings;
+
+    public void setGoogleService(SpreadsheetService googleService) {
+        this.googleService = googleService;
+    }
+
+    public void setEmailingService(EmailingService emailingService) {
+        this.emailingService = emailingService;
+    }
+
+    public void setGlobalSettings(GlobalSettings globalSettings) {
+        this.globalSettings = globalSettings;
+    }
+
+    public void setApplicationSettings(ApplicationSettings applicationSettings) {
+        this.applicationSettings = applicationSettings;
+    }
 
     /**
      * SESSION
