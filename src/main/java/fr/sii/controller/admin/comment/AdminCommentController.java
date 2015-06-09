@@ -4,7 +4,6 @@ import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.user.AdminUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +17,17 @@ import java.util.List;
 @RequestMapping(value="api/admin/comment", produces = "application/json; charset=utf-8")
 public class AdminCommentController {
 
-    @Autowired
     AdminCommentService adminCommentService;
 
-    @Autowired
     AdminUserService adminUserServiceCustom;
+
+    public void setAdminCommentService(AdminCommentService adminCommentService) {
+        this.adminCommentService = adminCommentService;
+    }
+
+    public void setAdminUserServiceCustom(AdminUserService adminUserServiceCustom) {
+        this.adminUserServiceCustom = adminUserServiceCustom;
+    }
 
     @RequestMapping(method= RequestMethod.GET)
     @ResponseBody

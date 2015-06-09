@@ -11,7 +11,6 @@ import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.spreadsheet.SpreadsheetService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +25,23 @@ import java.util.List;
 @RequestMapping(value="api/admin", produces = "application/json; charset=utf-8")
 public class AdminSessionController {
 
-    @Autowired
     private SpreadsheetService googleService;
 
-    @Autowired
     private EmailingService emailingService;
 
-    @Autowired
     private ApplicationSettings applicationSettings;
+
+    public void setGoogleService(SpreadsheetService googleService) {
+        this.googleService = googleService;
+    }
+
+    public void setEmailingService(EmailingService emailingService) {
+        this.emailingService = emailingService;
+    }
+
+    public void setApplicationSettings(ApplicationSettings applicationSettings) {
+        this.applicationSettings = applicationSettings;
+    }
 
     @RequestMapping(value="/session", method= RequestMethod.GET)
     @ResponseBody

@@ -27,7 +27,6 @@ import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -63,17 +62,29 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
      */
     private FeedURLFactory factory;
 
-    @Autowired
     private GlobalSettings globalSettings;
 
-    @Autowired
     private SpreadsheetSettings spreadsheetSettings;
 
-    @Autowired
     private GoogleSettings googleSettings;
 
-    @Autowired
     private ApplicationSettings applicationSettings;
+
+    public void setApplicationSettings(ApplicationSettings applicationSettings) {
+        this.applicationSettings = applicationSettings;
+    }
+
+    public void setGoogleSettings(GoogleSettings googleSettings) {
+        this.googleSettings = googleSettings;
+    }
+
+    public void setSpreadsheetSettings(SpreadsheetSettings spreadsheetSettings) {
+        this.spreadsheetSettings = spreadsheetSettings;
+    }
+
+    public void setGlobalSettings(GlobalSettings globalSettings) {
+        this.globalSettings = globalSettings;
+    }
 
     private Map<String,String> getTokenInfo(TokenResponse token)
     {

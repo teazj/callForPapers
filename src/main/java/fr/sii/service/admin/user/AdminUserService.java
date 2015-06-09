@@ -4,19 +4,19 @@ import com.google.appengine.api.users.UserServiceFactory;
 import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.repository.admin.user.AdminUserRespository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by tmaugin on 24/04/2015.
  */
-@Service
 public class AdminUserService {
 
-    @Autowired
     private AdminUserRespository adminUserRespository;
+
+    public void setAdminUserRespository(AdminUserRespository adminUserRespository) {
+        this.adminUserRespository = adminUserRespository;
+    }
 
     public List<AdminUser> findAll()
     {

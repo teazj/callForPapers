@@ -4,7 +4,6 @@ import fr.sii.domain.admin.rate.AdminRate;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.service.admin.rate.AdminRateService;
 import fr.sii.service.admin.user.AdminUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +17,17 @@ import java.util.List;
 @RequestMapping(value="api/admin/rate", produces = "application/json; charset=utf-8")
 public class AdminRateController {
 
-    @Autowired
     AdminRateService adminRateService;
 
-    @Autowired
     AdminUserService adminUserServiceCustom;
+
+    public void setAdminRateService(AdminRateService adminRateService) {
+        this.adminRateService = adminRateService;
+    }
+
+    public void setAdminUserServiceCustom(AdminUserService adminUserServiceCustom) {
+        this.adminUserServiceCustom = adminUserServiceCustom;
+    }
 
     @RequestMapping(method= RequestMethod.GET)
     @ResponseBody
