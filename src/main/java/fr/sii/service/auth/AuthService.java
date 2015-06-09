@@ -36,7 +36,7 @@ public class AuthService {
      */
     public Token processUser(HttpServletResponse res, HttpServletRequest req, User.Provider provider, String providerId, String email) throws IOException, ParseException, JOSEException {
 
-        final String CONFLICT_MSG = "There is already a %s account that belongs to you",
+        final String CONFLICT_MSG = "There is already a %s account that belongs to you",CONFLICT_MSG_2 = "There is already an email associated with this account",
                 NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
                 UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
@@ -47,7 +47,10 @@ public class AuthService {
         User userToSave;
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
         if (StringUtils.isNotBlank(authHeader)) {
-            if (user != null) {
+
+            String subject = AuthUtils.getSubject(authHeader);
+
+            if (user != null && user.getEntityId() != Long.parseLong(subject)) {
                 res.setStatus(HttpServletResponse.SC_CONFLICT);
                 res.getWriter().write(String.format(CONFLICT_MSG, provider.capitalize()));
                 res.getWriter().flush();
@@ -55,7 +58,6 @@ public class AuthService {
                 return token;
             }
 
-            String subject = AuthUtils.getSubject(authHeader);
             User foundUser = userService.findById(Long.parseLong(subject));
             if (foundUser == null) {
                 res.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -78,6 +80,17 @@ public class AuthService {
                 // Actually not saved
                 userToSave = user;
             } else {
+                // if email already taken
+                user = null;
+                user = userService.findByemail(email);
+                if(user != null)
+                {
+                    res.setStatus(HttpServletResponse.SC_CONFLICT);
+                    res.getWriter().write(String.format(CONFLICT_MSG_2, provider.capitalize()));
+                    res.getWriter().flush();
+                    res.getWriter().close();
+                    return token;
+                }
                 userToSave = new User();
                 userToSave.setVerified(true);
                 userToSave.setProviderId(provider, providerId);
