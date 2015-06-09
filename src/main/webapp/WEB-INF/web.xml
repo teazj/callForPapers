@@ -3,6 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+    <!--disable xml validation in production-->
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>fr.sii.config.xml.CustomXmlWebApplicationContext</param-value>
+    </context-param>
+
     <!-- Enable UTF-8 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
