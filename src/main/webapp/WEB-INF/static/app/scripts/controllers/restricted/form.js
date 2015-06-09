@@ -70,7 +70,7 @@ angular.module('CallForPaper')
 										if (draft[key] !== null) $scope.formData.session.sessionName = draft[key];
 										break;
 									case "social":
-										if (draft[key] !== null) $scope.formData.speaker.socialArray = draft[key].split(", ").map(function(value){ return {text : value}; });
+										if (draft[key] !== null && draft[key] != "") $scope.formData.speaker.socialArray = draft[key].split(", ").map(function(value){ return {text : value}; });
 										break;
 									case "track":
 										if (draft[key] !== null) $scope.formData.session.track = draft[key];
