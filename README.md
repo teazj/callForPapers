@@ -45,7 +45,7 @@
  - **Authorized Javascript origins**: *http://127.0.0.1:8080*
  - **Authorized redirect URI**: *http://127.0.0.1:8080*
 
-**Note:** Make sure you have turned on **Contacts API** and **Google+ API** in the *APIs* tab.
+**Note:** Make sure you have turned on **Contacts API**, **Google+ API** and **Drive API** in the *APIs* tab.
 
 <hr>
 
