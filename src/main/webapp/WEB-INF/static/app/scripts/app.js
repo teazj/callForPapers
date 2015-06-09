@@ -37,7 +37,7 @@ angular.module('CallForPaper', [
   .constant('Config', {
     'recaptcha': '6Lcn4gcTAAAAAPATfe-4XVAh8bI4CW7HUAAwbNvy',
     'googleClientId': '595606955444-hv8v62e1g0qtk5v2nrnn696m18tg1p12.apps.googleusercontent.com',
-    'githubClientId': 'c21492ca67471ebdfdd7'
+    'githubClientId': 'ebeee4b3339f42197096'
   })
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
