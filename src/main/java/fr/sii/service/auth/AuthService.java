@@ -95,6 +95,7 @@ public class AuthService {
                 userToSave.setVerified(true);
                 userToSave.setProviderId(provider, providerId);
                 userToSave.setEmail(email);
+                userToSave.setProfile("{}");
                 userToSave = userService.save(userToSave);
             }
         }

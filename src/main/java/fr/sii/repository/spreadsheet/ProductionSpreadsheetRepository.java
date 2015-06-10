@@ -315,7 +315,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         if(spreadsheetConnector.getRange(worksheet,1,1,1,Row.fields.size()).size() != Row.fields.size())
         {
             List<GoogleSpreadsheetCellAddress> cellAddrs = new ArrayList<GoogleSpreadsheetCellAddress>();
-            for (int i = 1; i <= 22; i++) {
+            for (int i = 1; i <= Row.fields.size(); i++) {
                 cellAddrs.add(new GoogleSpreadsheetCellAddress(1, i, Row.fields.get(i-1)));
             }
             spreadsheetConnector.updateBatch(worksheet,cellAddrs);
