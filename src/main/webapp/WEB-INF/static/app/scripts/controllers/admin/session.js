@@ -5,7 +5,7 @@ angular.module('CallForPaper')
 		$scope.session = null;
 		AdminSession.get({
 			id: $stateParams.id
-		}, function(sessionTmp) {
+		}).$promise.then(function(sessionTmp) {
 			$scope.session = sessionTmp;
 			$scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 		});

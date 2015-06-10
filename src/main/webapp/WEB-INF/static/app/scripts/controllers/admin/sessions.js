@@ -5,7 +5,7 @@ angular.module('CallForPaper')
 		var sessions = []
 		$scope.screenSize = screenSize;
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
-		AdminSession.query(function(sessionsTmp) {
+		AdminSession.query().$promise.then(function(sessionsTmp) {
 			sessions = sessionsTmp.map(function(session) {
 				session.fullname = session.name + " " + session.firstname;
 				session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];

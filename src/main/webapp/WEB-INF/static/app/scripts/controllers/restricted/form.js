@@ -21,7 +21,7 @@ angular.module('CallForPaper')
 			if (id !== "") {
 				RestrictedDraft.get({
 					id: id
-				}, function(draft) {
+				}).$promise.then(function(draft) {
 					if(draft.added !== undefined)
 					{
 						for (var key in draft) {
@@ -185,7 +185,7 @@ angular.module('CallForPaper')
 
 			if (id !== "") {
 				// put
-				RestrictedDraft.update({id : id}, model, function(success) {
+				RestrictedDraft.update({id : id}, model).$promise.then(function(success) {
 					$scope.formData.sending = false;
 					$state.go('app.dashboard');
 				}, function(error) {
@@ -196,7 +196,7 @@ angular.module('CallForPaper')
 			else
 			{
 				// save
-				RestrictedDraft.save(model, function(success) {
+				RestrictedDraft.save(model).$promise.then(function(success) {
 					$scope.formData.sending = false;
 					$state.go('app.dashboard');
 				}, function(error) {
