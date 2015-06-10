@@ -19,7 +19,7 @@ angular.module('CallForPaper')
 		$scope.drafts = [];
 		$scope.draftsLoaded = false;
 		var queryDraft = function() {
-			RestrictedDraft.query(function(draftsTmp) {
+			RestrictedDraft.query().$promise.then(function(draftsTmp) {
 				$scope.drafts = draftsTmp
 				$scope.draftsLoaded = true;
 			});
@@ -28,7 +28,7 @@ angular.module('CallForPaper')
 		$scope.delete = function(added) {
 			RestrictedDraft.delete({
 				id: added
-			}, function() {
+			}).$promise.then(function() {
 				queryDraft();
 			});
 		}

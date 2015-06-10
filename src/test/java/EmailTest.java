@@ -30,6 +30,7 @@ public class EmailTest {
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
         map.put("hostname", "http://yourappid.appspot.com/");
+        map.put("id", "123");
         t.setData(map);
         assertEquals(false,t.getTemplate().contains("$"));
     }
