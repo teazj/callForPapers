@@ -57,6 +57,9 @@ angular.module('CallForPaper')
 					description: '',
 					difficulty: '',
 					track: ''
+				},
+				sorting: {
+					mean: 'desc'
 				}
 			}, {
 				filterDelay : 0,
