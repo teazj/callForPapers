@@ -8,6 +8,7 @@ import fr.sii.domain.exception.CustomException;
 import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.token.Token;
 import fr.sii.domain.user.LoginUser;
+import fr.sii.domain.user.SignupUser;
 import fr.sii.domain.user.User;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.auth.PasswordService;
@@ -84,15 +85,15 @@ public class AuthController {
 
     @RequestMapping(value="/signup", method=RequestMethod.POST)
     @ResponseBody
-    public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser loginUser) throws Exception {
+    public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid SignupUser signupUser) throws Exception {
         Token token = null;
 
-        ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), loginUser.getCaptcha());
+        ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
             throw new CustomException("Bad captcha");
         }
 
-        User foundUser = userService.findByemail(loginUser.getEmail());
+        User foundUser = userService.findByemail(signupUser.getEmail());
         // Verify if user already exists
         if (foundUser != null) {
                 res.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -107,8 +108,9 @@ public class AuthController {
         // Setup verification token for email validation
         String verifyToken = RandomStringUtils.randomAlphanumeric(100);
         user.setVerifyToken(verifyToken);
-        user.setPassword(PasswordService.hashPassword(loginUser.getPassword()));
-        user.setEmail(loginUser.getEmail());
+        user.setPassword(PasswordService.hashPassword(signupUser.getPassword()));
+        user.setEmail(signupUser.getEmail());
+        user.setProfile("{}");
         // Save user
         User savedUser = userService.save(user);
 
