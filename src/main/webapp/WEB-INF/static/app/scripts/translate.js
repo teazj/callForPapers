@@ -100,11 +100,11 @@ angular.module('CallForPaper')
           "conference": "Conférence",
           "codelab": "Codelab"
         },
-        "hintTrack": "Choisissez la catégorie dans laquelle vous pensez que votre conférence se situe. Discovery est une catégorie pour les conférences non techniques."
+        "hintTrack": "Choisissez la catégorie dans laquelle vous pensez que votre conférence se situe."
       },
       "step3": {
-        "header1": "Ici vous renseignerez les informations nécessaires pour votre venue. Ces informations serons très minucieusement étudiées pour notre décision. Ne choisissez oui que si vous en avez besoin.",
-        "header2": "Un petit déjeuner et un déjeuner est offert le jour de l'évènement.",
+        "header1": "Vous pouvez renseigner içi les informations nécessaires pour votre venue. Ces informations seront minutieusement étudiées pour notre décision. Ne choisissez oui que si vous en avez besoin.",
+        "header2": "Un petit déjeuner et un déjeuner sont offerts le jour de l'évènement.",
         "financial": "Avez-vous besoin d’une aide financière ? * :",
         "labelTravel": "Voyage :",
         "travel": "J'ai besoin d’une aide financière pour le voyage.",
@@ -296,7 +296,7 @@ angular.module('CallForPaper')
           "conference": "Conference",
           "codelab": "Codelab"
         },
-        "hintTrack": "Choose the track where you think your talk will be place. Discovery is a track for non technicals presentations"
+        "hintTrack": "Choose the track where you think your talk will be place."
       },
       "step3": {
         "header1": "Here is all the informations relatives to your venue. The following informations will be carefuly study for our decision. So please select Yes, only if needed.",
