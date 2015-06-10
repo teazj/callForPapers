@@ -68,16 +68,21 @@ public class SessionController {
         {
             throw new NotVerifiedException("User must be verified");
         }
+        row.setAdded(new Date());
         row.setUserid(claimsSet.getSubject());
+
+        Row savedRow = googleService.addRow(row);
 
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", row.getFirstname());
         map.put("talk", row.getSessionName());
         map.put("hostname", globalSettings.getHostname());
+        map.put("id", savedRow.getAdded().toString());
 
         Email email = new Email(row.getEmail(),"Confirmation de votre session","confirmed.html",map);
         emailingService.send(email);
-        return googleService.addRow(row);
+
+        return savedRow;
     }
 
     @RequestMapping(value="/session", method= RequestMethod.GET)
@@ -117,14 +122,17 @@ public class SessionController {
         row.setAdded(new Date());
         row.setUserid(claimsSet.getSubject());
 
+        Row savedRow = googleService.putRowDraftToSession(row, row.getUserId(), Long.parseLong(added));
+
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", row.getFirstname());
         map.put("talk", row.getSessionName());
         map.put("hostname", globalSettings.getHostname());
+        map.put("id", savedRow.getAdded().toString());
 
         Email email = new Email(row.getEmail(),"Confirmation de votre session","confirmed.html",map);
         emailingService.send(email);
-        return googleService.putRowDraftToSession(row, row.getUserId(), Long.parseLong(added));
+        return savedRow;
     }
 
     /**

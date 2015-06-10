@@ -9,9 +9,14 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
 import com.google.gdata.client.spreadsheet.CellQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.google.gdata.data.Link;
 import com.google.gdata.data.PlainTextConstruct;
+import com.google.gdata.data.batch.BatchOperationType;
+import com.google.gdata.data.batch.BatchStatus;
+import com.google.gdata.data.batch.BatchUtils;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
+import fr.sii.domain.spreadsheet.GoogleSpreadsheetCellAddress;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowDraft;
 import org.apache.commons.logging.Log;
@@ -194,6 +199,47 @@ public class SpreadsheetConnector {
         return result;
     }
 
+    public void updateBatch(WorksheetEntry worksheet, List<GoogleSpreadsheetCellAddress> cellAddrs) throws IOException, ServiceException {
+
+
+        long startTime = System.currentTimeMillis();
+
+        URL cellFeedUrl = worksheet.getCellFeedUrl();
+        CellFeed cellFeed = service.getFeed(cellFeedUrl, CellFeed.class);
+
+        CellFeed batchRequest = new CellFeed();
+
+        for (GoogleSpreadsheetCellAddress cellAddr : cellAddrs) {
+            CellEntry batchEntry = new CellEntry(cellAddr.row, cellAddr.col, cellAddr.idString);
+            batchEntry.setId(String.format("%s/%s", cellFeedUrl.toString(), String.format("R%sC%s", cellAddr.row, cellAddr.col)));
+            BatchUtils.setBatchId(batchEntry, cellAddr.idString);
+            BatchUtils.setBatchOperationType(batchEntry, BatchOperationType.UPDATE);
+            batchRequest.getEntries().add(batchEntry);
+        }
+
+        // Submit the update
+        Link batchLink = cellFeed.getLink(Link.Rel.FEED_BATCH, Link.Type.ATOM);
+        service.setHeader("If-Match", "*");
+        CellFeed batchResponse = service.batch(new URL(batchLink.getHref()), batchRequest);
+        service.setHeader("If-Match", null);
+
+        // Check the results
+        boolean isSuccess = true;
+        for (CellEntry entry : batchResponse.getEntries()) {
+            String batchId = BatchUtils.getBatchId(entry);
+            if (!BatchUtils.isSuccess(entry)) {
+                isSuccess = false;
+                BatchStatus status = BatchUtils.getBatchStatus(entry);
+                log.info(String.format("%s failed (%s) %s", batchId, status.getReason(), status.getContent()));
+            }
+        }
+
+        if(!isSuccess)
+        {
+            throw new ServiceException("CellFeed batch request error");
+        }
+    }
+
     public ListEntry rowToListEntry(Row row)
     {
         ListEntry listEntry = new ListEntry();
@@ -216,6 +262,7 @@ public class SpreadsheetConnector {
         }
         return listEntry;
     }
+
     public Row listEntryToRow(ListEntry row)
     {
         Row rowModel = new RowDraft();

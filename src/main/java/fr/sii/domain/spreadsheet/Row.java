@@ -1,11 +1,18 @@
 package fr.sii.domain.spreadsheet;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tmaugin on 03/04/2015.
  */
 public interface Row {
+
+    public static final List<String> fields = Arrays.asList(
+            "email","name","firstname","phone","company","bio","social","sessionName","description","references","difficulty","type","track","coSpeaker","financial","travel","travelFrom","hotel","hotelDate","added","draft","userId"
+    );
 
     // Needed for automatic spreadsheet creation
     String email = null;

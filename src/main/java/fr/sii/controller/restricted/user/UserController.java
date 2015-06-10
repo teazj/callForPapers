@@ -1,7 +1,10 @@
 package fr.sii.controller.restricted.user;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.JWTClaimsSet;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.domain.user.User;
 import fr.sii.domain.user.UserProfile;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +37,7 @@ public class UserController {
 
     @RequestMapping(value="/user", method= RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getUserProfile(HttpServletRequest req) throws Exception {
+    public Map<String, Object> getUserProfile(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -41,6 +45,11 @@ public class UserController {
         }
 
         User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        if(u == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
         ObjectMapper m = new ObjectMapper();
         UserProfile p = m.readValue(u.getProfile(), UserProfile.class);
 
@@ -58,7 +67,7 @@ public class UserController {
 
     @RequestMapping(value="/user", method= RequestMethod.PUT)
     @ResponseBody
-    public UserProfile putUserProfile(HttpServletRequest req, @RequestBody UserProfile profile) throws Exception {
+    public UserProfile putUserProfile(HttpServletRequest req, @RequestBody UserProfile profile) throws NotVerifiedException, NotFoundException, JsonProcessingException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -66,6 +75,11 @@ public class UserController {
         }
 
         User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        if(u == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
         ObjectMapper m = new ObjectMapper();
         String profileString = m.writeValueAsString(profile);
         u.setProfile(profileString);
