@@ -18,6 +18,9 @@ import com.google.appengine.api.datastore.*;
 import com.google.gdata.client.spreadsheet.FeedURLFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.BaseEntry;
+import com.google.gdata.data.batch.BatchOperationType;
+import com.google.gdata.data.batch.BatchStatus;
+import com.google.gdata.data.batch.BatchUtils;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
@@ -26,6 +29,7 @@ import fr.sii.config.google.GoogleSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
+import fr.sii.domain.spreadsheet.GoogleSpreadsheetCellAddress;
 import fr.sii.domain.spreadsheet.Row;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -306,18 +310,15 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             worksheet = spreadsheetConnector.createWorksheet(spreadsheet,worksheetName, 100, 100);
         }
 
-        // No header existing, creating it
-        if(spreadsheetConnector.getRange(worksheet,1,1,1,10).size() == 0)
+
+        // No/Bad header existing, creating it
+        if(spreadsheetConnector.getRange(worksheet,1,1,1,Row.fields.size()).size() != Row.fields.size())
         {
-            // Fetch the cell feed of the worksheet.
-            URL cellFeedUrl = worksheet.getCellFeedUrl();
-            java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
-            Integer col = 1;
-            for (java.lang.reflect.Field field : fields) {
-                String name = field.getName().toString();
-                spreadsheetConnector.setCell(worksheet, 1, col, name);
-                col++;
+            List<GoogleSpreadsheetCellAddress> cellAddrs = new ArrayList<GoogleSpreadsheetCellAddress>();
+            for (int i = 1; i <= 22; i++) {
+                cellAddrs.add(new GoogleSpreadsheetCellAddress(1, i, Row.fields.get(i-1)));
             }
+            spreadsheetConnector.updateBatch(worksheet,cellAddrs);
         }
     }
 
