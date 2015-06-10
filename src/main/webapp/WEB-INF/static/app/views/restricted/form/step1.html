@@ -48,12 +48,12 @@
         </div>
     </div>
     <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
-    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right" style="padding-bottom: 10px">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right" style="padding-bottom: 10px">
         <a ng-click="doVerify()" class="btn btn-block btn-primary">
             {{'steps.next' | translate}} <span class="mdi-navigation-arrow-forward pull-right"></span>
         </a>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right">
         <a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
             {{'steps.saveAsDraft' | translate}} <span class="mdi-content-save pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'mdi-content-save' : !formData.sending, 'mdi-navigation-refresh' : formData.sending}"></span>
         </a>
