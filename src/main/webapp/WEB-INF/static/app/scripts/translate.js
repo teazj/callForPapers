@@ -23,7 +23,7 @@ angular.module('CallForPaper')
         "postedAt" : "ajouté le ",
         "noSendedTalks" : "Vous n'avez pas encore proposé de talk",
         "verification" : "Vérification",
-        "verificationNeeded" : "Un e-mail vous a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
+        "verificationNeeded" : "Un e-mail a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
       },
       "profile" :
       {
@@ -55,8 +55,8 @@ angular.module('CallForPaper')
         "emailPattern" : "Votre adresse email est invalide",
         "passwordRequired" : "Le mot de passe est obligatoire",
         "passwordMinLength" : "Le mot de passe doit contenir au moins 6 caractères",
-        "passwordMatch" : "Les mots de passes doivent êtres indentiques",
-        "alreadyExists" : "Il existe déjà un utilisateur associé à cet e-mail"
+        "passwordMatch" : "Les mots de passe doivent être identiques",
+        "alreadyExists" : "Il existe déjà un utilisateur associé à cet adresse e-mail"
       },
       "verify" : {
         "title" : "Verification de l'email",
@@ -213,7 +213,7 @@ angular.module('CallForPaper')
         "createNewSession" : "Create a new talk",
         "editionTalks" : "Talks available for editing",
         "noEditionTalks" : "You don't have any draft",
-        "sendedTalks" : "Talks submitted",
+        "sendedTalks" : "Submitted talks",
         "draftModifiedAt" : "Draft modified the ",
         "postedAt" : "submited the ",
         "noSendedTalks" : "You don't have submitted any talk yet",
@@ -300,7 +300,7 @@ angular.module('CallForPaper')
       },
       "step3": {
         "header1": "Here is all the informations relatives to your venue. The following informations will be carefuly study for our decision. So please select Yes, only if needed.",
-        "header2": "A breakfast and lunch is offered the day of the event.",
+        "header2": "Breakfast and lunch is offered the days of the event.",
         "financial": "Do you need financial help ? *:",
         "labelTravel": "Travel",
         "travel": "I need financial help for the trip.",

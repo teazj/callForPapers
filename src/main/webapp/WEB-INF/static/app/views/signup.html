@@ -20,7 +20,7 @@
             <div ng-show="signupForm.password.$error.minlength" ng-message="minlength">{{'signup.passwordMinLength' | translate}}</div>
           </div>
         </div>
-        <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.confirmPassword.$invalid && signupForm.confirmPassword.$dirty }">
+        <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.confirmPassword.$dirty && (signupForm.confirmPassword.$invalid || confirmPassword !== password) }">
           <input ng-minlength="6" class="form-control input-lg login-input" type="password" name="confirmPassword" ng-model="confirmPassword" placeholder="{{'signup.confirmPassword' | translate}}" required>
           <span class="ion-key form-control-feedback"></span>
           <div class="help-block text-danger" ng-if="signupForm.confirmPassword.$dirty" ng-messages="signupForm.confirmPassword.$error">
