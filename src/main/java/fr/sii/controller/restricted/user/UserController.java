@@ -51,7 +51,9 @@ public class UserController {
         }
 
         ObjectMapper m = new ObjectMapper();
-        UserProfile p = m.readValue(u.getProfile(), UserProfile.class);
+        String userProfile = u.getProfile();
+        userProfile = (userProfile == null) ? "{}" : userProfile;
+        UserProfile p = m.readValue(userProfile, UserProfile.class);
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("email", u.getEmail());
