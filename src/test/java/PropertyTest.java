@@ -28,7 +28,7 @@ public class PropertyTest {
 
     @Test
     public void test1_getApplicationPropertyGoogleApp() {
-        assertEquals("CallForPaper", spreadsheetSettings.getSpreadsheetName());
+        assertEquals("CallForPaperSII", spreadsheetSettings.getSpreadsheetName());
         assertEquals("test",spreadsheetSettings.getWorksheetName());
     }
 
