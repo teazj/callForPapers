@@ -271,6 +271,7 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
 
     public ProductionSpreadsheetRepository() {
         this.service = new SpreadsheetService("CallForPaper-v3");
+        service.setConnectTimeout(120000);
         this.factory = FeedURLFactory.getDefault();
     }
 
