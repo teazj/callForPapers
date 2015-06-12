@@ -5,6 +5,7 @@ angular.module('bs-has', [])
         var input = element.find('input');
         if(!input.length) { input = element.find('select'); }
         if(!input.length) { input = element.find('textarea'); }
+        if(!input.length) { input = element.find('span[rating]'); }
         if (input.length) {
             scope.$watch(function() {
                 return input.hasClass(ngClass) && (input.hasClass('ng-dirty') || input.hasClass('ng-verify'));
@@ -21,6 +22,7 @@ angular.module('bs-has', [])
         var input = element.find('input');
         if(!input.length) { input = element.find('select'); }
         if(!input.length) { input = element.find('textarea'); }
+        if(!input.length) { input = element.find('span[rating]'); }
         if (input.length) {
           scope.$watch(element.attr('verify'),function(value){
               if(value)
