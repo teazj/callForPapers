@@ -30,7 +30,7 @@
 
 ## Setup
 
-*Change **127.0.0.1:8080** to your application domain for development*
+*Change **127.0.0.1:8080** to your application domain for production*
 
 ### Obtaining OAuth Keys
 
@@ -159,6 +159,15 @@ mvn appengine:devserver [-Dmaven.test.skip=true]
  - The application will guide you througth the process to link your Google Drive account to the application.
 
 ## Usage :
+
+### Manage admin users :
+
+- Visit [Google Cloud Console](https://cloud.google.com/console/project)
+- Select your project
+- Click **Permissions** button
+- Click **Add member** button :
+ - **Email**: New member e-mail
+ - **Can view**
 
 ### App entry points :
 
