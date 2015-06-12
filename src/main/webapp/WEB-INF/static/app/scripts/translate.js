@@ -104,7 +104,7 @@ angular.module('CallForPaper')
       },
       "step3": {
         "header1": "Vous pouvez renseigner ici les informations nécessaires pour votre venue. Ces informations seront minutieusement étudiées pour notre décision. Ne choisissez oui que si vous en avez besoin.",
-        "header2": "Un petit déjeuner et un déjeuner sont offerts le jour de l'événement.",
+        "header2": "Un petit déjeuner et un déjeuner sont offerts le jour de l'évènement.",
         "financial": "Avez-vous besoin d’une aide financière ? * :",
         "labelTravel": "Voyage :",
         "travel": "J'ai besoin d’une aide financière pour le voyage.",
