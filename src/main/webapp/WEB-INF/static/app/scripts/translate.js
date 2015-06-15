@@ -72,20 +72,20 @@ angular.module('CallForPaper')
         "errorPhone": "Entrez un numéro de téléphone correct",
         "company": "Entreprise :",
         "bio": "Bio * :",
-        "hintBio": "Décrivez vous en quelques mots. Cette description sera utilisée sur le site web",
+        "hintBio": "Décrivez vous en quelques mots. Cette description sera utilisée sur le site web.",
         "social": "URL (Google, Github, etc) :",
-        "hintSocial": "Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog"
+        "hintSocial": "Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog."
       },
       "step2": {
         "name": "Nom de la conférence * :",
         "description": "Description * :",
-        "hintDescription": "Donnez une description de votre présentation. Elle sera utilisée sur le site web",
+        "hintDescription": "Donnez une description de votre présentation. Elle sera utilisée sur le site web.",
         "references": "Références ou compléments d'informations :",
         "hintReferences": "Y a-t-il des conférences où vous avez déjà fait des présentations ? Si vous pouvez donner un lien vers celle(s)-ci ça serait bien.",
         "difficulty": "Difficulté * (Débutant, Confirmé, Expert) :",
         "track": "Track * :",
         "cospeaker": "Co-conférenciers :",
-        "hintCospeaker": "Si vous n'êtes pas seul lors de la présentation, donnez les nom / email / bio / liens sociaux des autres conférenciers",
+        "hintCospeaker": "Si vous n'êtes pas seul lors de la présentation, donnez les nom / email / bio / liens sociaux des autres conférenciers.",
         "beginner": "Débutant",
         "confirmed": "Confirmé",
         "expert": "Expert",
@@ -96,6 +96,7 @@ angular.module('CallForPaper')
           "discovery": "Découverte"
         },
         "type": "Type * :",
+        "hintType": "Une conférence doit durer environ 45 minutes et un codelab 2 heures.",
         "types": {
           "conference": "Conférence",
           "codelab": "Codelab"
@@ -267,21 +268,21 @@ angular.module('CallForPaper')
         "errorPhone": "Please enter a correct phone number",
         "company": "Company:",
         "bio": "Bio *:",
-        "hintBio": "Describe yourself with a few words. This description will be use to fill the website",
+        "hintBio": "Describe yourself with a few words. This description will be use to fill the website.",
         "social": "URL (Google, Github, etc):",
-        "hintSocial": "Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog"
+        "hintSocial": "Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog."
       },
       "step2": {
         "name": "Session name *",
         "description": "Description *:",
-        "hintDescription": "Give a description of your talk. This description will be used to fill the website",
+        "hintDescription": "Give a description of your talk. This description will be used to fill the website.",
         "references": "References or complement informations :",
         "hintReferences": "Is there any conferences where you have already spoken ? If you could give a link to the presentation, it's better.",
         "complement": "Recommendation and additional information:",
         "difficulty": "Difficulty * (Beginner, Confirmed, Expert):",
         "track": "Track *:",
         "cospeaker": "Co-speaker:",
-        "hintCospeaker": "If you are not alone on stage, give the co-speaker name / email / bio / social networks",
+        "hintCospeaker": "If you are not alone on stage, give the co-speaker name / email / bio / social networks.",
         "beginner": "Beginner",
         "confirmed": "Confirmed",
         "expert": "Expert",
@@ -292,6 +293,7 @@ angular.module('CallForPaper')
           "discovery": "Discovery"
         },
         "type": "Type *:",
+        "hintType": "A conference must last about 45 minutes and a codelab about 2 hours.",
         "types": {
           "conference": "Conference",
           "codelab": "Codelab"
