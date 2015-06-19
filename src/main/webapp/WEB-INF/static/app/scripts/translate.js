@@ -115,6 +115,12 @@ angular.module('CallForPaper')
         "date": "Pour quelle(s) date(s) ? :",
         "sendError": "Erreur lors de l'envoi veuillez réessayer"
       },
+      "confirmModal": {
+        "title" : "Confirmation",
+        "text" : "Êtes-vous sûr de vouloir envoyer ce talk ? Une fois envoyé, vous ne serez pas en mesure de le modifier.",
+        "confirm" : "Envoyer",
+        "cancel" : "Annuler"
+      },
       "steps": {
         "saveAsDraft" : "Enregistrer brouillon",
         "previous": "Etape précédente",
@@ -311,6 +317,12 @@ angular.module('CallForPaper')
         "hotel": "I need financial help for the hotel.",
         "place": "Where are you coming from ?:",
         "sendError": "An error occurred during the submission, please retry."
+      },
+      "confirmModal": {
+        "title" : "Confirmation",
+        "text" : "Do you really want to send this talk ? Once sent you will not be able to modify it.",
+        "confirm" : "OK",
+        "cancel" : "Cancel"
       },
       "steps": {
         "saveAsDraft" : "Save as draft",
