@@ -2,5 +2,9 @@ angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', funct
   return resourceRetries('api/admin/session/:id', null, 
   	{
         update: { method:'PUT' },
+        delete: {
+			method: 'DELETE',
+			url: 'api/admin/session/:id'
+		}
     });
 }]);

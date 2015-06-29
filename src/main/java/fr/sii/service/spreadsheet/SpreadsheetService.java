@@ -131,6 +131,10 @@ public class SpreadsheetService {
         spreadsheetRepository.deleteRowDraft(added, userId);
     }
 
+    public void deleteRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
+        spreadsheetRepository.deleteRow(added);
+    }
+
     public List<RowResponse> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
         return matchRates(spreadsheetRepository.getRowsSession());
     }

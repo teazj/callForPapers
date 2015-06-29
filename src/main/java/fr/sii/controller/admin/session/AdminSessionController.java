@@ -7,6 +7,7 @@ package fr.sii.controller.admin.session;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
+import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.email.EmailingService;
@@ -53,5 +54,11 @@ public class AdminSessionController {
     @ResponseBody
     public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
         return googleService.getRow(added);
+    }
+
+    @RequestMapping(value="/session/{added}", method= RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
+        googleService.deleteRow(added);
     }
 }

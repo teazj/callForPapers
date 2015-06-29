@@ -1,6 +1,10 @@
 <div class="row">
 	<div class="panel">
 		<div class="panel-body">
+			<button type="button" ng-click="deleteSession()" class="btn btn-danger pull-right">
+				<span>{{'admin.deleteSession' | translate}}</span>
+				<span class="mdi-action-delete pull-right">
+			</button>
 			<h1>{{::session.sessionName}}</h1>
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<ul id="tab" class="nav nav-tabs" role="tablist">
