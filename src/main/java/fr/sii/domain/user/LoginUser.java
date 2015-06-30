@@ -1,7 +1,6 @@
 package fr.sii.domain.user;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Created by tmaugin on 18/05/2015.
