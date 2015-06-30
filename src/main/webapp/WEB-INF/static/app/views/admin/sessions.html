@@ -1,9 +1,26 @@
 <div class="row">
 	<div class="panel">
 		<div class="panel-body">
-			<div class="filterbuttons btn-group pull-right">
-				<button ng-click="tableParams.sorting({})" class="btn btn-default">{{'admin.clearSorting' | translate}}</button>
-				<button ng-click="tableParams.filter({})" class="btn btn-default">{{'admin.clearFilter' | translate}}</button>
+			<div class="pull-right">
+				<span class="filterbuttons btn-group">
+					<button ng-click="tableParams.sorting({})" class="btn btn-default">{{'admin.clearSorting' | translate}}</button>
+					<button ng-click="tableParams.filter({})" class="btn btn-default">{{'admin.clearFilter' | translate}}</button>
+				</span>
+			</div>
+			<div class="pull-left">
+				<span class="filterbuttons btn-group">
+					<button class="btn btn-default">
+						<span class="mdi-action-perm-identity">&nbsp;{{uniqueUserCount}}</span>
+					</button>
+				</span>
+				<span class="filterbuttons btn-group">
+					<button class="btn btn-default">
+						<span class="mdi-communication-message">&nbsp;{{sessions.length}}</span>
+					</button>
+					<button class="btn btn-default">
+						<span class="mdi-editor-insert-drive-file">&nbsp;{{drafts.length}}</span>
+					</button>
+				</span>
 			</div>
 			<div ng-if="!screenSize.is('xs, sm')">
 				<table ng-table="tableParams" show-filter="true" class="table table-striped table-hover table-bordered">

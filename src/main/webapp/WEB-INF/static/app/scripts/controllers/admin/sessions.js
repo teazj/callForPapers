@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize) {
+	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminDraft', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminDraft) {
 		var sessions = []
+		$scope.sessions = [];
 		$scope.screenSize = screenSize;
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 		AdminSession.query().$promise.then(function(sessionsTmp) {
@@ -11,7 +12,24 @@ angular.module('CallForPaper')
 				session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];
 				return session;
 			});
+
+			var getUnique = function(array){
+				var counts = {};
+				for (var i = 0; i < array.length; i++) {
+					var name = $filter('removeAccents')(angular.lowercase(array[i].fullname))
+				    counts[name] = 1 + (counts[name] || 0);
+				}
+				return Object.keys(counts).length;
+			}
+
+			$scope.uniqueUserCount = getUnique(sessions);
+			$scope.sessions = sessions;
 			updateTable();
+		});
+
+		$scope.drafts = [];
+		AdminDraft.query().$promise.then(function(draftsTmp) {
+			$scope.drafts = draftsTmp;
 		});
 
 		$scope.difficulties = function(column) {
