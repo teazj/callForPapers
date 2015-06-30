@@ -60,9 +60,9 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label" for="social">{{'step1.social' | translate}}</label>
-									<div class="">
-										<input readonly type="text" class="form-control" name="social" id="social" ng-model="session.social">
-									</div>
+									<ul ng-repeat="link in session.socialLinks">
+										<li ng-bind-html="link"></li>
+									</ul>
 								</div>
 							</div>
 						</div>
