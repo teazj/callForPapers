@@ -35,6 +35,8 @@ public interface SpreadsheetRepository {
 
     void deleteRowDraft(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException;
 
+    void deleteRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException;
+
     Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException;
 
     Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException;

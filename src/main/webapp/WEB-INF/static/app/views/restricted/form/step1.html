@@ -44,7 +44,7 @@
         <label class="control-label" for="social">{{'step1.social' | translate}}</label>
         <div>{{'step1.hintSocial' | translate}}</div>
         <div>
-            <tags-input id="social" name="social" ng-model="formData.speaker.socialArray"></tags-input>
+            <tags-input add-on-enter="true" add-on-space="true" add-on-comma="true" add-on-blur="true" add-on-paste="true" id="social" name="social" ng-model="formData.speaker.socialArray"></tags-input>
         </div>
     </div>
     <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>

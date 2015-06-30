@@ -18,9 +18,6 @@ import com.google.appengine.api.datastore.*;
 import com.google.gdata.client.spreadsheet.FeedURLFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.BaseEntry;
-import com.google.gdata.data.batch.BatchOperationType;
-import com.google.gdata.data.batch.BatchStatus;
-import com.google.gdata.data.batch.BatchUtils;
 import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
@@ -639,6 +636,41 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
 
         }
         throw new NotFoundException("Draft not found");
+    }
+
+    @Override
+    public void deleteRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
+        checkExpiredAccessToken();
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getAdded().toString().equals(added))
+            {
+                row.delete();
+                return;
+            }
+
+        }
+        throw new NotFoundException("Session not found");
     }
 
     @Override

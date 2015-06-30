@@ -1,12 +1,19 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state) {
 		$scope.session = null;
 		AdminSession.get({
 			id: $stateParams.id
 		}).$promise.then(function(sessionTmp) {
 			$scope.session = sessionTmp;
+			$scope.session.socialLinks = [];
+			if(sessionTmp.social !== null) {
+				var links = sessionTmp.social.split(',').map(function(value){
+					return $filter('createLinks')(value);
+				})
+				$scope.session.socialLinks = links;
+			}
 			$scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 		});
 		/**
@@ -97,4 +104,19 @@ angular.module('CallForPaper')
 				});
 			}
 		}
-	}]);
+
+		$scope.deleteSession = function() {
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/modal.html',
+				controller: 'ModalInstanceCtrl'
+			});
+			modalInstance.result.then(function() {
+				AdminSession.delete({id : $stateParams.id}, function(){
+					$state.go('admin.sessions');
+				})
+			}, function() {
+				// cancel
+			});
+		}
+	}])

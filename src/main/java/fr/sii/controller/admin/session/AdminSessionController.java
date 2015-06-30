@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
 import fr.sii.domain.exception.NotFoundException;
+import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.spreadsheet.SpreadsheetService;
@@ -49,9 +50,21 @@ public class AdminSessionController {
         return googleService.getRowsSession();
     }
 
+    @RequestMapping(value="/draft", method= RequestMethod.GET)
+    @ResponseBody
+    public List<Row> getGoogleSpreadsheetsDraft() throws IOException, ServiceException, EntityNotFoundException {
+        return googleService.getRowsDraft();
+    }
+
     @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
     @ResponseBody
     public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
         return googleService.getRow(added);
+    }
+
+    @RequestMapping(value="/session/{added}", method= RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
+        googleService.deleteRow(added);
     }
 }

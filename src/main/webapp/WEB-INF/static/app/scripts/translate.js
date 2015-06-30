@@ -119,7 +119,9 @@ angular.module('CallForPaper')
       "confirmModal": {
         "title" : "Confirmation",
         "text" : "Êtes-vous sûr de vouloir envoyer ce talk ? Une fois envoyé, vous ne serez pas en mesure de le modifier.",
+        "textDelete" : "Êtes-vous sûr de vouloir suprimer cette session ? Une fois supprimée, vous ne serez pas en mesure de la restaurer.",
         "confirm" : "Envoyer",
+        "confirmDelete" : "Supprimer",
         "cancel" : "Annuler"
       },
       "steps": {
@@ -159,7 +161,8 @@ angular.module('CallForPaper')
         "message": "Message",
         "votes": "Votes",
         "you": "Vous",
-        "financialHelp": "Aide financière"
+        "financialHelp": "Aide financière",
+        "deleteSession": "Supprimer la session"
       },
       "config": {
         "logout": "Se déconnecter",
@@ -323,7 +326,9 @@ angular.module('CallForPaper')
       "confirmModal": {
         "title" : "Confirmation",
         "text" : "Do you really want to submit this talk ? Once sent you will not be able to edit it.",
+        "textDelete" : "Do you really want to delete this session ? Once done you will not be able to recover it.",
         "confirm" : "OK",
+        "confirmDelete" : "Delete",
         "cancel" : "Cancel"
       },
       "steps": {
@@ -363,7 +368,8 @@ angular.module('CallForPaper')
         "message": "Message",
         "votes": "Votes",
         "you": "You",
-        "financialHelp": "Financial Help"
+        "financialHelp": "Financial Help",
+        "deleteSession": "Delete session"
       },
       "config": {
         "login": "Login",
