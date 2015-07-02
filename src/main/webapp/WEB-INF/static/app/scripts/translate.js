@@ -162,7 +162,12 @@ angular.module('CallForPaper')
         "votes": "Votes",
         "you": "Vous",
         "financialHelp": "Aide financière",
-        "deleteSession": "Supprimer la session"
+        "deleteSession": "Supprimer la session",
+        "validated": "Sessions validées",
+        "draft": "Sessions en cours d'édition",
+        "speaker": "Speaker",
+        "lastModification": "Dernière activité",
+        "never": "Jamais"
       },
       "config": {
         "logout": "Se déconnecter",
@@ -369,7 +374,12 @@ angular.module('CallForPaper')
         "votes": "Votes",
         "you": "You",
         "financialHelp": "Financial Help",
-        "deleteSession": "Delete session"
+        "deleteSession": "Delete session",
+        "validated": "Published talks",
+        "draft": "Talks being edited",
+        "speaker": "Speaker",
+        "lastModification": "Last activity",
+        "never": "Never"
       },
       "config": {
         "login": "Login",

@@ -4,6 +4,7 @@ angular.module('CallForPaper')
 	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminDraft', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminDraft) {
 		var sessions = []
 		$scope.sessions = [];
+		$scope.sessionsAll = [];
 		$scope.screenSize = screenSize;
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 		AdminSession.query().$promise.then(function(sessionsTmp) {
@@ -23,7 +24,7 @@ angular.module('CallForPaper')
 			}
 
 			$scope.uniqueUserCount = getUnique(sessions);
-			$scope.sessions = sessions;
+			$scope.sessionsAll = sessions;
 			updateTable();
 		});
 
@@ -77,7 +78,7 @@ angular.module('CallForPaper')
 					track: ''
 				},
 				sorting: {
-					mean: 'desc'
+					added: 'desc'
 				}
 			}, {
 				filterDelay : 0,

@@ -8,12 +8,14 @@ package fr.sii.service.spreadsheet;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.global.GlobalSettings;
+import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.rate.AdminRate;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
+import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.rate.AdminRateService;
 
 import java.io.IOException;
@@ -26,6 +28,8 @@ public class SpreadsheetService {
 
     private AdminRateService adminRateService;
 
+    private AdminCommentService adminCommentService;
+
     private GlobalSettings globalSettings;
 
     public void setAdminRateService(AdminRateService adminRateService) {
@@ -34,6 +38,10 @@ public class SpreadsheetService {
 
     public void setGlobalSettings(GlobalSettings globalSettings) {
         this.globalSettings = globalSettings;
+    }
+
+    public void setAdminCommentService(AdminCommentService adminCommentService) {
+        this.adminCommentService = adminCommentService;
     }
 
     private boolean configured;
@@ -50,7 +58,7 @@ public class SpreadsheetService {
         this.spreadsheetRepository = spreadsheetRepository;
     }
 
-    public List<RowResponse> matchRates(List<Row> rs)
+    public List<RowResponse> matchRatesAndComment(List<Row> rs)
     {
         List<RowResponse> nrs = new ArrayList<>();
         for (Row r : rs)
@@ -60,26 +68,28 @@ public class SpreadsheetService {
             if(globalSettings.getDatabaseLoaded().equals("true"))
             {
                 List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
-                rr = new RowResponse(r, lrs);
+                List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
+                rr = new RowResponse(r, lrs, lcs);
             }
             else
             {
-                rr = new RowResponse(r, new ArrayList<AdminRate>());
+                rr = new RowResponse(r, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
             }
             nrs.add(rr);
         }
         return nrs;
     }
 
-    public RowResponse matchRates(Row r)
+    public RowResponse matchRatesAndComment(Row r)
     {
         if(globalSettings.getDatabaseLoaded().equals("true")) {
             List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
-            return new RowResponse(r, lrs);
+            List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
+            return new RowResponse(r, lrs, lcs);
         }
         else
         {
-            return new RowResponse(r, new ArrayList<AdminRate>());
+            return new RowResponse(r, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
         }
     }
 
@@ -112,11 +122,11 @@ public class SpreadsheetService {
     }
 
     public List<RowResponse> getRows() throws IOException, ServiceException, EntityNotFoundException {
-        return matchRates(spreadsheetRepository.getRows());
+        return matchRatesAndComment(spreadsheetRepository.getRows());
     }
 
     public RowResponse getRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
-        return matchRates(spreadsheetRepository.getRow(added));
+        return matchRatesAndComment(spreadsheetRepository.getRow(added));
     }
 
     public Row getRow(String added, Long userId) throws IOException, ServiceException, NotFoundException, ForbiddenException, EntityNotFoundException {
@@ -136,7 +146,7 @@ public class SpreadsheetService {
     }
 
     public List<RowResponse> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
-        return matchRates(spreadsheetRepository.getRowsSession());
+        return matchRatesAndComment(spreadsheetRepository.getRowsSession());
     }
 
     public List<Row> getRowsSession(Long userId) throws IOException, ServiceException, EntityNotFoundException {

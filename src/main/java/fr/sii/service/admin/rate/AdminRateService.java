@@ -7,6 +7,7 @@ import fr.sii.repository.admin.rate.AdminRateRespository;
 import fr.sii.service.admin.user.AdminUserService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,12 +78,20 @@ public class AdminRateService {
     }
 
     public AdminRate save(AdminRate r) {
+        if(r.getAdded() == null)
+        {
+            r.setAdded(new Date());
+        }
         return matchUser(adminRateRespository.save(r));
     }
 
     public AdminRate put(Long id,AdminRate r) throws NotFoundException {
         delete(id);
         r.setEntityId(id);
+        if(r.getAdded() == null)
+        {
+            r.setAdded(new Date());
+        }
         return matchUser(adminRateRespository.save(r));
     }
 

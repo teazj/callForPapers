@@ -30,6 +30,8 @@ public class AdminRate {
     @NotNull
     private Integer rate;
 
+    private Date added;
+
     @NotNull
     private Long rowId;
 
@@ -73,6 +75,14 @@ public class AdminRate {
 
     public void setUser(AdminUser adminUser) {
         this.adminUser = adminUser;
+    }
+
+    public Long getAdded() {
+        return (added != null) ? added.getTime() : null;
+    }
+
+    public void setAdded(Date added) {
+        this.added = added;
     }
 
     public Long getUserId() {
