@@ -10,15 +10,15 @@
 			<div class="pull-left">
 				<span class="filterbuttons btn-group">
 					<button class="btn btn-default">
-						<span class="mdi-action-perm-identity">&nbsp;{{uniqueUserCount}}</span>
+						<span tooltip="{{'admin.speaker' | translate}}" class="mdi-action-perm-identity">&nbsp;{{uniqueUserCount}}</span>
 					</button>
 				</span>
 				<span class="filterbuttons btn-group">
 					<button class="btn btn-default">
-						<span class="mdi-communication-message">&nbsp;{{sessions.length}}</span>
+						<span tooltip="{{'admin.validated' | translate}}" class="mdi-communication-message">&nbsp;{{sessionsAll.length}}</span>
 					</button>
 					<button class="btn btn-default">
-						<span class="mdi-editor-insert-drive-file">&nbsp;{{drafts.length}}</span>
+						<span tooltip="{{'admin.draft' | translate}}" class="mdi-editor-insert-drive-file">&nbsp;{{drafts.length}}</span>
 					</button>
 				</span>
 			</div>
