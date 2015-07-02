@@ -1,6 +1,7 @@
 package fr.sii.domain.spreadsheet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.rate.AdminRate;
 
 import java.util.Date;
@@ -11,8 +12,9 @@ import java.util.List;
  */
 public class RowResponse extends RowSession {
     private List<AdminRate> adminRates;
+    private List<AdminComment> adminComments;
 
-    public RowResponse(Row row, List<AdminRate> adminRates)
+    public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments)
     {
         super(
                 row.getEmail(),
@@ -37,6 +39,7 @@ public class RowResponse extends RowSession {
                 new Date(row.getAdded())
         );
         this.adminRates = adminRates;
+        this.adminComments = adminComments;
     }
 
     public Double getMean()
@@ -58,6 +61,23 @@ public class RowResponse extends RowSession {
             }
         }
         return null;
+    }
+
+    public long getLastModification()
+    {
+        long lastModified = 0;
+        for(AdminRate adminRate : adminRates)
+        {
+            if(lastModified == 0 || lastModified < adminRate.getAdded()) {
+                lastModified = adminRate.getAdded();
+            }
+        }
+        for(AdminComment adminComment : adminComments) {
+            if (lastModified == 0 || lastModified < adminComment.getAdded()) {
+                lastModified = adminComment.getAdded();
+            }
+        }
+        return lastModified;
     }
 
     @JsonIgnore

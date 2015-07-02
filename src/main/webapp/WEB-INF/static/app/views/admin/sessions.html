@@ -32,6 +32,10 @@
 						<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
 						<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean}}</td>
 						<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
+						<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
+							<span ng-if="session.lastModification !== 0">{{::session.lastModification | date}}</span>
+							<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
+						</td>
 					</tr>
 				</table>
 			</div>

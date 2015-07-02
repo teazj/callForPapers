@@ -165,7 +165,9 @@ angular.module('CallForPaper')
         "deleteSession": "Supprimer la session",
         "validated": "Sessions validées",
         "draft": "Sessions en cours d'édition",
-        "speaker": "Speaker"
+        "speaker": "Speaker",
+        "lastModification": "Dernière activité",
+        "never": "Jamais"
       },
       "config": {
         "logout": "Se déconnecter",
@@ -375,7 +377,9 @@ angular.module('CallForPaper')
         "deleteSession": "Delete session",
         "validated": "Published talks",
         "draft": "Talks being edited",
-        "speaker": "Speaker"
+        "speaker": "Speaker",
+        "lastModification": "Last activity",
+        "never": "Never"
       },
       "config": {
         "login": "Login",

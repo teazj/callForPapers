@@ -78,7 +78,7 @@ angular.module('CallForPaper')
 					track: ''
 				},
 				sorting: {
-					mean: 'desc'
+					added: 'desc'
 				}
 			}, {
 				filterDelay : 0,
