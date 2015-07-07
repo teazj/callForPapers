@@ -67,6 +67,7 @@
 		<property name="globalSettings" ref="globalSettings"></property>
 		<property name="adminRateService" ref="adminRateService"></property>
 		<property name="adminCommentService" ref="adminCommentService"></property>
+		<property name="adminUserService" ref="adminUserService"></property>
 	</bean>
 	<bean id="userService" class="fr.sii.service.user.UserService">
 		<property name="userRespository" ref="userRespository"></property>

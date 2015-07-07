@@ -82,7 +82,7 @@ angular.module('CallForPaper', [
         controller: 'AdminSessionsCtrl'
       })
       .state('admin.session', {
-        url: '/session/:id',
+        url: '/sessions/:id',
         templateUrl: 'views/admin/session.html',
         controller: 'AdminSessionCtrl'
       })
@@ -212,7 +212,7 @@ angular.module('CallForPaper', [
       })
 
     .state('app.session', {
-      url: '/session/:id',
+      url: '/sessions/:id',
       templateUrl: 'views/restricted/session.html',
       controller: 'RestrictedSessionCtrl',
       resolve: {

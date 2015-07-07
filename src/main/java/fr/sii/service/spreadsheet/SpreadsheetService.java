@@ -17,6 +17,7 @@ import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
 import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.rate.AdminRateService;
+import fr.sii.service.admin.user.AdminUserService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,12 @@ public class SpreadsheetService {
     private AdminCommentService adminCommentService;
 
     private GlobalSettings globalSettings;
+
+    private AdminUserService adminUserServiceCustom;
+
+    public void setAdminUserService(AdminUserService adminUserServiceCustom) {
+        this.adminUserServiceCustom = adminUserServiceCustom;
+    }
 
     public void setAdminRateService(AdminRateService adminRateService) {
         this.adminRateService = adminRateService;
@@ -69,7 +76,7 @@ public class SpreadsheetService {
             {
                 List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
                 List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
-                rr = new RowResponse(r, lrs, lcs);
+                rr = new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId());
             }
             else
             {
@@ -85,7 +92,7 @@ public class SpreadsheetService {
         if(globalSettings.getDatabaseLoaded().equals("true")) {
             List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
             List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
-            return new RowResponse(r, lrs, lcs);
+            return new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId());
         }
         else
         {
