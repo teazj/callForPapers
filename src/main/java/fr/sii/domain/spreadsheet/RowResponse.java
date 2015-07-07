@@ -13,6 +13,36 @@ import java.util.List;
 public class RowResponse extends RowSession {
     private List<AdminRate> adminRates;
     private List<AdminComment> adminComments;
+    private Long userId;
+
+    public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments, Long userId)
+    {
+        super(
+                row.getEmail(),
+                row.getName(),
+                row.getFirstname(),
+                row.getPhone(),
+                row.getCompany(),
+                row.getBio(),
+                row.getSocial(),
+                row.getSessionName(),
+                row.getDescription(),
+                row.getReferences(),
+                row.getDifficulty(),
+                row.getType(),
+                row.getTrack(),
+                row.getCoSpeaker(),
+                row.getFinancial(),
+                row.getTravel(),
+                row.getTravelFrom(),
+                row.getHotel(),
+                row.getHotelDate(),
+                new Date(row.getAdded())
+        );
+        this.adminRates = adminRates;
+        this.adminComments = adminComments;
+        this.userId = userId;
+    }
 
     public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments)
     {
@@ -40,6 +70,17 @@ public class RowResponse extends RowSession {
         );
         this.adminRates = adminRates;
         this.adminComments = adminComments;
+        this.userId = null;
+    }
+
+    public Boolean getReviewed() {
+        if(userId == null) return false;
+        for(AdminRate rate : adminRates) {
+            if(rate.getUserId().toString().equals((userId.toString()))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Double getMean()
