@@ -1,6 +1,6 @@
 angular.module('CallForPaper').factory('RestrictedSession', ['resourceRetries', function(resourceRetries) {
-  return resourceRetries('api/restricted/session/:id', null, 
+  return resourceRetries('api/restricted/sessions/:id', null, 
   	{
-        update: { method:'PUT' , url: 'api/restricted/session/:id' },
+        update: { method:'PUT' , url: 'api/restricted/sessions/:id' },
     });
 }]);

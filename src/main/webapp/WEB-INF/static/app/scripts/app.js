@@ -46,8 +46,6 @@ angular.module('CallForPaper', [
       .when('/', '/dashboard')
 
     .when('/admin/sessions/', '/admin/sessions')
-      .when('/admin/session/', '/admin/sessions')
-      .when('/admin/session', '/admin/sessions')
 
     .when('/admin', '/admin/sessions')
       .when('/admin/', '/admin/sessions')

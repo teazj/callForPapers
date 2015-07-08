@@ -61,7 +61,7 @@ public class SessionController {
     /**
      * SESSION
      */
-    @RequestMapping(value="/session", method=RequestMethod.POST)
+    @RequestMapping(value="/sessions", method=RequestMethod.POST)
     @ResponseBody public Row postGoogleSpreadsheet(HttpServletRequest req, @Valid @RequestBody RowSession row) throws Exception {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
@@ -85,7 +85,7 @@ public class SessionController {
         return savedRow;
     }
 
-    @RequestMapping(value="/session", method= RequestMethod.GET)
+    @RequestMapping(value="/sessions", method= RequestMethod.GET)
     @ResponseBody
     public List<Row> getGoogleSpreadsheets(HttpServletRequest req) throws IOException, ServiceException, NotVerifiedException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -98,7 +98,7 @@ public class SessionController {
         return googleService.getRowsSession(userId);
     }
 
-    @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
+    @RequestMapping(value="/sessions/{added}", method= RequestMethod.GET)
     @ResponseBody
     public Row getGoogleSpreadsheet(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -112,7 +112,7 @@ public class SessionController {
     }
 
 
-    @RequestMapping(value="/session/{added}", method=RequestMethod.PUT)
+    @RequestMapping(value="/sessions/{added}", method=RequestMethod.PUT)
     @ResponseBody public Row postGoogleSpreadsheetDraftToSession(HttpServletRequest req, @Valid @RequestBody RowSession row, @PathVariable String added) throws Exception {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
@@ -138,7 +138,7 @@ public class SessionController {
     /**
      * DRAFT
      */
-    @RequestMapping(value="/draft", method=RequestMethod.POST)
+    @RequestMapping(value="/drafts", method=RequestMethod.POST)
     @ResponseBody public Row postGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row) throws NotVerifiedException, IOException, ServiceException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
@@ -149,7 +149,7 @@ public class SessionController {
         return googleService.addRow(row);
     }
 
-    @RequestMapping(value="/draft", method= RequestMethod.GET)
+    @RequestMapping(value="/drafts", method= RequestMethod.GET)
     @ResponseBody
     public List<Row> getGoogleSpreadsheetsDraft(HttpServletRequest req) throws IOException, ServiceException, NotVerifiedException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -162,7 +162,7 @@ public class SessionController {
         return googleService.getRowsDraft(userId);
     }
 
-    @RequestMapping(value="/draft/{added}", method= RequestMethod.GET)
+    @RequestMapping(value="/drafts/{added}", method= RequestMethod.GET)
     @ResponseBody
     public Row getGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -175,7 +175,7 @@ public class SessionController {
         return googleService.getRow(added, userId);
     }
 
-    @RequestMapping(value="/draft/{added}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/drafts/{added}", method=RequestMethod.DELETE)
     @ResponseBody public void deleteGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
@@ -187,7 +187,7 @@ public class SessionController {
         googleService.deleteRowDraft(added, userId);
     }
 
-    @RequestMapping(value="/draft/{added}", method=RequestMethod.PUT)
+    @RequestMapping(value="/drafts/{added}", method=RequestMethod.PUT)
     @ResponseBody public Row putGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row, @PathVariable String added) throws NotVerifiedException, ServiceException, ForbiddenException, NotFoundException, IOException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))

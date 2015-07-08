@@ -14,7 +14,7 @@ import java.util.List;
  * Created by tmaugin on 29/04/2015.
  */
 @Controller
-@RequestMapping(value="api/admin/comment", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/admin/comments", produces = "application/json; charset=utf-8")
 public class AdminCommentController {
 
     AdminCommentService adminCommentService;

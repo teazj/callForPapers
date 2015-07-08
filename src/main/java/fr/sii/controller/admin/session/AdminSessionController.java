@@ -44,25 +44,25 @@ public class AdminSessionController {
         this.applicationSettings = applicationSettings;
     }
 
-    @RequestMapping(value="/session", method= RequestMethod.GET)
+    @RequestMapping(value="/sessions", method= RequestMethod.GET)
     @ResponseBody
     public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException, EntityNotFoundException {
         return googleService.getRowsSession();
     }
 
-    @RequestMapping(value="/draft", method= RequestMethod.GET)
+    @RequestMapping(value="/drafts", method= RequestMethod.GET)
     @ResponseBody
     public List<Row> getGoogleSpreadsheetsDraft() throws IOException, ServiceException, EntityNotFoundException {
         return googleService.getRowsDraft();
     }
 
-    @RequestMapping(value="/session/{added}", method= RequestMethod.GET)
+    @RequestMapping(value="/sessions/{added}", method= RequestMethod.GET)
     @ResponseBody
     public RowResponse getGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
         return googleService.getRow(added);
     }
 
-    @RequestMapping(value="/session/{added}", method= RequestMethod.DELETE)
+    @RequestMapping(value="/sessions/{added}", method= RequestMethod.DELETE)
     @ResponseBody
     public void deleteGoogleSpreadsheet(@PathVariable String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException {
         googleService.deleteRow(added);
