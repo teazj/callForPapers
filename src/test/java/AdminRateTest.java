@@ -82,14 +82,14 @@ public class AdminRateTest {
         given()
                 .contentType("application/json")
                 .body("{\n" +
-                        "\"comment\" : \"Lorem ipsum\",\n" +
+                        "\"rate\" : \"3\",\n" +
                         "\"rowId\" : \"1\"\n" +
                         "}")
                 .when()
-                .post("/api/admin/comment")
+                .post("/api/admin/rates")
                 .then()
                 .statusCode(200)
-                .body("comment", Matchers.is("Lorem ipsum"))
+                .body("rate", Matchers.is(3))
                 .body("rowId", Matchers.is(1))
                 .body("userId", Matchers.is(68276854));
     }
