@@ -167,7 +167,9 @@ angular.module('CallForPaper')
         "draft": "Sessions en cours d'édition",
         "speaker": "Speaker",
         "lastModification": "Dernière activité",
-        "never": "Jamais"
+        "never": "Jamais",
+        "noVote": "Sans avis",
+        "none": "Aucune"
       },
       "config": {
         "logout": "Se déconnecter",
@@ -379,7 +381,9 @@ angular.module('CallForPaper')
         "draft": "Talks being edited",
         "speaker": "Speaker",
         "lastModification": "Last activity",
-        "never": "Never"
+        "never": "Never",
+        "noVote": "Without opinion",
+        "none": "None"
       },
       "config": {
         "login": "Login",

@@ -1,6 +1,3 @@
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
 import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -91,41 +88,9 @@ public class SpreadsheetTest {
                         .setApprovalPrompt("force")
                         .build();
         String url = flow.newAuthorizationUrl().setRedirectUri("urn:ietf:wg:oauth:2.0:oob").build();
-
-        WebClient webClient = new WebClient(BrowserVersion.CHROME);
-        webClient.getOptions().setCssEnabled(false);
-        webClient.getOptions().setThrowExceptionOnScriptError(false);
-        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-        webClient.getOptions().setPrintContentOnFailingStatusCode(false);
-
-        HtmlPage page = null;
-        try {
-            page = webClient.getPage(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HtmlSubmitInput signInButton = page.getElementByName("signIn");
-        HtmlTextInput userNameField = page.getElementByName("Email");
-        HtmlPasswordInput passwordField = page.getElementByName("Passwd");
-        userNameField.setValueAttribute(spreadsheetSettings.getLogin());
-        passwordField.setValueAttribute(spreadsheetSettings.getPassword());
-        HtmlPage allowAccessPage = null;
-        try {
-            allowAccessPage = signInButton.click();
-        } catch (IOException e) {
-        }
-        HtmlButton allowAccessButton = (HtmlButton)allowAccessPage.getElementById("submit_approve_access");
-        allowAccessButton.removeAttribute("disabled");
-        HtmlPage tokenPage = null;
-        try {
-            tokenPage = allowAccessButton.click();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HtmlTextInput tokenElement = (HtmlTextInput)tokenPage.getElementById("code");
-        String code = tokenElement.getText();
-        webClient.close();
-
+        System.out.println(url);
+        // TODO Prompt user code, instead go to printed url then replace the code bellow and comment the top of this function
+        String code = "";
         String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
 
         try {
@@ -147,7 +112,6 @@ public class SpreadsheetTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Before
@@ -300,7 +264,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin"))
@@ -336,7 +300,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(403);
     }
@@ -366,7 +330,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(403);
     }
@@ -378,7 +342,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .body("{}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("draft", Matchers.is(true))
@@ -391,7 +355,7 @@ public class SpreadsheetTest {
                 .header(getHeaderNotVerified())
                 .body("{}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(403);
     }
@@ -401,7 +365,7 @@ public class SpreadsheetTest {
         given().contentType("application/json")
                 .body("{}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(403);
     }
@@ -416,22 +380,21 @@ public class SpreadsheetTest {
                         "\"firstname\" : \"Thomas\",\n" +
                         "\"phone\" : \"33683653379\",\n" +
                         "\"company\" : \"SII\",\n" +
-                        "\"bio\" : \"Bio\",\n" +
-                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
-                        "\"sessionName\" : \"session name\",\n" +
-                        "\"description\" : \"description\",\n" +
-                        "\"references\" : \"refs\",\n" +
-                        "\"difficulty\" : \"3\",\n" +
-                        "\"type\" : \"conference\",\n" +
-                        "\"track\" : \"web\",\n" +
-                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"bio\" : \"Blablablabla\",\n" +
+                        "\"sessionName\" : \"Session\",\n" +
+                        "\"description\" : \"Blablablabla\",\n" +
+                        "\"references\" : \"Blablablabla\",\n" +
+                        "\"difficulty\" : 3,\n" +
+                        "\"track\" : \"Web\",\n" +
+                        "\"social\" : \"www.github.com, www.facebook.com\",\n" +
+                        "\"coSpeaker\" : \"Toi, Lui\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"true\",\n" +
                         "\"travelFrom\" : \"Angers\",\n" +
-                        "\"hotel\" : \"true\",\n" +
+                        "\"hotel\" : \"true\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(400);
     }
@@ -462,7 +425,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(400);
     }
@@ -478,22 +441,22 @@ public class SpreadsheetTest {
                         "\"firstname\" : \"Thomas\",\n" +
                         "\"phone\" : \"33683653379\",\n" +
                         "\"company\" : \"SII\",\n" +
-                        "\"bio\" : \"Bio\",\n" +
-                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
-                        "\"sessionName\" : \"session name\",\n" +
-                        "\"description\" : \"description\",\n" +
-                        "\"references\" : \"refs\",\n" +
-                        "\"difficulty\" : \"5\",\n" +
-                        "\"type\" : \"conference\",\n" +
-                        "\"track\" : \"web\",\n" +
-                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"bio\" : \"Blablablabla\",\n" +
+                        "\"sessionName\" : \"Session\",\n" +
+                        "\"description\" : \"Blablablabla\",\n" +
+                        "\"references\" : \"Blablablabla\",\n" +
+                        "\"difficulty\" : 5,\n" +
+                        "\"track\" : \"Web\",\n" +
+                        "\"social\" : \"www.github.com, www.facebook.com\",\n" +
+                        "\"coSpeaker\" : \"Toi, Lui\",\n" +
                         "\"financial\" : \"true\",\n" +
                         "\"travel\" : \"true\",\n" +
                         "\"travelFrom\" : \"Angers\",\n" +
                         "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(400);
     }
@@ -507,7 +470,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session")
+                .get("/api/restricted/sessions")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
@@ -522,7 +485,7 @@ public class SpreadsheetTest {
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session")
+                .get("/api/restricted/sessions")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(0));
@@ -534,7 +497,7 @@ public class SpreadsheetTest {
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session")
+                .get("/api/restricted/sessions")
                 .then()
                 .statusCode(403);
     }
@@ -544,7 +507,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session")
+                .get("/api/restricted/sessions")
                 .then()
                 .statusCode(403);
     }
@@ -575,7 +538,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -589,7 +552,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session/" + added.toString())
+                .get("/api/restricted/sessions/" + added.toString())
                 .then()
                 .statusCode(200)
                 .body("userId", Matchers.is(1))
@@ -622,7 +585,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -636,7 +599,7 @@ public class SpreadsheetTest {
                 .contentType("application/json")
                 .header(getHeaderOtherAccount())
                 .when()
-                .get("/api/restricted/session/" + added.toString())
+                .get("/api/restricted/sessions/" + added.toString())
                 .then()
                 .statusCode(403);
     }
@@ -647,7 +610,7 @@ public class SpreadsheetTest {
                 .contentType("application/json")
                 .header(getHeaderOtherAccount())
                 .when()
-                .get("/api/restricted/session/1")
+                .get("/api/restricted/sessions/1")
                 .then()
                 .statusCode(404);
     }
@@ -658,7 +621,7 @@ public class SpreadsheetTest {
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session/1")
+                .get("/api/restricted/sessions/1")
                 .then()
                 .statusCode(403);
     }
@@ -668,7 +631,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/session/1")
+                .get("/api/restricted/sessions/1")
                 .then()
                 .statusCode(403);
     }
@@ -683,7 +646,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft")
+                .get("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
@@ -699,7 +662,7 @@ public class SpreadsheetTest {
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft")
+                .get("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(0));
@@ -711,7 +674,7 @@ public class SpreadsheetTest {
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft")
+                .get("/api/restricted/drafts")
                 .then()
                 .statusCode(403);
     }
@@ -722,7 +685,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft")
+                .get("/api/restricted/drafts")
                 .then()
                 .statusCode(403);
     }
@@ -753,7 +716,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -767,7 +730,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/" + added.toString())
+                .get("/api/restricted/drafts/" + added.toString())
                 .then()
                 .statusCode(200)
                 .body("userId", Matchers.is(1))
@@ -800,7 +763,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -814,7 +777,7 @@ public class SpreadsheetTest {
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/" + added.toString())
+                .get("/api/restricted/drafts/" + added.toString())
                 .then()
                 .statusCode(403);
     }
@@ -825,7 +788,7 @@ public class SpreadsheetTest {
                 .header(getHeaderOtherAccount())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/1")
+                .get("/api/restricted/drafts/1")
                 .then()
                 .statusCode(404);
     }
@@ -836,7 +799,7 @@ public class SpreadsheetTest {
                 .header(getHeaderNotVerified())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/1")
+                .get("/api/restricted/drafts/1")
                 .then()
                 .statusCode(403);
     }
@@ -846,7 +809,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/1")
+                .get("/api/restricted/drafts/1")
                 .then()
                 .statusCode(403);
     }
@@ -877,7 +840,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -910,7 +873,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .put("/api/restricted/session/" + added.toString())
+                .put("/api/restricted/sessions/" + added.toString())
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin2"))
@@ -944,7 +907,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -977,7 +940,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .put("/api/restricted/session/" + added.toString())
+                .put("/api/restricted/sessions/" + added.toString())
                 .then()
                 .statusCode(403);
     }
@@ -1009,7 +972,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .put("/api/restricted/session/1")
+                .put("/api/restricted/sessions/1")
                 .then()
                 .statusCode(404);
     }
@@ -1041,7 +1004,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .put("/api/restricted/session/1")
+                .put("/api/restricted/sessions/1")
                 .then()
                 .statusCode(403);
     }
@@ -1072,7 +1035,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .put("/api/restricted/session/1")
+                .put("/api/restricted/sessions/1")
                 .then()
                 .statusCode(403);
     }
@@ -1103,7 +1066,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -1114,7 +1077,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .header(getHeader())
-                .delete("/api/restricted/draft/" + added.toString())
+                .delete("/api/restricted/drafts/" + added.toString())
                 .then()
                 .statusCode(200);
 
@@ -1122,7 +1085,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/" + added.toString())
+                .get("/api/restricted/drafts/" + added.toString())
                 .then()
                 .statusCode(404);
     }
@@ -1132,7 +1095,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .header(getHeader())
-                .delete("/api/restricted/draft/1")
+                .delete("/api/restricted/drafts/1")
                 .then()
                 .statusCode(404);
     }
@@ -1163,7 +1126,7 @@ public class SpreadsheetTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/draft")
+                .post("/api/restricted/drafts")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -1174,7 +1137,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .header(getHeaderOtherAccount())
-                .delete("/api/restricted/draft/" + added.toString())
+                .delete("/api/restricted/drafts/" + added.toString())
                 .then()
                 .statusCode(403);
 
@@ -1182,7 +1145,7 @@ public class SpreadsheetTest {
                 .header(getHeader())
                 .contentType("application/json")
                 .when()
-                .get("/api/restricted/draft/" + added.toString())
+                .get("/api/restricted/drafts/" + added.toString())
                 .then()
                 .statusCode(200);
     }
@@ -1192,7 +1155,7 @@ public class SpreadsheetTest {
         given()
                 .contentType("application/json")
                 .header(getHeaderNotVerified())
-                .delete("/api/restricted/draft/1")
+                .delete("/api/restricted/drafts/1")
                 .then()
                 .statusCode(403);
     }
@@ -1201,7 +1164,7 @@ public class SpreadsheetTest {
     public void test39_deleteDraftNotAuthorized() {
         given()
                 .contentType("application/json")
-                .delete("/api/restricted/draft/1")
+                .delete("/api/restricted/drafts/1")
                 .then()
                 .statusCode(403);
     }

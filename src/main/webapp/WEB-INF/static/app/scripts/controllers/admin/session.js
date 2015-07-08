@@ -51,11 +51,13 @@ angular.module('CallForPaper')
 				'rowId': $stateParams.id
 			}, function(ratesTmp) {
 				$scope.rates = ratesTmp;
-				$scope.mean = $scope.rates.map(function(rateTmp) {
-					return rateTmp.rate;
-				}).reduce(function(x, y) {
-					return x + y;
-				}, 0) / ($scope.rates.length == 0 ? 1 : $scope.rates.length);
+				var votedCount = $scope.rates.reduce(function(x, y){
+					var i = y.rate !== 0 ? 1 : 0;
+					return i + x;
+				},0);
+				$scope.mean = $scope.rates.reduce(function(x, y) {
+					return y.rate + x;
+				}, 0) / (votedCount == 0 ? 1 : votedCount);
 			})
 		}
 		updateRates();
@@ -64,6 +66,10 @@ angular.module('CallForPaper')
 			rate: 0,
 			id: undefined
 		};
+
+		$scope.vote = {
+			noVote : false
+		}
 		/**
 		 * Obtain current user rate
 		 * @param  {long : rowId}
@@ -74,6 +80,9 @@ angular.module('CallForPaper')
 		}, function(rateTmp) {
 			if (rateTmp.id !== undefined) {
 				$scope.yourRate = rateTmp;
+				if($scope.yourRate.rate === 0) {
+					$scope.noVote = true;
+				}
 			}
 		})
 
@@ -105,6 +114,10 @@ angular.module('CallForPaper')
 			}
 		}
 
+		/**
+		 * Delete current session
+		 * @return {void}
+		 */
 		$scope.deleteSession = function() {
 			var modalInstance = $modal.open({
 				animation: true,
@@ -119,4 +132,26 @@ angular.module('CallForPaper')
 				// cancel
 			});
 		}
+
+		/**
+		 * Reset vote on checkbox true
+		 * @return {void}
+		 */
+		$scope.handleNoVote = function() {
+			if($scope.noVote === true) {
+				$scope.yourRate.rate = 0;
+			}
+		}
+
+		/**
+		 * Reset checkbox on vote
+		 * @return {void}
+		 */
+		$scope.$watch(function(){
+			return $scope.yourRate.rate;
+		},function(rate){
+			if($scope.yourRate.rate !== 0) {
+				$scope.noVote = false;
+			}
+		})
 	}])

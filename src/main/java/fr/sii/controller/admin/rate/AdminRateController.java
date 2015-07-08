@@ -14,7 +14,7 @@ import java.util.List;
  * Created by tmaugin on 24/04/2015.
  */
 @Controller
-@RequestMapping(value="api/admin/rate", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/admin/rates", produces = "application/json; charset=utf-8")
 public class AdminRateController {
 
     AdminRateService adminRateService;

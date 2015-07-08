@@ -1,6 +1,3 @@
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
 import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -90,41 +87,9 @@ public class SpreadsheetAdminTest {
                         .setApprovalPrompt("force")
                         .build();
         String url = flow.newAuthorizationUrl().setRedirectUri("urn:ietf:wg:oauth:2.0:oob").build();
-
-        WebClient webClient = new WebClient(BrowserVersion.CHROME);
-        webClient.getOptions().setCssEnabled(false);
-        webClient.getOptions().setThrowExceptionOnScriptError(false);
-        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-        webClient.getOptions().setPrintContentOnFailingStatusCode(false);
-
-        HtmlPage page = null;
-        try {
-            page = webClient.getPage(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HtmlSubmitInput signInButton = page.getElementByName("signIn");
-        HtmlTextInput userNameField = page.getElementByName("Email");
-        HtmlPasswordInput passwordField = page.getElementByName("Passwd");
-        userNameField.setValueAttribute(spreadsheetSettings.getLogin());
-        passwordField.setValueAttribute(spreadsheetSettings.getPassword());
-        HtmlPage allowAccessPage = null;
-        try {
-            allowAccessPage = signInButton.click();
-        } catch (IOException e) {
-        }
-        HtmlButton allowAccessButton = (HtmlButton)allowAccessPage.getElementById("submit_approve_access");
-        allowAccessButton.removeAttribute("disabled");
-        HtmlPage tokenPage = null;
-        try {
-            tokenPage = allowAccessButton.click();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HtmlTextInput tokenElement = (HtmlTextInput)tokenPage.getElementById("code");
-        String code = tokenElement.getText();
-        webClient.close();
-
+        System.out.println(url);
+        // TODO Prompt user code, instead go to printed url then replace the code bellow and comment the top of this function
+        String code = "";
         String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
 
         try {
@@ -146,7 +111,6 @@ public class SpreadsheetAdminTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Before
@@ -234,7 +198,7 @@ public class SpreadsheetAdminTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/admin/session")
+                .get("/api/admin/sessions")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
@@ -266,7 +230,7 @@ public class SpreadsheetAdminTest {
                         "\"hotelDate\" : \"13/11/1992\"\n" +
                         "}")
                 .when()
-                .post("/api/restricted/session")
+                .post("/api/restricted/sessions")
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"))
@@ -278,10 +242,53 @@ public class SpreadsheetAdminTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/admin/session/" + added.toString())
+                .get("/api/admin/sessions/" + added.toString())
                 .then()
                 .statusCode(200)
                 .body("name", Matchers.is("Maugin1"));
+    }
+
+    @Test
+    public void test3_deleteRow() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/sessions")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+        Long added = response.path("added");
+
+        test1_addRowPass();
+        given()
+                .contentType("application/json")
+                .when()
+                .delete("/api/admin/sessions/" + added.toString())
+                .then()
+                .statusCode(200);
     }
 
     @Test
@@ -289,7 +296,7 @@ public class SpreadsheetAdminTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/api/admin/session/1")
+                .get("/api/admin/sessions/1")
                 .then()
                 .statusCode(404);
     }

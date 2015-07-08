@@ -88,16 +88,17 @@ public class RowResponse extends RowSession {
         Double mean = 0D;
         if(adminRates != null)
         {
-            if(adminRates.size() > 0 )
+            int size = 0;
+            for(AdminRate adminRate : adminRates)
             {
-                for(AdminRate adminRate : adminRates)
-                {
+                if(adminRate.getRate() != 0) {
+                    size++;
                     mean+= adminRate.getRate();
                 }
-                return mean/ adminRates.size();
             }
-            else
-            {
+            if(size != 0) {
+                return mean/size;
+            } else {
                 return 0D;
             }
         }
