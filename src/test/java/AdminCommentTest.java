@@ -86,7 +86,7 @@ public class AdminCommentTest {
                         "\"rowId\" : \"1\"\n" +
                         "}")
                 .when()
-                .post("/api/admin/comment")
+                .post("/api/admin/comments")
                 .then()
                 .statusCode(200)
                 .body("comment", Matchers.is("Lorem ipsum"))
