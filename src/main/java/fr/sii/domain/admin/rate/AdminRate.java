@@ -26,7 +26,7 @@ public class AdminRate {
     private Long entityId;
 
     @Max(5)
-    @Min(1)
+    @Min(0)
     @NotNull
     private Integer rate;
 
