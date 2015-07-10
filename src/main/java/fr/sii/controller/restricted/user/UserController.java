@@ -65,6 +65,9 @@ public class UserController {
         map.put("company", p.getCompany());
         map.put("bio", p.getBio());
         map.put("social", p.getSocial());
+        map.put("twitter", p.getTwitter());
+        map.put("googlePlus", p.getGooglePlus());
+        map.put("github", p.getGithub());
         map.put("imageProfilKey", p.getImageProfilKey());
         map.put("socialProfilImageUrl", p.getSocialProfilImageUrl());
 

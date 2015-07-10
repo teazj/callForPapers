@@ -72,6 +72,15 @@ angular.module('CallForPaper')
 									case "social":
 										if (draft[key] !== null && draft[key] != "") $scope.formData.speaker.socialArray = draft[key].split(", ").map(function(value){ return {text : value}; });
 										break;
+									case "twitter":
+										if (draft[key] !== null) $scope.formData.speaker.twitter = draft[key];
+										break;
+									case "googlePlus":
+										if (draft[key] !== null) $scope.formData.speaker.googlePlus = draft[key];
+										break;
+									case "github":
+										if (draft[key] !== null) $scope.formData.speaker.github = draft[key];
+										break;
 									case "track":
 										if (draft[key] !== null) $scope.formData.session.track = draft[key];
 										break;
@@ -126,6 +135,15 @@ angular.module('CallForPaper')
 												text: value
 											};
 										});
+										break;
+									case "twitter":
+										if (profile[key] !== null) $scope.formData.speaker.twitter = profile[key];
+										break;
+									case "googlePlus":
+										if (profile[key] !== null) $scope.formData.speaker.googlePlus = profile[key];
+										break;
+									case "github":
+										if (profile[key] !== null) $scope.formData.speaker.github = profile[key];
 										break;
 								}
 							}

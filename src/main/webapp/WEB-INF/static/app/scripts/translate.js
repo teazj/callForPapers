@@ -78,7 +78,10 @@ angular.module('CallForPaper')
         "company": "Entreprise :",
         "bio": "Bio * :",
         "hintBio": "Décrivez vous en quelques mots. Cette description sera utilisée sur le site web.",
-        "social": "URL (Google, Github, etc) :",
+        "social": "Autres URLs (Blog, Linkedin, ...) :",
+        "twitter": "Profil Twitter :",
+        "googlePlus": "Profil Google Plus :",
+        "github": "Profil Github :",
         "hintSocial": "Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog."
       },
       "step2": {
@@ -296,7 +299,10 @@ angular.module('CallForPaper')
         "company": "Company:",
         "bio": "Bio *:",
         "hintBio": "Describe yourself with a few words. This description will be use to fill the website.",
-        "social": "URL (Google, Github, etc):",
+        "social": "Other URLs (Blog, Linkedin, ...) :",
+        "twitter": "Twitter Profil :",
+        "googlePlus": "Google Plus Profil :",
+        "github": "Github Profil :",
         "hintSocial": "Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog."
       },
       "step2": {
