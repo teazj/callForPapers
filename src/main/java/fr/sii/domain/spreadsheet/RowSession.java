@@ -52,7 +52,7 @@ public class RowSession implements Row{
     @JsonIgnore
     private Long userId;
 
-    public RowSession(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String type, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
+    public RowSession(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String type, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added, boolean draft, Long userId) {
         this.email = email;
         this.name = name;
         this.firstname = firstname;
@@ -73,7 +73,8 @@ public class RowSession implements Row{
         this.hotel = hotel;
         this.hotelDate = hotelDate;
         this.added = added;
-        this.draft = false;
+        this.draft = draft;
+        this.userId = userId;
     }
 
     public RowSession()

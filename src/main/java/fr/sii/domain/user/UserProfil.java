@@ -4,13 +4,15 @@ package fr.sii.domain.user;
  * Created by tmaugin on 05/06/2015.
  * SII
  */
-public class UserProfile {
+public class UserProfil {
     private String name;
     private String firstname;
     private String company;
     private String phone;
     private String bio;
     private String social;
+    private String imageProfilKey;
+    private String socialProfilImageUrl;
 
     public String getName() {
         return name;
@@ -58,5 +60,21 @@ public class UserProfile {
 
     public void setSocial(String social) {
         this.social = social;
+    }
+
+    public String getImageProfilKey() {
+        return imageProfilKey;
+    }
+
+    public void setImageProfilKey(String imageProfileKey) {
+        this.imageProfilKey = imageProfileKey;
+    }
+
+    public String getSocialProfilImageUrl() {
+        return socialProfilImageUrl;
+    }
+
+    public void setSocialProfilImageUrl(String socialProfilImageUrl) {
+        this.socialProfilImageUrl = socialProfilImageUrl;
     }
 }

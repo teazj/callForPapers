@@ -508,3 +508,21 @@ body,
     border: 1px solid #ddd;
 }
 
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    height: 100px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+}
+.dragover {
+    border: 5px dashed blue;
+}
+
+.avatar {
+  max-width: 180px;
+  max-height: 180px;
+  padding: 7px;
+  box-shadow: 4px 4px 12px 0px rgba(0, 0, 0, 0.33);
+}

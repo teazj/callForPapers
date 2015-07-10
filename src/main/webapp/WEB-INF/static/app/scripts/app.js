@@ -25,7 +25,8 @@ angular.module('CallForPaper', [
     'angular-loading-bar',
     'ngFx',
     'offClick',
-    'konami'
+    'konami',
+    'ngFileUpload'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
@@ -146,10 +147,10 @@ angular.module('CallForPaper', [
           authenticated: AuthServiceProvider.$get().authenticated
         }
       })
-      .state('app.profile', {
-        url: '/profile',
-        templateUrl: 'views/restricted/profile.html',
-        controller: 'ProfileCtrl',
+      .state('app.profil', {
+        url: '/profil',
+        templateUrl: 'views/restricted/profil.html',
+        controller: 'ProfilCtrl',
         resolve: {
           authenticated: AuthServiceProvider.$get().authenticated
         }

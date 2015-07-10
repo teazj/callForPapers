@@ -11,7 +11,7 @@ angular.module('CallForPaper')
         "login": "Se connecter",
         "logout": "Se déconnecter",
         "dashboard": "Dashboard",
-        "profile" : "Profile"
+        "profil" : "Profil"
       },
       "dashboard" :
       {
@@ -26,11 +26,15 @@ angular.module('CallForPaper')
         "verification" : "Vérification",
         "verificationNeeded" : "Un e-mail a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
       },
-      "profile" :
+      "profil" :
       {
         "save" : "Sauvegarder",
-        "success" : "Profile sauvegardé",
+        "success" : "Profil sauvegardé",
         "error" : "Erreur lors de l'enregistrement",
+        "avatar" : "Image de profil :",
+        "hintAvatar" : "Choisissez une image qui sera mise sur le site web, de préférence d'une taille d'au moins 360x360 (5Mo maximum)",
+        "dropImage" : "Déposer l'image ici",
+        "selectImage" : "Parcourir"
       },
       "login" : {
         "email" : "Email",
@@ -224,7 +228,7 @@ angular.module('CallForPaper')
         "login": "Login",
         "logout": "Logout",
         "dashboard": "Dashboard",
-        "profile": "Profile"
+        "profil": "Profil"
       },
       "dashboard" :
       {
@@ -239,11 +243,16 @@ angular.module('CallForPaper')
         "verification" : "Verification",
         "verificationNeeded" : "An email has been sent to your address, click the link in it to confirm your account.",
       },
-      "profile" :
+      "profil" :
       {
         "save" : "Save",
-        "success" : "Profile saved",
-        "error" : "Error saving the profile",
+        "success" : "Profil saved",
+        "error" : "Error saving the profil",
+        "avatar" : "Profil picture :",
+        "hintAvatar" : "Choisissez une photo de profil qui sera mise sur le site web, de préférence d'une taille d'au moins 360x360 (5Mo maximum)",
+        "hintAvatar" : "Select a profil picture that will be used on the website, at least 360 wide and tall (5MB max)",
+        "dropImage" : "Drop image here",
+        "selectImage" : "Browse"
       },
       "login" : {
         "email" : "Email",

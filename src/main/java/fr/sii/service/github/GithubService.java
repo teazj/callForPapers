@@ -97,4 +97,42 @@ public class GithubService {
         }
         return id;
     }
+
+    /**
+     * Get account avatar url using access token and Github API
+     * @param access_token
+     * @return
+     * @throws IOException
+     * @throws CustomException
+     */
+    public String getAvatarUrl(String access_token) throws IOException, CustomException {
+        String url = "https://api.github.com/user";
+        URLConnection connection = new URL(url).openConnection();
+        connection.setRequestProperty("Authorization", "Bearer " + access_token);
+        connection.setRequestProperty("User-Agent", "Call For Paper");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                connection.getInputStream()));
+        String jsonString = "";
+
+        String inputLine;
+        while ((inputLine = in.readLine()) != null)
+        {
+            jsonString+=inputLine;
+        }
+        in.close();
+        jsonString = jsonString.replaceAll("\r", "").replaceAll("\n", "");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode responseObject = mapper.readTree(jsonString);
+
+        String avatar_url = "";
+        if(responseObject.get("message") != null)
+        {
+            throw new CustomException(responseObject.get("message").asText());
+        }
+        if(responseObject.get("message") == null)
+        {
+            avatar_url = responseObject.get("avatar_url").asText();
+        }
+        return avatar_url;
+    }
 }
