@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService) {
 		$scope.session = null;
+		$scope.adminEmail = null;
 		AdminSession.get({
 			id: $stateParams.id
 		}).$promise.then(function(sessionTmp) {
@@ -23,6 +24,10 @@ angular.module('CallForPaper')
 				$scope.session.profilImageUrl = imgUriTmp.uri;
 			});
 		});
+
+		AuthService.getCurrentUser().then(function(userInfo){
+			$scope.adminEmail = userInfo.email;
+		})
 		/**
 		 * get comments of the session
 		 * @return {[AdminComment]}
@@ -57,26 +62,31 @@ angular.module('CallForPaper')
 			AdminRate.getByRowId({
 				'rowId': $stateParams.id
 			}, function(ratesTmp) {
-				$scope.rates = ratesTmp;
-				var votedCount = $scope.rates.reduce(function(x, y){
+				var votedCount = ratesTmp.reduce(function(x, y){
 					var i = y.rate !== 0 ? 1 : 0;
 					return i + x;
 				},0);
-				$scope.mean = $scope.rates.reduce(function(x, y) {
+				$scope.mean = ratesTmp.reduce(function(x, y) {
 					return y.rate + x;
 				}, 0) / (votedCount == 0 ? 1 : votedCount);
+
+				AuthService.getCurrentUser().then(function(userInfo){
+					$scope.rates = ratesTmp.filter(function(element){
+						return element.user.email !== userInfo.email;
+					})
+				}, function(err){
+					$scope.rates = ratesTmp;
+				})
 			})
 		}
 		updateRates();
 
 		$scope.yourRate = {
 			rate: 0,
+			hate: false,
+			love: false,
 			id: undefined
 		};
-
-		$scope.vote = {
-			noVote : false
-		}
 		/**
 		 * Obtain current user rate
 		 * @param  {long : rowId}
@@ -90,6 +100,12 @@ angular.module('CallForPaper')
 				if($scope.yourRate.rate === 0) {
 					$scope.noVote = true;
 				}
+				if($scope.yourRate.hate || $scope.yourRate.love) $scope.changed = true;
+				$scope.hate = $scope.yourRate.hate;
+				$scope.love = $scope.yourRate.love;
+				console.log($scope.hate);
+				console.log($scope.love);
+				console.log($scope.yourRate);
 			}
 		})
 
@@ -102,6 +118,8 @@ angular.module('CallForPaper')
 			if ($scope.yourRate.id === undefined) {
 				AdminRate.save({
 					'rate': $scope.yourRate.rate,
+					'hate': $scope.yourRate.hate,
+					'love': $scope.yourRate.love,
 					'rowId': $stateParams.id
 				}, function(c) {
 					$scope.yourRate.id = c.id;
@@ -113,6 +131,8 @@ angular.module('CallForPaper')
 					'id': $scope.yourRate.id
 				}, {
 					'rate': $scope.yourRate.rate,
+					'hate': $scope.yourRate.hate,
+					'love': $scope.yourRate.love,
 					'rowId': $stateParams.id
 				}, function(c) {
 					$scope.rateButtonDisabled = false;
@@ -140,13 +160,64 @@ angular.module('CallForPaper')
 			});
 		}
 
+		$scope.changed = false;
 		/**
-		 * Reset vote on checkbox true
+		 * Reset all other checkbox and vote
 		 * @return {void}
 		 */
 		$scope.handleNoVote = function() {
+			$scope.changed = true;
 			if($scope.noVote === true) {
 				$scope.yourRate.rate = 0;
+				$scope.yourRate.hate = false;
+				$scope.yourRate.love = false;
+				$scope.hate = false;
+				$scope.love = false;
+			} else {
+				$scope.yourRate.rate = 0;
+				$scope.noVote = false
+				$scope.hate = false;
+				$scope.love = false;
+			}
+		}
+
+		/**
+		 * Reset all other checkbox and vote 1
+		 * @return {void}
+		 */
+		$scope.handleHate = function() {
+			$scope.changed = true;
+			if($scope.hate === true) {
+				$scope.yourRate.rate = 1;
+				$scope.yourRate.hate = true;
+				$scope.yourRate.love = false;
+				$scope.love = false;
+				$scope.noVote = false
+			} else {
+				$scope.yourRate.rate = 0;
+				$scope.noVote = false
+				$scope.hate = false;
+				$scope.love = false;
+			}
+		}
+
+		/**
+		 * Reset all other checkbox and vote 4
+		 * @return {void}
+		 */
+		$scope.handleLove = function() {
+			$scope.changed = true;
+			if($scope.love === true) {
+				$scope.yourRate.rate = 5;
+				$scope.yourRate.hate = false;
+				$scope.yourRate.love = true;
+				$scope.hate = false;
+				$scope.noVote = false
+			} else {
+				$scope.yourRate.rate = 0;
+				$scope.noVote = false
+				$scope.hate = false;
+				$scope.love = false;
 			}
 		}
 
@@ -157,8 +228,14 @@ angular.module('CallForPaper')
 		$scope.$watch(function(){
 			return $scope.yourRate.rate;
 		},function(rate){
-			if($scope.yourRate.rate !== 0) {
+			if($scope.yourRate.rate !== 0 && !$scope.changed) {
+				$scope.changed = false;
 				$scope.noVote = false;
+				$scope.yourRate.hate = false;
+				$scope.hate = false;
+				$scope.yourRate.love = false;
+				$scope.love = false;
 			}
+			$scope.changed = false;
 		})
 	}])

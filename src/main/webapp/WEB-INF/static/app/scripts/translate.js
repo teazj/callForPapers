@@ -177,7 +177,9 @@ angular.module('CallForPaper')
         "lastModification": "Dernière activité",
         "never": "Jamais",
         "noVote": "Sans avis",
-        "none": "Aucune"
+        "none": "Aucune",
+        "hate": "Rejeté",
+        "love": "Coup de coeur"
       },
       "config": {
         "logout": "Se déconnecter",
@@ -399,7 +401,9 @@ angular.module('CallForPaper')
         "lastModification": "Last activity",
         "never": "Never",
         "noVote": "Without opinion",
-        "none": "None"
+        "none": "None",
+        "hate": "Rejected",
+        "love": "Favorite"
       },
       "config": {
         "login": "Login",

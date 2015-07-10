@@ -30,6 +30,9 @@ public class AdminRate {
     @NotNull
     private Integer rate;
 
+    private boolean love;
+    private boolean hate;
+
     private Date added;
 
     @NotNull
@@ -99,5 +102,21 @@ public class AdminRate {
 
     public void setRowId(Long rowId) {
         this.rowId = rowId;
+    }
+
+    public boolean isLove() {
+        return love;
+    }
+
+    public void setLove(boolean love) {
+        this.love = love;
+    }
+
+    public boolean isHate() {
+        return hate;
+    }
+
+    public void setHate(boolean hate) {
+        this.hate = hate;
     }
 }
