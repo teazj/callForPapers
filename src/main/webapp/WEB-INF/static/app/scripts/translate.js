@@ -32,7 +32,7 @@ angular.module('CallForPaper')
         "success" : "Profil sauvegardé",
         "error" : "Erreur lors de l'enregistrement",
         "avatar" : "Image de profil :",
-        "hintAvatar" : "Choisissez une image qui sera mise sur le site web, de préférence d'une taille d'au moins 360x360 (5Mo maximum)",
+        "hintAvatar" : "Choisissez une photo pour le site web (taille 360x360 et 5Mo maximum)",
         "dropImage" : "Déposer l'image ici",
         "selectImage" : "Parcourir"
       },
@@ -70,7 +70,7 @@ angular.module('CallForPaper')
         "notVerified" : "Erreur de vérification"
       },
       "step1": {
-        "warning": "Attention les informations enregistrées lors de cette étape modifierons votre profil pour tous les talks déjà proposés.",
+        "warning": "Attention les informations enregistrées lors de cette étape modifieront votre profil pour tous les talks déjà proposés.",
         "email": "Adresse email * :",
         "name": "Nom * :",
         "firstname": "Prénom * :",
@@ -177,7 +177,9 @@ angular.module('CallForPaper')
         "lastModification": "Dernière activité",
         "never": "Jamais",
         "noVote": "Sans avis",
-        "none": "Aucune"
+        "none": "Aucune",
+        "hate": "Rejeté",
+        "love": "Coup de coeur"
       },
       "config": {
         "logout": "Se déconnecter",
@@ -253,8 +255,7 @@ angular.module('CallForPaper')
         "success" : "Profil saved",
         "error" : "Error saving the profil",
         "avatar" : "Profil picture :",
-        "hintAvatar" : "Choisissez une photo de profil qui sera mise sur le site web, de préférence d'une taille d'au moins 360x360 (5Mo maximum)",
-        "hintAvatar" : "Select a profil picture that will be used on the website, at least 360 wide and tall (5MB max)",
+        "hintAvatar" : "Select a picture for the website (least 360x360 and 5MB max)",
         "dropImage" : "Drop image here",
         "selectImage" : "Browse"
       },
@@ -400,7 +401,9 @@ angular.module('CallForPaper')
         "lastModification": "Last activity",
         "never": "Never",
         "noVote": "Without opinion",
-        "none": "None"
+        "none": "None",
+        "hate": "Rejected",
+        "love": "Favorite"
       },
       "config": {
         "login": "Login",

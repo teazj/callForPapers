@@ -33,11 +33,11 @@ public class AdminUserController {
     public AdminUserInfo getCurrentUser( HttpServletRequest req, HttpServletResponse resp){
         com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
         if (req.getUserPrincipal() != null) {
-            return new AdminUserInfo(userService.createLogoutURL("/"), true, userService.isUserAdmin(), userService.getCurrentUser().getEmail().equals(spreadsheetSettings.getLogin()));
+            return new AdminUserInfo(userService.createLogoutURL("/"), true, userService.isUserAdmin(), userService.getCurrentUser().getEmail().equals(spreadsheetSettings.getLogin()), userService.getCurrentUser().getEmail());
         }
         else
         {
-            return new AdminUserInfo(userService.createLogoutURL("/"), false, false, false);
+            return new AdminUserInfo(userService.createLogoutURL("/"), false, false, false, "");
         }
     }
 
