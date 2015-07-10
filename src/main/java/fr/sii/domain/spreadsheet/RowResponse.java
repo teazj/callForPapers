@@ -37,7 +37,9 @@ public class RowResponse extends RowSession {
                 row.getTravelFrom(),
                 row.getHotel(),
                 row.getHotelDate(),
-                new Date(row.getAdded())
+                new Date(row.getAdded()),
+                row.getDraft(),
+                row.getUserId()
         );
         this.adminRates = adminRates;
         this.adminComments = adminComments;
@@ -66,7 +68,9 @@ public class RowResponse extends RowSession {
                 row.getTravelFrom(),
                 row.getHotel(),
                 row.getHotelDate(),
-                new Date(row.getAdded())
+                new Date(row.getAdded()),
+                row.getDraft(),
+                row.getUserId()
         );
         this.adminRates = adminRates;
         this.adminComments = adminComments;

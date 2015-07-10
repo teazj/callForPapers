@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage) {
 		$scope.session = null;
 		AdminSession.get({
 			id: $stateParams.id
@@ -15,6 +15,10 @@ angular.module('CallForPaper')
 				$scope.session.socialLinks = links;
 			}
 			$scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
+
+			CommonProfilImage.get({id : $scope.session.userId}).$promise.then(function(imgUriTmp) {
+				$scope.session.profilImageUrl = imgUriTmp.uri;
+			});
 		});
 		/**
 		 * get comments of the session

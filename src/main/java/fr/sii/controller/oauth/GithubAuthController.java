@@ -85,7 +85,8 @@ public class GithubAuthController {
 
             String email = githubService.getEmail(response.getAccessToken());
             String userId = githubService.getUserId(response.getAccessToken());
-            token = authService.processUser(res, req, User.Provider.GITHUB, userId, email);
+            String socialProfilImageUrl = githubService.getAvatarUrl(response.getAccessToken());
+            token = authService.processUser(res, req, User.Provider.GITHUB, userId, email, socialProfilImageUrl);
 
         } catch (TokenResponseException e) {
             e.printStackTrace();

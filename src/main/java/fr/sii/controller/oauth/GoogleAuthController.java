@@ -89,9 +89,9 @@ public class GoogleAuthController {
             Person profile = service.people().get("me").execute();
 
             String email = profile.getEmails().get(0).getValue();
+            String socialProfilImageUrl = profile.getImage().getUrl().replace("z=50", "z=360");
             String userId = profile.getId();
-            token = authService.processUser(res, req, User.Provider.GOOGLE, userId, email);
-
+            token = authService.processUser(res, req, User.Provider.GOOGLE, userId, email, socialProfilImageUrl);
         } catch (TokenResponseException e) {
             if (e.getDetails() != null) {
                 System.err.println("Error: " + e.getDetails().getError());
