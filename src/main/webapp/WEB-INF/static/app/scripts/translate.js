@@ -70,7 +70,7 @@ angular.module('CallForPaper')
         "notVerified" : "Erreur de vérification"
       },
       "step1": {
-        "warning": "Attention les informations enregistrées lors de cette étape modifierons votre profil pour tous les talks déjà proposés.",
+        "warning": "Attention les informations enregistrées lors de cette étape modifieront votre profil pour tous les talks déjà proposés.",
         "email": "Adresse email * :",
         "name": "Nom * :",
         "firstname": "Prénom * :",
