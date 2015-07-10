@@ -28,4 +28,19 @@ angular.module('CallForPaper')
 				$state.go('app.form.step2');
 			}
 		}
+
+		/**
+		 * remove selected img, then current img, then social pimg
+		 * @return {[type]} [description]
+		 */
+		$scope.removeImage = function() {
+			if ($scope.$parent.formData.speaker.files && $scope.$parent.formData.speaker.files.length) {
+				$scope.$parent.formData.speaker.files = [];
+			} else if ($scope.$parent.formData.speaker.imageProfilKey) {
+				$scope.$parent.formData.speaker.imageProfilKey = null;
+			} else if ($scope.$parent.formData.speaker.socialProfilImageUrl) {
+				$scope.$parent.formData.speaker.socialProfilImageUrl = null;
+			}
+		}
+
 	}]);

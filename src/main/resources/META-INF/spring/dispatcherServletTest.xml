@@ -56,6 +56,7 @@
 	</bean>
 	<bean id="userController" class="fr.sii.controller.restricted.user.UserController">
 		<property name="userService" ref="userService"></property>
+		<property name="googleService" ref="spreadsheetService"></property>
 	</bean>
 	<bean id="profilImageController" class="fr.sii.controller.restricted.user.ProfilImagController">
 	</bean>

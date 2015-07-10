@@ -1,4 +1,7 @@
 <div class="col-lg-offset-2 col-lg-8">
+    <div>
+        <h4 class="text-center"><span style="color: #E35050"class="mdi-alert-warning"></span>&nbsp;{{'step1.warning' | translate}}</h4>
+    </div>
     <div class="form-group" bs-has verify="verify" ng-init="formData.steps.currentStep = 1">
         <label class="control-label" for="email" >{{'step1.email' | translate}}</label>
         <div>
@@ -18,6 +21,46 @@
         <label class="control-label" for="firstname">{{'step1.firstname' | translate}}</label>
         <div>
             <input required type="text" class="form-control" id="firstname" name="firstname" ng-model="formData.speaker.firstname">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{'profil.avatar' | translate}}</label>
+        <div>{{'profil.hintAvatar' | translate}}</div>
+        <div>
+            <div class="col-xs-12 col-md-6">
+                <span ng-repeat="f in formData.speaker.files">
+                    <span>
+                        <img alt="avatar" class="avatar" ngf-src="f" ngf-default-src="'/lib/images/placeholder.png'">
+                    </span>
+                </span>
+                <span>
+                    <img ng-if="formData.speaker.imageProfilKey && !(formData.speaker.files && formData.speaker.files.length > 0)" class="avatar" ng-src="/api/profil/image/{{formData.speaker.imageProfilKey}}" alt="avatar">
+                    <img ng-if="!formData.speaker.socialProfilImageUrl && !formData.speaker.imageProfilKey && !(formData.speaker.files && formData.speaker.files.length > 0)" class="avatar" ng-src="/lib/images/placeholder.png" alt="avatar">
+                    <img ng-if="formData.speaker.socialProfilImageUrl && !(formData.speaker.imageProfilKey || (formData.speaker.files && formData.speaker.files.length > 0))" class="avatar" ng-src="{{formData.speaker.socialProfilImageUrl}}" alt="avatar">
+                </span>
+                <span style="vertical-align: top;" class="mdi-action-delete" ng-if="formData.speaker.socialProfilImageUrl || formData.speaker.imageProfilKey || (formData.speaker.files && formData.speaker.files.length > 0)" ng-click="removeImage()"></span>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <div ngf-drop ng-model="formData.speaker.files" class="drop-box" 
+                ngf-drag-over-class="dragover"
+                ngf-multiple="false"
+                ngf-allow-dir="false"
+                ngf-max-size='5000000'
+                ngf-accept="'image/*'">
+                    {{'profil.dropImage' | translate}}
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-6">
+                    <button class="btn btn-block btn-info"
+                    ng-model="formData.speaker.files"
+                    ngf-multiple="false"
+                    ngf-allow-dir="false"
+                    ngf-max-size='5000000'
+                    ngf-accept="'image/*'"
+                    ngf-select
+                    >{{'profil.selectImage' | translate}}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="form-group" bs-has verify="verify">

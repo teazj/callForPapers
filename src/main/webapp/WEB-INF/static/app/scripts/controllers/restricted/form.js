@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', 'RestrictedDraft', 'RestrictedUser', '$state', '$stateParams', function($scope, $filter, $translate, RestrictedSession, RestrictedDraft, RestrictedUser, $state, $stateParams) {
+	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', 'RestrictedDraft', 'RestrictedUser', '$state', '$stateParams', '$q', 'RestrictedProfilImage', 'Upload', '$auth', function($scope, $filter, $translate, RestrictedSession, RestrictedDraft, RestrictedUser, $state, $stateParams, $q, RestrictedProfilImage, Upload, $auth) {
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
@@ -96,6 +96,25 @@ angular.module('CallForPaper')
 								}
 							}
 						}
+
+						RestrictedUser.query(function(profil) {
+							if (profil !== undefined) {
+								for (var key in profil) {
+									if (profil.hasOwnProperty(key)) {
+										switch (key) {
+											
+											case "imageProfilKey":
+												if (profil[key] !== undefined) $scope.formData.speaker.imageProfilKey = profil[key];
+												break;
+											case "socialProfilImageUrl":
+												if (profil[key] !== undefined) $scope.formData.speaker.socialProfilImageUrl = profil[key];
+												break;
+										}
+									}
+								}
+							}
+						})
+
 					}
 					else
 					{
@@ -106,44 +125,50 @@ angular.module('CallForPaper')
 			}
 			else
 			{
-				RestrictedUser.query(function(profile) {
-					if (profile !== undefined) {
-						for (var key in profile) {
-							if (profile.hasOwnProperty(key)) {
+				RestrictedUser.query(function(profil) {
+					if (profil !== undefined) {
+						for (var key in profil) {
+							if (profil.hasOwnProperty(key)) {
 								switch (key) {
 									case "bio":
-										if (profile[key] !== null) $scope.formData.speaker.bio = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.bio = profil[key];
 										break;
 									case "company":
-										if (profile[key] !== null) $scope.formData.speaker.company = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.company = profil[key];
 										break;
 									case "email":
-										if (profile[key] !== null) $scope.formData.speaker.email = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.email = profil[key];
 										break;
 									case "firstname":
-										if (profile[key] !== null) $scope.formData.speaker.firstname = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.firstname = profil[key];
 										break;
 									case "name":
-										if (profile[key] !== null) $scope.formData.speaker.name = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.name = profil[key];
 										break;
 									case "phone":
-										if (profile[key] !== null) $scope.formData.speaker.phone = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.phone = profil[key];
+										break;
+									case "imageProfilKey":
+										if (profil[key] !== undefined) $scope.formData.speaker.imageProfilKey = profil[key];
+										break;
+									case "socialProfilImageUrl":
+										if (profil[key] !== undefined) $scope.formData.speaker.socialProfilImageUrl = profil[key];
 										break;
 									case "social":
-										if (profile[key] !== null && profile[key] != "") $scope.formData.speaker.socialArray = profile[key].split(", ").map(function(value) {
+										if (profil[key] !== null && profil[key] != "") $scope.formData.speaker.socialArray = profil[key].split(", ").map(function(value) {
 											return {
 												text: value
 											};
 										});
 										break;
 									case "twitter":
-										if (profile[key] !== null) $scope.formData.speaker.twitter = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.twitter = profil[key];
 										break;
 									case "googlePlus":
-										if (profile[key] !== null) $scope.formData.speaker.googlePlus = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.googlePlus = profil[key];
 										break;
 									case "github":
-										if (profile[key] !== null) $scope.formData.speaker.github = profile[key];
+										if (profil[key] !== null) $scope.formData.speaker.github = profil[key];
 										break;
 								}
 							}
@@ -153,6 +178,55 @@ angular.module('CallForPaper')
 			}
 		}
 		parseRow(id);
+
+		/**
+		 * upload img then call update profil
+		 */
+		var upload = function() {
+			var deferred = $q.defer();
+			if ($scope.formData.speaker.files && $scope.formData.speaker.files.length) {
+				// put
+				RestrictedProfilImage.getUploadUri().$promise.then(function(respUrl) {
+					var url = respUrl.uri;
+					for (var i = 0; i < $scope.formData.speaker.files.length; i++) {
+						var file = $scope.formData.speaker.files[i];
+						Upload.upload({
+							url: url,
+							file: file,
+							fileName: 'profil-' + $auth.getPayload().sub,
+							sendFieldsAs: "form"
+						}).progress(function(evt) {
+							var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+							deferred.notify(progressPercentage);
+						}).success(function(data, status, headers, config) {
+							deferred.resolve(data);
+						}).error(function(data, status, headers, config) {
+							deferred.reject(status);
+						});
+					}
+				}, function(err) {
+					deferred.reject(err);
+				})
+			} else {
+				deferred.resolve({
+					key: $scope.formData.speaker.imageProfilKey
+				});
+			}
+			return deferred.promise;
+		};
+
+		var updateProfile = function(profilImageKey) {
+			var deferred = $q.defer();
+			// put
+			$scope.formData.speaker.imageProfilKey = profilImageKey.key;
+			RestrictedUser.update({}, $scope.formData.speaker, function() {
+				deferred.resolve();
+			}, function(error) {
+				deferred.reject(error);
+			});
+			return deferred.promise;
+		}
+
 		
 		/**
 		 * Send the form to the server
@@ -166,27 +240,38 @@ angular.module('CallForPaper')
 			angular.extend(model, $scope.formData.speaker);
 			angular.extend(model, $scope.formData.session);
 
-			if (id !== "") {
-				// put
-				RestrictedSession.update({id : id}, model).$promise.then(function(success) {
-					$scope.formData.sending = false;
-					$state.go('app.form.result');
-				}, function(error) {
+			upload().then(function(profilImageKey){
+				updateProfile(profilImageKey).then(function(){
+					if (id !== "") {
+						// put
+						RestrictedSession.update({id : id}, model).$promise.then(function(success) {
+							$scope.formData.sending = false;
+							$state.go('app.form.result');
+						}, function(error) {
+							$scope.formData.sending = false;
+							$scope.sendError = true;
+						});
+					}
+					else
+					{
+						// save
+						RestrictedSession.save(model).$promise.then(function(success) {
+							$scope.formData.sending = false;
+							$state.go('app.form.result');
+						}, function(error) {
+							$scope.formData.sending = false;
+							$scope.sendError = true;
+						});
+					}
+
+				}, function(){
 					$scope.formData.sending = false;
 					$scope.sendError = true;
-				});
-			}
-			else
-			{
-				// save
-				RestrictedSession.save(model).$promise.then(function(success) {
-					$scope.formData.sending = false;
-					$state.go('app.form.result');
-				}, function(error) {
-					$scope.formData.sending = false;
-					$scope.sendError = true;
-				});
-			}
+				})
+			},function(err){
+				$scope.formData.sending = false;
+				$scope.sendError = true;
+			})
 		};
 
 		/**

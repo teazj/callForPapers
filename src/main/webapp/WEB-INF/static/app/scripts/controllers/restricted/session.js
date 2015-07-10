@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', function($scope, $stateParams, $filter, RestrictedSession) {
+	.controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage) {
 		$scope.session = null;
 		RestrictedSession.get({
 			id: $stateParams.id
@@ -18,5 +18,9 @@ angular.module('CallForPaper')
 			if(sessionTmp.googlePlus !== null) $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
 			if(sessionTmp.github !== null) $scope.session.github = $filter('createLinks')(sessionTmp.github);
 			$scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
+
+			CommonProfilImage.get({id : $scope.session.userId}).$promise.then(function(imgUriTmp) {
+				$scope.session.profilImageUrl = imgUriTmp.uri;
+			});
 		});
 	}]);

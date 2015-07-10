@@ -71,6 +71,7 @@ public class SessionController {
         row.setAdded(new Date());
         row.setUserid(claimsSet.getSubject());
 
+        googleService.updateProfilSessions(row, row.getUserId());
         Row savedRow = googleService.addRow(row);
 
         HashMap<String, String> map = new HashMap<String, String>();
@@ -122,6 +123,7 @@ public class SessionController {
         row.setAdded(new Date());
         row.setUserid(claimsSet.getSubject());
 
+        googleService.updateProfilSessions(row, row.getUserId());
         Row savedRow = googleService.putRowDraftToSession(row, row.getUserId(), Long.parseLong(added));
 
         HashMap<String, String> map = new HashMap<String, String>();

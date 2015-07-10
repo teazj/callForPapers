@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.domain.user.User;
 import fr.sii.domain.user.UserProfil;
 import fr.sii.service.auth.AuthUtils;
+import fr.sii.service.spreadsheet.SpreadsheetService;
 import fr.sii.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +39,13 @@ public class UserController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
+    private SpreadsheetService googleService;
+
+    public void setGoogleService(SpreadsheetService googleService) {
+        this.googleService = googleService;
+    }
+
 
     @RequestMapping(value="/user", method= RequestMethod.GET)
     @ResponseBody
@@ -76,7 +86,7 @@ public class UserController {
 
     @RequestMapping(value="/user", method= RequestMethod.PUT)
     @ResponseBody
-    public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, JsonProcessingException {
+    public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException, EntityNotFoundException, ServiceException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -106,7 +116,8 @@ public class UserController {
         ObjectMapper m = new ObjectMapper();
         String profilString = m.writeValueAsString(profil);
         u.setProfile(profilString);
-        userService.put(u.getEntityId(),u);
+        userService.put(u.getEntityId(), u);
+        googleService.updateProfilSessions(profil, Long.parseLong(claimsSet.getSubject()));
         return profil;
     }
 }
