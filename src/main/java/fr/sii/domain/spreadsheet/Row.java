@@ -10,7 +10,7 @@ import java.util.List;
 public interface Row {
 
     public static final List<String> fields = Arrays.asList(
-            "email","name","firstname","phone","company","bio","social","sessionName","description","references","difficulty","type","track","coSpeaker","financial","travel","travelFrom","hotel","hotelDate","added","draft","userId"
+            "email","name","firstname","phone","company","bio","social","sessionName","description","references","difficulty","type","track","coSpeaker","financial","travel","travelFrom","hotel","hotelDate","added","draft","userId","twitter", "googlePlus","github"
     );
 
     // Needed for automatic spreadsheet creation
@@ -21,6 +21,9 @@ public interface Row {
     String company = null;
     String bio = null;
     String social = null;
+    String twitter = null;
+    String googlePlus = null;
+    String github = null;
     String sessionName = null;
     String description = null;
     String references = null;
@@ -64,6 +67,20 @@ public interface Row {
    String getSocial();
 
    void setSocial(String social);
+
+   String getTwitter();
+
+   void setTwitter(String social);
+
+   String getGooglePlus();
+
+   void setGooglePlus(String social);
+
+   void setGoogleplus(String social);
+
+   String getGithub();
+
+   void setGithub(String social);
 
    String getSessionName();
 

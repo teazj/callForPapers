@@ -5,6 +5,7 @@ import com.google.gdata.util.ServiceException;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
+import fr.sii.domain.user.UserProfil;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,4 +41,8 @@ public interface SpreadsheetRepository {
     Row putRowDraft(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException;
 
     Row putRowDraftToSession(Row rowToPut, Long userId, Long added) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException;
+
+    void updateProfilSessions(Row rowContainingProfil, Long userId) throws EntityNotFoundException, ServiceException, IOException;
+
+    void updateProfilSessions(UserProfil userProfil, Long userId) throws ServiceException, IOException, EntityNotFoundException;
 }

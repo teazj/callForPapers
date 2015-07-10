@@ -19,6 +19,9 @@ public class RowDraft implements Row {
     private String company;
     private String bio;
     private String social;
+    private String twitter;
+    private String googlePlus;
+    private String github;
     private String sessionName;
     private String description;
     private String references;
@@ -40,7 +43,7 @@ public class RowDraft implements Row {
     @JsonIgnore
     private Long userId;
 
-    public RowDraft(String email, String name, String firstname, String phone, String company, String bio, String social, String sessionName, String description, String references, Integer difficulty, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
+    public RowDraft(String email, String name, String firstname, String phone, String company, String bio, String social,String twitter, String googlePlus, String github, String sessionName, String description, String references, Integer difficulty, String track, String coSpeaker, Boolean financial, Boolean travel, String travelFrom, Boolean hotel, String hotelDate, Date added) {
         this.email = email;
         this.name = name;
         this.firstname = firstname;
@@ -48,6 +51,9 @@ public class RowDraft implements Row {
         this.company = company;
         this.bio = bio;
         this.social = social;
+        this.twitter = twitter;
+        this.googlePlus = googlePlus;
+        this.github = github;
         this.sessionName = sessionName;
         this.description = description;
         this.references = references;
@@ -145,6 +151,34 @@ public class RowDraft implements Row {
 
     public String getSocial() {
         return social;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getGooglePlus() {
+        return googlePlus;
+    }
+
+    public void setGooglePlus(String googlePlus) {
+        this.googlePlus = googlePlus;
+    }
+
+    public void setGoogleplus(String googlePlus) {
+        this.googlePlus = googlePlus;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
     }
 
     public void setSocial(String social) {

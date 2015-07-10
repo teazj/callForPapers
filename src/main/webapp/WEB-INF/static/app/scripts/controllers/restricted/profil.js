@@ -6,7 +6,7 @@ angular.module('CallForPaper')
 		$scope.formData.phone = "";
 		$scope.formData.imageProfilKey = null;
 		$scope.$watch(function() {
-			return $scope.form.name.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone == "") && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid;
+			return $scope.form.name.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone == "") && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid && $scope.form.twitter.$valid && $scope.form.googlePlus.$valid && $scope.form.github.$valid;
 		}, function(isValid) {
 			$scope.formData.isValid = isValid;
 		})
@@ -54,6 +54,15 @@ angular.module('CallForPaper')
 										text: value
 									};
 								});
+								break;
+							case "twitter":
+								if (profil[key] !== null) $scope.formData.twitter = profil[key];
+								break;
+							case "googlePlus":
+								if (profil[key] !== null) $scope.formData.googlePlus = profil[key];
+								break;
+							case "github":
+								if (profil[key] !== null) $scope.formData.github = profil[key];
 								break;
 						}
 					}
@@ -134,8 +143,18 @@ angular.module('CallForPaper')
 				$scope.files = [];
 			} else if ($scope.formData.imageProfilKey) {
 				$scope.formData.imageProfilKey = null;
-			} else if($scope.formData.socialProfilImageUrl) {
+			} else if ($scope.formData.socialProfilImageUrl) {
 				$scope.formData.socialProfilImageUrl = null;
+			}
+		}
+
+		$scope.verify = false;
+		$scope.doVerify = function(files)
+		{
+			$scope.verify = true;
+			if($scope.formData.isValid)
+			{
+				$scope.upload(files);
 			}
 		}
 	}]);

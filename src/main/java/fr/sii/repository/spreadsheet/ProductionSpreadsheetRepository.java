@@ -28,6 +28,7 @@ import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.GoogleSpreadsheetCellAddress;
 import fr.sii.domain.spreadsheet.Row;
+import fr.sii.domain.user.UserProfil;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -786,5 +787,142 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
             }
         }
         throw new NotFoundException("Draft not found");
+    }
+
+    @Override
+    public void updateProfilSessions(Row rowContainingProfil, Long userId) throws EntityNotFoundException, ServiceException, IOException {
+        checkExpiredAccessToken();
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(!rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString())) {
+                // update profile
+                boolean modified = false;
+                if(rowContainingProfil.getName() != rowModel.getName()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("name", rowContainingProfil.getName() != null ? rowContainingProfil.getName() : "");
+                }
+                if(rowContainingProfil.getFirstname() != rowModel.getFirstname()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("firstName", rowContainingProfil.getFirstname() != null ? rowContainingProfil.getFirstname() : "");
+                }
+                if(rowContainingProfil.getPhone() != rowModel.getPhone()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("phone", rowContainingProfil.getPhone() != null ? rowContainingProfil.getPhone() : "");
+                }
+                if(rowContainingProfil.getCompany() != rowModel.getCompany()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("company", rowContainingProfil.getCompany() != null ? rowContainingProfil.getCompany() : "");
+                }
+                if(rowContainingProfil.getBio() != rowModel.getBio()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("bio", rowContainingProfil.getBio() != null ? rowContainingProfil.getBio() : "");
+                }
+                if(rowContainingProfil.getTwitter() != rowModel.getTwitter()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("twitter", rowContainingProfil.getTwitter() != null ? rowContainingProfil.getTwitter() : "");
+                }
+                if(rowContainingProfil.getGooglePlus() != rowModel.getGooglePlus()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("googlePlus", rowContainingProfil.getGooglePlus() != null ? rowContainingProfil.getGooglePlus() : "");
+                }
+                if(rowContainingProfil.getGithub() != rowModel.getGithub()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("github", rowContainingProfil.getGithub() != null ? rowContainingProfil.getGithub() : "");
+                }
+                if(rowContainingProfil.getSocial() != rowModel.getSocial()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("social", rowContainingProfil.getSocial() != null ? rowContainingProfil.getSocial() : "");
+                }
+                if(modified) row.update();
+            }
+        }
+        return;
+    }
+
+    @Override
+    public void updateProfilSessions(UserProfil userProfil, Long userId) throws ServiceException, IOException, EntityNotFoundException {
+        checkExpiredAccessToken();
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            // Iterate over the remaining columns, and print each cell value
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(!rowModel.getDraft() && rowModel.getUserId().toString().equals(userId.toString())) {
+                // update profile
+                boolean modified = false;
+                if(rowModel.getName() != userProfil.getName()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("name", userProfil.getName() != null ? userProfil.getName() : "");
+                }
+                if(rowModel.getFirstname() != userProfil.getFirstname()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("firstName", userProfil.getFirstname() != null ? userProfil.getFirstname() : "");
+                }
+                if(rowModel.getPhone() != userProfil.getPhone()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("phone", userProfil.getPhone() != null ? userProfil.getPhone() : "");
+                }
+                if(rowModel.getCompany() != userProfil.getCompany()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("company", userProfil.getCompany() != null ? userProfil.getCompany() : "");
+                }
+                if(rowModel.getBio() != userProfil.getBio()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("bio", userProfil.getBio() != null ? userProfil.getBio() : "");
+                }
+                if(rowModel.getTwitter() != userProfil.getTwitter()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("twitter", userProfil.getTwitter() != null ? userProfil.getTwitter() : "");
+                }
+                if(rowModel.getGooglePlus() != userProfil.getGooglePlus()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("googlePlus", userProfil.getGooglePlus() != null ? userProfil.getGooglePlus() : "");
+                }
+                if(rowModel.getGithub() != userProfil.getGithub()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("github", userProfil.getGithub() != null ? userProfil.getGithub() : "");
+                }
+                if(rowModel.getSocial() != userProfil.getSocial()) {
+                    modified = true;
+                    row.getCustomElements().setValueLocal("social", userProfil.getSocial() != null ? userProfil.getSocial() : "");
+                }
+
+                if(modified) row.update();
+            }
+        }
+        return;
     }
 }

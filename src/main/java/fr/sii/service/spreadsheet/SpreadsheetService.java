@@ -14,6 +14,7 @@ import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
+import fr.sii.domain.user.UserProfil;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
 import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.rate.AdminRateService;
@@ -126,6 +127,14 @@ public class SpreadsheetService {
 
     public Row putRowDraftToSession(Row row, Long userId, Long added) throws ServiceException, IOException, NotFoundException, ForbiddenException, EntityNotFoundException {
         return spreadsheetRepository.putRowDraftToSession(row, userId, added);
+    }
+
+    public void updateProfilSessions(Row row, Long userId) throws EntityNotFoundException, IOException, ServiceException {
+        spreadsheetRepository.updateProfilSessions(row, userId);
+    }
+
+    public void updateProfilSessions(UserProfil profil, Long userId) throws EntityNotFoundException, IOException, ServiceException {
+        spreadsheetRepository.updateProfilSessions(profil, userId);
     }
 
     public List<RowResponse> getRows() throws IOException, ServiceException, EntityNotFoundException {

@@ -11,6 +11,9 @@ public class UserProfil {
     private String phone;
     private String bio;
     private String social;
+    private String twitter;
+    private String googlePlus;
+    private String github;
     private String imageProfilKey;
     private String socialProfilImageUrl;
 
@@ -60,6 +63,30 @@ public class UserProfil {
 
     public void setSocial(String social) {
         this.social = social;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getGooglePlus() {
+        return googlePlus;
+    }
+
+    public void setGooglePlus(String googlePlus) {
+        this.googlePlus = googlePlus;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
     }
 
     public String getImageProfilKey() {
