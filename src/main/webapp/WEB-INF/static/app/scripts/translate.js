@@ -182,6 +182,8 @@ angular.module('CallForPaper')
         "love": "Coup de coeur",
         "next": "Talk suivant",
         "previous": "Talk précédente",
+        "notReviewedYet": "Pas encore notés"
+
       },
       "config": {
         "logout": "Se déconnecter",
@@ -408,6 +410,7 @@ angular.module('CallForPaper')
         "love": "Favorite",
         "next": "Next talk",
         "previous": "Previous talk",
+        "notReviewedYet": "Not reviewed yet"
       },
       "config": {
         "login": "Login",

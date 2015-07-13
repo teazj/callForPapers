@@ -75,7 +75,8 @@ angular.module('CallForPaper')
 					nafullnameme: '', // initial filter
 					description: '',
 					difficulty: '',
-					track: ''
+					track: '',
+					reviewed: ''
 				},
 				sorting: {
 					added: 'desc'
@@ -95,5 +96,13 @@ angular.module('CallForPaper')
 					$defer.resolve($scope.sessions);
 				}
 			});
+		}
+
+		$scope.handleNotReviewed = function() {
+			if($scope.notReviewed === true) {
+				$scope.tableParams.filter()['reviewed'] = false;
+			} else {
+				$scope.tableParams.filter()['reviewed'] = '';
+			}
 		}
 	}]);

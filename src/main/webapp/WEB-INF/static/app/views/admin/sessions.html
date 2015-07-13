@@ -6,6 +6,12 @@
 					<button ng-click="tableParams.sorting({})" class="btn btn-default">{{'admin.clearSorting' | translate}}</button>
 					<button ng-click="tableParams.filter({})" class="btn btn-default">{{'admin.clearFilter' | translate}}</button>
 				</span>
+				<span class="checkbox" style="margin-top:0;text-align:right">
+					<label>
+						<input ng-change="handleNotReviewed()" ng-model="notReviewed" id="notReviewed" name="notReviewed" type="checkbox">
+						&nbsp;{{'admin.notReviewedYet' | translate}}
+					</label>
+				</span>
 			</div>
 			<div class="pull-left">
 				<span class="filterbuttons btn-group">
