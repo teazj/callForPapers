@@ -1,10 +1,16 @@
 <div class="row">
 	<div class="panel">
 		<div class="panel-body">
+			<a style="color:inherit" tooltip="{{'admin.next' | translate}}" ng-if="next" ui-sref="admin.session({ id: next })" class="pull-right">
+				<span class="mdi-navigation-chevron-right arrow"></span>
+			</a>
 			<button type="button" ng-click="deleteSession()" class="btn btn-danger pull-right">
-				<span>{{'admin.deleteSession' | translate}}></span>
+				<span>{{'admin.deleteSession' | translate}}</span>
 				<span class="mdi-action-delete pull-right"></span>
 			</button>
+			<a style="color:inherit" tooltip="{{'admin.previous' | translate}}" ng-if="previous" ui-sref="admin.session({ id: previous })" class="pull-left">
+				<span class="mdi-navigation-chevron-left arrow"></span>
+			</a>
 			<h1>{{::session.sessionName}} - 
 				<span style="font-size: 0.7em">
 					<span>{{'admin.mean' | translate}}&nbsp;:&nbsp;</span>

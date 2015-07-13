@@ -28,6 +28,14 @@ angular.module('CallForPaper')
 		AuthService.getCurrentUser().then(function(userInfo){
 			$scope.adminEmail = userInfo.email;
 		})
+
+		AdminSession.getIds().$promise.then(function(idsTmp){
+			var index = idsTmp.indexOf(parseInt($stateParams.id,10));
+			if(index !== -1) {
+				if(index > 0) $scope.previous = idsTmp[index - 1];
+				if(index < idsTmp.length - 1) $scope.next = idsTmp[index + 1];
+			}
+		})
 		/**
 		 * get comments of the session
 		 * @return {[AdminComment]}
@@ -103,9 +111,6 @@ angular.module('CallForPaper')
 				if($scope.yourRate.hate || $scope.yourRate.love) $scope.changed = true;
 				$scope.hate = $scope.yourRate.hate;
 				$scope.love = $scope.yourRate.love;
-				console.log($scope.hate);
-				console.log($scope.love);
-				console.log($scope.yourRate);
 			}
 		})
 

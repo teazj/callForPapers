@@ -179,7 +179,11 @@ angular.module('CallForPaper')
         "noVote": "Sans avis",
         "none": "Aucune",
         "hate": "Rejeté",
-        "love": "Coup de coeur"
+        "love": "Coup de coeur",
+        "next": "Talk suivant",
+        "previous": "Talk précédente",
+        "notReviewedYet": "Pas encore notés"
+
       },
       "config": {
         "logout": "Se déconnecter",
@@ -403,7 +407,10 @@ angular.module('CallForPaper')
         "noVote": "Without opinion",
         "none": "None",
         "hate": "Rejected",
-        "love": "Favorite"
+        "love": "Favorite",
+        "next": "Next talk",
+        "previous": "Previous talk",
+        "notReviewedYet": "Not reviewed yet"
       },
       "config": {
         "login": "Login",
