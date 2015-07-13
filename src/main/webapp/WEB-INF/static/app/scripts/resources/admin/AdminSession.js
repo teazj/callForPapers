@@ -5,6 +5,11 @@ angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', funct
         delete: {
 			method: 'DELETE',
 			url: 'api/admin/sessions/:id'
+		},
+        getIds: {
+			method: 'GET',
+			url: 'api/admin/sessions/ordered',
+			isArray:true
 		}
     });
 }]);
