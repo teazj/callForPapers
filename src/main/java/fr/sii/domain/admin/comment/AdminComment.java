@@ -27,6 +27,8 @@ public class AdminComment {
     @NotNull
     private String comment;
 
+    private boolean deleted;
+
     private Date added;
 
     @NotNull
@@ -39,6 +41,19 @@ public class AdminComment {
 
     public AdminComment() {
         this.entityId = new Date().getTime();
+        this.deleted = false;
+    }
+
+    public AdminComment clone() {
+        AdminComment clone = new AdminComment();
+        clone.setAdded(new Date(this.getAdded()));
+        clone.setComment(this.getComment());
+        clone.setEntityId(this.getEntityId());
+        clone.setId(this.getId());
+        clone.setRowId(this.getRowId());
+        clone.setUserId(this.getUserId());
+        clone.setDeleted(this.isDeleted());
+        return clone;
     }
 
     @JsonIgnore
@@ -96,5 +111,13 @@ public class AdminComment {
 
     public void setUser(AdminUser adminUser) {
         this.adminUser = adminUser;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

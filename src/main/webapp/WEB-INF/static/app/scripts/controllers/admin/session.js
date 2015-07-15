@@ -65,6 +65,65 @@ angular.module('CallForPaper')
 		}
 
 		/**
+		 * edit comment
+		 */
+		var putComment = function(comment) {
+			AdminComment.update({
+				id: comment.id
+			}, comment, function(c) {
+				updateComments();
+			}, function(c) {});
+		}
+
+		$scope.editComment = function(localComment) {
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/editModal.html',
+				controller: 'EditModalInstanceCtrl',
+				resolve: {
+					comment: function() {
+						return localComment.comment;
+					}
+				}
+			});
+			modalInstance.result.then(function(comment) {
+				localComment.comment = comment;
+				putComment(localComment);
+			}, function() {
+				// cancel
+			});
+		}
+
+		/**
+		 * delete comment
+		 */
+		var deleteComment = function(comment) {
+			AdminComment.delete({
+				id: comment.id
+			}, function(c) {
+				updateComments();
+			}, function(c) {});
+		}
+
+		$scope.deleteComment = function(localComment) {
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/deleteModal.html',
+				controller: 'ModalInstanceCtrl',
+				resolve: {
+					comment: function() {
+						return localComment.comment;
+					}
+				}
+			});
+			modalInstance.result.then(function() {
+				deleteComment(localComment);
+			}, function() {
+				// cancel
+			});
+		}
+
+		/**
 		 * get rates of the session
 		 * @return {[AdminRate]}
 		 */
@@ -244,5 +303,15 @@ angular.module('CallForPaper')
 				$scope.love = false;
 			}
 			$scope.changed = false;
-		})
+		});
 	}])
+	.controller('EditModalInstanceCtrl', ['$scope', '$modalInstance', 'comment', function($scope, $modalInstance, comment) {
+		$scope.commentMsg = comment;
+		$scope.ok = function() {
+			$modalInstance.close($scope.commentMsg);
+		};
+
+		$scope.cancel = function() {
+			$modalInstance.dismiss();
+		};
+	}]);
