@@ -44,7 +44,7 @@ public class AdminCommentController {
         if(!currentComment.isDeleted() && currentComment.getUserId().toString().equals(adminUserServiceCustom.getCurrentUser().getEntityId().toString())) {
             currentComment.setComment("");
             currentComment.setDeleted(true);
-            return adminCommentService.put(id, currentComment.clone());
+            return adminCommentService.put(id, (AdminComment) currentComment.clone());
         } else {
             throw new ForbiddenException("This is not your comment, you can't delete it");
         }
