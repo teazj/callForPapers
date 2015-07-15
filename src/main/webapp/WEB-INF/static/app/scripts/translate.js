@@ -199,7 +199,8 @@ angular.module('CallForPaper')
         "previous": "Talk précédente",
         "notReviewedYet": "Pas encore notés",
         "edit": "Editer",
-        "delete": "Supprimers"
+        "delete": "Supprimers",
+        "allType": "Tous"
 
       },
       "config": {
@@ -444,7 +445,8 @@ angular.module('CallForPaper')
         "previous": "Previous talk",
         "notReviewedYet": "Not reviewed yet",
         "edit": "Editer",
-        "delete": "Supprimers"
+        "delete": "Supprimers",
+        "allType": "All"
       },
       "config": {
         "login": "Login",
