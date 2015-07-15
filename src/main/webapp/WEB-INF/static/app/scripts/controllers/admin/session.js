@@ -31,6 +31,13 @@ angular.module('CallForPaper')
 			$scope.adminEmail = userInfo.email;
 		})
 
+		var setViewed = function() {
+			AdminSession.setViewed({
+				id: $stateParams.id
+			},{});
+		}
+
+
 		AdminSession.getIds().$promise.then(function(idsTmp) {
 				var index = idsTmp.indexOf(parseInt($stateParams.id, 10));
 				if (index !== -1) {
@@ -46,6 +53,7 @@ angular.module('CallForPaper')
 			AdminComment.getByRowId({
 				rowId: $stateParams.id
 			}, function(commentsTmp) {
+				setViewed();
 				$scope.comments = commentsTmp;
 			})
 		}

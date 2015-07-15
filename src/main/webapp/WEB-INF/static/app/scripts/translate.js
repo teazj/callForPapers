@@ -200,7 +200,8 @@ angular.module('CallForPaper')
         "notReviewedYet": "Pas encore notés",
         "edit": "Editer",
         "delete": "Supprimers",
-        "allType": "Tous"
+        "allType": "Tous",
+        "newMessages": "Nouveaux messages"
 
       },
       "config": {
@@ -446,7 +447,8 @@ angular.module('CallForPaper')
         "notReviewedYet": "Not reviewed yet",
         "edit": "Editer",
         "delete": "Supprimers",
-        "allType": "All"
+        "allType": "All",
+        "newMessages": "New messages"
       },
       "config": {
         "login": "Login",

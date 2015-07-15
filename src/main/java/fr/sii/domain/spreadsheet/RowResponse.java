@@ -13,9 +13,10 @@ import java.util.List;
 public class RowResponse extends RowSession {
     private List<AdminRate> adminRates;
     private List<AdminComment> adminComments;
+    private Date lastSeen;
     private Long userId;
 
-    public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments, Long userId)
+    public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments, Long userId, Date lastSeen)
     {
         super(
                 row.getEmail(),
@@ -47,6 +48,7 @@ public class RowResponse extends RowSession {
         this.adminRates = adminRates;
         this.adminComments = adminComments;
         this.userId = userId;
+        this.lastSeen = lastSeen;
     }
 
     public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments)
@@ -81,6 +83,7 @@ public class RowResponse extends RowSession {
         this.adminRates = adminRates;
         this.adminComments = adminComments;
         this.userId = null;
+        this.lastSeen = null;
     }
 
     public Boolean getReviewed() {
@@ -91,6 +94,17 @@ public class RowResponse extends RowSession {
             }
         }
         return false;
+    }
+
+    public Integer getNotViewedCount() {
+        Integer count = this.adminComments.size();
+        if(lastSeen == null) return count;
+        for(AdminComment adminComment : this.adminComments) {
+            if(adminComment.getAdded() < lastSeen.getTime()) {
+                --count;
+            }
+        }
+        return count;
     }
 
     public Double getMean()

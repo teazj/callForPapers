@@ -10,6 +10,7 @@ import com.google.gdata.util.ServiceException;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.rate.AdminRate;
+import fr.sii.domain.admin.session.AdminViewedSession;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
@@ -18,6 +19,7 @@ import fr.sii.domain.user.UserProfil;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
 import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.rate.AdminRateService;
+import fr.sii.service.admin.session.AdminViewedSessionService;
 import fr.sii.service.admin.user.AdminUserService;
 
 import java.io.IOException;
@@ -35,6 +37,12 @@ public class SpreadsheetService {
     private GlobalSettings globalSettings;
 
     private AdminUserService adminUserServiceCustom;
+
+    private AdminViewedSessionService adminViewedSessionService;
+
+    public void setAdminViewedSessionService(AdminViewedSessionService adminViewedSessionService) {
+        this.adminViewedSessionService = adminViewedSessionService;
+    }
 
     public void setAdminUserService(AdminUserService adminUserServiceCustom) {
         this.adminUserServiceCustom = adminUserServiceCustom;
@@ -77,7 +85,12 @@ public class SpreadsheetService {
             {
                 List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
                 List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
-                rr = new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId());
+                try {
+                    AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(r.getAdded(), adminUserServiceCustom.getCurrentUser().getEntityId());
+                    rr = new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), viewedSession.getLastSeen());
+                } catch (NotFoundException e) {
+                    rr = new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), null);
+                }
             }
             else
             {
@@ -93,7 +106,12 @@ public class SpreadsheetService {
         if(globalSettings.getDatabaseLoaded().equals("true")) {
             List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
             List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
-            return new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId());
+            try {
+                AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(r.getAdded(), adminUserServiceCustom.getCurrentUser().getEntityId());
+                return new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), viewedSession.getLastSeen());
+            } catch (NotFoundException e) {
+                return new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), null);
+            }
         }
         else
         {
