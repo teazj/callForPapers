@@ -132,6 +132,10 @@ angular.module('CallForPaper')
         "confirmDelete" : "Supprimer",
         "cancel" : "Annuler"
       },
+      "previewModal": {
+        "title" : "Prévisualisation",
+        "confirm" : "OK"
+      },
       "steps": {
         "saveAsDraft" : "Enregistrer brouillon",
         "previous": "Etape précédente",
@@ -359,6 +363,10 @@ angular.module('CallForPaper')
         "confirm" : "OK",
         "confirmDelete" : "Delete",
         "cancel" : "Cancel"
+      },
+      "previewModal": {
+        "title" : "Previsualisation",
+        "confirm" : "OK"
       },
       "steps": {
         "saveAsDraft" : "Save as draft",

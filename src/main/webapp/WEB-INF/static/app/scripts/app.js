@@ -26,7 +26,9 @@ angular.module('CallForPaper', [
     'ngFx',
     'offClick',
     'konami',
-    'ngFileUpload'
+    'ngFileUpload',
+    'hc.marked',
+    'mdPreview'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
