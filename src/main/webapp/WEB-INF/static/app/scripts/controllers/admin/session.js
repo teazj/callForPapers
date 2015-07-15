@@ -59,6 +59,8 @@ angular.module('CallForPaper')
 				$scope.commentMsg = "";
 				$scope.commentButtonDisabled = false;
 				updateComments();
+			}, function(c) {
+				$scope.commentButtonDisabled = false;
 			});
 		}
 
