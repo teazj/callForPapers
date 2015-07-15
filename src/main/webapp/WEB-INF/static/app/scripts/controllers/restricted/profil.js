@@ -149,11 +149,9 @@ angular.module('CallForPaper')
 		}
 
 		$scope.verify = false;
-		$scope.doVerify = function(files)
-		{
+		$scope.doVerify = function(files) {
 			$scope.verify = true;
-			if($scope.formData.isValid)
-			{
+			if ($scope.formData.isValid) {
 				$scope.upload(files);
 			}
 		}
