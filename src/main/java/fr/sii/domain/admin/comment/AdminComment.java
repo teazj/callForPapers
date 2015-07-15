@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Entity
 @Component
-public class AdminComment {
+public class AdminComment implements Cloneable  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
@@ -26,6 +26,8 @@ public class AdminComment {
 
     @NotNull
     private String comment;
+
+    private boolean deleted;
 
     private Date added;
 
@@ -39,6 +41,17 @@ public class AdminComment {
 
     public AdminComment() {
         this.entityId = new Date().getTime();
+        this.deleted = false;
+    }
+
+    public Object clone() {
+        Object o = null;
+        try {
+            o = super.clone();
+        } catch(CloneNotSupportedException cnse) {
+            cnse.printStackTrace(System.err);
+        }
+        return o;
     }
 
     @JsonIgnore
@@ -96,5 +109,13 @@ public class AdminComment {
 
     public void setUser(AdminUser adminUser) {
         this.adminUser = adminUser;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

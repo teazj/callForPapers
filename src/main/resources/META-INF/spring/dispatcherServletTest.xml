@@ -9,6 +9,8 @@
 	<context:component-scan base-package="fr.sii.config.exception" />
 
 	<bean id="adminSessionController" class="fr.sii.controller.admin.session.AdminSessionController">
+		<property name="adminViewedSessionService" ref="adminViewedSessionService"></property>
+		<property name="adminUserServiceCustom" ref="adminUserService"></property>
 		<property name="applicationSettings" ref="applicationSettings"></property>
 		<property name="emailingService" ref="emailingService"></property>
 		<property name="googleService" ref="spreadsheetService"></property>

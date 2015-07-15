@@ -18,7 +18,7 @@
 					<span ng-if="mean !== 0">{{mean}}</span>
 				</span >
 			</h1>
-			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+			<div role="tabpanel">
 				<ul id="tab" class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><button href="#speaker" id="speaker-tab" role="tab" data-toggle="tab" aria-controls="speaker" aria-expanded="true">{{'admin.speaker' | translate}}</button></li>
 					<li role="presentation" class=""><button href="#session" role="tab" id="session-tab" data-toggle="tab" aria-controls="session" aria-expanded="false">{{'admin.session' | translate}}</button></li>
@@ -79,7 +79,8 @@
 								<div class="form-group">
 									<label class="control-label" for="bio">{{'step1.bio' | translate}}</label>
 									<div class="">
-										<textarea readonly class="form-control" name="bio" id="bio" rows="7" ng-model="session.bio"></textarea>
+										<div marked="session.bio">
+        								</div>
 									</div>
 								</div>
 								<div class="form-group" bs-has verify="verify">
@@ -118,13 +119,15 @@
 								<div class="form-group">
 									<label class="control-label" for="description">{{'step2.description' | translate}}</label>
 									<div class="">
-										<textarea readonly name="description" class="form-control" ng-model="session.description" id="description" rows="10"></textarea>
+										<div marked="session.bio">
+        								</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label" for="references">{{'step2.references' | translate}}</label>
 									<div class="">
-										<textarea readonly class="form-control" name="references" id="references" ng-model="session.references"  rows="5"></textarea>
+										<div marked="session.bio">
+        								</div>
 									</div>
 								</div>
 							</div>
@@ -144,7 +147,8 @@
 								<div class="form-group">
 									<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
 									<div class="">
-										<textarea readonly class="form-control" name="coSpeaker" id="coSpeaker" rows="18" ng-model="session.coSpeaker"></textarea>
+										<div marked="session.bio">
+        								</div>
 									</div>
 								</div>
 							</div>
@@ -224,10 +228,16 @@
 									<div class="col-xs-8 col-sm-10 col-md-10">
 										<div class="col-xs-12">
 											<strong>{{::comment.user.name}} </strong><span class="weak">{{comment.added | relativeDate}}</span>
+											<span ng-if="!comment.deleted === true">
+												<span tooltip="{{'admin.edit' | translate}}" ng-click="editComment(comment)" ng-show="adminEmail &&comment.user.email === adminEmail" class="mdi-content-create pull-right"></span>
+												<span tooltip="{{'admin.delete' | translate}}" ng-click="deleteComment(comment)" ng-show="adminEmail &&comment.user.email === adminEmail" class="mdi-content-clear pull-right"></span>
+											</span>
 										</div>
-										<div class="col-xs-12">
-											{{::comment.comment}}
-										</div>
+										<div ng-if="!comment.deleted === true" marked="::comment.comment">
+        								</div>
+										<div ng-if="comment.deleted === true">
+											Commentaire supprimé.
+        								</div>
 									</div>
 									<div class="col-xs-12"><hr></div>
 								</div>
@@ -241,6 +251,7 @@
 										<br>
 										<button type="button" ng-click="postComment()" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" class="btn btn-success pull-right">{{'steps.validate' | translate}}&nbsp;<span class="mdi-navigation-refresh glyphicon-refresh-animate pull-right" ng-show="commentButtonDisabled"></span>
 										</button>
+										<button class="btn btn-info pull-right" md-preview="commentMsg">{{'previewModal.title' | translate}}</button>
 									</div>
 								</div>
 							</div>
@@ -298,6 +309,9 @@
 										<div class="col-xs-12">
 											<span ng-if="rate.rate !== 0" ng-repeat="n in [].constructor(rate.rate) track by $index">
 												<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+											</span>
+											<span ng-if="rate.rate !== 0" ng-repeat="n in [].constructor(5-rate.rate) track by $index">
+												<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 											</span>
 											<span ng-if="rate.love">&nbsp;{{'admin.love' | translate}}</span>
 											<span ng-if="rate.hate">&nbsp;{{'admin.hate' | translate}}</span>

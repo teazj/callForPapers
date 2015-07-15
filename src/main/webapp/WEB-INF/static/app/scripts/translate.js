@@ -132,6 +132,21 @@ angular.module('CallForPaper')
         "confirmDelete" : "Supprimer",
         "cancel" : "Annuler"
       },
+      "previewModal": {
+        "title" : "Prévisualisation",
+        "confirm" : "OK"
+      },
+      "editModal": {
+        "title" : "Edition",
+        "confirm" : "Editer",
+        "cancel" : "Annuler"
+      },
+      "deleteModal": {
+        "title" : "Confirmation",
+        "text" : "Êtes-vous sûr de vouloir suprimer ce commentaire ?",
+        "confirm" : "Supprimer",
+        "cancel" : "Annuler"
+      },
       "steps": {
         "saveAsDraft" : "Enregistrer brouillon",
         "previous": "Etape précédente",
@@ -182,7 +197,11 @@ angular.module('CallForPaper')
         "love": "Coup de coeur",
         "next": "Talk suivant",
         "previous": "Talk précédente",
-        "notReviewedYet": "Pas encore notés"
+        "notReviewedYet": "Pas encore notés",
+        "edit": "Editer",
+        "delete": "Supprimers",
+        "allType": "Tous",
+        "newMessages": "Nouveaux messages"
 
       },
       "config": {
@@ -360,6 +379,21 @@ angular.module('CallForPaper')
         "confirmDelete" : "Delete",
         "cancel" : "Cancel"
       },
+      "previewModal": {
+        "title" : "Previsualisation",
+        "confirm" : "OK"
+      },
+      "editModal": {
+        "title" : "Edition",
+        "confirm" : "Edit",
+        "cancel" : "Cancel"
+      },
+      "deleteModal": {
+        "title" : "Confirmation",
+        "text" : "Do you really want to delete this comment ?",
+        "confirm" : "Delete",
+        "cancel" : "Cancel"
+      },
       "steps": {
         "saveAsDraft" : "Save as draft",
         "previous": "Previous step",
@@ -410,7 +444,11 @@ angular.module('CallForPaper')
         "love": "Favorite",
         "next": "Next talk",
         "previous": "Previous talk",
-        "notReviewedYet": "Not reviewed yet"
+        "notReviewedYet": "Not reviewed yet",
+        "edit": "Editer",
+        "delete": "Supprimers",
+        "allType": "All",
+        "newMessages": "New messages"
       },
       "config": {
         "login": "Login",

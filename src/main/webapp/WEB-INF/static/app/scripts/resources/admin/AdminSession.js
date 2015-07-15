@@ -10,6 +10,10 @@ angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', funct
 			method: 'GET',
 			url: 'api/admin/sessions/ordered',
 			isArray:true
+		},
+		setViewed: {
+			method: 'POST',
+			url: 'api/admin/sessions/viewed/:id',
 		}
     });
 }]);

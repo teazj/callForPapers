@@ -51,6 +51,9 @@
 		<property name="adminUserService" ref="adminUserService"></property>
 		<property name="adminRateRespository" ref="adminRateRespository"></property>
 	</bean>
+	<bean id="adminViewedSessionService" class="fr.sii.service.admin.session.AdminViewedSessionService">
+		<property name="adminViewedSessionRepository" ref="adminViewedSessionRepository"></property>
+	</bean>
 	<bean id="adminUserService" class="fr.sii.service.admin.user.AdminUserService">
 		<property name="adminUserRespository" ref="adminUserRespository"></property>
 	</bean>
@@ -68,6 +71,7 @@
 		<property name="adminRateService" ref="adminRateService"></property>
 		<property name="adminCommentService" ref="adminCommentService"></property>
 		<property name="adminUserService" ref="adminUserService"></property>
+		<property name="adminViewedSessionService" ref="adminViewedSessionService"></property>
 	</bean>
 	<bean id="userService" class="fr.sii.service.user.UserService">
 		<property name="userRespository" ref="userRespository"></property>
