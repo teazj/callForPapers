@@ -28,7 +28,8 @@ angular.module('CallForPaper', [
     'konami',
     'ngFileUpload',
     'hc.marked',
-    'mdPreview'
+    'mdPreview',
+    'LocalStorageModule'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
