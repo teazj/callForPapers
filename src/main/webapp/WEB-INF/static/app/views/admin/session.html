@@ -303,6 +303,9 @@
 											<span ng-if="rate.rate !== 0" ng-repeat="n in [].constructor(rate.rate) track by $index">
 												<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 											</span>
+											<span ng-if="rate.rate !== 0" ng-repeat="n in [].constructor(5-rate.rate) track by $index">
+												<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+											</span>
 											<span ng-if="rate.love">&nbsp;{{'admin.love' | translate}}</span>
 											<span ng-if="rate.hate">&nbsp;{{'admin.hate' | translate}}</span>
 											<span ng-if="rate.rate === 0">
