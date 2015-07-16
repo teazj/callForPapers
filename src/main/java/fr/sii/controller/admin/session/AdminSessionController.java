@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -67,19 +65,6 @@ public class AdminSessionController {
     @ResponseBody
     public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException, EntityNotFoundException {
         return googleService.getRowsSession();
-    }
-
-    @RequestMapping(value="/sessions/ordered", method= RequestMethod.GET)
-    @ResponseBody
-    public List<Long> getGoogleSpreadsheetsOrderedList() throws IOException, ServiceException, EntityNotFoundException {
-        List<Long> ids = new ArrayList<>();
-        List<RowResponse> resp = googleService.getRowsSession();
-        for(RowResponse row : resp) {
-            ids.add(row.getAdded());
-        }
-        Collections.sort(ids);
-        Collections.reverse(ids);
-        return ids;
     }
 
     @RequestMapping(value="/drafts", method= RequestMethod.GET)

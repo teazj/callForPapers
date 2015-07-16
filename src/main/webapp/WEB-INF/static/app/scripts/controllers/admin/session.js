@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService) {
 		$scope.session = null;
 		$scope.adminEmail = null;
 		AdminSession.get({
@@ -37,23 +37,18 @@ angular.module('CallForPaper')
 			}, {});
 		}
 
+		$scope.previous = NextPreviousSessionService.getNextSessions($stateParams.id);
+		$scope.next = NextPreviousSessionService.getPreviousSessions($stateParams.id);
 
-		AdminSession.getIds().$promise.then(function(idsTmp) {
-				var index = idsTmp.indexOf(parseInt($stateParams.id, 10));
-				if (index !== -1) {
-					if (index > 0) $scope.previous = idsTmp[index - 1];
-					if (index < idsTmp.length - 1) $scope.next = idsTmp[index + 1];
-				}
-			})
-			/**
-			 * get comments of the session
-			 * @return {[AdminComment]}
-			 */
+		/**
+		 * get comments of the session
+		 * @return {[AdminComment]}
+		 */
 		var updateComments = function() {
 			AdminComment.getByRowId({
 				rowId: $stateParams.id
 			}, function(commentsTmp) {
-				setViewed();
+				setTimeout(setViewed, 1000);
 				$scope.comments = commentsTmp;
 			})
 		}

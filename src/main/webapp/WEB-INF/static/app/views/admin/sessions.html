@@ -32,9 +32,9 @@
 			</div>
 			<div class="col-xs-12" role="tabpanel" style="display: inline-block">
 				<ul id="tab" class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><button href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">{{'admin.allType' | translate}}</button></li>
-					<li role="presentation" class=""><button href="#conference" role="tab" id="conference-tab" data-toggle="tab" aria-controls="conference" aria-expanded="false">{{'step2.types.conference' | translate}}</button></li>
-					<li role="presentation" class=""><button href="#codelab" role="tab" id="codelab-tab" data-toggle="tab" aria-controls="codelab" aria-expanded="false">{{'step2.types.codelab' | translate}}</button></li>
+					<li role="presentation" class="active"><button ng-click="setActiveTab('')" href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">{{'admin.allType' | translate}}</button></li>
+					<li role="presentation" class=""><button ng-click="setActiveTab('conference')" href="#conference" role="tab" id="conference-tab" data-toggle="tab" aria-controls="conference" aria-expanded="false">{{'step2.types.conference' | translate}}</button></li>
+					<li role="presentation" class=""><button ng-click="setActiveTab('codelab')" href="#codelab" role="tab" id="codelab-tab" data-toggle="tab" aria-controls="codelab" aria-expanded="false">{{'step2.types.codelab' | translate}}</button></li>
 				</ul>
 				<div id="tabContent" class="tab-content tile">
 					<div role="tabpanel" class="tab-pane fade active in" id="all" aria-labelledby="all-tab">
