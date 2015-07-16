@@ -111,6 +111,6 @@ public class AdminCommentService {
 
     public List<AdminComment> findByRowId(Long rowId)
     {
-        return matchUsers(adminCommentRepository.findByRowIdOrderByAddedAsc(rowId));
+        return matchUsers(adminCommentRepository.findByRowIdOrderByAddedDesc(rowId));
     }
 }

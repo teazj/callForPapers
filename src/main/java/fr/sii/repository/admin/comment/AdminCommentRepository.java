@@ -16,6 +16,6 @@ public interface AdminCommentRepository extends JpaRepository<AdminComment, Key>
     void _delete(Long id);
     List<AdminComment> findByEntityId(Long id);
     List<AdminComment> findByUserId(Long id);
-    List<AdminComment> findByRowIdOrderByAddedAsc(Long id);
+    List<AdminComment> findByRowIdOrderByAddedDesc(Long id);
     List<AdminComment> findByUserIdAndRowId(Long userId, Long rowId);
 }

@@ -134,7 +134,9 @@ angular.module('CallForPaper')
       },
       "previewModal": {
         "title" : "Prévisualisation",
-        "confirm" : "OK"
+        "confirm" : "OK",
+        "nothingToPreview" : "Rien à prévisualiser",
+        "mdSupported" : "Markdown supporté"
       },
       "editModal": {
         "title" : "Edition",
@@ -380,8 +382,10 @@ angular.module('CallForPaper')
         "cancel" : "Cancel"
       },
       "previewModal": {
-        "title" : "Previsualisation",
-        "confirm" : "OK"
+        "title" : "Preview",
+        "confirm" : "OK",
+        "nothingToPreview" : "Nothing to preview",
+        "mdSupported" : "Markdown supported"
       },
       "editModal": {
         "title" : "Edition",
