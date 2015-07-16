@@ -39,10 +39,6 @@ public class AdminUserService {
             adminUserCustom = findOne(userId);
         } catch (NotFoundException e) {
             // User not found
-        }
-
-        if(adminUserCustom == null)
-        {
             adminUserCustom = save(user);
         }
         return adminUserCustom;
@@ -53,28 +49,28 @@ public class AdminUserService {
         adminUserRespository.deleteAll();
     }
 
-    public AdminUser save(AdminUser u)
+    public AdminUser save(AdminUser adminUser)
     {
-        return adminUserRespository.save(u);
+        return adminUserRespository.save(adminUser);
     }
 
-    public AdminUser save(com.google.appengine.api.users.User u)
+    public AdminUser save(com.google.appengine.api.users.User user)
     {
-        String id = u.getUserId();
+        String id = user.getUserId();
         String idParsed = id.substring(0, id.length() - 2);
         Long userId = Long.parseLong(idParsed);
 
         AdminUser adminUser = new AdminUser(userId);
-        adminUser.setName(u.getNickname());
-        adminUser.setEmail(u.getEmail());
+        adminUser.setName(user.getNickname());
+        adminUser.setEmail(user.getEmail());
 
         return adminUserRespository.save(adminUser);
     }
 
-    public AdminUser put(Long id,AdminUser u) throws NotFoundException {
+    public AdminUser put(Long id,AdminUser adminUser) throws NotFoundException {
         delete(id);
-        u.setEntityId(id);
-        return adminUserRespository.save(u);
+        adminUser.setEntityId(id);
+        return adminUserRespository.save(adminUser);
     }
 
     public void delete(Long id) throws NotFoundException {
@@ -84,7 +80,7 @@ public class AdminUserService {
 
     public AdminUser findOne(Long id) throws NotFoundException {
         List<AdminUser> r = adminUserRespository.findByEntityId(id);
-        if(r.size() > 0)
+        if(!r.isEmpty())
             return r.get(0);
         else
             throw new NotFoundException("User not found");
