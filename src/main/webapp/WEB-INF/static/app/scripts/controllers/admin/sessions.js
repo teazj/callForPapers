@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminDraft', 'localStorageService', 'lodash', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminDraft, localStorageService, lodash) {
+	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminStats', 'localStorageService', 'NextPreviousSessionService', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminStats, localStorageService, NextPreviousSessionService) {
 		var sessions = []
 		$scope.sessions = [];
 		$scope.sessionsAll = [];
@@ -14,21 +14,12 @@ angular.module('CallForPaper')
 				return session;
 			});
 
-			var getUnique = function(sessions) {
-				for (var i = 0; i < sessions.length; i++) {
-					var name = $filter('removeAccents')(angular.lowercase(sessions[i].fullname))
-				}
-				return lodash.uniq(sessions, 'fullname').length
-			}
+			AdminStats.meter().$promise.then(function(meterTmp) {
+				$scope.stats = meterTmp;
+			});
 
-			$scope.uniqueUserCount = getUnique(sessions);
 			$scope.sessionsAll = sessions;
 			updateTable();
-		});
-
-		$scope.drafts = [];
-		AdminDraft.query().$promise.then(function(draftsTmp) {
-			$scope.drafts = draftsTmp;
 		});
 
 		$scope.difficulties = function(column) {
@@ -80,6 +71,7 @@ angular.module('CallForPaper')
 			$scope.sessions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
 
 			params.total(orderedData.length); // set total for recalc pagination
+			NextPreviousSessionService.setSessions(orderedData, type);
 			if (localStorageService.isSupported) {
 				localStorageService.set('tableParams', params.$params);
 			}
@@ -111,23 +103,7 @@ angular.module('CallForPaper')
 			} else {
 				initialParams = defaultParams;
 			}
-			
-			$scope.tableParams = new ngTableParams(
-				initialParams, {
-					filterDelay: 0,
-					total: sessions.length, // length of data
-					getData: function($defer, params) {
-						getData($defer, params, '');
-					}
-				});
-			$scope.tableParamsConference = new ngTableParams(
-				initialParams, {
-					filterDelay: 0,
-					total: sessions.length, // length of data
-					getData: function($defer, params) {
-						getData($defer, params, 'conference');
-					}
-				});
+
 			$scope.tableParamsCodelab = new ngTableParams(
 				initialParams, {
 					filterDelay: 0,
@@ -136,6 +112,29 @@ angular.module('CallForPaper')
 						getData($defer, params, 'codelab');
 					}
 				});
+
+			$scope.tableParamsConference = new ngTableParams(
+				initialParams, {
+					filterDelay: 0,
+					total: sessions.length, // length of data
+					getData: function($defer, params) {
+						getData($defer, params, 'conference');
+					}
+				});
+
+			$scope.tableParams = new ngTableParams(
+				initialParams, {
+					filterDelay: 0,
+					total: sessions.length, // length of data
+					getData: function($defer, params) {
+						getData($defer, params, '');
+					}
+				});
+			NextPreviousSessionService.setType('');
+		}
+
+		$scope.setActiveTab = function(type) {
+			NextPreviousSessionService.setType(type);
 		}
 
 		$scope.handleNotReviewed = function() {

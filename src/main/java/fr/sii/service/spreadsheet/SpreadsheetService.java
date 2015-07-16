@@ -6,6 +6,7 @@ package fr.sii.service.spreadsheet;
  */
 
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.admin.comment.AdminComment;
@@ -23,9 +24,16 @@ import fr.sii.service.admin.rate.AdminRateService;
 import fr.sii.service.admin.session.AdminViewedSessionService;
 import fr.sii.service.admin.user.AdminUserService;
 
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheFactory;
+import javax.cache.CacheManager;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class SpreadsheetService {
 
@@ -40,6 +48,11 @@ public class SpreadsheetService {
     private AdminUserService adminUserServiceCustom;
 
     private AdminViewedSessionService adminViewedSessionService;
+
+    private final String DRAFTS_KEY = "Drafts";
+
+    private final String SESSIONS_KEY = "Sessions";
+
 
     public void setAdminViewedSessionService(AdminViewedSessionService adminViewedSessionService) {
         this.adminViewedSessionService = adminViewedSessionService;
@@ -84,13 +97,14 @@ public class SpreadsheetService {
 
             if(globalSettings.getDatabaseLoaded().equals("true"))
             {
-                List<AdminRate> lrs = adminRateService.findByRowId(row.getAdded());
-                List<AdminComment> lcs = adminCommentService.findByRowId(row.getAdded());
+                List<AdminRate> adminRates = adminRateService.findByRowId(row.getAdded());
+                List<AdminComment> adminComments = adminCommentService.findByRowId(row.getAdded());
+                AdminUser adminUser = adminUserServiceCustom.getCurrentUser();
                 try {
-                    AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(row.getAdded(), adminUserServiceCustom.getCurrentUser().getEntityId());
-                    rowResponse = new RowResponse(row, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), viewedSession.getLastSeen());
+                    AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(row.getAdded(), adminUser.getEntityId());
+                    rowResponse = new RowResponse(row, adminRates, adminComments, adminUser.getEntityId(), viewedSession.getLastSeen());
                 } catch (NotFoundException e) {
-                    rowResponse = new RowResponse(row, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), null);
+                    rowResponse = new RowResponse(row, adminRates, adminComments, adminUser.getEntityId(), null);
                 }
             }
             else
@@ -182,7 +196,23 @@ public class SpreadsheetService {
     }
 
     public List<RowResponse> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
-        return matchRatesAndComment(spreadsheetRepository.getRowsSession());
+        Cache cache;
+        List<RowResponse> rowResponses = null;
+        try {
+            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+            Map properties = new HashMap<>();
+            properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
+            cache = cacheFactory.createCache(properties);
+            rowResponses = (List<RowResponse>) cache.get(SESSIONS_KEY);
+            if(rowResponses == null) {
+                rowResponses = matchRatesAndComment(spreadsheetRepository.getRowsSession());
+                cache.put(SESSIONS_KEY, rowResponses);
+            }
+        } catch (CacheException e) {
+            e.printStackTrace();
+            return matchRatesAndComment(spreadsheetRepository.getRowsSession());
+        }
+        return rowResponses;
     }
 
     public List<Row> getRowsSession(Long userId) throws IOException, ServiceException, EntityNotFoundException {
@@ -190,7 +220,23 @@ public class SpreadsheetService {
     }
 
     public List<Row> getRowsDraft() throws IOException, ServiceException, EntityNotFoundException {
-        return spreadsheetRepository.getRowsDraft();
+        Cache cache;
+        List<Row> rowsDraft = null;
+        try {
+            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+            Map properties = new HashMap<>();
+            properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
+            cache = cacheFactory.createCache(properties);
+            rowsDraft = (List<Row>) cache.get(DRAFTS_KEY);
+            if(rowsDraft == null) {
+                rowsDraft = spreadsheetRepository.getRowsDraft();
+                cache.put(DRAFTS_KEY, rowsDraft);
+            }
+        } catch (CacheException e) {
+            e.printStackTrace();
+            return spreadsheetRepository.getRowsDraft();
+        }
+        return rowsDraft;
     }
 
     public List<Row> getRowsDraft(Long userId) throws IOException, ServiceException, EntityNotFoundException {

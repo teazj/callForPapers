@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by tmaugin on 19/05/2015.
  */
-public class RowDraft implements Row {
+public class RowDraft implements Row, Serializable {
     private String email;
     private String name;
     private String firstname;
