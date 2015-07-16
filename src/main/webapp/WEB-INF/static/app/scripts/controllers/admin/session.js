@@ -27,9 +27,7 @@ angular.module('CallForPaper')
 			});
 		});
 
-		AuthService.getCurrentUser().then(function(userInfo) {
-			$scope.adminEmail = userInfo.email;
-		})
+		$scope.adminEmail = AuthService.user.email;
 
 		var setViewed = function() {
 			AdminSession.setViewed({
@@ -146,14 +144,10 @@ angular.module('CallForPaper')
 					return y.rate + x;
 				}, 0) / (votedCount == 0 ? 1 : votedCount);
 
-				AuthService.getCurrentUser().then(function(userInfo) {
-					// remove current user from list
-					$scope.rates = ratesTmp.filter(function(element) {
-						return element.user.email !== userInfo.email;
-					})
-				}, function(err) {
-					$scope.rates = ratesTmp;
+				$scope.rates = ratesTmp.filter(function(element) {
+					return element.user.email !== AuthService.user.email;
 				})
+
 			})
 		}
 		updateRates();
