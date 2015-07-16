@@ -27,44 +27,44 @@ public class AdminRateService {
         this.adminUserService = adminUserService;
     }
 
-    public List<AdminRate> matchUsers(List<AdminRate> rs)
+    public List<AdminRate> matchUsers(List<AdminRate> adminRates)
     {
-        List<AdminRate> nrs = new ArrayList<>();
-        for (AdminRate r : rs)
+        List<AdminRate> newAdminRates = new ArrayList<>();
+        for (AdminRate adminRate : adminRates)
         {
             try {
-                AdminUser u = adminUserService.findOne(r.getUserId());
-                r.setUser(u);
-                nrs.add(r);
+                AdminUser adminUser = adminUserService.findOne(adminRate.getUserId());
+                adminRate.setUser(adminUser);
+                newAdminRates.add(adminRate);
             } catch (NotFoundException e) {
                 //e.printStackTrace();
             }
         }
-        return nrs;
+        return newAdminRates;
     }
-    public AdminRate matchUser(List<AdminRate> rs) throws NotFoundException {
-        if(rs.size() > 0)
+    public AdminRate matchUser(List<AdminRate> adminRates) throws NotFoundException {
+        if(!adminRates.isEmpty())
         {
-            AdminRate r = rs.get(0);
+            AdminRate adminRate = adminRates.get(0);
             try {
-                AdminUser u = adminUserService.findOne(r.getUserId());
-                r.setUser(u);
+                AdminUser adminUser = adminUserService.findOne(adminRate.getUserId());
+                adminRate.setUser(adminUser);
             } catch (NotFoundException e) {
                 //e.printStackTrace();
             }
-            return r;
+            return adminRate;
         }
         throw new NotFoundException("Rate not found");
     }
 
-    public AdminRate matchUser(AdminRate r) {
+    public AdminRate matchUser(AdminRate adminRate) {
         try {
-            AdminUser u = adminUserService.findOne(r.getUserId());
-            r.setUser(u);
+            AdminUser adminUser = adminUserService.findOne(adminRate.getUserId());
+            adminRate.setUser(adminUser);
         } catch (NotFoundException e) {
             //e.printStackTrace();
         }
-        return r;
+        return adminRate;
     }
 
     public List<AdminRate> findAll()
@@ -77,22 +77,22 @@ public class AdminRateService {
         adminRateRespository.deleteAll();
     }
 
-    public AdminRate save(AdminRate r) {
-        if(r.getAdded() == null)
+    public AdminRate save(AdminRate adminRate) {
+        if(adminRate.getAdded() == null)
         {
-            r.setAdded(new Date());
+            adminRate.setAdded(new Date());
         }
-        return matchUser(adminRateRespository.save(r));
+        return matchUser(adminRateRespository.save(adminRate));
     }
 
-    public AdminRate put(Long id,AdminRate r) throws NotFoundException {
+    public AdminRate put(Long id,AdminRate adminRate) throws NotFoundException {
         delete(id);
-        r.setEntityId(id);
-        if(r.getAdded() == null)
+        adminRate.setEntityId(id);
+        if(adminRate.getAdded() == null)
         {
-            r.setAdded(new Date());
+            adminRate.setAdded(new Date());
         }
-        return matchUser(adminRateRespository.save(r));
+        return matchUser(adminRateRespository.save(adminRate));
     }
 
     public void delete(Long id) throws NotFoundException {

@@ -27,44 +27,44 @@ public class AdminCommentService {
         this.adminUserService = adminUserService;
     }
 
-    public List<AdminComment> matchUsers(List<AdminComment> rs)
+    public List<AdminComment> matchUsers(List<AdminComment> adminComments)
     {
         List<AdminComment> nrs = new ArrayList<>();
-        for (AdminComment r : rs)
+        for (AdminComment adminComment : adminComments)
         {
             try {
-                AdminUser u = adminUserService.findOne(r.getUserId());
-                r.setUser(u);
-                nrs.add(r);
+                AdminUser u = adminUserService.findOne(adminComment.getUserId());
+                adminComment.setUser(u);
+                nrs.add(adminComment);
             } catch (NotFoundException e) {
                 //e.printStackTrace();
             }
         }
         return nrs;
     }
-    public AdminComment matchUser(List<AdminComment> rs) throws NotFoundException {
-        if(rs.size() > 0)
+    public AdminComment matchUser(List<AdminComment> adminComments) throws NotFoundException {
+        if(!adminComments.isEmpty())
         {
-            AdminComment r = rs.get(0);
+            AdminComment adminComment = adminComments.get(0);
             try {
-                AdminUser u = adminUserService.findOne(r.getUserId());
-                r.setUser(u);
+                AdminUser u = adminUserService.findOne(adminComment.getUserId());
+                adminComment.setUser(u);
             } catch (NotFoundException e) {
                 //e.printStackTrace();
             }
-            return r;
+            return adminComment;
         }
         throw new NotFoundException("Comment not found");
     }
 
-    public AdminComment matchUser(AdminComment r){
+    public AdminComment matchUser(AdminComment adminComment){
         try {
-            AdminUser u = adminUserService.findOne(r.getUserId());
-            r.setUser(u);
+            AdminUser u = adminUserService.findOne(adminComment.getUserId());
+            adminComment.setUser(u);
         } catch (NotFoundException e) {
             //e.printStackTrace();
         }
-        return r;
+        return adminComment;
     }
 
     public List<AdminComment> findAll()
@@ -77,22 +77,22 @@ public class AdminCommentService {
         adminCommentRepository.deleteAll();
     }
 
-    public AdminComment save(AdminComment r) {
-        if(r.getAdded() == null)
+    public AdminComment save(AdminComment adminComment) {
+        if(adminComment.getAdded() == null)
         {
-            r.setAdded(new Date());
+            adminComment.setAdded(new Date());
         }
-        return matchUser(adminCommentRepository.save(r));
+        return matchUser(adminCommentRepository.save(adminComment));
     }
 
-    public AdminComment put(Long id,AdminComment r) throws NotFoundException {
-        if(r.getAdded() == null)
+    public AdminComment put(Long id,AdminComment adminComment) throws NotFoundException {
+        if(adminComment.getAdded() == null)
         {
-            r.setAdded(new Date());
+            adminComment.setAdded(new Date());
         }
         delete(id);
-        r.setEntityId(id);
-        return matchUser(adminCommentRepository.save(r));
+        adminComment.setEntityId(id);
+        return matchUser(adminCommentRepository.save(adminComment));
     }
 
     public void delete(Long id) throws NotFoundException {
@@ -111,6 +111,6 @@ public class AdminCommentService {
 
     public List<AdminComment> findByRowId(Long rowId)
     {
-        return matchUsers(adminCommentRepository.findByRowIdOrderByAddedAsc(rowId));
+        return matchUsers(adminCommentRepository.findByRowIdOrderByAddedDesc(rowId));
     }
 }

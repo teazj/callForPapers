@@ -19,20 +19,16 @@
 		<label class="control-label" for="description">{{'step2.description' | translate}}</label>
 		<div>{{'step2.hintDescription' | translate}}</div>
 		<div>
+			<div md-preview="formData.session.description"></div>
 			<textarea required name="description" class="form-control" ng-model="formData.session.description" id="description" rows="3"></textarea>
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-				<button class="btn btn-block btn-info" md-preview="formData.session.description">{{'previewModal.title' | translate}}</button>
-			</div>
 		</div>
 	</div>
 	<div class="form-group" bs-has verify="verify">
 		<label class="control-label" for="references">{{'step2.references' | translate}}</label>
 		<div>{{'step2.hintReferences' | translate}}</div>
 		<div>
+			<div md-preview="formData.session.references"></div>
 			<textarea class="form-control" name="references" id="references" ng-model="formData.session.references"  rows="3"></textarea>
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-				<button class="btn btn-block btn-info" md-preview="formData.session.references">{{'previewModal.title' | translate}}</button>
-			</div>
 		</div>
 	</div>
 	<div class="form-group" bs-has verify="verify">
@@ -58,10 +54,8 @@
 		<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
 		<div>{{'step2.hintCospeaker' | translate}}</div>
 		<div>
+			<div md-preview="formData.session.coSpeaker"></div>
 			<textarea class="form-control" name="coSpeaker" id="coSpeaker" ng-model="formData.session.coSpeaker"  rows="3"></textarea>
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right">
-				<button class="btn btn-block btn-info" md-preview="formData.session.coSpeaker">{{'previewModal.title' | translate}}</button>
-			</div>
 		</div>
 	</div>
 	<p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>

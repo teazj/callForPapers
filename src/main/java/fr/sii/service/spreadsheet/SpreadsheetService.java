@@ -11,6 +11,7 @@ import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.rate.AdminRate;
 import fr.sii.domain.admin.session.AdminViewedSession;
+import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
@@ -74,48 +75,49 @@ public class SpreadsheetService {
         this.spreadsheetRepository = spreadsheetRepository;
     }
 
-    public List<RowResponse> matchRatesAndComment(List<Row> rs)
+    public List<RowResponse> matchRatesAndComment(List<Row> rows)
     {
-        List<RowResponse> nrs = new ArrayList<>();
-        for (Row r : rs)
+        List<RowResponse> rowResponses = new ArrayList<>();
+        for (Row row : rows)
         {
-            RowResponse rr = null;
+            RowResponse rowResponse = null;
 
             if(globalSettings.getDatabaseLoaded().equals("true"))
             {
-                List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
-                List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
+                List<AdminRate> lrs = adminRateService.findByRowId(row.getAdded());
+                List<AdminComment> lcs = adminCommentService.findByRowId(row.getAdded());
                 try {
-                    AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(r.getAdded(), adminUserServiceCustom.getCurrentUser().getEntityId());
-                    rr = new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), viewedSession.getLastSeen());
+                    AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(row.getAdded(), adminUserServiceCustom.getCurrentUser().getEntityId());
+                    rowResponse = new RowResponse(row, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), viewedSession.getLastSeen());
                 } catch (NotFoundException e) {
-                    rr = new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), null);
+                    rowResponse = new RowResponse(row, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), null);
                 }
             }
             else
             {
-                rr = new RowResponse(r, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
+                rowResponse = new RowResponse(row, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
             }
-            nrs.add(rr);
+            rowResponses.add(rowResponse);
         }
-        return nrs;
+        return rowResponses;
     }
 
-    public RowResponse matchRatesAndComment(Row r)
+    public RowResponse matchRatesAndComment(Row row)
     {
         if(globalSettings.getDatabaseLoaded().equals("true")) {
-            List<AdminRate> lrs = adminRateService.findByRowId(r.getAdded());
-            List<AdminComment> lcs = adminCommentService.findByRowId(r.getAdded());
+            List<AdminRate> adminRates = adminRateService.findByRowId(row.getAdded());
+            List<AdminComment> adminComments = adminCommentService.findByRowId(row.getAdded());
+            AdminUser adminUser = adminUserServiceCustom.getCurrentUser();
             try {
-                AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(r.getAdded(), adminUserServiceCustom.getCurrentUser().getEntityId());
-                return new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), viewedSession.getLastSeen());
+                AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(row.getAdded(), adminUser.getEntityId());
+                return new RowResponse(row, adminRates, adminComments, adminUser.getEntityId(), viewedSession.getLastSeen());
             } catch (NotFoundException e) {
-                return new RowResponse(r, lrs, lcs, adminUserServiceCustom.getCurrentUser().getEntityId(), null);
+                return new RowResponse(row, adminRates, adminComments, adminUser.getEntityId(), null);
             }
         }
         else
         {
-            return new RowResponse(r, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
+            return new RowResponse(row, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
         }
     }
 

@@ -134,7 +134,9 @@ angular.module('CallForPaper')
       },
       "previewModal": {
         "title" : "Prévisualisation",
-        "confirm" : "OK"
+        "confirm" : "OK",
+        "nothingToPreview" : "Rien à prévisualiser",
+        "mdSupported" : "Markdown supporté"
       },
       "editModal": {
         "title" : "Edition",
@@ -199,7 +201,7 @@ angular.module('CallForPaper')
         "previous": "Talk précédente",
         "notReviewedYet": "Pas encore notés",
         "edit": "Editer",
-        "delete": "Supprimers",
+        "delete": "Supprimer",
         "allType": "Tous",
         "newMessages": "Nouveaux messages"
 
@@ -380,8 +382,10 @@ angular.module('CallForPaper')
         "cancel" : "Cancel"
       },
       "previewModal": {
-        "title" : "Previsualisation",
-        "confirm" : "OK"
+        "title" : "Preview",
+        "confirm" : "OK",
+        "nothingToPreview" : "Nothing to preview",
+        "mdSupported" : "Markdown supported"
       },
       "editModal": {
         "title" : "Edition",
@@ -445,8 +449,8 @@ angular.module('CallForPaper')
         "next": "Next talk",
         "previous": "Previous talk",
         "notReviewedYet": "Not reviewed yet",
-        "edit": "Editer",
-        "delete": "Supprimers",
+        "edit": "Edit",
+        "delete": "Delete",
         "allType": "All",
         "newMessages": "New messages"
       },

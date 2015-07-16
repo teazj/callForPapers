@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminDraft', 'localStorageService', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminDraft, localStorageService) {
+	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminDraft', 'localStorageService', 'lodash', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminDraft, localStorageService, lodash) {
 		var sessions = []
 		$scope.sessions = [];
 		$scope.sessionsAll = [];
@@ -14,13 +14,11 @@ angular.module('CallForPaper')
 				return session;
 			});
 
-			var getUnique = function(array) {
-				var counts = {};
-				for (var i = 0; i < array.length; i++) {
-					var name = $filter('removeAccents')(angular.lowercase(array[i].fullname))
-					counts[name] = 1 + (counts[name] || 0);
+			var getUnique = function(sessions) {
+				for (var i = 0; i < sessions.length; i++) {
+					var name = $filter('removeAccents')(angular.lowercase(sessions[i].fullname))
 				}
-				return Object.keys(counts).length;
+				return lodash.uniq(sessions, 'fullname').length
 			}
 
 			$scope.uniqueUserCount = getUnique(sessions);
@@ -68,120 +66,76 @@ angular.module('CallForPaper')
 			return def;
 		};
 
-		var updateTable = function() {
-			var tableParamsString = localStorageService.get('tableParams');
-			var initialParams;
-			if (tableParamsString !== null && localStorageService.isSupported) {
-				try{
-					initialParams = angular.fromJson(tableParamsString);
-				}catch(e) {
-					initialParams = {
-						count: 10,
-						filter: {
-							fullname: '', // initial filter
-							description: '',
-							difficulty: '',
-							track: '',
-							reviewed: ''
-						},
-						sorting: {
-							added: 'desc'
-						}
-					};
-				}
-			} else {
-				initialParams = {
-					count: 10,
-					filter: {
-						fullname: '', // initial filter
-						description: '',
-						difficulty: '',
-						track: '',
-						reviewed: ''
-					},
-					sorting: {
-						added: 'desc'
-					}
-				};
+		var getData = function($defer, params, type) {
+			// use build-in angular filter
+			var orderedData = params.filter() ?
+				$filter('filter')(sessions, params.filter()) : sessions;
+
+			orderedData = $filter('filter')(orderedData, {
+				'type': type
+			});
+
+			orderedData = params.sorting() ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
+
+			$scope.sessions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+
+			params.total(orderedData.length); // set total for recalc pagination
+			if (localStorageService.isSupported) {
+				localStorageService.set('tableParams', params.$params);
 			}
-			$scope.tableParams = new ngTableParams(
-				initialParams
-				, {
-				filterDelay: 0,
-				total: sessions.length, // length of data
-				getData: function($defer, params) {
-					// use build-in angular filter
-					var orderedData = params.filter() ?
-						$filter('filter')(sessions, params.filter()) : sessions;
-
-					orderedData = $filter('filter')(orderedData, {'type' : ''});
-
-					orderedData = params.sorting() ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-
-					$scope.sessions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-					params.total(orderedData.length); // set total for recalc pagination
-					if(localStorageService.isSupported) {
-						localStorageService.set('tableParams', params.$params);
-					}
-					$defer.resolve($scope.sessions);
-				}
-			});
-			$scope.tableParamsConference = new ngTableParams(
-				initialParams
-				, {
-				filterDelay: 0,
-				total: sessions.length, // length of data
-				getData: function($defer, params) {
-					// use build-in angular filter
-					var orderedData = params.filter() ?
-						$filter('filter')(sessions, params.filter()) : sessions;
-
-					orderedData = $filter('filter')(orderedData, {'type' : 'conference'});
-
-					orderedData = params.sorting() ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-
-					$scope.sessions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-					params.total(orderedData.length); // set total for recalc pagination
-					if(localStorageService.isSupported) {
-						localStorageService.set('tableParams', params.$params);
-					}
-					$defer.resolve($scope.sessions);
-				}
-			});
-			$scope.tableParamsCodelab = new ngTableParams(
-				initialParams
-				, {
-				filterDelay: 0,
-				total: sessions.length, // length of data
-				getData: function($defer, params) {
-					// use build-in angular filter
-					var orderedData = params.filter() ?
-						$filter('filter')(sessions, params.filter()) : sessions;
-
-					orderedData = $filter('filter')(orderedData, {'type' : 'codelab'});
-
-					orderedData = params.sorting() ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-
-					$scope.sessions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-					params.total(orderedData.length); // set total for recalc pagination
-					if(localStorageService.isSupported) {
-						localStorageService.set('tableParams', params.$params);
-					}
-					$defer.resolve($scope.sessions);
-				}
-			});
+			$defer.resolve($scope.sessions);
 		}
 
-
-		//Test Changes
-		$scope.update = function(val) {
-			$scope.property = val;
-			$timeout(function() {
-				alert("localStorage value: " + localStorageService.get('property'));
-			});
+		var updateTable = function() {
+			var tableParamsString = localStorageService.get('tableParams');
+			var defaultParams = {
+				count: 10,
+				filter: {
+					fullname: '', // initial filter
+					description: '',
+					difficulty: '',
+					track: '',
+					reviewed: ''
+				},
+				sorting: {
+					added: 'desc'
+				}
+			};
+			var initialParams;
+			if (tableParamsString !== null && localStorageService.isSupported) {
+				try {
+					initialParams = angular.fromJson(tableParamsString);
+				} catch (e) {
+					initialParams = defaultParams;
+				}
+			} else {
+				initialParams = defaultParams;
+			}
+			
+			$scope.tableParams = new ngTableParams(
+				initialParams, {
+					filterDelay: 0,
+					total: sessions.length, // length of data
+					getData: function($defer, params) {
+						getData($defer, params, '');
+					}
+				});
+			$scope.tableParamsConference = new ngTableParams(
+				initialParams, {
+					filterDelay: 0,
+					total: sessions.length, // length of data
+					getData: function($defer, params) {
+						getData($defer, params, 'conference');
+					}
+				});
+			$scope.tableParamsCodelab = new ngTableParams(
+				initialParams, {
+					filterDelay: 0,
+					total: sessions.length, // length of data
+					getData: function($defer, params) {
+						getData($defer, params, 'codelab');
+					}
+				});
 		}
 
 		$scope.handleNotReviewed = function() {

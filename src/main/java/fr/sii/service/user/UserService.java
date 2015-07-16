@@ -16,21 +16,21 @@ public class UserService {
         this.userRespository = userRespository;
     }
 
-    public User save(User u)
+    public User save(User user)
         {
-            User s = userRespository.save(u);
+            User s = userRespository.save(user);
             return s;
         }
 
-        public User put(Long id,User u)
+        public User put(Long id,User user)
         {
-            User uCopy = (User) u.clone(); // Avoid different persistence manager
-            User pu = findById(id);
-            if(pu != null)
+            User userCopy = (User) user.clone(); // Avoid different persistence manager
+            User persistedUser = findById(id);
+            if(persistedUser != null)
             {
                 userRespository._delete(id);
-                uCopy.setEntityId(pu.getEntityId());
-                return userRespository.save(uCopy);
+                userCopy.setEntityId(persistedUser.getEntityId());
+                return userRespository.save(userCopy);
             }
             return null;
         }
@@ -47,30 +47,30 @@ public class UserService {
 
         public User findById(Long id)
         {
-            List<User> r = userRespository.findByEntityId(id);
-            if(r.size() > 0)
+            List<User> users = userRespository.findByEntityId(id);
+            if(!users.isEmpty())
 
-                return r.get(0);
+                return users.get(0);
             else
                 return null;
         }
 
         public User findByemail(String email)
         {
-            List<User> r = userRespository.findByEmail(email);
-            if(r.size() > 0)
+            List<User> users = userRespository.findByEmail(email);
+            if(!users.isEmpty())
 
-                return r.get(0);
+                return users.get(0);
             else
                 return null;
         }
 
         public User findByVerifyToken(String verifyToken)
         {
-            List<User> r = userRespository.findByVerifyToken(verifyToken);
-            if(r.size() > 0)
+            List<User> users = userRespository.findByVerifyToken(verifyToken);
+            if(!users.isEmpty())
 
-                return r.get(0);
+                return users.get(0);
             else
                 return null;
         }
@@ -79,15 +79,15 @@ public class UserService {
         {
             switch (provider) {
                 case GOOGLE:
-                    List<User> r = userRespository.findByGoogle(providerId);
-                    if(r.size() > 0)
-                        return r.get(0);
+                    List<User> users = userRespository.findByGoogle(providerId);
+                    if(!users.isEmpty())
+                        return users.get(0);
                     else
                         return null;
                 case GITHUB:
-                    List<User> r2 = userRespository.findByGithub(providerId);
-                    if(r2.size() > 0)
-                        return r2.get(0);
+                    List<User> users2 = userRespository.findByGithub(providerId);
+                    if(!users2.isEmpty())
+                        return users2.get(0);
                     else
                         return null;
                 default:

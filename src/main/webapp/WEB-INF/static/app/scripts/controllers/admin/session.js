@@ -34,7 +34,7 @@ angular.module('CallForPaper')
 		var setViewed = function() {
 			AdminSession.setViewed({
 				id: $stateParams.id
-			},{});
+			}, {});
 		}
 
 
@@ -141,15 +141,18 @@ angular.module('CallForPaper')
 			AdminRate.getByRowId({
 				'rowId': $stateParams.id
 			}, function(ratesTmp) {
+				// number of votes
 				var votedCount = ratesTmp.reduce(function(x, y) {
 					var i = y.rate !== 0 ? 1 : 0;
 					return i + x;
 				}, 0);
+				// average
 				$scope.mean = ratesTmp.reduce(function(x, y) {
 					return y.rate + x;
 				}, 0) / (votedCount == 0 ? 1 : votedCount);
 
 				AuthService.getCurrentUser().then(function(userInfo) {
+					// remove current user from list
 					$scope.rates = ratesTmp.filter(function(element) {
 						return element.user.email !== userInfo.email;
 					})
@@ -238,25 +241,67 @@ angular.module('CallForPaper')
 			});
 		}
 
-		$scope.changed = false;
 		/**
-		 * Reset all other checkbox and vote
+		 * Handle checkbox/ratiung states
+		 */
+		const NO_VOTE = 1;
+		const LOVE = 2;
+		const HATE = 3;
+		$scope.changed = false;
+		var voteState = function(state) {
+			$scope.changed = true;
+			switch (state) {
+				case NO_VOTE:
+					if ($scope.noVote === true) {
+						$scope.yourRate.rate = 0;
+						$scope.yourRate.hate = false;
+						$scope.yourRate.love = false;
+						$scope.hate = false;
+						$scope.love = false;
+					} else {
+						$scope.yourRate.rate = 0;
+						$scope.noVote = false
+						$scope.hate = false;
+						$scope.love = false;
+					}
+				break;
+				case HATE:
+					if ($scope.hate === true) {
+						$scope.yourRate.rate = 1;
+						$scope.yourRate.hate = true;
+						$scope.yourRate.love = false;
+						$scope.love = false;
+						$scope.noVote = false
+					} else {
+						$scope.yourRate.rate = 0;
+						$scope.noVote = false
+						$scope.hate = false;
+						$scope.love = false;
+					}
+				break;
+				case LOVE:
+					if ($scope.love === true) {
+						$scope.yourRate.rate = 5;
+						$scope.yourRate.hate = false;
+						$scope.yourRate.love = true;
+						$scope.hate = false;
+						$scope.noVote = false
+					} else {
+						$scope.yourRate.rate = 0;
+						$scope.noVote = false
+						$scope.hate = false;
+						$scope.love = false;
+					}
+				break;
+			}
+		}
+
+		/**
+		 * Reset all other checkbox and vote 0
 		 * @return {void}
 		 */
 		$scope.handleNoVote = function() {
-			$scope.changed = true;
-			if ($scope.noVote === true) {
-				$scope.yourRate.rate = 0;
-				$scope.yourRate.hate = false;
-				$scope.yourRate.love = false;
-				$scope.hate = false;
-				$scope.love = false;
-			} else {
-				$scope.yourRate.rate = 0;
-				$scope.noVote = false
-				$scope.hate = false;
-				$scope.love = false;
-			}
+			voteState(NO_VOTE)
 		}
 
 		/**
@@ -264,39 +309,15 @@ angular.module('CallForPaper')
 		 * @return {void}
 		 */
 		$scope.handleHate = function() {
-			$scope.changed = true;
-			if ($scope.hate === true) {
-				$scope.yourRate.rate = 1;
-				$scope.yourRate.hate = true;
-				$scope.yourRate.love = false;
-				$scope.love = false;
-				$scope.noVote = false
-			} else {
-				$scope.yourRate.rate = 0;
-				$scope.noVote = false
-				$scope.hate = false;
-				$scope.love = false;
-			}
+			voteState(HATE)
 		}
 
 		/**
-		 * Reset all other checkbox and vote 4
+		 * Reset all other checkbox and vote 5
 		 * @return {void}
 		 */
 		$scope.handleLove = function() {
-			$scope.changed = true;
-			if ($scope.love === true) {
-				$scope.yourRate.rate = 5;
-				$scope.yourRate.hate = false;
-				$scope.yourRate.love = true;
-				$scope.hate = false;
-				$scope.noVote = false
-			} else {
-				$scope.yourRate.rate = 0;
-				$scope.noVote = false
-				$scope.hate = false;
-				$scope.love = false;
-			}
+			voteState(LOVE)
 		}
 
 		/**

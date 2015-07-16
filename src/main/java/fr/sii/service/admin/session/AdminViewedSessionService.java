@@ -29,24 +29,25 @@ public class AdminViewedSessionService {
     }
 
     public AdminViewedSession toOne(List<AdminViewedSession> list) throws NotFoundException {
-        if(list != null && list.size() > 0) {
+        if(!list.isEmpty()) {
             return list.get(0);
         }
         throw new NotFoundException("");
     }
 
-    public AdminViewedSession save(AdminViewedSession r) {
-        return adminViewedSessionRepository.save(r);
+    public AdminViewedSession save(AdminViewedSession adminViewedSession) {
+        return adminViewedSessionRepository.save(adminViewedSession);
     }
 
-    public AdminViewedSession put(Long rowId, Long userId, AdminViewedSession r) {
+    public AdminViewedSession put(Long rowId, Long userId, AdminViewedSession adminViewedSession) {
         try {
             AdminViewedSession current = findByRowIdAndUserId(rowId, userId);
-            r.setEntityId(current.getEntityId());
+            adminViewedSession.setEntityId(current.getEntityId());
             delete(current.getEntityId());
         } catch (NotFoundException e) {
+            // first time => not found
         }
-        return adminViewedSessionRepository.save(r);
+        return adminViewedSessionRepository.save(adminViewedSession);
     }
 
     public void delete(Long id) throws NotFoundException {
@@ -56,8 +57,8 @@ public class AdminViewedSessionService {
 
     public AdminViewedSession findOne(Long id) throws NotFoundException {
         List<AdminViewedSession> sessions = adminViewedSessionRepository.findByEntityId(id);
-        if(sessions.size() == 0) {
-            throw new NotFoundException("");
+        if(sessions.isEmpty()) {
+            throw new NotFoundException("Viewed session record not found");
         }
         return sessions.get(0);
     }
