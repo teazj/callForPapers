@@ -7,12 +7,13 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by tmaugin on 19/05/2015.
  */
-public class RowSession implements Row{
+public class RowSession implements Row, Serializable {
 
     @NotNull(message = "Email field is required")
     private String email;

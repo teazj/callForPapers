@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminDraft', 'localStorageService', 'lodash', 'NextPreviousSessionService', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminDraft, localStorageService, lodash, NextPreviousSessionService) {
+	.controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminStats', 'localStorageService', 'NextPreviousSessionService', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminStats, localStorageService, NextPreviousSessionService) {
 		var sessions = []
 		$scope.sessions = [];
 		$scope.sessionsAll = [];
@@ -14,21 +14,12 @@ angular.module('CallForPaper')
 				return session;
 			});
 
-			var getUnique = function(sessions) {
-				for (var i = 0; i < sessions.length; i++) {
-					var name = $filter('removeAccents')(angular.lowercase(sessions[i].fullname))
-				}
-				return lodash.uniq(sessions, 'fullname').length
-			}
+			AdminStats.meter().$promise.then(function(meterTmp) {
+				$scope.stats = meterTmp;
+			});
 
-			$scope.uniqueUserCount = getUnique(sessions);
 			$scope.sessionsAll = sessions;
 			updateTable();
-		});
-
-		$scope.drafts = [];
-		AdminDraft.query().$promise.then(function(draftsTmp) {
-			$scope.drafts = draftsTmp;
 		});
 
 		$scope.difficulties = function(column) {

@@ -17,15 +17,15 @@
 				<div class="pull-left">
 					<span class="filterbuttons btn-group">
 						<button class="btn btn-default">
-						<span tooltip="{{'admin.speaker' | translate}}" class="mdi-action-perm-identity">&nbsp;{{uniqueUserCount}}</span>
+						<span tooltip="{{'admin.speaker' | translate}}" class="mdi-action-perm-identity">&nbsp;{{stats.meter.speakers}}</span>
 						</button>
 					</span>
 					<span class="filterbuttons btn-group">
 						<button class="btn btn-default">
-						<span tooltip="{{'admin.validated' | translate}}" class="mdi-communication-message">&nbsp;{{sessionsAll.length}}</span>
+						<span tooltip="{{'admin.validated' | translate}}" class="mdi-communication-message">&nbsp;{{stats.meter.talks}}</span>
 						</button>
 						<button class="btn btn-default">
-						<span tooltip="{{'admin.draft' | translate}}" class="mdi-editor-insert-drive-file">&nbsp;{{drafts.length}}</span>
+						<span tooltip="{{'admin.draft' | translate}}" class="mdi-editor-insert-drive-file">&nbsp;{{stats.meter.drafts}}</span>
 						</button>
 					</span>
 				</div>

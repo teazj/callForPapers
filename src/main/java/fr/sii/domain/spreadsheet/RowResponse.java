@@ -1,16 +1,16 @@
 package fr.sii.domain.spreadsheet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.rate.AdminRate;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by tmaugin on 29/04/2015.
  */
-public class RowResponse extends RowSession {
+public class RowResponse extends RowSession implements Serializable {
     private List<AdminRate> adminRates;
     private List<AdminComment> adminComments;
     private Date lastSeen;
@@ -144,14 +144,5 @@ public class RowResponse extends RowSession {
             }
         }
         return lastModified;
-    }
-
-    @JsonIgnore
-    public List<AdminRate> getAdminRates() {
-        return adminRates;
-    }
-
-    public void setAdminRates(List<AdminRate> adminRates) {
-        this.adminRates = adminRates;
     }
 }
