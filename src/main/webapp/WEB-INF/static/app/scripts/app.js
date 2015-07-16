@@ -29,7 +29,8 @@ angular.module('CallForPaper', [
     'ngFileUpload',
     'hc.marked',
     'mdPreview',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'ngLodash'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
