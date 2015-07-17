@@ -29,10 +29,7 @@ import javax.cache.CacheException;
 import javax.cache.CacheFactory;
 import javax.cache.CacheManager;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SpreadsheetService {
@@ -100,15 +97,19 @@ public class SpreadsheetService {
                 List<AdminRate> adminRates = adminRateService.findByRowId(row.getAdded());
                 List<AdminComment> adminComments = adminCommentService.findByRowId(row.getAdded());
                 AdminUser adminUser = adminUserServiceCustom.getCurrentUser();
+                AdminRate adminRate = adminRateService.findByRowIdAndUserId(row.getAdded(), adminUser.getEntityId());
                 try {
                     AdminViewedSession viewedSession = adminViewedSessionService.findByRowIdAndUserId(row.getAdded(), adminUser.getEntityId());
                     rowResponse = new RowResponse(row, adminRates, adminComments, adminUser.getEntityId(), viewedSession.getLastSeen());
                 } catch (NotFoundException e) {
+                    // if lastSeen not found => null
                     rowResponse = new RowResponse(row, adminRates, adminComments, adminUser.getEntityId(), null);
                 }
+                rowResponse.setReviewed(adminRate != null);
             }
             else
             {
+                // for testing purpose
                 rowResponse = new RowResponse(row, new ArrayList<AdminRate>(), new ArrayList<AdminComment>());
             }
             rowResponses.add(rowResponse);
@@ -196,6 +197,8 @@ public class SpreadsheetService {
     }
 
     public List<RowResponse> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
+
+        // Use cache
         Cache cache;
         List<RowResponse> rowResponses = null;
         try {
@@ -211,6 +214,47 @@ public class SpreadsheetService {
         } catch (CacheException e) {
             e.printStackTrace();
             return matchRatesAndComment(spreadsheetRepository.getRowsSession());
+        }
+
+        // Add information for customized data (replace wrong cached ones)
+        AdminUser adminUser = adminUserServiceCustom.getCurrentUser();
+        List<AdminRate> adminRates = adminRateService.findByUserIdNoMatch(adminUser.getEntityId());
+        List<AdminViewedSession> adminViewedSessions = adminViewedSessionService.findByUserId(adminUser.getEntityId());
+        int matchRates = 0;
+        int matchViewedSessions = 0;
+        for(RowResponse rowResponse : rowResponses) {
+
+            rowResponse.setReviewed(false);
+            //all rates are setted
+            if(matchRates != adminRates.size()) {
+                // Reviewed or not
+                boolean reviewed = false;
+                int i = 0;
+                while (i < adminRates.size() && !reviewed) {
+                    if (adminRates.get(i).getRowId().longValue() == rowResponse.getAdded().longValue()) {
+                        reviewed = true;
+                        matchRates++;
+                    }
+                    i++;
+                }
+                rowResponse.setReviewed(reviewed);
+            }
+
+            rowResponse.setLastSeen(null);
+            //all viewedSessions are setted
+            if(matchViewedSessions != adminViewedSessions.size()) {
+                // LastSeen
+                Date lastSeen = null;
+                int i = 0;
+                while(i < adminViewedSessions.size() && lastSeen == null) {
+                    if(adminViewedSessions.get(i).getRowId().longValue() == rowResponse.getAdded().longValue()) {
+                        lastSeen = adminViewedSessions.get(i).getLastSeen();
+                        matchViewedSessions++;
+                    }
+                    i++;
+                }
+                rowResponse.setLastSeen(lastSeen);
+            }
         }
         return rowResponses;
     }

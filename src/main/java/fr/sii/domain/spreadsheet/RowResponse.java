@@ -12,9 +12,22 @@ import java.util.List;
  */
 public class RowResponse extends RowSession implements Serializable {
     private List<AdminRate> adminRates;
+    private boolean reviewed;
     private List<AdminComment> adminComments;
     private Date lastSeen;
     private Long userId;
+
+    public boolean getReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        this.reviewed = reviewed;
+    }
+
+    public void setLastSeen(Date lastSeen) {
+        this.lastSeen = lastSeen;
+    }
 
     public RowResponse(Row row, List<AdminRate> adminRates, List<AdminComment> adminComments, Long userId, Date lastSeen)
     {
@@ -84,16 +97,6 @@ public class RowResponse extends RowSession implements Serializable {
         this.adminComments = adminComments;
         this.userId = null;
         this.lastSeen = null;
-    }
-
-    public Boolean getReviewed() {
-        if(userId == null) return false;
-        for(AdminRate rate : adminRates) {
-            if(rate.getUserId().toString().equals((userId.toString()))) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Integer getNotViewedCount() {
