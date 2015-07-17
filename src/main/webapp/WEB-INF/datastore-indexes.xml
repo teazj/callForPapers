@@ -7,4 +7,8 @@
         <property name="rowId" direction="asc"/>
         <property name="added" direction="desc"/>
     </datastore-index>
+    <datastore-index kind="AdminComment" ancestor="false" source="auto">
+        <property name="rowId" direction="asc"/>
+        <property name="added" direction="asc"/>
+    </datastore-index>
 </datastore-indexes>
