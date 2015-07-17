@@ -5,6 +5,7 @@ angular.module('CallForPaper')
 		$scope.formData = {};
 		$scope.formData.phone = "";
 		$scope.formData.imageProfilKey = null;
+
 		$scope.$watch(function() {
 			return $scope.form.name.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone == "") && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid && $scope.form.twitter.$valid && $scope.form.googlePlus.$valid && $scope.form.github.$valid;
 		}, function(isValid) {
@@ -22,8 +23,13 @@ angular.module('CallForPaper')
 			}
 		})
 
+		/**
+		 * Get current user profil
+		 * @return {RestrictedUser}
+		 */
 		RestrictedUser.get(function(profil) {
 			if (profil !== undefined) {
+				// Parse for view model
 				for (var key in profil) {
 					if (profil.hasOwnProperty(key)) {
 						switch (key) {

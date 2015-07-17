@@ -6,6 +6,11 @@ angular.module('CallForPaper')
         $scope.alreadyVerified = false;
         $scope.notVerified = false;
 
+        /**
+         * Verify user account
+         * @param  {userId} 
+         * @param  {verificationToken}
+         */
         Verify.get($stateParams.id, $stateParams.token)
             .success(function(data, status) {
                 $auth.setToken(data.token, true);

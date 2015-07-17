@@ -15,6 +15,11 @@ angular.module('customFilters', [])
 			return "";
 		};
 	})
+	/**
+	 * Create twitter http link (<a href...) from a string
+	 * @param  {string}
+	 * @return {string}
+	 */
 	.filter('createLinks', function($sce) {
 		return function(str) {
 			if (str !== undefined) {
@@ -26,6 +31,11 @@ angular.module('customFilters', [])
 				return "";
 		}
 	})
+	/**
+	 * Remove all accents
+	 * @param  {string}
+	 * @return {string}
+	 */
 	.filter('removeAccents', function removeAccents() {
 		return function(source) {
 			if (!angular.isString(source))

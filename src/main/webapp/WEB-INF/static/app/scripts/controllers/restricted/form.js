@@ -17,10 +17,12 @@ angular.module('CallForPaper')
 
 		var id = $stateParams.id;
 		var parseRow = function(id) {
+			// If editing
 			if (id !== "") {
 				RestrictedDraft.get({
 					id: id
 				}).$promise.then(function(draft) {
+					// Parse returned row for view
 					if (draft.added !== undefined) {
 						for (var key in draft) {
 							if (draft.hasOwnProperty(key)) {
@@ -102,6 +104,7 @@ angular.module('CallForPaper')
 							}
 						}
 
+						// Get profile image / parse it
 						RestrictedUser.query(function(profil) {
 							if (profil !== undefined) {
 								for (var key in profil) {
@@ -121,11 +124,13 @@ angular.module('CallForPaper')
 						})
 
 					} else {
-						// not existing
+						// Not existing
 						$state.go("404");
 					}
 				})
 			} else {
+				// Not editing => new one
+				// Get user profil / parse it
 				RestrictedUser.query(function(profil) {
 					if (profil !== undefined) {
 						for (var key in profil) {
@@ -181,7 +186,8 @@ angular.module('CallForPaper')
 		parseRow(id);
 
 		/**
-		 * upload img then call update profil
+		 * [upload description]
+		 * @return {promise}
 		 */
 		var upload = function() {
 			var deferred = $q.defer();
@@ -216,6 +222,11 @@ angular.module('CallForPaper')
 			return deferred.promise;
 		};
 
+		/**
+		 * update profil
+		 * @param  {string} profilImageKey
+		 * @return {promise}
+		 */
 		var updateProfile = function(profilImageKey) {
 			var deferred = $q.defer();
 			// put
@@ -230,7 +241,7 @@ angular.module('CallForPaper')
 
 
 		/**
-		 * Send the form to the server
+		 * Upload profil image then update profil then save talk
 		 * @param  {Boolean}
 		 * @return {void}
 		 */

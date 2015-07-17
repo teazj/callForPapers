@@ -4,10 +4,17 @@ angular.module('CallForPaper')
 	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService) {
 		$scope.session = null;
 		$scope.adminEmail = null;
+
+		/**
+		 * Get session
+		 * @return {AdminSession}
+		 */
 		AdminSession.get({
 			id: $stateParams.id
 		}).$promise.then(function(sessionTmp) {
 			$scope.session = sessionTmp;
+
+			// Add links to socials
 			$scope.session.socialLinks = [];
 			if (sessionTmp.social !== null) {
 				var links = sessionTmp.social.split(',').map(function(value) {
@@ -18,8 +25,11 @@ angular.module('CallForPaper')
 			if (sessionTmp.twitter !== null) $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
 			if (sessionTmp.googlePlus !== null) $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
 			if (sessionTmp.github !== null) $scope.session.github = $filter('createLinks')(sessionTmp.github);
+			
+			// Set difficulty key
 			$scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
+			// Get profil image
 			CommonProfilImage.get({
 				id: $scope.session.userId
 			}).$promise.then(function(imgUriTmp) {
@@ -27,14 +37,23 @@ angular.module('CallForPaper')
 			});
 		});
 
+		// For gravatar
 		$scope.adminEmail = AuthService.user.email;
 
+		/**
+		 * Tell the server that comments have been seen
+		 * @return {void}
+		 */
 		var setViewed = function() {
 			AdminSession.setViewed({
 				id: $stateParams.id
 			}, {});
 		}
 
+		/**
+		 * Get next/previous session ID according to previous filter
+		 * @return {number}
+		 */
 		$scope.previous = NextPreviousSessionService.getNextSessions($stateParams.id);
 		$scope.next = NextPreviousSessionService.getPreviousSessions($stateParams.id);
 
@@ -53,6 +72,11 @@ angular.module('CallForPaper')
 		updateComments();
 
 		$scope.commentButtonDisabled = false;
+
+		/**
+		 * Post current comment in textarea
+		 * @return {AdminComment} posted comment
+		 */
 		$scope.postComment = function() {
 			$scope.commentButtonDisabled = true;
 			AdminComment.save({
@@ -68,7 +92,8 @@ angular.module('CallForPaper')
 		}
 
 		/**
-		 * edit comment
+		 * PUT comment on server
+		 * @return {AdminComment} edited comment
 		 */
 		var putComment = function(comment) {
 			AdminComment.update({
@@ -78,6 +103,11 @@ angular.module('CallForPaper')
 			}, function(c) {});
 		}
 
+		/**
+		 * Open modal for editing
+		 * @param  {AdminComment} comment to edit
+		 * @return {AdminComment} edited comment text
+		 */
 		$scope.editComment = function(localComment) {
 			var modalInstance = $modal.open({
 				animation: true,
@@ -98,7 +128,9 @@ angular.module('CallForPaper')
 		}
 
 		/**
-		 * delete comment
+		 * Delete comment
+		 * @param  {AdminComment} comment to edit
+		 * @return {AdminComment} blank comment
 		 */
 		var deleteComment = function(comment) {
 			AdminComment.delete({
@@ -108,6 +140,11 @@ angular.module('CallForPaper')
 			}, function(c) {});
 		}
 
+		/**
+		 * Open confirmation modal
+		 * @param  {AdminComment} comment to edit
+		 * @return  {void}
+		 */
 		$scope.deleteComment = function(localComment) {
 			var modalInstance = $modal.open({
 				animation: true,
@@ -178,6 +215,7 @@ angular.module('CallForPaper')
 		})
 
 		$scope.rateButtonDisabled = false;
+		
 		/*
 		 *	Post new rate
 		 */
