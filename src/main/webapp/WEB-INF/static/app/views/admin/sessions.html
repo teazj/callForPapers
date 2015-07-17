@@ -56,6 +56,9 @@
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
 											</td>
 											<td data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											<td sortable="'voteCount'" data-title="'admin.votes' | translate">
+												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -91,6 +94,9 @@
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
 											</td>
 											<td data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											<td sortable="'voteCount'" data-title="'admin.votes' | translate">
+												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -126,6 +132,9 @@
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
 											</td>
 											<td data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											<td sortable="'voteCount'" data-title="'admin.votes' | translate">
+												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+											</td>
 										</tr>
 									</table>
 								</div>
