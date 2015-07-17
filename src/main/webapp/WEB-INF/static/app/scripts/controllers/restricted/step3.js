@@ -37,9 +37,7 @@ angular.module('CallForPaper')
 				}, function() {
 					// cancel
 				});
-			}
-			else
-			{
+			} else {
 				//form not valid
 			}
 		}

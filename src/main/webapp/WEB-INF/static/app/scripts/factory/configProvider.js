@@ -2,8 +2,7 @@
 
 angular.module('CallForPaper')
 	.provider('$appConfig', function() {
-		this.$get = function()
-		{
+		this.$get = function() {
 			var $appConfig = {};
 			$appConfig.isConfigured = ['Application', '$q', '$state', function(Application, $q, $state) {
 				var deferred = $q.defer();

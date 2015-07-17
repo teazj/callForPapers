@@ -16,14 +16,12 @@ angular.module('CallForPaper')
 		$scope.formData.help = {};
 
 		var id = $stateParams.id;
-		var parseRow = function(id)
-		{
+		var parseRow = function(id) {
 			if (id !== "") {
 				RestrictedDraft.get({
 					id: id
 				}).$promise.then(function(draft) {
-					if(draft.added !== undefined)
-					{
+					if (draft.added !== undefined) {
 						for (var key in draft) {
 							if (draft.hasOwnProperty(key)) {
 								switch (key) {
@@ -40,7 +38,10 @@ angular.module('CallForPaper')
 										if (draft[key] !== null) $scope.formData.session.description = draft[key];
 										break;
 									case "difficulty":
-										if (draft[key] !== null) { $scope.formData.session.difficulty = draft[key]; $scope.hoverDifficulty(draft[key]); }
+										if (draft[key] !== null) {
+											$scope.formData.session.difficulty = draft[key];
+											$scope.hoverDifficulty(draft[key]);
+										}
 										break;
 									case "email":
 										if (draft[key] !== null) $scope.formData.speaker.email = draft[key];
@@ -70,7 +71,11 @@ angular.module('CallForPaper')
 										if (draft[key] !== null) $scope.formData.session.sessionName = draft[key];
 										break;
 									case "social":
-										if (draft[key] !== null && draft[key] != "") $scope.formData.speaker.socialArray = draft[key].split(", ").map(function(value){ return {text : value}; });
+										if (draft[key] !== null && draft[key] != "") $scope.formData.speaker.socialArray = draft[key].split(", ").map(function(value) {
+											return {
+												text: value
+											};
+										});
 										break;
 									case "twitter":
 										if (draft[key] !== null) $scope.formData.speaker.twitter = draft[key];
@@ -102,7 +107,7 @@ angular.module('CallForPaper')
 								for (var key in profil) {
 									if (profil.hasOwnProperty(key)) {
 										switch (key) {
-											
+
 											case "imageProfilKey":
 												if (profil[key] !== undefined) $scope.formData.speaker.imageProfilKey = profil[key];
 												break;
@@ -115,16 +120,12 @@ angular.module('CallForPaper')
 							}
 						})
 
-					}
-					else
-					{
+					} else {
 						// not existing
 						$state.go("404");
 					}
 				})
-			}
-			else
-			{
+			} else {
 				RestrictedUser.query(function(profil) {
 					if (profil !== undefined) {
 						for (var key in profil) {
@@ -227,7 +228,7 @@ angular.module('CallForPaper')
 			return deferred.promise;
 		}
 
-		
+
 		/**
 		 * Send the form to the server
 		 * @param  {Boolean}
@@ -240,20 +241,20 @@ angular.module('CallForPaper')
 			angular.extend(model, $scope.formData.speaker);
 			angular.extend(model, $scope.formData.session);
 
-			upload().then(function(profilImageKey){
-				updateProfile(profilImageKey).then(function(){
+			upload().then(function(profilImageKey) {
+				updateProfile(profilImageKey).then(function() {
 					if (id !== "") {
 						// put
-						RestrictedSession.update({id : id}, model).$promise.then(function(success) {
+						RestrictedSession.update({
+							id: id
+						}, model).$promise.then(function(success) {
 							$scope.formData.sending = false;
 							$state.go('app.form.result');
 						}, function(error) {
 							$scope.formData.sending = false;
 							$scope.sendError = true;
 						});
-					}
-					else
-					{
+					} else {
 						// save
 						RestrictedSession.save(model).$promise.then(function(success) {
 							$scope.formData.sending = false;
@@ -264,11 +265,11 @@ angular.module('CallForPaper')
 						});
 					}
 
-				}, function(){
+				}, function() {
 					$scope.formData.sending = false;
 					$scope.sendError = true;
 				})
-			},function(err){
+			}, function(err) {
 				$scope.formData.sending = false;
 				$scope.sendError = true;
 			})
@@ -288,24 +289,23 @@ angular.module('CallForPaper')
 
 			// empty previous completed field
 			for (var key in model) {
-				if(model[key] === undefined)
-				{
+				if (model[key] === undefined) {
 					model[key] = "";
 				}
 			}
 
 			if (id !== "") {
 				// put
-				RestrictedDraft.update({id : id}, model).$promise.then(function(success) {
+				RestrictedDraft.update({
+					id: id
+				}, model).$promise.then(function(success) {
 					$scope.formData.sending = false;
 					$state.go('app.dashboard');
 				}, function(error) {
 					$scope.formData.sending = false;
 					$scope.sendError = true;
 				});
-			}
-			else
-			{
+			} else {
 				// save
 				RestrictedDraft.save(model).$promise.then(function(success) {
 					$scope.formData.sending = false;

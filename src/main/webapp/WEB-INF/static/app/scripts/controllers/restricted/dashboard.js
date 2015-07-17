@@ -40,8 +40,7 @@ angular.module('CallForPaper')
 		}
 
 		$scope.konamiCode = false;
-		$scope.launchKonami = function()
-		{
+		$scope.launchKonami = function() {
 			$scope.konamiCode = !$scope.konamiCode;
 			$scope.$apply();
 		}

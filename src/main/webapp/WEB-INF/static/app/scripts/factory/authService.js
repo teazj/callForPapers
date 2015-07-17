@@ -113,12 +113,9 @@ angular.module('CallForPaper')
       authService.getCurrentUser().then(function(userInfo) {
         // connected
         if (userInfo.connected === true) {
-          if(userInfo.config === true)
-          {
+          if (userInfo.config === true) {
             deferred.resolve();
-          }
-          else
-          {
+          } else {
             deferred.reject();
             $state.go("config.403");
           }
@@ -152,7 +149,7 @@ angular.module('CallForPaper')
       } else {
         if (jwtHelper.isTokenExpired($auth.getToken())) {
           $location.path('/login');
-        } else if($auth.getPayload().verified === false){
+        } else if ($auth.getPayload().verified === false) {
           $location.path('/login');
         } else {
           deferred.resolve();
@@ -165,21 +162,21 @@ angular.module('CallForPaper')
      * Verify if the user is currently logged and has confirmed his email (or logged with provider)
      */
     authService.isVerified = function() {
-      if (!$auth.isAuthenticated()) {
-        return false;
-      } else {
-        if (jwtHelper.isTokenExpired($auth.getToken())) {
-          return false;
-        } else if($auth.getPayload().verified === false){
+        if (!$auth.isAuthenticated()) {
           return false;
         } else {
-          return true;
+          if (jwtHelper.isTokenExpired($auth.getToken())) {
+            return false;
+          } else if ($auth.getPayload().verified === false) {
+            return false;
+          } else {
+            return true;
+          }
         }
       }
-    }
-    /**
-     * Verify if the user is currently logged
-     */
+      /**
+       * Verify if the user is currently logged
+       */
     authService.authenticated = ['$q', '$location', '$auth', 'jwtHelper', function($q, $location, $auth, jwtHelper) {
       var deferred = $q.defer();
       if (!$auth.isAuthenticated()) {

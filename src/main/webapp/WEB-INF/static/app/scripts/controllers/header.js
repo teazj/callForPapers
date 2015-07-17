@@ -13,7 +13,9 @@ angular.module('CallForPaper')
 		});
 
 		$scope.isAuthenticated = $auth.isAuthenticated();
-		$scope.$on('authenticate', function() { $scope.isAuthenticated = $auth.isAuthenticated(); });
+		$scope.$on('authenticate', function() {
+			$scope.isAuthenticated = $auth.isAuthenticated();
+		});
 
 		/**
 		 * Get eventName

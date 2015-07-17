@@ -6,9 +6,9 @@ angular.module('CallForPaper')
     $scope.alreadyExists = false;
     $scope.loading = false;
     $scope.captcha = null;
-    $scope.setResponse = function (response) {
-        // send the `response` to your server for verification.
-        $scope.captcha = response;
+    $scope.setResponse = function(response) {
+      // send the `response` to your server for verification.
+      $scope.captcha = response;
     };
 
     $scope.signup = function() {
@@ -24,8 +24,8 @@ angular.module('CallForPaper')
         if (response.status === 409) {
           $scope.alreadyExists = true;
         } else if (response.status === 400) {
-            $scope.password = "";
-            $scope.confirmPassword = "";
+          $scope.password = "";
+          $scope.confirmPassword = "";
         }
       });
     };

@@ -25,7 +25,7 @@ angular.module('CallForPaper')
                     $injector.get('$state').go('404');
                 } else if (rejection.status === 409) {
                     // Nothing
-                } else if(rejection.status === 500 && rejection.data.error === "Internal Server Error") {
+                } else if (rejection.status === 500 && rejection.data.error === "Internal Server Error") {
                     // Nothing
                 } else {
                     Notification.error({

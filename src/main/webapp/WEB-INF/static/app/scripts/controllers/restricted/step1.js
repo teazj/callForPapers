@@ -20,11 +20,9 @@ angular.module('CallForPaper')
 		})
 
 		$scope.verify = false;
-		$scope.doVerify = function()
-		{
+		$scope.doVerify = function() {
 			$scope.verify = true;
-			if($scope.$parent.formData.steps.isValid[0])
-			{
+			if ($scope.$parent.formData.steps.isValid[0]) {
 				$state.go('app.form.step2');
 			}
 		}

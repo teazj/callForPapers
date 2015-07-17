@@ -253,7 +253,7 @@ angular.module('CallForPaper')
 						$scope.hate = false;
 						$scope.love = false;
 					}
-				break;
+					break;
 				case HATE:
 					if ($scope.hate === true) {
 						$scope.yourRate.rate = 1;
@@ -267,7 +267,7 @@ angular.module('CallForPaper')
 						$scope.hate = false;
 						$scope.love = false;
 					}
-				break;
+					break;
 				case LOVE:
 					if ($scope.love === true) {
 						$scope.yourRate.rate = 5;
@@ -281,7 +281,7 @@ angular.module('CallForPaper')
 						$scope.hate = false;
 						$scope.love = false;
 					}
-				break;
+					break;
 			}
 		}
 

@@ -11,63 +11,61 @@ angular.module('CallForPaper')
         "login": "Se connecter",
         "logout": "Se déconnecter",
         "dashboard": "Dashboard",
-        "profil" : "Profil"
+        "profil": "Profil"
       },
-      "dashboard" :
-      {
-        "createNewSession" : "Créer un nouveau talk",
-        "editionTalks" : "Talks en cours d'édition",
-        "noEditionTalks" : "Vous n'avez pas de talk en cours d'édition",
-        "sendedTalks" : "Talks envoyés",
-        "draftModifiedAt" : "Brouillon modifié le ",
-        "modifiedAt" : "modifié le ",
-        "postedAt" : "ajouté le ",
-        "noSendedTalks" : "Vous n'avez pas encore proposé de talk",
-        "verification" : "Vérification",
-        "verificationNeeded" : "Un e-mail a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
+      "dashboard": {
+        "createNewSession": "Créer un nouveau talk",
+        "editionTalks": "Talks en cours d'édition",
+        "noEditionTalks": "Vous n'avez pas de talk en cours d'édition",
+        "sendedTalks": "Talks envoyés",
+        "draftModifiedAt": "Brouillon modifié le ",
+        "modifiedAt": "modifié le ",
+        "postedAt": "ajouté le ",
+        "noSendedTalks": "Vous n'avez pas encore proposé de talk",
+        "verification": "Vérification",
+        "verificationNeeded": "Un e-mail a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
       },
-      "profil" :
-      {
-        "save" : "Sauvegarder",
-        "success" : "Profil sauvegardé",
-        "error" : "Erreur lors de l'enregistrement",
-        "avatar" : "Image de profil :",
-        "hintAvatar" : "Choisissez une photo pour le site web (taille 360x360 et 5Mo maximum)",
-        "dropImage" : "Déposer l'image ici",
-        "selectImage" : "Parcourir"
+      "profil": {
+        "save": "Sauvegarder",
+        "success": "Profil sauvegardé",
+        "error": "Erreur lors de l'enregistrement",
+        "avatar": "Image de profil :",
+        "hintAvatar": "Choisissez une photo pour le site web (taille 360x360 et 5Mo maximum)",
+        "dropImage": "Déposer l'image ici",
+        "selectImage": "Parcourir"
       },
-      "login" : {
-        "email" : "Email",
-        "password" : "Mot de passe",
-        "login" : "Se connecter",
-        "noAccount" : "Vous n'avez pas encore de compte ?",
-        "signup" : "S'enregistrer",
-        "or" : "Ou",
-        "signGoogle" : "Se connecter avec Google",
-        "signGithub" : "Se connecter avec Github",
+      "login": {
+        "email": "Email",
+        "password": "Mot de passe",
+        "login": "Se connecter",
+        "noAccount": "Vous n'avez pas encore de compte ?",
+        "signup": "S'enregistrer",
+        "or": "Ou",
+        "signGoogle": "Se connecter avec Google",
+        "signGithub": "Se connecter avec Github",
         "wait": "Veuillez patienter",
         "badCredentials": "Login ou mot de passe incorrect",
-        "alreadyLinked" : "Il existe déjà un utilisateur associé à ce fournisseur"
+        "alreadyLinked": "Il existe déjà un utilisateur associé à ce fournisseur"
       },
-      "signup" : {
-        "signup" : "S'enregistrer",
-        "email" : "Email",
-        "password" : "Mot de passe",
-        "confirmPassword" : "Confirmez le mot de passe",
-        "yesAccount" : "Vous avez déjà un compte ?",
-        "loginNow" : "Se connecter",
-        "emailRequired" : "L'adresse email est obligatoire",
-        "emailPattern" : "Votre adresse email est invalide",
-        "passwordRequired" : "Le mot de passe est obligatoire",
-        "passwordMinLength" : "Le mot de passe doit contenir au moins 6 caractères",
-        "passwordMatch" : "Les mots de passe doivent être identiques",
-        "alreadyExists" : "Il existe déjà un utilisateur associé à cet adresse e-mail"
+      "signup": {
+        "signup": "S'enregistrer",
+        "email": "Email",
+        "password": "Mot de passe",
+        "confirmPassword": "Confirmez le mot de passe",
+        "yesAccount": "Vous avez déjà un compte ?",
+        "loginNow": "Se connecter",
+        "emailRequired": "L'adresse email est obligatoire",
+        "emailPattern": "Votre adresse email est invalide",
+        "passwordRequired": "Le mot de passe est obligatoire",
+        "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+        "passwordMatch": "Les mots de passe doivent être identiques",
+        "alreadyExists": "Il existe déjà un utilisateur associé à cet adresse e-mail"
       },
-      "verify" : {
-        "title" : "Verification de l'email",
-        "verified" : "Votre email a été vérifié",
-        "alreadyVerified" : "Ce compte a déjà été vérifié",
-        "notVerified" : "Erreur de vérification"
+      "verify": {
+        "title": "Verification de l'email",
+        "verified": "Votre email a été vérifié",
+        "alreadyVerified": "Ce compte a déjà été vérifié",
+        "notVerified": "Erreur de vérification"
       },
       "step1": {
         "warning": "Attention les informations enregistrées lors de cette étape modifieront votre profil pour tous les talks déjà proposés.",
@@ -125,32 +123,32 @@ angular.module('CallForPaper')
         "sendError": "Erreur lors de l'envoi veuillez réessayer"
       },
       "confirmModal": {
-        "title" : "Confirmation",
-        "text" : "Êtes-vous sûr de vouloir envoyer ce talk ? Une fois envoyé, vous ne serez pas en mesure de le modifier.",
-        "textDelete" : "Êtes-vous sûr de vouloir suprimer cette session ? Une fois supprimée, vous ne serez pas en mesure de la restaurer.",
-        "confirm" : "Envoyer",
-        "confirmDelete" : "Supprimer",
-        "cancel" : "Annuler"
+        "title": "Confirmation",
+        "text": "Êtes-vous sûr de vouloir envoyer ce talk ? Une fois envoyé, vous ne serez pas en mesure de le modifier.",
+        "textDelete": "Êtes-vous sûr de vouloir suprimer cette session ? Une fois supprimée, vous ne serez pas en mesure de la restaurer.",
+        "confirm": "Envoyer",
+        "confirmDelete": "Supprimer",
+        "cancel": "Annuler"
       },
       "previewModal": {
-        "title" : "Prévisualisation",
-        "confirm" : "OK",
-        "nothingToPreview" : "Rien à prévisualiser",
-        "mdSupported" : "Markdown supporté"
+        "title": "Prévisualisation",
+        "confirm": "OK",
+        "nothingToPreview": "Rien à prévisualiser",
+        "mdSupported": "Markdown supporté"
       },
       "editModal": {
-        "title" : "Edition",
-        "confirm" : "Editer",
-        "cancel" : "Annuler"
+        "title": "Edition",
+        "confirm": "Editer",
+        "cancel": "Annuler"
       },
       "deleteModal": {
-        "title" : "Confirmation",
-        "text" : "Êtes-vous sûr de vouloir suprimer ce commentaire ?",
-        "confirm" : "Supprimer",
-        "cancel" : "Annuler"
+        "title": "Confirmation",
+        "text": "Êtes-vous sûr de vouloir suprimer ce commentaire ?",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
       },
       "steps": {
-        "saveAsDraft" : "Enregistrer brouillon",
+        "saveAsDraft": "Enregistrer brouillon",
         "previous": "Etape précédente",
         "next": "Etape suivante",
         "validate": "Valider",
@@ -209,11 +207,11 @@ angular.module('CallForPaper')
         "logout": "Se déconnecter",
         "login": "Se connecter",
         "config": "Configuration",
-        "linkMyAccount" : "Lier mon compte Google Drive avec Call For Paper",
-        "configurationNeeded" : "L'administrateur doit configurer l'application avant que vous puissiez l'utiliser",
-        "success" : "Votre compte est maintenant lié",
-        "error" : "Error lors de la configuration",
-        "configureLink" : "Configurer l'application"
+        "linkMyAccount": "Lier mon compte Google Drive avec Call For Paper",
+        "configurationNeeded": "L'administrateur doit configurer l'application avant que vous puissiez l'utiliser",
+        "success": "Votre compte est maintenant lié",
+        "error": "Error lors de la configuration",
+        "configureLink": "Configurer l'application"
       },
       "error": {
         "backendcommunication": "Désolé, il y a eu un problème avec le serveur distant",
@@ -260,61 +258,59 @@ angular.module('CallForPaper')
         "dashboard": "Dashboard",
         "profil": "Profil"
       },
-      "dashboard" :
-      {
-        "createNewSession" : "Create a new talk",
-        "editionTalks" : "Talks available for editing",
-        "noEditionTalks" : "You don't have any draft",
-        "sendedTalks" : "Submitted talks",
-        "draftModifiedAt" : "Draft modified the ",
-        "modifiedAt" : "modified the ",
-        "postedAt" : "submited the ",
-        "noSendedTalks" : "You don't have submitted any talk yet",
-        "verification" : "Verification",
-        "verificationNeeded" : "An email has been sent to your address, click the link in it to confirm your account.",
+      "dashboard": {
+        "createNewSession": "Create a new talk",
+        "editionTalks": "Talks available for editing",
+        "noEditionTalks": "You don't have any draft",
+        "sendedTalks": "Submitted talks",
+        "draftModifiedAt": "Draft modified the ",
+        "modifiedAt": "modified the ",
+        "postedAt": "submited the ",
+        "noSendedTalks": "You don't have submitted any talk yet",
+        "verification": "Verification",
+        "verificationNeeded": "An email has been sent to your address, click the link in it to confirm your account.",
       },
-      "profil" :
-      {
-        "save" : "Save",
-        "success" : "Profil saved",
-        "error" : "Error saving the profil",
-        "avatar" : "Profil picture :",
-        "hintAvatar" : "Select a picture for the website (least 360x360 and 5MB max)",
-        "dropImage" : "Drop image here",
-        "selectImage" : "Browse"
+      "profil": {
+        "save": "Save",
+        "success": "Profil saved",
+        "error": "Error saving the profil",
+        "avatar": "Profil picture :",
+        "hintAvatar": "Select a picture for the website (least 360x360 and 5MB max)",
+        "dropImage": "Drop image here",
+        "selectImage": "Browse"
       },
-      "login" : {
-        "email" : "Email",
-        "password" : "Password",
-        "login" : "Login",
-        "noAccount" : "Don't have an account yet?",
-        "signup" : "Signup",
-        "or" : "Or",
-        "signGoogle" : "Sign in with Google",
-        "signGithub" : "Sign in with Github",
+      "login": {
+        "email": "Email",
+        "password": "Password",
+        "login": "Login",
+        "noAccount": "Don't have an account yet?",
+        "signup": "Signup",
+        "or": "Or",
+        "signGoogle": "Sign in with Google",
+        "signGithub": "Sign in with Github",
         "wait": "Please wait",
         "badCredentials": "Incorrect login or password",
-        "alreadyLinked" : "There is already a user associated with this  provider"
+        "alreadyLinked": "There is already a user associated with this  provider"
       },
-      "signup" : {
-        "signup" : "Sign up",
-        "email" : "Email",
-        "password" : "Password",
-        "confirmPassword" : "Confirm Password",
-        "yesAccount" : "Already have an account?",
-        "loginNow" : "Log in now",
-        "emailRequired" : "Your email address is required.",
-        "emailPattern" : "Your email address is invalid.",
-        "passwordMinLength" : "Password must be at least 6 characters long",
-        "passwordRequired" : "Password is required.",
-        "passwordMatch" : "Password must match.",
-        "alreadyExists" : "There is already a user associated with this email"
+      "signup": {
+        "signup": "Sign up",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "yesAccount": "Already have an account?",
+        "loginNow": "Log in now",
+        "emailRequired": "Your email address is required.",
+        "emailPattern": "Your email address is invalid.",
+        "passwordMinLength": "Password must be at least 6 characters long",
+        "passwordRequired": "Password is required.",
+        "passwordMatch": "Password must match.",
+        "alreadyExists": "There is already a user associated with this email"
       },
-      "verify" : {
-        "title" : "Email ",
-        "verified" : "Your email has been verified",
-        "alreadyVerified" : "This account is already verified",
-        "notVerified" : "Errror during verification"
+      "verify": {
+        "title": "Email ",
+        "verified": "Your email has been verified",
+        "alreadyVerified": "This account is already verified",
+        "notVerified": "Errror during verification"
       },
       "step1": {
         "warning": "Warning ! The informations given during this step will also be used for the talks already submitted.",
@@ -373,32 +369,32 @@ angular.module('CallForPaper')
         "sendError": "An error occurred during the submission, please retry."
       },
       "confirmModal": {
-        "title" : "Confirmation",
-        "text" : "Do you really want to submit this talk ? Once sent you will not be able to edit it.",
-        "textDelete" : "Do you really want to delete this session ? Once done you will not be able to recover it.",
-        "confirm" : "OK",
-        "confirmDelete" : "Delete",
-        "cancel" : "Cancel"
+        "title": "Confirmation",
+        "text": "Do you really want to submit this talk ? Once sent you will not be able to edit it.",
+        "textDelete": "Do you really want to delete this session ? Once done you will not be able to recover it.",
+        "confirm": "OK",
+        "confirmDelete": "Delete",
+        "cancel": "Cancel"
       },
       "previewModal": {
-        "title" : "Preview",
-        "confirm" : "OK",
-        "nothingToPreview" : "Nothing to preview",
-        "mdSupported" : "Markdown supported"
+        "title": "Preview",
+        "confirm": "OK",
+        "nothingToPreview": "Nothing to preview",
+        "mdSupported": "Markdown supported"
       },
       "editModal": {
-        "title" : "Edition",
-        "confirm" : "Edit",
-        "cancel" : "Cancel"
+        "title": "Edition",
+        "confirm": "Edit",
+        "cancel": "Cancel"
       },
       "deleteModal": {
-        "title" : "Confirmation",
-        "text" : "Do you really want to delete this comment ?",
-        "confirm" : "Delete",
-        "cancel" : "Cancel"
+        "title": "Confirmation",
+        "text": "Do you really want to delete this comment ?",
+        "confirm": "Delete",
+        "cancel": "Cancel"
       },
       "steps": {
-        "saveAsDraft" : "Save as draft",
+        "saveAsDraft": "Save as draft",
         "previous": "Previous step",
         "next": "Next step",
         "validate": "Submit",
@@ -456,11 +452,11 @@ angular.module('CallForPaper')
         "login": "Login",
         "logout": "Logout",
         "config": "Configuration",
-        "linkMyAccount" : "Link my Google Drive account with Call For Paper",
-        "configurationNeeded" : "Administrator must configure the application before you use it",
-        "success" : "Your account has been linked",
-        "error" : "Error linking your account with Google Drive",
-        "configureLink" : "Configure the application"
+        "linkMyAccount": "Link my Google Drive account with Call For Paper",
+        "configurationNeeded": "Administrator must configure the application before you use it",
+        "success": "Your account has been linked",
+        "error": "Error linking your account with Google Drive",
+        "configureLink": "Configure the application"
       },
       "error": {
         "backendcommunication": "Sorry, a problem occure with the server",
