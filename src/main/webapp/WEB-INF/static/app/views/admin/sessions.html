@@ -49,13 +49,16 @@
 											<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
 											<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
-											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean}}</td>
+											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
 											<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
 												<span ng-if="session.lastModification !== 0">{{::session.lastModification | date}}</span>
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
 											</td>
 											<td data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											<td sortable="'voteCount'" data-title="'admin.votes' | translate">
+												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -84,13 +87,16 @@
 											<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
 											<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
-											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean}}</td>
+											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
 											<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
 												<span ng-if="session.lastModification !== 0">{{::session.lastModification | date}}</span>
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
 											</td>
 											<td data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											<td sortable="'voteCount'" data-title="'admin.votes' | translate">
+												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+											</td>
 										</tr>
 									</table>
 								</div>
@@ -119,13 +125,16 @@
 											<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
 											<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
-											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean}}</td>
+											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
 											<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
 												<span ng-if="session.lastModification !== 0">{{::session.lastModification | date}}</span>
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
 											</td>
 											<td data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											<td sortable="'voteCount'" data-title="'admin.votes' | translate">
+												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+											</td>
 										</tr>
 									</table>
 								</div>

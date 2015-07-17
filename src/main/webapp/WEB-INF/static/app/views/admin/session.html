@@ -15,7 +15,7 @@
 				<span style="font-size: 0.7em">
 					<span>{{'admin.mean' | translate}}&nbsp;:&nbsp;</span>
 					<span ng-if="mean === 0">{{'admin.none' | translate}}</span>
-					<span ng-if="mean !== 0">{{mean}}</span>
+					<span ng-if="mean !== 0">{{mean | number:2}}</span>
 				</span >
 			</h1>
 			<div role="tabpanel">
@@ -328,7 +328,7 @@
 								<div class="col-xs-12">
 									<strong>{{'admin.mean' | translate}}&nbsp;:&nbsp;</strong>
 									<span ng-if="mean === 0">{{'admin.none' | translate}}</span>
-									<span ng-if="mean !== 0">{{mean}}</span>
+									<span ng-if="mean !== 0">{{mean | number:2}}</span>
 								</div>
 							</div>
 						</div>

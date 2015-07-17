@@ -4,8 +4,7 @@ import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.rate.AdminRate;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by tmaugin on 29/04/2015.
@@ -108,6 +107,22 @@ public class RowResponse extends RowSession implements Serializable {
             }
         }
         return count;
+    }
+
+    public Integer getVoteCount() {
+        return this.adminRates.size();
+    }
+
+    public List<Map<String,String>> getVoteUsersEmail() {
+        List<Map<String,String>> voteUsersEmail = new ArrayList<>();
+        if(adminRates == null) return voteUsersEmail;
+        for(AdminRate adminRate : adminRates) {
+            Map<String,String> stringStringMap = new HashMap<>();
+            stringStringMap.put("email", adminRate.getUser().getEmail());
+            stringStringMap.put("name", adminRate.getUser().getName());
+            voteUsersEmail.add(stringStringMap);
+        }
+        return voteUsersEmail;
     }
 
     public Double getMean()
