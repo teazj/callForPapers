@@ -2,9 +2,14 @@
 
 angular.module('CallForPaper')
 	.controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedDraft', 'AuthService', function($scope, $filter, RestrictedSession, RestrictedDraft, AuthService) {
+		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
+		
+		/**
+		 * Get current user sessions
+		 * @return {[RestrictedSession]}
+		 */
 		$scope.sessions = [];
 		$scope.sessionsLoaded = false;
-		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 		var querySession = function() {
 			RestrictedSession.query(function(sessionsTmp) {
 				$scope.sessions = sessionsTmp.map(function(session) {
@@ -16,6 +21,10 @@ angular.module('CallForPaper')
 			});
 		}
 
+		/**
+		 * Get current user drafts
+		 * @return {[RestrictedDraft]}
+		 */
 		$scope.drafts = [];
 		$scope.draftsLoaded = false;
 		var queryDraft = function() {
@@ -25,6 +34,11 @@ angular.module('CallForPaper')
 			});
 		}
 
+		/**
+		 * Delete draft
+		 * @param  {number} draft id
+		 * @return {void}
+		 */
 		$scope.delete = function(added) {
 			RestrictedDraft.delete({
 				id: added
@@ -40,8 +54,7 @@ angular.module('CallForPaper')
 		}
 
 		$scope.konamiCode = false;
-		$scope.launchKonami = function()
-		{
+		$scope.launchKonami = function() {
 			$scope.konamiCode = !$scope.konamiCode;
 			$scope.$apply();
 		}

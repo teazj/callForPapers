@@ -3,15 +3,21 @@ angular.module('bs-has', [])
     return function(scope, element, ngClass, bsClass) {
       $timeout(function() {
         var input = element.find('input');
-        if(!input.length) { input = element.find('select'); }
-        if(!input.length) { input = element.find('textarea'); }
-        if(!input.length) { input = element.find('span[rating]'); }
+        if (!input.length) {
+          input = element.find('select');
+        }
+        if (!input.length) {
+          input = element.find('textarea');
+        }
+        if (!input.length) {
+          input = element.find('span[rating]');
+        }
         if (input.length) {
-            scope.$watch(function() {
-                return input.hasClass(ngClass) && (input.hasClass('ng-dirty') || input.hasClass('ng-verify'));
-            }, function(isValid) {
-                element.toggleClass(bsClass, isValid);
-            });
+          scope.$watch(function() {
+            return input.hasClass(ngClass) && (input.hasClass('ng-dirty') || input.hasClass('ng-verify'));
+          }, function(isValid) {
+            element.toggleClass(bsClass, isValid);
+          });
         }
       });
     };
@@ -20,18 +26,23 @@ angular.module('bs-has', [])
     return function(scope, element, ngClass, bsClass, state) {
       $timeout(function() {
         var input = element.find('input');
-        if(!input.length) { input = element.find('select'); }
-        if(!input.length) { input = element.find('textarea'); }
-        if(!input.length) { input = element.find('span[rating]'); }
+        if (!input.length) {
+          input = element.find('select');
+        }
+        if (!input.length) {
+          input = element.find('textarea');
+        }
+        if (!input.length) {
+          input = element.find('span[rating]');
+        }
         if (input.length) {
-          scope.$watch(element.attr('verify'),function(value){
-              if(value)
-              {
-                element.toggleClass(bsClass, input.hasClass(ngClass));
-              }
+          scope.$watch(element.attr('verify'), function(value) {
+            if (value) {
+              element.toggleClass(bsClass, input.hasClass(ngClass));
+            }
           })
         }
-      },100);
+      }, 100);
     };
   }])
   .directive('bsHasSuccess', ['bsProcessValidator', function(bsProcessValidator) {

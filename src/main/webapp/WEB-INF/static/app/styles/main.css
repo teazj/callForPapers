@@ -1,7 +1,7 @@
 html, body{
-    background-color: rgba(237, 237, 237, 1);
-    margin: 0;
-    padding: 0;
+  background-color: rgba(237, 237, 237, 1);
+  margin: 0;
+  padding: 0;
 }
 
 .navbar a
@@ -10,26 +10,26 @@ html, body{
 }
 
 .modal-backdrop {
-    background-color: rgba(255, 255, 255, 0);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 #form{
-    position: relative;
-    padding: 16px;
-    margin-top: 20px;
+  position: relative;
+  padding: 16px;
+  margin-top: 20px;
 }
 .row {
-    margin-right: 0; 
-    margin-left: 0; 
+  margin-right: 0; 
+  margin-left: 0; 
 }
 
 .iti-flag {background-image: url("../images/flags.png");}
 
 .alert{
-    text-align: center;
-    color: rgb(69, 0, 0);
-    padding: 20px;
-    border-radius: 5px
+  text-align: center;
+  color: rgb(69, 0, 0);
+  padding: 20px;
+  border-radius: 5px
 }
 
 .bg-danger {
@@ -37,10 +37,10 @@ html, body{
 }
 
 .alert.bg-success{
-    text-align: center;
-    color: rgb(0, 69, 0);
-    padding: 20px;
-    border-radius: 5px
+  text-align: center;
+  color: rgb(0, 69, 0);
+  padding: 20px;
+  border-radius: 5px
 }
 
 .bg-success {
@@ -48,14 +48,14 @@ html, body{
 }
 
 .ng-hide-add-active {
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
 }
 .ng-hide-remove-active {
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
 }
 
 .ng-hide {
@@ -63,7 +63,7 @@ html, body{
 }
 
 .btn .glyphicon{
-    line-height: 20px;
+  line-height: 20px;
 }
 
 .btn [class^='mdi'] {
@@ -77,18 +77,18 @@ html, body{
 /* Loader */
 
 .glyphicon-refresh-animate {
-    -animation: spin .7s infinite linear;
-    -webkit-animation: spin2 .7s infinite linear;
+  animation: spin .7s infinite linear;
+  -webkit-animation: spin2 .7s infinite linear;
 }
 
 @-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg);}
-    to { -webkit-transform: rotate(360deg);}
+  from { -webkit-transform: rotate(0deg);}
+  to { -webkit-transform: rotate(360deg);}
 }
 
 @keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
 }
 
 .glyphicon.loading
@@ -156,20 +156,20 @@ textarea{
 }
 
 .ui-notification.warning {
-    color: #fcf8e3;
-    background: #fcf8e3;
+  color: #fcf8e3;
+  background: #fcf8e3;
 }
 .ui-notification.error {
-    color: #a94442;
-    background: #f2dede;
+  color: #a94442;
+  background: #f2dede;
 }
 .ui-notification.success {
-    color: #3c763d;
-    background: #dff0d8;
+  color: #3c763d;
+  background: #dff0d8;
 }
 .ui-notification.info {
-    color: #31708f;
-    background: #d9edf7;
+  color: #31708f;
+  background: #d9edf7;
 }
 
 /* common */
@@ -231,7 +231,7 @@ textarea{
  * Login
  */
 
-.login-input{
+ .login-input{
   height: 45px !important;
 }
 
@@ -293,7 +293,7 @@ textarea{
 /**
  * Tags Input
  */
-tags-input .tags {
+ tags-input .tags {
   border: none !important;
   box-shadow: none !important;
 }
@@ -306,8 +306,8 @@ tags-input .tags.focused {
  * Progress bar
  */
 
-.progress
-{
+ .progress
+ {
   background: #F5F5F5;
   height: 20px;
 }
@@ -315,15 +315,15 @@ tags-input .tags.focused {
 /**
  * Tabs
  */
-.nav-tabs {
-background: none;
+ .nav-tabs {
+  background: none;
 }
 
 /**
  * Loading bar
  */
 
-#loading-bar .bar {
+ #loading-bar .bar {
   background: white;
 }
 
@@ -343,12 +343,12 @@ background: none;
 /**
  * Sidebar
  */
-html,
-body,
-#views,
-.st-container,
-.st-pusher,
-.st-content {
+ html,
+ body,
+ #views,
+ .st-container,
+ .st-pusher,
+ .st-content {
   height: 100%;
   overflow-y: auto; 
 }
@@ -470,19 +470,19 @@ body,
 }
 
 .table-framed{
-    border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .drop-box {
-    background: #F8F8F8;
-    border: 5px dashed #DDD;
-    height: 100px;
-    text-align: center;
-    padding-top: 25px;
-    margin: 10px;
+  background: #F8F8F8;
+  border: 5px dashed #DDD;
+  height: 100px;
+  text-align: center;
+  padding-top: 25px;
+  margin: 10px;
 }
 .dragover {
-    border: 5px dashed blue;
+  border: 5px dashed blue;
 }
 
 .avatar {

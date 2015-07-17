@@ -27,6 +27,7 @@ angular.module('CallForPaper')
 		$scope.doVerify = function() {
 			$scope.verify = true;
 			if ($scope.$parent.formData.steps.isValid[2] && $scope.$parent.formData.steps.isValid[1] && $scope.$parent.formData.steps.isValid[0]) {
+				// open confirmation modal
 				var modalInstance = $modal.open({
 					animation: true,
 					templateUrl: 'views/restricted/form/modal.html',
@@ -37,9 +38,7 @@ angular.module('CallForPaper')
 				}, function() {
 					// cancel
 				});
-			}
-			else
-			{
+			} else {
 				//form not valid
 			}
 		}

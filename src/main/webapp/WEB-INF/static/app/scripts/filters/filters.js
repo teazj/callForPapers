@@ -15,22 +15,30 @@ angular.module('customFilters', [])
 			return "";
 		};
 	})
+	/**
+	 * Create twitter http link (<a href...) from a string
+	 * @param  {string}
+	 * @return {string}
+	 */
 	.filter('createLinks', function($sce) {
 		return function(str) {
-			if (str !== undefined)
-			{
+			if (str !== undefined) {
 				var strTmp = str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(http[^\s]+)/g, '<a target="_blank" href="$1">$1</a>');
 				var strTmp2 = strTmp.replace(/(^|[^@\w])@(\w{1,15})\b/g, '<a target="_blank" href="http://twitter.com/$2">@$2</a>');
 				return $sce.trustAsHtml(strTmp2);
-				
-			}
-			else
+
+			} else
 				return "";
 		}
 	})
+	/**
+	 * Remove all accents
+	 * @param  {string}
+	 * @return {string}
+	 */
 	.filter('removeAccents', function removeAccents() {
 		return function(source) {
-			if(!angular.isString(source))
+			if (!angular.isString(source))
 				return source;
 			var accent = [
 					/[\300-\306]/g, /[\340-\346]/g, // A, a

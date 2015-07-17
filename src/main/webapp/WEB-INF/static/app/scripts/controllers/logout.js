@@ -7,7 +7,7 @@ angular.module('CallForPaper')
 			$state.go('app.login');
 			return;
 		}
-		$auth.logout().then(function(){
+		$auth.logout().then(function() {
 			$scope.$emit('authenticate');
 			$state.go('app.login');
 		});

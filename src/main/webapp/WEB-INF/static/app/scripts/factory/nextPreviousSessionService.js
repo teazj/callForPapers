@@ -14,18 +14,17 @@ angular.module('CallForPaper')
 
 		var type = '';
 		/**
-		* Load sessions
-		**/
+		 * Load sessions
+		 **/
 		if (localStorageService.isSupported) {
 			var typeString = localStorageService.get('nextPreviousSessionType');
-			if(typeString != null) type = typeString;
+			if (typeString != null) type = typeString;
 			var sessionsString = localStorageService.get('nextPreviousSession' + type);
 			try {
-				if(sessionsString !== null)	{
+				if (sessionsString !== null) {
 					scope.sessionsByType['sessions' + type] = angular.fromJson(sessionsString);
 				}
-			} catch (e) {
-			}
+			} catch (e) {}
 		}
 
 		nextPreviousSessionService.setType = function(typeTmp) {
@@ -34,7 +33,7 @@ angular.module('CallForPaper')
 		};
 
 		nextPreviousSessionService.setSessions = function(array, typeTmp) {
-			var sessionsTmp = array.map(function(session){
+			var sessionsTmp = array.map(function(session) {
 				return session.added;
 			})
 			scope.sessionsByType['sessions' + typeTmp] = sessionsTmp;

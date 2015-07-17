@@ -2,11 +2,9 @@
     <h3 class="modal-title">{{'editModal.title' | translate}}</h3>
 </div>
 <div class="modal-body" bs-has>
+	<div md-preview="commentMsg"></div>
     <textarea required style="height:10em" class="form-control" ng-model="commentMsg">
 	</textarea>
-	<div style="text-align:right">
-		<button class="btn btn-info" md-preview="commentMsg">{{'previewModal.title' | translate}}</button>
-	</div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-disabled="commentButtonDisabled || (commentMsg == '' || commentMsg == null)" ng-click="ok(commentMsg)">{{'editModal.confirm' | translate}}</button>

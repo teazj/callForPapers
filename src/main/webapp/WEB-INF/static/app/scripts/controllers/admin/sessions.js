@@ -7,6 +7,12 @@ angular.module('CallForPaper')
 		$scope.sessionsAll = [];
 		$scope.screenSize = screenSize;
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
+		
+		/**
+		 * Get all sessions (talks)
+		 * @param  {void}
+		 * @return {[AdminSession]}
+		 */
 		AdminSession.query().$promise.then(function(sessionsTmp) {
 			sessions = sessionsTmp.map(function(session) {
 				session.fullname = session.name + " " + session.firstname;
@@ -22,6 +28,7 @@ angular.module('CallForPaper')
 			updateTable();
 		});
 
+		// Set labels
 		$scope.difficulties = function(column) {
 			var def = $q.defer();
 			var difficulties = [{
@@ -38,6 +45,7 @@ angular.module('CallForPaper')
 			return def;
 		};
 
+		// Set labels
 		$scope.tracks = function(column) {
 			var def = $q.defer();
 			var difficulties = [{
@@ -57,6 +65,10 @@ angular.module('CallForPaper')
 			return def;
 		};
 
+		/**
+		 * Order/Filter Data
+		 * @return {void}
+		 */
 		var getData = function($defer, params, type) {
 			// use build-in angular filter
 			var orderedData = params.filter() ?
@@ -78,6 +90,10 @@ angular.module('CallForPaper')
 			$defer.resolve($scope.sessions);
 		}
 
+		/**
+		 * Initialize tables
+		 * @return {void}
+		 */
 		var updateTable = function() {
 			var tableParamsString = localStorageService.get('tableParams');
 			var defaultParams = {
@@ -104,6 +120,7 @@ angular.module('CallForPaper')
 				initialParams = defaultParams;
 			}
 
+			// 3rd Tab table
 			$scope.tableParamsCodelab = new ngTableParams(
 				initialParams, {
 					filterDelay: 0,
@@ -113,6 +130,7 @@ angular.module('CallForPaper')
 					}
 				});
 
+			// 2nd Tab table
 			$scope.tableParamsConference = new ngTableParams(
 				initialParams, {
 					filterDelay: 0,
@@ -122,6 +140,7 @@ angular.module('CallForPaper')
 					}
 				});
 
+			// 1st Tab table
 			$scope.tableParams = new ngTableParams(
 				initialParams, {
 					filterDelay: 0,
@@ -130,13 +149,22 @@ angular.module('CallForPaper')
 						getData($defer, params, '');
 					}
 				});
+			// Current visible Tab => 1st
 			NextPreviousSessionService.setType('');
 		}
 
+		/**
+		 * Set active Tab type
+		 * @param {string} type => '', 'conference', 'codelab'
+		 */
 		$scope.setActiveTab = function(type) {
 			NextPreviousSessionService.setType(type);
 		}
 
+		/**
+		 * Filter tables according to checkbox state
+		 * @return {void}
+		 */
 		$scope.handleNotReviewed = function() {
 			if ($scope.notReviewed === true) {
 				$scope.tableParams.filter()['reviewed'] = false;
