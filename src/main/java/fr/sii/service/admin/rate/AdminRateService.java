@@ -120,4 +120,8 @@ public class AdminRateService {
             return null;
         }
     }
+
+    public List<AdminRate> findByUserIdNoMatch(Long userId) {
+        return adminRateRespository.findByUserId(userId);
+    }
 }

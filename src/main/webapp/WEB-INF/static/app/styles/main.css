@@ -132,6 +132,7 @@ strong hr
 
 textarea{
   max-width: 100%;
+  display: inline-block !important;
 }
 
 /*Language modal*/
