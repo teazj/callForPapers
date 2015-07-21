@@ -30,7 +30,8 @@ angular.module('CallForPaper', [
     'hc.marked',
     'mdPreview',
     'LocalStorageModule',
-    'ngLodash'
+    'ngLodash',
+    'ngAria'
   ])
   .constant('Config', {
     'recaptcha': '6LesQwcTAAAAANdnjDDLPCaPKhT_krT_VnhGAapP',
