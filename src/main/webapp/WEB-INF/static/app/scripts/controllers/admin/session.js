@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys) {
 		$scope.session = null;
 		$scope.adminEmail = null;
 
@@ -56,6 +56,34 @@ angular.module('CallForPaper')
 		 */
 		$scope.previous = NextPreviousSessionService.getNextSessions($stateParams.id);
 		$scope.next = NextPreviousSessionService.getPreviousSessions($stateParams.id);
+
+		hotkeys.bindTo($scope)
+			.add({
+				combo: 'left',
+				description: $filter('translate')('admin.previous'),
+				callback: function() {
+					if($scope.previous)
+					$state.go('admin.session',{ id: $scope.previous });
+				}
+			})
+			.add({
+				combo: 'right',
+				description: $filter('translate')('admin.next'),
+				callback: function() {
+					if($scope.next)
+					$state.go('admin.session',{ id: $scope.next });
+					
+				}
+			})
+			.add({
+				combo: 'up',
+				description: $filter('translate')('admin.main'),
+				callback: function() {
+					if($scope.next)
+					$state.go('admin.sessions');
+					
+				}
+			})
 
 		/**
 		 * get comments of the session

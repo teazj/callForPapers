@@ -31,6 +31,7 @@ angular.module('CallForPaper', [
     'mdPreview',
     'LocalStorageModule',
     'ngLodash',
+    'cfp.hotkeys',
     'ngAria'
   ])
   .constant('Config', {
