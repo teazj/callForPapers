@@ -13,6 +13,14 @@ angular.module('CallForPaper')
         "dashboard": "Dashboard",
         "profil": "Profil"
       },
+      "languageModal": {
+        "choose": "Choisissez une langue",
+        "search": "Rechercher une langue...",
+        "count1": "Cette application est proposée en ",
+        "count2": "langues",
+        "more": "plus",
+        "close": "Fermer"
+      },
       "dashboard": {
         "createNewSession": "Créer un nouveau talk",
         "editionTalks": "Talks en cours d'édition",
@@ -258,6 +266,14 @@ angular.module('CallForPaper')
         "logout": "Logout",
         "dashboard": "Dashboard",
         "profil": "Profil"
+      },
+      "languageModal": {
+        "choose": "Choose a language",
+        "search": "Search languages...",
+        "count1": "This application is offered in",
+        "count2": "languages",
+        "more": "more",
+        "close": "Close"
       },
       "dashboard": {
         "createNewSession": "Create a new talk",
