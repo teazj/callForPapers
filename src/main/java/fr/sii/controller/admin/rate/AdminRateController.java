@@ -17,9 +17,9 @@ import java.util.List;
 @RequestMapping(value="api/admin/rates", produces = "application/json; charset=utf-8")
 public class AdminRateController {
 
-    AdminRateService adminRateService;
+    private AdminRateService adminRateService;
 
-    AdminUserService adminUserServiceCustom;
+    private AdminUserService adminUserServiceCustom;
 
     public void setAdminRateService(AdminRateService adminRateService) {
         this.adminRateService = adminRateService;

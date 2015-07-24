@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value="/api", produces = "application/json; charset=utf-8")
 public class ApplicationController {
 
-    ApplicationSettings applicationSettings;
+    private ApplicationSettings applicationSettings;
 
     public void setApplicationSettings(ApplicationSettings applicationSettings) {
         this.applicationSettings = applicationSettings;
