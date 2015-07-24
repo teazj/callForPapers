@@ -9,6 +9,7 @@
 		<class>fr.sii.domain.admin.rate.AdminRate</class>
 		<class>fr.sii.domain.admin.user.AdminUser</class>
 		<class>fr.sii.domain.admin.comment.AdminComment</class>
+		<class>fr.sii.domain.admin.contact.AdminContact</class>
 		<class>fr.sii.domain.admin.session.AdminViewedSession</class>
 		<class>fr.sii.domain.user.User</class>
 

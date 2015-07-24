@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', 'AdminContact', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys, AdminContact) {
+		$scope.tab = $stateParams.tab; 
+
 		$scope.session = null;
 		$scope.adminEmail = null;
 
@@ -392,6 +394,86 @@ angular.module('CallForPaper')
 			}
 			$scope.changed = false;
 		});
+
+
+		/**
+		 * CONTACT
+		 */
+		
+		/**
+		 * get contacts of the session
+		 * @return {[AdminContact]}
+		 */
+		var updateContacts = function() {
+			AdminContact.getByRowId({
+				rowId: $stateParams.id
+			}, function(contactsTmp) {
+				setTimeout(setViewed, 1000);
+				$scope.contacts = contactsTmp;
+			})
+		}
+		updateContacts();
+
+		$scope.contactButtonDisabled = false;
+
+		/**
+		 * Post current contact in textarea
+		 * @return {AdminContact} posted contact
+		 */
+		$scope.postContact = function() {
+			$scope.contactButtonDisabled = true;
+			AdminContact.save({
+				'comment': $scope.contactMsg,
+				'rowId': $stateParams.id
+			}, function(c) {
+				$scope.contactMsg = "";
+				$scope.contactButtonDisabled = false;
+				updateContacts();
+			}, function(c) {
+				$scope.contactButtonDisabled = false;
+			});
+		}
+
+		/**
+		 * PUT contact on server
+		 * @return {AdminContact} edited contact
+		 */
+		var putContact = function(contact) {
+			AdminContact.update({
+				id: contact.id
+			}, contact, function(c) {
+				updateContacts();
+			}, function(c) {});
+		}
+
+		/**
+		 * Open modal for editing
+		 * @param  {AdminContact} contact to edit
+		 * @return {AdminContact} edited contact text
+		 */
+		$scope.editContact = function(localContact) {
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/editModal.html',
+				controller: 'EditModalInstanceCtrl',
+				resolve: {
+					comment: function() {
+						return localContact.comment;
+					}
+				}
+			});
+			modalInstance.result.then(function(comment) {
+				localContact.comment = comment;
+				putContact(localContact);
+			}, function() {
+				// cancel
+			});
+		}
+
+
+
+
+
 	}])
 	.controller('EditModalInstanceCtrl', ['$scope', '$modalInstance', 'comment', function($scope, $modalInstance, comment) {
 		$scope.commentMsg = comment;

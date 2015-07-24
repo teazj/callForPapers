@@ -45,7 +45,12 @@
 
 	<bean id="adminCommentService" class="fr.sii.service.admin.comment.AdminCommentService">
 		<property name="adminUserService" ref="adminUserService"></property>
+		<property name="userService" ref="userService"></property>
 		<property name="adminCommentRepository" ref="adminCommentRepository"></property>
+	</bean>
+	<bean id="adminContactService" class="fr.sii.service.admin.contact.AdminContactService">
+		<property name="adminUserService" ref="adminUserService"></property>
+		<property name="adminContactRepository" ref="adminContactRepository"></property>
 	</bean>
 	<bean id="adminRateService" class="fr.sii.service.admin.rate.AdminRateService">
 		<property name="adminUserService" ref="adminUserService"></property>
