@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 public class LoginUser {
 
     @NotNull(message = "Email field is required")
-    String email;
+    private String email;
     @NotNull(message = "Password field is required")
-    String password;
+    private String password;
 
     public LoginUser(String email, String password, String captcha) {
         this.email = email;

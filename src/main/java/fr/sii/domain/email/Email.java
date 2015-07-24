@@ -9,14 +9,14 @@ import java.util.List;
  * Created by tmaugin on 09/04/2015.
  */
 public class Email {
-    public String to;
+    private String to;
     @NotNull
-    public List<String> bcc;
+    private List<String> bcc;
     @NotNull
-    public String subject;
+    private String subject;
     @NotNull
-    public String template;
-    public HashMap<String, String> data;
+    private String template;
+    private HashMap<String, String> data;
 
     public Email(String to, String subject, String template, HashMap<String, String> data) {
         this.to = to;
