@@ -1,9 +1,6 @@
 package fr.sii.config.exception;
 
-import fr.sii.domain.exception.ErrorResponse;
-import fr.sii.domain.exception.ForbiddenException;
-import fr.sii.domain.exception.NotFoundException;
-import fr.sii.domain.exception.NotVerifiedException;
+import fr.sii.domain.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -42,6 +39,15 @@ public class GlobalControllerExceptionHandler {
         resp.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
         resp.setMessage(e.getMessage());
         return new ResponseEntity<Object>(resp, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleException(BadRequestException e) {
+        ErrorResponse resp = new ErrorResponse(e);
+        resp.setStatus(HttpStatus.BAD_REQUEST.value());
+        resp.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        resp.setMessage(e.getMessage());
+        return new ResponseEntity<Object>(resp, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)

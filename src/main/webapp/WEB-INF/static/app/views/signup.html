@@ -28,7 +28,14 @@
           </div>
         </div>
         <!-- <p class="text-center text-muted"><small>By clicking on Sign up, you agree to <a href="#">terms & conditions</a> and <a href="#">privacy policy</a></small></p> -->
-        <div
+        <!-- change from one captcha to the other on error -->
+        <div ng-if="captchaShow"
+          vc-recaptcha
+          theme="light"
+          key="recaptchaId"
+          on-success="setResponse(response)"
+        ></div>
+        <div ng-if="!captchaShow"
           vc-recaptcha
           theme="light"
           key="recaptchaId"

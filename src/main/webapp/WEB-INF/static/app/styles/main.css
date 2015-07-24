@@ -135,6 +135,10 @@ textarea{
   display: inline-block !important;
 }
 
+.g-recaptcha-response {
+  display: none !important;
+}
+
 /*Language modal*/
 .modal-lang-picker > div.form-group
 {
