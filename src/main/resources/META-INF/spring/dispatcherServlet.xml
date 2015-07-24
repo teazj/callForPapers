@@ -82,6 +82,7 @@
 		<property name="adminUserServiceCustom" ref="adminUserService"></property>
 		<property name="emailingService" ref="emailingService"></property>
 		<property name="globalSettings" ref="globalSettings"></property>
+		<property name="authSettings" ref="authSettings"></property>
 	</bean>
 
 	<!-- Static Resource Config -->

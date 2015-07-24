@@ -3,26 +3,26 @@ package fr.sii.controller.restricted.contact;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
+import fr.sii.config.auth.AuthSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.admin.contact.AdminContact;
 import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.email.Email;
-import fr.sii.domain.exception.ForbiddenException;
-import fr.sii.domain.exception.NotFoundException;
-import fr.sii.domain.exception.NotVerifiedException;
+import fr.sii.domain.exception.*;
+import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.user.User;
 import fr.sii.service.admin.contact.AdminContactService;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
+import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.spreadsheet.SpreadsheetService;
 import fr.sii.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +48,13 @@ public class ContactController {
     private EmailingService emailingService;
 
     private GlobalSettings globalSettings;
+
+    private AuthSettings authSettings;
+
+    public void setAuthSettings(AuthSettings authSettings) {
+        this.authSettings = authSettings;
+    }
+
 
     public void setGlobalSettings(GlobalSettings globalSettings) {
 
@@ -78,7 +85,7 @@ public class ContactController {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminContact postContact(@Valid @RequestBody AdminContact adminContact, HttpServletRequest req) throws NotVerifiedException, NotFoundException, ServiceException, ForbiddenException, EntityNotFoundException, IOException {
+    @ResponseBody public AdminContact postContact(@Valid @RequestBody AdminContact adminContact, HttpServletRequest req) throws CustomException, ServiceException, EntityNotFoundException, IOException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -89,6 +96,15 @@ public class ContactController {
         if(u == null)
         {
             throw new NotFoundException("User not found");
+        }
+
+        if(adminContact.getCaptcha() == null) {
+            throw new BadRequestException("Captcha field is required");
+        } else {
+            ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), adminContact.getCaptcha());
+            if (!rep.getSuccess()) {
+                throw new BadRequestException("Bad captcha");
+            }
         }
 
         // Verify user allowed => Throw forbidden exception;
