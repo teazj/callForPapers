@@ -4,11 +4,11 @@ package fr.sii.domain.admin.user;
  * Created by tmaugin on 05/05/2015.
  */
 public class AdminUserInfo {
-    boolean connected;
-    boolean admin;
-    boolean config;
-    String uri;
-    String email;
+    private boolean connected;
+    private boolean admin;
+    private boolean config;
+    private String uri;
+    private String email;
 
     public boolean isConnected() {
         return connected;

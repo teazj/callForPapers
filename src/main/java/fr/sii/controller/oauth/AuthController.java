@@ -4,7 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import fr.sii.config.auth.AuthSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.email.Email;
-import fr.sii.domain.exception.CustomException;
+import fr.sii.domain.exception.BadRequestException;
 import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.token.Token;
 import fr.sii.domain.user.LoginUser;
@@ -90,7 +90,7 @@ public class AuthController {
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
-            throw new CustomException("Bad captcha");
+            throw new BadRequestException("Bad captcha");
         }
 
         User foundUser = userService.findByemail(signupUser.getEmail());

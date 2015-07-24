@@ -9,12 +9,12 @@ import javax.validation.constraints.Size;
 public class SignupUser {
 
     @NotNull(message = "Email field is required")
-    String email;
+    private String email;
     @Size(min = 6)
     @NotNull(message = "Password field is required")
-    String password;
+    private String password;
     @NotNull(message = "Captcha field is required")
-    String captcha;
+    private String captcha;
 
     public SignupUser(String email, String password, String captcha) {
         this.email = email;

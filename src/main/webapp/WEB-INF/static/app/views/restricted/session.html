@@ -203,19 +203,35 @@
 						<div class="row">
 							<div class="col-md-8 col-md-offset-2 noPadding">
 								<div class="col-xs-12">
-									<h3>{{'contact.title' | translate}}</h3>
+									<h4 class="text-center">{{'contact.hint' | translate}}</h4 class="text-center">
+									<hr>
 								</div>
 								<div class="col-xs-12 noPadding">
 									<div class="col-md-3">
 										<strong>{{'contact.message' | translate}}&nbsp;:</strong>
 									</div>
 									<div class="col-md-9" bs-has>
-										<div md-preview="contactMsg"></div>
-										<textarea required row="3" class="form-control" ng-init="contactMsg = ''" ng-model="contactMsg">
-										</textarea>
-										<br>
-										<button type="button" ng-click="postContact()" ng-disabled="contactButtonDisabled || (contactMsg == '' || contactMsg == null)" class="btn btn-success pull-right"><span class="mdi-navigation-refresh glyphicon-refresh-animate pull-right" ng-show="contactButtonDisabled"></span>{{'contact.validate' | translate}}&nbsp;
-										</button>
+										<form name="contactForm">
+											<div md-preview="contactMsg"></div>
+											<textarea required row="3" class="form-control" ng-init="contactMsg = ''" ng-model="contactMsg">
+											</textarea>
+											<br>
+											<!-- change from one captcha to the other on error -->
+									        <div ng-if="captchaShow"
+									          vc-recaptcha
+									          theme="light"
+									          key="recaptchaId"
+									          on-success="setResponse(response)"
+									        ></div>
+									        <div ng-if="!captchaShow"
+									          vc-recaptcha
+									          theme="light"
+									          key="recaptchaId"
+									          on-success="setResponse(response)"
+									        ></div>
+											<button type="button" ng-click="postContact()" ng-disabled="contactForm.$invalid || contactButtonDisabled || (contactMsg == '' || contactMsg == null)" class="btn btn-success pull-right"><span class="mdi-navigation-refresh glyphicon-refresh-animate pull-right" ng-show="contactButtonDisabled"></span>{{'contact.validate' | translate}}&nbsp;
+											</button>
+										</form>
 									</div>
 								</div>
 								<div ng-repeat="contact in contacts" class="col-xs-12 noPadding">

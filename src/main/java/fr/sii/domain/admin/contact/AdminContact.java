@@ -28,8 +28,10 @@ public class AdminContact implements Cloneable, Serializable {
     @NotNull
     private String comment;
 
-    private boolean admin;
+    @Transient
+    private String captcha;
 
+    private boolean admin;
 
     private Date added;
 
@@ -118,5 +120,13 @@ public class AdminContact implements Cloneable, Serializable {
 
     public void setAdmin(boolean deleted) {
         this.admin = deleted;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 }

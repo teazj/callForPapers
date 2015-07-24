@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', 'RestrictedContact', '$modal', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal) {
+	.controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', 'RestrictedContact', '$modal', 'Config', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal, Config) {
 		$scope.tab = $stateParams.tab; 
 
 		$scope.session = null;
@@ -52,8 +52,15 @@ angular.module('CallForPaper')
 		}
 		updateContacts();
 
-		$scope.contactButtonDisabled = false;
+		$scope.captchaShow = true;
+		$scope.recaptchaId = Config.recaptcha;
+		$scope.captcha = null;
+	    $scope.setResponse = function(response) {
+	      // send the `response` to your server for verification.
+	      $scope.captcha = response;
+	    };
 
+		$scope.contactButtonDisabled = false;
 		/**
 		 * Post current contact in textarea
 		 * @return {RestrictedContact} posted contact
@@ -62,12 +69,15 @@ angular.module('CallForPaper')
 			$scope.contactButtonDisabled = true;
 			RestrictedContact.save({
 				'comment': $scope.contactMsg,
-				'rowId': $stateParams.id
+				'rowId': $stateParams.id,
+				'captcha' : $scope.captcha
 			}, function(c) {
+				$scope.captchaShow = !$scope.captchaShow;
 				$scope.contactMsg = "";
 				$scope.contactButtonDisabled = false;
 				updateContacts();
 			}, function(c) {
+				$scope.captchaShow = !$scope.captchaShow;
 				$scope.contactButtonDisabled = false;
 			});
 		}
