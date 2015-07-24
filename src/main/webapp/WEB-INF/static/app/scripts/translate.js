@@ -173,10 +173,10 @@ angular.module('CallForPaper')
         "goToHome": "Retour à la page principale"
       },
       "contact" : {
-        "title": "Contact",
         "message": "Message",
         "validate": "Valider",
-        "edit": "Editer"
+        "edit": "Editer",
+        "hint": "Une oubli, une question ? Postez votre message ici, un administrateur vous répondra dès que possible."
       },
       "admin": {
         "logout": "Se déconnecter",
@@ -435,10 +435,10 @@ angular.module('CallForPaper')
         "goToHome": "Back to main page"
       },
       "contact" : {
-        "title": "Contact",
         "message": "Message",
         "validate": "Submit",
-        "edit": "Edit"
+        "edit": "Edit",
+        "hint": "A question ? A mistake ? Submit your question here, an administrator will answer as soon as possible."
       },
       "admin": {
         "logout": "Logout",
