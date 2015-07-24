@@ -87,4 +87,28 @@ public class EmailTest {
         t.setData(map);
         assertEquals(false, t.getTemplate().contains("$"));
     }
+
+    @Test
+    public void test6_emailTemplateVerify() throws Exception {
+        Templating t = new Templating("newMessage.html", true);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("name", "Thomas");
+        map.put("talk", "Google App Engine pour les nuls");
+        map.put("hostname", "http://yourappid.appspot.com/");
+        map.put("id", "123");
+        t.setData(map);
+        assertEquals(false, t.getTemplate().contains("$"));
+    }
+
+    @Test
+    public void test7_emailTemplateVerify() throws Exception {
+        Templating t = new Templating("newMessageAdmin.html", true);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("name", "Thomas");
+        map.put("talk", "Google App Engine pour les nuls");
+        map.put("hostname", "http://yourappid.appspot.com/");
+        map.put("id", "123");
+        t.setData(map);
+        assertEquals(false, t.getTemplate().contains("$"));
+    }
 }

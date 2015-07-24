@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RequestMapping(value="/api/adminUser")
 public class AdminUserController {
 
-    SpreadsheetSettings spreadsheetSettings;
+    private SpreadsheetSettings spreadsheetSettings;
 
     public void setSpreadsheetSettings(SpreadsheetSettings spreadsheetSettings) {
         this.spreadsheetSettings = spreadsheetSettings;

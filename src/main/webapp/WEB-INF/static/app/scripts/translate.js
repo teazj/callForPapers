@@ -172,6 +172,12 @@ angular.module('CallForPaper')
         "successMessage": "Votre présentation a été envoyée. Vous recevrez bientôt un email de confirmation. Nous vous recontacterons dès que nous aurons fait notre choix.",
         "goToHome": "Retour à la page principale"
       },
+      "contact" : {
+        "title": "Contact",
+        "message": "Message",
+        "validate": "Valider",
+        "edit": "Editer"
+      },
       "admin": {
         "logout": "Se déconnecter",
         "session": "Talk",
@@ -188,6 +194,7 @@ angular.module('CallForPaper')
         "mean": "Moyenne",
         "date": "Date",
         "deliberation": "Délibération",
+        "contact": "Contact",
         "commentaries": "Commentaires",
         "message": "Message",
         "votes": "Votes",
@@ -427,6 +434,12 @@ angular.module('CallForPaper')
         "successMessage": "Your talk has been send. You will soon receive a confirmation email. We will contact you as soon as we will make our decision.",
         "goToHome": "Back to main page"
       },
+      "contact" : {
+        "title": "Contact",
+        "message": "Message",
+        "validate": "Submit",
+        "edit": "Edit"
+      },
       "admin": {
         "logout": "Logout",
         "session": "Talk",
@@ -442,6 +455,7 @@ angular.module('CallForPaper')
         "mean": "Mean",
         "date": "Date",
         "deliberation": "Deliberation",
+        "contact": "Contact",
         "commentaries": "Commentaries",
         "message": "Message",
         "votes": "Votes",

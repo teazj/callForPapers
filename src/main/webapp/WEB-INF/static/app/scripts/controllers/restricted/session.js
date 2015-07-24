@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage) {
+	.controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', 'RestrictedContact', '$modal', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal) {
+		$scope.tab = $stateParams.tab; 
+
 		$scope.session = null;
 		/**
 		 * Get talk
@@ -32,4 +34,78 @@ angular.module('CallForPaper')
 				$scope.session.profilImageUrl = imgUriTmp.uri;
 			});
 		});
+
+		/**
+		 * CONTACT
+		 */
+		
+		/**
+		 * get contacts of the session
+		 * @return {[RestrictedContact]}
+		 */
+		var updateContacts = function() {
+			RestrictedContact.getByRowId({
+				rowId: $stateParams.id
+			}, function(contactsTmp) {
+				$scope.contacts = contactsTmp;
+			})
+		}
+		updateContacts();
+
+		$scope.contactButtonDisabled = false;
+
+		/**
+		 * Post current contact in textarea
+		 * @return {RestrictedContact} posted contact
+		 */
+		$scope.postContact = function() {
+			$scope.contactButtonDisabled = true;
+			RestrictedContact.save({
+				'comment': $scope.contactMsg,
+				'rowId': $stateParams.id
+			}, function(c) {
+				$scope.contactMsg = "";
+				$scope.contactButtonDisabled = false;
+				updateContacts();
+			}, function(c) {
+				$scope.contactButtonDisabled = false;
+			});
+		}
+
+		/**
+		 * PUT contact on server
+		 * @return {RestrictedContact} edited contact
+		 */
+		var putContact = function(contact) {
+			RestrictedContact.update({
+				id: contact.id
+			}, contact, function(c) {
+				updateContacts();
+			}, function(c) {});
+		}
+
+		/**
+		 * Open modal for editing
+		 * @param  {RestrictedContact} contact to edit
+		 * @return {RestrictedContact} edited contact text
+		 */
+		$scope.editContact = function(localContact) {
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/editModal.html',
+				controller: 'EditModalInstanceCtrl',
+				resolve: {
+					comment: function() {
+						return localContact.comment;
+					}
+				}
+			});
+			modalInstance.result.then(function(comment) {
+				localContact.comment = comment;
+				putContact(localContact);
+			}, function() {
+				// cancel
+			});
+		}
+
 	}]);

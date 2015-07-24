@@ -19,9 +19,9 @@ import java.util.List;
 @RequestMapping(value="api/admin/comments", produces = "application/json; charset=utf-8")
 public class AdminCommentController {
 
-    AdminCommentService adminCommentService;
+    private AdminCommentService adminCommentService;
 
-    AdminUserService adminUserServiceCustom;
+    private AdminUserService adminUserServiceCustom;
 
     public void setAdminCommentService(AdminCommentService adminCommentService) {
         this.adminCommentService = adminCommentService;

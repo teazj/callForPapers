@@ -25,6 +25,13 @@
 		<property name="adminCommentService" ref="adminCommentService"></property>
 		<property name="adminUserServiceCustom" ref="adminUserService"></property>
 	</bean>
+	<bean id="adminContactController" class="fr.sii.controller.admin.contact.AdminContactController">
+		<property name="adminContactService" ref="adminContactService"></property>
+		<property name="adminUserServiceCustom" ref="adminUserService"></property>
+		<property name="googleService" ref="spreadsheetService"></property>
+		<property name="emailingService" ref="emailingService"></property>
+		<property name="globalSettings" ref="globalSettings"></property>
+	</bean>
 	<bean id="adminRateController" class="fr.sii.controller.admin.rate.AdminRateController">
 		<property name="adminUserServiceCustom" ref="adminUserService"></property>
 		<property name="adminRateService" ref="adminRateService"></property>
@@ -67,6 +74,14 @@
 	</bean>
 	<bean id="commonProfilImageController" class="fr.sii.controller.common.user.CommonProfilImageController">
 		<property name="userService" ref="userService"></property>
+		<property name="globalSettings" ref="globalSettings"></property>
+	</bean>
+	<bean id="contactController" class="fr.sii.controller.restricted.contact.ContactController">
+		<property name="adminContactService" ref="adminContactService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="googleService" ref="spreadsheetService"></property>
+		<property name="adminUserServiceCustom" ref="adminUserService"></property>
+		<property name="emailingService" ref="emailingService"></property>
 		<property name="globalSettings" ref="globalSettings"></property>
 	</bean>
 
