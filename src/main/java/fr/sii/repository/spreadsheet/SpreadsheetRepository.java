@@ -19,7 +19,9 @@ public interface SpreadsheetRepository {
     void login(String refreshToken) throws IOException, ServiceException;
 
     Row addRow(Row row) throws IOException, ServiceException, EntityNotFoundException;
+
     List<Row> getRows() throws IOException, ServiceException, EntityNotFoundException;
+
     Row getRow(String added) throws IOException, ServiceException, NotFoundException, EntityNotFoundException;
 
     Row getRow(String added, Long userId) throws IOException, ServiceException, ForbiddenException, NotFoundException, EntityNotFoundException;
@@ -45,4 +47,6 @@ public interface SpreadsheetRepository {
     void updateProfilSessions(Row rowContainingProfil, Long userId) throws EntityNotFoundException, ServiceException, IOException;
 
     void updateProfilSessions(UserProfil userProfil, Long userId) throws ServiceException, IOException, EntityNotFoundException;
+
+    Row changeRowTrack(Long added, String track) throws EntityNotFoundException, ServiceException, IOException, NotFoundException;
 }

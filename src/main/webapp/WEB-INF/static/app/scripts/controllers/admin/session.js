@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', 'AdminContact', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys, AdminContact) {
+	.controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', 'AdminContact', 'Notification', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys, AdminContact, Notification) {
 		$scope.tab = $stateParams.tab; 
 
 		$scope.session = null;
@@ -470,15 +470,58 @@ angular.module('CallForPaper')
 			});
 		}
 
+		$scope.changeTrack = function() {
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/changeTrackModal.html',
+				controller: 'ChangeTrackModalInstanceCtrl',
+				resolve: {
+					session: function() {
+						return $scope.session;
+					}
+				}
+			});
+			modalInstance.result.then(function(track) {
+				putTrack(track);
+			}, function() {
+				// cancel
+			});
+		}
 
-
-
-
+		$scope.changeTrackButtonAnimationDisabled = true;
+		var putTrack = function(track) {
+			$scope.changeTrackButtonAnimationDisabled = false;
+			AdminSession.changeTrack({id : $stateParams.id}, {track: track}).$promise.then(function(sessionTmp){
+				$scope.session.track = sessionTmp.track;
+			    Notification.success({
+                    message: $filter('translate')('admin.trackModified'),
+                    delay: 3000
+                });
+				$scope.changeTrackButtonAnimationDisabled = true;
+			}, function(){
+			    Notification.error({
+                    message: $filter('translate')('error.backendcommunication'),
+                    delay: 3000
+                });
+				$scope.changeTrackButtonAnimationDisabled = true;
+			})
+		}
 	}])
 	.controller('EditModalInstanceCtrl', ['$scope', '$modalInstance', 'comment', function($scope, $modalInstance, comment) {
 		$scope.commentMsg = comment;
 		$scope.ok = function() {
 			$modalInstance.close($scope.commentMsg);
+		};
+
+		$scope.cancel = function() {
+			$modalInstance.dismiss();
+		};
+	}])
+	.controller('ChangeTrackModalInstanceCtrl', ['$scope', '$modalInstance', 'session', function($scope, $modalInstance, session) {
+		$scope.session = session;
+		$scope.track = session.track;
+		$scope.ok = function() {
+			$modalInstance.close($scope.track);
 		};
 
 		$scope.cancel = function() {

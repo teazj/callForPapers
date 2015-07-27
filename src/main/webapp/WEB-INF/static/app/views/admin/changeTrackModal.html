@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{'editModal.title' | translate}}</h3>
+</div>
+<div class="modal-body" bs-has>
+	<select ng-model="track" id="track" name="track" required class="form-control">
+		<option ng-selected="session.track === 'cloud'" value="cloud">{{'step2.tracks.cloud' | translate}}</option>
+		<option ng-selected="session.track === 'mobile'" value="mobile">{{'step2.tracks.mobile' | translate}}</option>
+		<option ng-selected="session.track === 'web'" value="web">{{'step2.tracks.web' | translate}}</option>
+		<option ng-selected="session.track === 'discovery'" value="discovery">{{'step2.tracks.discovery' | translate}}</option>
+	</select>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="session.track === track" ng-click="ok()">{{'editModal.confirm' | translate}}</button>
+    <button class="btn btn-warning" ng-click="cancel()">{{'editModal.cancel' | translate}}</button>
+</div>

@@ -263,6 +263,10 @@ public class SpreadsheetService {
         return spreadsheetRepository.getRowsSession(userId);
     }
 
+    public Row changeRowTrack(Long added, String track) throws ServiceException, IOException, NotFoundException, EntityNotFoundException {
+        return spreadsheetRepository.changeRowTrack(added, track);
+    }
+
     public List<Row> getRowsDraft() throws IOException, ServiceException, EntityNotFoundException {
         Cache cache;
         List<Row> rowsDraft = null;

@@ -925,4 +925,56 @@ public class ProductionSpreadsheetRepository implements SpreadsheetRepository {
         }
         return;
     }
+
+    public Row changeRowTrack(Long added, String track) throws EntityNotFoundException, ServiceException, IOException, NotFoundException {
+        checkExpiredAccessToken();
+        if(spreadsheet == null) {
+            throw new ServiceException("Spreadsheet doesn't exists");
+        }
+        if(worksheet == null)
+        {
+            throw new ServiceException("Worksheet doesn't exists");
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        // Fetch the list feed of the worksheet.
+        URL listFeedUrl = worksheet.getListFeedUrl();
+        ListFeed listFeed = service.getFeed(listFeedUrl, ListFeed.class);
+        if(listFeed == null)
+        {
+            throw new ServiceException("ListFeed doesn't exists");
+        }
+
+        // Iterate through each row, printing its cell values.
+        for (ListEntry row : listFeed.getEntries()) {
+            Row rowModel = spreadsheetConnector.listEntryToRow(row);
+            if(rowModel.getAdded().toString().equals(added.toString()))
+            {
+                    // change draft to session
+                    rowModel.setTrack(track);
+                    // updating row
+                    java.lang.reflect.Field[] fields = Row.class.getDeclaredFields();
+                    for (java.lang.reflect.Field field : fields) {
+                        try {
+                            Method method = Row.class.getMethod("get" + field.getName().toString().substring(0, 1).toUpperCase() + field.getName().toString().substring(1));
+                            String key = field.getName().toString();
+                            Object value = method.invoke(rowModel);
+                            if (value != null) {
+                                row.getCustomElements().setValueLocal(key, value.toString());
+                            }
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    row.update();
+                    return rowModel;
+            }
+        }
+        throw new NotFoundException("Row not found");
+    }
 }
