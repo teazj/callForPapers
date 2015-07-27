@@ -7,12 +7,14 @@ package fr.sii.controller.admin.session;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
+import fr.sii.domain.admin.comment.AdminComment;
 import fr.sii.domain.admin.session.AdminViewedSession;
 import fr.sii.domain.admin.session.Track;
 import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
+import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.session.AdminViewedSessionService;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.email.EmailingService;
@@ -36,9 +38,16 @@ public class AdminSessionController {
 
     private ApplicationSettings applicationSettings;
 
-    private AdminUserService adminUserServiceCustom;
 
     private AdminViewedSessionService adminViewedSessionService;
+
+    private AdminCommentService adminCommentService;
+
+    private AdminUserService adminUserServiceCustom;
+
+    public void setAdminCommentService(AdminCommentService adminCommentService) {
+        this.adminCommentService = adminCommentService;
+    }
 
     public void setAdminViewedSessionService(AdminViewedSessionService adminViewedSessionService) {
         this.adminViewedSessionService = adminViewedSessionService;
@@ -98,6 +107,13 @@ public class AdminSessionController {
     @RequestMapping(value="/sessions/track/{added}", method= RequestMethod.PUT)
     @ResponseBody
     public Row putGoogleSpreadsheetTrack(@PathVariable String added, @Valid @RequestBody Track track) throws NotFoundException, ServiceException, EntityNotFoundException, IOException {
+        AdminUser adminUser = adminUserServiceCustom.getCurrentUser();
+        AdminComment adminComment = new AdminComment();
+        Row row = googleService.getRow(added);
+        adminComment.setComment("Catégorie changée de \"" + row.getTrack() + "\" à \"" + track.getTrack() + "\".");
+        adminComment.setUserId(adminUser.getEntityId());
+        adminComment.setRowId(Long.parseLong(added));
+        adminCommentService.save(adminComment);
         return googleService.changeRowTrack(Long.parseLong(added), track.getTrack());
     }
 }
