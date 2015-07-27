@@ -19,6 +19,10 @@ public class ApplicationController {
         this.applicationSettings = applicationSettings;
     }
 
+    /**
+     * Obtain application settings, (name, dates, ...)
+     * @return
+     */
     @RequestMapping(value="/application", method= RequestMethod.GET)
     @ResponseBody
     public ApplicationSettings getApplicationSettings() {

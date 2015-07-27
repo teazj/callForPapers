@@ -67,6 +67,15 @@ public class AuthController {
         this.authSettings = authSettings;
     }
 
+    /**
+     * Log user in
+     * @param res
+     * @param req
+     * @param user
+     * @return
+     * @throws JOSEException
+     * @throws IOException
+     */
     @RequestMapping(value="/login", method=RequestMethod.POST)
     @ResponseBody
     public Token login(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
@@ -83,6 +92,14 @@ public class AuthController {
         return null;
     }
 
+    /**
+     * Register new user
+     * @param res
+     * @param req
+     * @param signupUser
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value="/signup", method=RequestMethod.POST)
     @ResponseBody
     public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid SignupUser signupUser) throws Exception {
@@ -128,6 +145,16 @@ public class AuthController {
         return token;
     }
 
+    /**
+     * Verify token for email validation
+     * @param res
+     * @param req
+     * @param id
+     * @param verifyToken
+     * @return
+     * @throws JOSEException
+     * @throws IOException
+     */
     @RequestMapping(value="/verify", method=RequestMethod.GET)
     @ResponseBody
     public Token verify(HttpServletResponse res,HttpServletRequest req, @RequestParam("id") String id, @RequestParam("token") String verifyToken) throws JOSEException, IOException {
@@ -174,6 +201,17 @@ public class AuthController {
         }
     }
 
+    /**
+     * Unlink social provider
+     * @param res
+     * @param req
+     * @param provider
+     * @throws JOSEException
+     * @throws IOException
+     * @throws ParseException
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     @RequestMapping(value="/unlink/{provider}", method=RequestMethod.GET)
     @ResponseBody
     public void unlink(HttpServletResponse res,HttpServletRequest req, @PathVariable("provider") String provider) throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {

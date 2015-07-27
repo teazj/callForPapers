@@ -49,6 +49,16 @@ public class GoogleAuthController {
         this.authService = authService;
     }
 
+    /**
+     * Log in with Google
+     * @param res
+     * @param req
+     * @param info
+     * @return
+     * @throws IOException
+     * @throws JOSEException
+     * @throws ParseException
+     */
     @RequestMapping(method= RequestMethod.POST)
     @ResponseBody
     public Token loginGoogle(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)

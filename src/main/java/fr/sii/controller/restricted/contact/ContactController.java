@@ -84,6 +84,16 @@ public class ContactController {
         this.emailingService = emailingService;
     }
 
+    /**
+     * Add a contact message for the given session
+     * @param adminContact
+     * @param req
+     * @return
+     * @throws CustomException
+     * @throws ServiceException
+     * @throws EntityNotFoundException
+     * @throws IOException
+     */
     @RequestMapping(method=RequestMethod.POST)
     @ResponseBody public AdminContact postContact(@Valid @RequestBody AdminContact adminContact, HttpServletRequest req) throws CustomException, ServiceException, EntityNotFoundException, IOException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -133,6 +143,19 @@ public class ContactController {
         return postedAdminContact;
     }
 
+    /**
+     * Edit contact message
+     * @param id
+     * @param adminContact
+     * @param req
+     * @return
+     * @throws NotFoundException
+     * @throws ForbiddenException
+     * @throws NotVerifiedException
+     * @throws ServiceException
+     * @throws EntityNotFoundException
+     * @throws IOException
+     */
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     @ResponseBody public AdminContact putContact(@PathVariable Long id, @Valid @RequestBody AdminContact adminContact, HttpServletRequest req) throws NotFoundException, ForbiddenException, NotVerifiedException, ServiceException, EntityNotFoundException, IOException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -160,6 +183,18 @@ public class ContactController {
         }
     }
 
+    /**
+     * Get all contact message for a given session
+     * @param rowId
+     * @param req
+     * @return
+     * @throws NotVerifiedException
+     * @throws NotFoundException
+     * @throws ServiceException
+     * @throws ForbiddenException
+     * @throws EntityNotFoundException
+     * @throws IOException
+     */
     @RequestMapping(value="/row/{rowId}", method= RequestMethod.GET)
     @ResponseBody
     public List<AdminContact> getContactsByRowId(@PathVariable Long rowId, HttpServletRequest req) throws NotVerifiedException, NotFoundException, ServiceException, ForbiddenException, EntityNotFoundException, IOException {

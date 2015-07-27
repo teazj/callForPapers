@@ -1,5 +1,7 @@
 package fr.sii.controller.admin.contact;
 
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.gdata.util.ServiceException;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.admin.contact.AdminContact;
 import fr.sii.domain.admin.user.AdminUser;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,17 +64,23 @@ public class AdminContactController {
     }
 
 
+    /**
+     * Add new contact message to a session
+     * @param adminContact
+     * @return
+     */
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminContact postContact(@Valid @RequestBody AdminContact adminContact) {
+    @ResponseBody public AdminContact postContact(@Valid @RequestBody AdminContact adminContact) throws ServiceException, EntityNotFoundException, NotFoundException, IOException {
         adminContact.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         adminContact.setAdmin(true);
         AdminContact postedAdminContact =  adminContactService.save(adminContact);
+        // Verify user allowed => Throw forbidden exception;
+        Row row = googleService.getRow(postedAdminContact.getRowId().toString());
         try {
             List<String> bcc = new ArrayList<>();
-            for(AdminUser adminUSer : adminUserServiceCustom.findAll()) {
-                bcc.add(adminUSer.getEmail());
+            for(AdminUser adminUser : adminUserServiceCustom.findAll()) {
+                bcc.add(adminUser.getEmail());
             }
-            Row row = googleService.getRow(postedAdminContact.getRowId().toString());
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("name", row.getFirstname());
             map.put("talk", row.getSessionName());
@@ -86,6 +95,14 @@ public class AdminContactController {
         return postedAdminContact;
     }
 
+    /**
+     * Edit contact message
+     * @param id
+     * @param adminContact
+     * @return
+     * @throws NotFoundException
+     * @throws ForbiddenException
+     */
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     @ResponseBody public AdminContact putContact(@PathVariable Long id, @Valid @RequestBody AdminContact adminContact) throws NotFoundException, ForbiddenException {
         AdminContact currentComment = adminContactService.findOne(id);
@@ -99,6 +116,11 @@ public class AdminContactController {
         }
     }
 
+    /**
+     * Get all contact messages for a specific session
+     * @param rowId
+     * @return
+     */
     @RequestMapping(value="/row/{rowId}", method= RequestMethod.GET)
     @ResponseBody
     public List<AdminContact> getContactsByRowId(@PathVariable Long rowId ) {

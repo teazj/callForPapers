@@ -45,7 +45,14 @@ public class UserController {
         this.googleService = googleService;
     }
 
-
+    /**
+     * Get current user profil
+     * @param req
+     * @return
+     * @throws NotVerifiedException
+     * @throws NotFoundException
+     * @throws IOException
+     */
     @RequestMapping(value="/user", method= RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
@@ -83,6 +90,17 @@ public class UserController {
         return map;
     }
 
+    /**
+     * Edit current user profil
+     * @param req
+     * @param profil
+     * @return
+     * @throws NotVerifiedException
+     * @throws NotFoundException
+     * @throws IOException
+     * @throws EntityNotFoundException
+     * @throws ServiceException
+     */
     @RequestMapping(value="/user", method= RequestMethod.PUT)
     @ResponseBody
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException, EntityNotFoundException, ServiceException {

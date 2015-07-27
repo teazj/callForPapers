@@ -25,6 +25,13 @@ public class AdminStatsController {
         this.adminStatsService = adminStatsService;
     }
 
+    /**
+     * Get meter stats (talks count, draft count, ...)
+     * @return
+     * @throws IOException
+     * @throws ServiceException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/meter", method= RequestMethod.GET)
     @ResponseBody
     public AdminMeter getMeter() throws IOException, ServiceException, EntityNotFoundException {

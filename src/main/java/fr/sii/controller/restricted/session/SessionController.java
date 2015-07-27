@@ -59,7 +59,11 @@ public class SessionController {
     }
 
     /**
-     * SESSION
+     * Add a session to the spreadsheet
+     * @param req
+     * @param row
+     * @return
+     * @throws Exception
      */
     @RequestMapping(value="/sessions", method=RequestMethod.POST)
     @ResponseBody public Row postGoogleSpreadsheet(HttpServletRequest req, @Valid @RequestBody RowSession row) throws Exception {
@@ -86,6 +90,15 @@ public class SessionController {
         return savedRow;
     }
 
+    /**
+     * Get all session for the current user
+     * @param req
+     * @return
+     * @throws IOException
+     * @throws ServiceException
+     * @throws NotVerifiedException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/sessions", method= RequestMethod.GET)
     @ResponseBody
     public List<Row> getGoogleSpreadsheets(HttpServletRequest req) throws IOException, ServiceException, NotVerifiedException, EntityNotFoundException {
@@ -99,6 +112,18 @@ public class SessionController {
         return googleService.getRowsSession(userId);
     }
 
+    /**
+     * Get a session
+     * @param req
+     * @param added
+     * @return
+     * @throws IOException
+     * @throws ServiceException
+     * @throws NotVerifiedException
+     * @throws NotFoundException
+     * @throws ForbiddenException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/sessions/{added}", method= RequestMethod.GET)
     @ResponseBody
     public Row getGoogleSpreadsheet(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
@@ -112,7 +137,14 @@ public class SessionController {
         return googleService.getRow(added, userId);
     }
 
-
+    /**
+     * Change a draft to a session
+     * @param req
+     * @param row
+     * @param added
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value="/sessions/{added}", method=RequestMethod.PUT)
     @ResponseBody public Row postGoogleSpreadsheetDraftToSession(HttpServletRequest req, @Valid @RequestBody RowSession row, @PathVariable String added) throws Exception {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -138,7 +170,14 @@ public class SessionController {
     }
 
     /**
-     * DRAFT
+     * Add a new draft
+     * @param req
+     * @param row
+     * @return
+     * @throws NotVerifiedException
+     * @throws IOException
+     * @throws ServiceException
+     * @throws EntityNotFoundException
      */
     @RequestMapping(value="/drafts", method=RequestMethod.POST)
     @ResponseBody public Row postGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row) throws NotVerifiedException, IOException, ServiceException, EntityNotFoundException {
@@ -151,6 +190,15 @@ public class SessionController {
         return googleService.addRow(row);
     }
 
+    /**
+     * Get all drafts for current user
+     * @param req
+     * @return
+     * @throws IOException
+     * @throws ServiceException
+     * @throws NotVerifiedException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/drafts", method= RequestMethod.GET)
     @ResponseBody
     public List<Row> getGoogleSpreadsheetsDraft(HttpServletRequest req) throws IOException, ServiceException, NotVerifiedException, EntityNotFoundException {
@@ -164,6 +212,18 @@ public class SessionController {
         return googleService.getRowsDraft(userId);
     }
 
+    /**
+     * Get a draft
+     * @param req
+     * @param added
+     * @return
+     * @throws IOException
+     * @throws ServiceException
+     * @throws NotVerifiedException
+     * @throws NotFoundException
+     * @throws ForbiddenException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/drafts/{added}", method= RequestMethod.GET)
     @ResponseBody
     public Row getGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
@@ -177,6 +237,17 @@ public class SessionController {
         return googleService.getRow(added, userId);
     }
 
+    /**
+     * Delete a draft
+     * @param req
+     * @param added
+     * @throws IOException
+     * @throws ServiceException
+     * @throws NotVerifiedException
+     * @throws NotFoundException
+     * @throws ForbiddenException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/drafts/{added}", method=RequestMethod.DELETE)
     @ResponseBody public void deleteGoogleSpreadsheetDraft(HttpServletRequest req, @PathVariable String added) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
@@ -189,6 +260,19 @@ public class SessionController {
         googleService.deleteRowDraft(added, userId);
     }
 
+    /**
+     * Edit a draft
+     * @param req
+     * @param row
+     * @param added
+     * @return
+     * @throws NotVerifiedException
+     * @throws ServiceException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws IOException
+     * @throws EntityNotFoundException
+     */
     @RequestMapping(value="/drafts/{added}", method=RequestMethod.PUT)
     @ResponseBody public Row putGoogleSpreadsheetDraft(HttpServletRequest req, @Valid @RequestBody RowDraft row, @PathVariable String added) throws NotVerifiedException, ServiceException, ForbiddenException, NotFoundException, IOException, EntityNotFoundException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);

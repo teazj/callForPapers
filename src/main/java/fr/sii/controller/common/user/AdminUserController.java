@@ -28,6 +28,12 @@ public class AdminUserController {
         this.spreadsheetSettings = spreadsheetSettings;
     }
 
+    /**
+     * Obtain current admin user information
+     * @param req
+     * @param resp
+     * @return
+     */
     @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     @ResponseBody
     public AdminUserInfo getCurrentUser( HttpServletRequest req, HttpServletResponse resp){
@@ -41,6 +47,13 @@ public class AdminUserController {
         }
     }
 
+    /**
+     * Obtain login URL
+     * @param redirect
+     * @param req
+     * @param resp
+     * @return
+     */
     @RequestMapping(value="/login", method= RequestMethod.POST)
     @ResponseBody
     public Uri postLogin(@RequestBody @Valid Redirect redirect, HttpServletRequest req, HttpServletResponse resp){
@@ -54,7 +67,13 @@ public class AdminUserController {
         }
     }
 
-
+    /**
+     * Obtain logout URL
+     * @param redirect
+     * @param req
+     * @param resp
+     * @return
+     */
     @RequestMapping(value="/logout", method= RequestMethod.POST)
     @ResponseBody
     public Uri postLogout(@RequestBody @Valid Redirect redirect, HttpServletRequest req, HttpServletResponse resp){

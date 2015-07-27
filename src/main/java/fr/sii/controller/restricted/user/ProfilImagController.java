@@ -25,6 +25,14 @@ public class ProfilImagController {
 
     private final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
+    /**
+     * Upload profil image to the Blobstore
+     * @param req
+     * @param res
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     @RequestMapping(value="/upload", method= RequestMethod.POST)
     @ResponseBody
     public Key upload(HttpServletRequest req, HttpServletResponse res) throws IOException, URISyntaxException {
@@ -37,6 +45,12 @@ public class ProfilImagController {
         return new Key();
     }
 
+    /**
+     * Obtain Blobstore upload URL
+     * @param req
+     * @param res
+     * @return
+     */
     @RequestMapping(value="/upload", method= RequestMethod.GET)
     @ResponseBody
     public Uri getUploadUrl(HttpServletRequest req, HttpServletResponse res) {
