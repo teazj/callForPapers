@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.config.application.ApplicationSettings;
 import fr.sii.domain.admin.session.AdminViewedSession;
+import fr.sii.domain.admin.session.Track;
 import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
@@ -17,11 +18,9 @@ import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.spreadsheet.SpreadsheetService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -94,5 +93,11 @@ public class AdminSessionController {
             throw new NotFoundException("User not found");
         }
         return adminViewedSessionService.put(Long.parseLong(added),currentUser.getEntityId(), new AdminViewedSession(Long.parseLong(added), currentUser.getEntityId(), new Date()));
+    }
+
+    @RequestMapping(value="/sessions/track/{added}", method= RequestMethod.PUT)
+    @ResponseBody
+    public Row putGoogleSpreadsheetTrack(@PathVariable String added, @Valid @RequestBody Track track) throws NotFoundException, ServiceException, EntityNotFoundException, IOException {
+        return googleService.changeRowTrack(Long.parseLong(added), track.getTrack());
     }
 }

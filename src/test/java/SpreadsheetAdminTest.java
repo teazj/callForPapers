@@ -292,7 +292,81 @@ public class SpreadsheetAdminTest {
     }
 
     @Test
-    public void test4_getRowNotFound() {
+    public void test4_changeTrack() {
+        MockMvcResponse response = given().contentType("application/json")
+                .header(getHeader())
+                .body("{\n" +
+                        "\"email\" : \"email@email.fr\",\n" +
+                        "\"name\" : \"Maugin1\",\n" +
+                        "\"firstname\" : \"Thomas\",\n" +
+                        "\"phone\" : \"33683653379\",\n" +
+                        "\"company\" : \"SII\",\n" +
+                        "\"bio\" : \"Bio\",\n" +
+                        "\"social\" : \"www.thomas-maugin.fr, https://github.com/Thom-x\",\n" +
+                        "\"sessionName\" : \"session name\",\n" +
+                        "\"description\" : \"description\",\n" +
+                        "\"references\" : \"refs\",\n" +
+                        "\"difficulty\" : \"3\",\n" +
+                        "\"type\" : \"conference\",\n" +
+                        "\"track\" : \"web\",\n" +
+                        "\"coSpeaker\" : \"moi, toi\",\n" +
+                        "\"financial\" : \"true\",\n" +
+                        "\"travel\" : \"true\",\n" +
+                        "\"travelFrom\" : \"Angers\",\n" +
+                        "\"hotel\" : \"true\",\n" +
+                        "\"hotelDate\" : \"13/11/1992\"\n" +
+                        "}")
+                .when()
+                .post("/api/restricted/sessions")
+                .then()
+                .statusCode(200)
+                .body("name", Matchers.is("Maugin1"))
+                .body("difficulty", Matchers.is(3)).extract().
+                        response();
+
+        Long added = response.path("added");
+        given()
+                .contentType("application/json")
+                .body("{\n" +
+                        "\"track\" : \"mobile\"\n" +
+                        "}")
+                .when()
+                .put("/api/admin/sessions/track/" + added.toString())
+                .then()
+                .statusCode(200)
+                .body("track", Matchers.is("mobile"));
+
+        given()
+                .contentType("application/json")
+                .body("{\n" +
+                        "\"track\" : \"not good\"\n" +
+                        "}")
+                .when()
+                .put("/api/admin/sessions/track/" + added.toString())
+                .then()
+                .statusCode(400);
+
+        given()
+                .contentType("application/json")
+                .body("{}")
+                .when()
+                .put("/api/admin/sessions/track/" + added.toString())
+                .then()
+                .statusCode(400);
+
+        given()
+                .contentType("application/json")
+                .body("{\n" +
+                        "\"track\" : \"mobile\"\n" +
+                        "}")
+                .when()
+                .put("/api/admin/sessions/track/0")
+                .then()
+                .statusCode(404).extract().response();
+    }
+
+    @Test
+    public void test5_getRowNotFound() {
         given()
                 .contentType("application/json")
                 .when()

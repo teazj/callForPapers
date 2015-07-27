@@ -9,6 +9,10 @@ angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', funct
 		setViewed: {
 			method: 'POST',
 			url: 'api/admin/sessions/viewed/:id',
+		},
+		changeTrack: {
+			method: 'PUT',
+			url: 'api/admin/sessions/track/:id'
 		}
     });
 }]);
