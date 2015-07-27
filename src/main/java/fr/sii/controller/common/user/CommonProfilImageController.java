@@ -41,6 +41,13 @@ public class CommonProfilImageController {
         this.globalSettings = globalSettings;
     }
 
+    /**
+     * Get image for given BlobKey
+     * @param req
+     * @param res
+     * @param blobKeyParam
+     * @throws IOException
+     */
     @RequestMapping(value="/image/{blobKeyParam}", method= RequestMethod.GET)
     @ResponseBody
     public void getProfileImage(HttpServletRequest req, HttpServletResponse res,  @PathVariable String blobKeyParam) throws IOException {
@@ -48,6 +55,14 @@ public class CommonProfilImageController {
         blobstoreService.serve(blobKey, res);
     }
 
+    /**
+     * Get user profil image key
+     * @param req
+     * @param res
+     * @param id
+     * @throws IOException
+     * @throws NotFoundException
+     */
     @RequestMapping(value="/image/user/{id}", method= RequestMethod.GET)
     @ResponseBody
     public void getProfileImageByUserId(HttpServletRequest req, HttpServletResponse res,  @PathVariable Long id) throws IOException, NotFoundException {
@@ -70,6 +85,15 @@ public class CommonProfilImageController {
         }
     }
 
+    /**
+     * Get user profil image URL
+     * @param req
+     * @param res
+     * @param id
+     * @return
+     * @throws IOException
+     * @throws NotFoundException
+     */
     @RequestMapping(value="/image/user/url/{id}", method= RequestMethod.GET)
     @ResponseBody
     public Uri getProfilImageUrlByUserId(HttpServletRequest req, HttpServletResponse res,  @PathVariable Long id) throws IOException, NotFoundException {

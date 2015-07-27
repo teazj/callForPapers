@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+    /**
+     * Redirect to index.html
+     * @return
+     */
     @RequestMapping("/")
     public String index() {
         return "forward:/index.html";

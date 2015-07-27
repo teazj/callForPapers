@@ -64,6 +64,11 @@ public class AdminContactController {
     }
 
 
+    /**
+     * Add new contact message to a session
+     * @param adminContact
+     * @return
+     */
     @RequestMapping(method=RequestMethod.POST)
     @ResponseBody public AdminContact postContact(@Valid @RequestBody AdminContact adminContact) throws ServiceException, EntityNotFoundException, NotFoundException, IOException {
         adminContact.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
@@ -90,6 +95,14 @@ public class AdminContactController {
         return postedAdminContact;
     }
 
+    /**
+     * Edit contact message
+     * @param id
+     * @param adminContact
+     * @return
+     * @throws NotFoundException
+     * @throws ForbiddenException
+     */
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     @ResponseBody public AdminContact putContact(@PathVariable Long id, @Valid @RequestBody AdminContact adminContact) throws NotFoundException, ForbiddenException {
         AdminContact currentComment = adminContactService.findOne(id);
@@ -103,6 +116,11 @@ public class AdminContactController {
         }
     }
 
+    /**
+     * Get all contact messages for a specific session
+     * @param rowId
+     * @return
+     */
     @RequestMapping(value="/row/{rowId}", method= RequestMethod.GET)
     @ResponseBody
     public List<AdminContact> getContactsByRowId(@PathVariable Long rowId ) {

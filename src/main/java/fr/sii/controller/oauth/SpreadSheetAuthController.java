@@ -53,6 +53,17 @@ public class SpreadSheetAuthController {
         this.spreadsheetService = spreadsheetService;
     }
 
+    /**
+     * Log in for spreadsheet authorization
+     * @param res
+     * @param req
+     * @param info
+     * @return
+     * @throws IOException
+     * @throws JOSEException
+     * @throws ParseException
+     * @throws ForbiddenException
+     */
     @RequestMapping(method= RequestMethod.POST)
     @ResponseBody
     public boolean loginSpreadhseet(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)

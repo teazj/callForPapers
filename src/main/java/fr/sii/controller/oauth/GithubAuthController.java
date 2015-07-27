@@ -54,6 +54,17 @@ public class GithubAuthController {
         this.authService = authService;
     }
 
+    /**
+     * Log in with Github
+     * @param res
+     * @param req
+     * @param info
+     * @return
+     * @throws IOException
+     * @throws CustomException
+     * @throws JOSEException
+     * @throws ParseException
+     */
     @RequestMapping(method= RequestMethod.POST)
     @ResponseBody
     public Token doGet(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)
