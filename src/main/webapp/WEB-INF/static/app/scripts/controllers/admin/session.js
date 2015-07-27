@@ -492,6 +492,7 @@ angular.module('CallForPaper')
 		var putTrack = function(track) {
 			$scope.changeTrackButtonAnimationDisabled = false;
 			AdminSession.changeTrack({id : $stateParams.id}, {track: track}).$promise.then(function(sessionTmp){
+				updateComments();
 				$scope.session.track = sessionTmp.track;
 			    Notification.success({
                     message: $filter('translate')('admin.trackModified'),
@@ -499,10 +500,6 @@ angular.module('CallForPaper')
                 });
 				$scope.changeTrackButtonAnimationDisabled = true;
 			}, function(){
-			    Notification.error({
-                    message: $filter('translate')('error.backendcommunication'),
-                    delay: 3000
-                });
 				$scope.changeTrackButtonAnimationDisabled = true;
 			})
 		}

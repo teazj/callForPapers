@@ -13,6 +13,7 @@
 		<property name="applicationSettings" ref="applicationSettings"></property>
 		<property name="emailingService" ref="emailingService"></property>
 		<property name="googleService" ref="spreadsheetService"></property>
+		<property name="adminCommentService" ref="adminCommentService"></property>
 	</bean>
 	<bean id="applicationController" class="fr.sii.controller.common.application.ApplicationController">
 		<property name="applicationSettings" ref="applicationSettings"></property>
