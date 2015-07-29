@@ -8,6 +8,8 @@ angular.module('CallForPaper')
 		$scope.screenSize = screenSize;
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 		
+		$scope.tabType = NextPreviousSessionService.getType();
+
 		/**
 		 * Get all sessions (talks)
 		 * @param  {void}
@@ -79,6 +81,10 @@ angular.module('CallForPaper')
 			});
 
 			orderedData = params.sorting() ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
+
+			if(orderedData.length < (params.page()-1)*params.count()) { // page params too large
+				params.$params.page = parseInt(orderedData.length / params.count(),10) + 1;
+			}
 
 			$scope.sessions = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
 

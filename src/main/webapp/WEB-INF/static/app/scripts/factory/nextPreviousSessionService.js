@@ -32,6 +32,10 @@ angular.module('CallForPaper')
 			localStorageService.set('nextPreviousSessionType', type);
 		};
 
+		nextPreviousSessionService.getType = function() {
+			return localStorageService.get('nextPreviousSessionType');
+		};
+
 		nextPreviousSessionService.setSessions = function(array, typeTmp) {
 			var sessionsTmp = array.map(function(session) {
 				return session.added;
