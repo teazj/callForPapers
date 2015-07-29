@@ -32,12 +32,12 @@
 			</div>
 			<div class="col-xs-12" role="tabpanel" style="display: inline-block">
 				<ul id="tab" class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><button ng-click="setActiveTab('')" href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">{{'admin.allType' | translate}}</button></li>
-					<li role="presentation" class=""><button ng-click="setActiveTab('conference')" href="#conference" role="tab" id="conference-tab" data-toggle="tab" aria-controls="conference" aria-expanded="false">{{'step2.types.conference' | translate}}</button></li>
-					<li role="presentation" class=""><button ng-click="setActiveTab('codelab')" href="#codelab" role="tab" id="codelab-tab" data-toggle="tab" aria-controls="codelab" aria-expanded="false">{{'step2.types.codelab' | translate}}</button></li>
+					<li role="presentation" ng-class="{active : tabType === ''}"><button ng-click="setActiveTab('')" href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">{{'admin.allType' | translate}}</button></li>
+					<li role="presentation" ng-class="{active : tabType === 'conference'}"><button ng-click="setActiveTab('conference')" href="#conference" role="tab" id="conference-tab" data-toggle="tab" aria-controls="conference" aria-expanded="false">{{'step2.types.conference' | translate}}</button></li>
+					<li role="presentation" ng-class="{active : tabType === 'codelab'}"><button ng-click="setActiveTab('codelab')" href="#codelab" role="tab" id="codelab-tab" data-toggle="tab" aria-controls="codelab" aria-expanded="false">{{'step2.types.codelab' | translate}}</button></li>
 				</ul>
 				<div id="tabContent" class="tab-content tile">
-					<div role="tabpanel" class="tab-pane fade active in" id="all" aria-labelledby="all-tab">
+					<div role="tabpanel" ng-class="{active : tabType === '', in : tabType === ''}" class="tab-pane fade" id="all" aria-labelledby="all-tab">
 						<div class="row">
 							<div class="col-xs-12">
 								<br>
@@ -45,10 +45,10 @@
 									<table ng-table="tableParams" show-filter="true" class="table table-striped table-hover table-bordered">
 										<tr ng-class="{success : session.reviewed}" ng-repeat="session in $data" ui-sref="admin.session({ id: session.added })">
 											<td filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.firstname}} {{::session.name}}</td>
-											<td filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
+											<td class="col-xs-3 noPadding" filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
 											<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
-											<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
+											<td class="col-xs-12 noPadding" filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
 											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
 											<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
@@ -75,7 +75,7 @@
 							</div>
 						</div>
 					</div>
-					<div role="tabpanel" class="tab-pane fade" id="conference" aria-labelledby="conference-tab">
+					<div role="tabpanel" ng-class="{active : tabType === 'conference', in : tabType === 'conference'}" class="tab-pane fade" id="conference" aria-labelledby="conference-tab">
 						<div class="row">
 							<div class="col-xs-12">
 								<br>
@@ -83,10 +83,10 @@
 									<table ng-table="tableParamsConference" show-filter="true" class="table table-striped table-hover table-bordered">
 										<tr ng-class="{success : session.reviewed}" ng-repeat="session in $data" ui-sref="admin.session({ id: session.added })">
 											<td filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.name}} {{::session.firstname}}</td>
-											<td filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
+											<td class="col-xs-3 noPadding" filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
 											<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
-											<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
+											<td class="col-xs-12 noPadding" filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
 											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
 											<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
@@ -113,7 +113,7 @@
 							</div>
 						</div>
 					</div>
-					<div role="tabpanel" class="tab-pane fade" id="codelab" aria-labelledby="codelab-tab">
+					<div role="tabpanel" ng-class="{active : tabType === 'codelab', in : tabType === 'codelab'}" class="tab-pane fade" id="codelab" aria-labelledby="codelab-tab">
 						<div class="row">
 							<div class="col-xs-12">
 								<br>
@@ -121,10 +121,10 @@
 									<table ng-table="tableParamsCodelab" show-filter="true" class="table table-striped table-hover table-bordered">
 										<tr ng-class="{success : session.reviewed}" ng-repeat="session in $data" ui-sref="admin.session({ id: session.added })">
 											<td filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.name}} {{::session.firstname}}</td>
-											<td filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
+											<td class="col-xs-3 noPadding" filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
 											<td filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
-											<td filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
+											<td class="col-xs-12 noPadding" filter="{'description': 'text'}" data-title="'admin.description' | translate">{{::session.description | truncate}}</td>
 											<td sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
 											<td sortable="'lastModification'" data-title="'admin.lastModification' | translate">
