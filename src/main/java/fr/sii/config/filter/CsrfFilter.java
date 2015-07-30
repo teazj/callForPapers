@@ -36,9 +36,12 @@ public class CsrfFilter implements Filter {
         final String csrfTokenValue = httpRequest.getHeader(X_CSRF_TOKEN);
         final Cookie[] cookies = httpRequest.getCookies();
 
-        // No CSRF filter for dev administration page
+        // No CSRF filter for dev administration page / worker
         String path = httpRequest.getRequestURI();
         if (path.startsWith("/_ah/")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        } else if (path.startsWith("/worker/")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

@@ -66,7 +66,6 @@
 	</bean>
 	<bean id="userController" class="fr.sii.controller.restricted.user.UserController">
 		<property name="userService" ref="userService"></property>
-		<property name="googleService" ref="spreadsheetService"></property>
 	</bean>
 	<bean id="profilImageController" class="fr.sii.controller.restricted.user.ProfilImagController">
 	</bean>
@@ -85,6 +84,9 @@
 		<property name="emailingService" ref="emailingService"></property>
 		<property name="globalSettings" ref="globalSettings"></property>
 		<property name="authSettings" ref="authSettings"></property>
+	</bean>
+	<bean id="profilTask" class="fr.sii.controller.worker.profil.ProfilTask">
+		<property name="googleService" ref="spreadsheetService"></property>
 	</bean>
 
 	<!-- Static Resource Config -->
