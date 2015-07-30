@@ -5,6 +5,9 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.domain.exception.NotFoundException;
@@ -12,7 +15,6 @@ import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.domain.user.User;
 import fr.sii.domain.user.UserProfil;
 import fr.sii.service.auth.AuthUtils;
-import fr.sii.service.spreadsheet.SpreadsheetService;
 import fr.sii.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,12 +39,6 @@ public class UserController {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    private SpreadsheetService googleService;
-
-    public void setGoogleService(SpreadsheetService googleService) {
-        this.googleService = googleService;
     }
 
     /**
@@ -132,10 +128,14 @@ public class UserController {
 
         ObjectMapper m = new ObjectMapper();
         String profilString = m.writeValueAsString(profil);
+
         if(!u.getProfile().equals(profilString)) {
             u.setProfile(profilString);
             userService.put(u.getEntityId(), u);
-            googleService.updateProfilSessions(profil, Long.parseLong(claimsSet.getSubject()));
+            Queue queue = QueueFactory.getQueue("profil");
+            // Add profil update to the queue
+            TaskOptions options = TaskOptions.Builder.withUrl("/worker/profil").param("profil", profilString).param("userId", claimsSet.getSubject());
+            queue.add(options);
         }
         return profil;
     }
