@@ -176,7 +176,7 @@ angular.module('CallForPaper')
         "message": "Message",
         "validate": "Valider",
         "edit": "Editer",
-        "hint": "Une oubli, une question ? Postez votre message ici, un administrateur vous répondra dès que possible."
+        "hint": "Un oubli, une question ? Postez votre message ici, un administrateur vous répondra dès que possible."
       },
       "admin": {
         "logout": "Se déconnecter",
