@@ -108,10 +108,10 @@
                         <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'profil.error' | translate}}</p>
                         <p ng-show="sendSuccess" class="col-sm-12 bg-success alert">{{'profil.success' | translate}}</p>
                         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4 pull-right" style="padding-bottom: 10px">
-                            <a ng-click="doVerify(files)" class="btn btn-block btn-primary">
+                            <button ng-click="doVerify(files)" ng-disabled="sending" class="btn btn-block btn-primary">
                                 <span class="mdi-content-save pull-right" ng-class="{'glyphicon-refresh-animate' : sending, 'mdi-content-save' : !sending, 'mdi-navigation-refresh' : sending}"></span>
                                 {{'profil.save' | translate}}
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </form>
