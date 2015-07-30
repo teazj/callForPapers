@@ -66,15 +66,15 @@
 		</a>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right" style="padding-bottom: 10px">
-		<a ng-click="doVerify()" class="btn btn-block btn-primary">
+		<button ng-click="doVerify()" class="btn btn-block btn-primary">
 			<span class="mdi-navigation-arrow-forward pull-right"></span>
 			{{'steps.next' | translate}}
-		</a>
+		</button>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right">
-		<a ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
+		<button ng-disabled="formData.sending" ng-click="processSaveForm()" class="btn btn-block btn-info">
 			<span class="hidden-xs mdi-content-save pull-right" ng-class="{'glyphicon-refresh-animate' : formData.sending, 'mdi-content-save' : !formData.sending, 'mdi-navigation-refresh' : formData.sending}"></span>
 			{{'steps.saveAsDraft' | translate}}
-		</a>
+		</button>
 	</div>
 </div>

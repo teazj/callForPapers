@@ -2,35 +2,28 @@ angular.module('customFilters', [])
 	/**
 	 * Truncate too long string to  255 chars
 	 * @param  {string}
-	 * @return {string}
+	 * @return {a $sce.trustAs() value}
 	 */
-	.filter('truncate', function() {
+	.filter('truncate', ['$sce', function($sce) {
 		return function(input) {
-			if (input !== undefined) {
-				if (input.length > 255)
-					return input.substring(0, 255) + " ...";
-				else
-					return input;
-			}
-			return "";
+			if (!angular.isString(input)) return input;
+			if (input.length > 255)	return $sce.trustAsHtml(input.substring(0, 255) + " ...");
+			else return $sce.trustAsHtml(input);
 		};
-	})
+	}])
 	/**
 	 * Create twitter http link (<a href...) from a string
 	 * @param  {string}
-	 * @return {string}
+	 * @return {a $sce.trustAs() value}
 	 */
-	.filter('createLinks', function($sce) {
+	.filter('createLinks',['$sce', function($sce) {
 		return function(str) {
-			if (str !== undefined) {
-				var strTmp = str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(http[^\s]+)/g, '<a target="_blank" href="$1">$1</a>');
-				var strTmp2 = strTmp.replace(/(^|[^@\w])@(\w{1,15})\b/g, '<a target="_blank" href="http://twitter.com/$2">@$2</a>');
-				return $sce.trustAsHtml(strTmp2);
-
-			} else
-				return "";
+			if (!angular.isString(str)) return source;
+			var strTmp = str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(http[^\s]+)/g, '<a target="_blank" href="$1">$1</a>');
+			var strTmp2 = strTmp.replace(/(^|[^@\w])@(\w{1,15})\b/g, '<a target="_blank" href="http://twitter.com/$2">@$2</a>');
+			return $sce.trustAsHtml(strTmp2);
 		}
-	})
+	}])
 	/**
 	 * Remove all accents
 	 * @param  {string}
@@ -38,8 +31,7 @@ angular.module('customFilters', [])
 	 */
 	.filter('removeAccents', function removeAccents() {
 		return function(source) {
-			if (!angular.isString(source))
-				return source;
+			if (!angular.isString(source)) return source;
 			var accent = [
 					/[\300-\306]/g, /[\340-\346]/g, // A, a
 					/[\310-\313]/g, /[\350-\353]/g, // E, e
@@ -56,4 +48,15 @@ angular.module('customFilters', [])
 			}
 			return source;
 		};
-	});
+	})
+	/**
+	 * Remove markdown
+	 * @param  {string}
+	 * @return {string}
+	 */
+	.filter('mdToPlaintext',['marked', function(marked) {
+		return function(text) {
+			if (!angular.isString(text)) return text;
+			return String(marked(text)).replace(/<[^>]+>/gm, '');
+		};
+	}]);

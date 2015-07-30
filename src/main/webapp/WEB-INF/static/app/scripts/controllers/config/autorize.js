@@ -5,6 +5,8 @@ angular.module('CallForPaper')
 		$scope.error = false;
 		$scope.success = false;
 		$scope.configure = function(provider) {
+			$scope.error = false;
+			$scope.success = false;
 			$auth.autorize(provider).then(function(response) {
 				if (response === false) {
 					$scope.error = true;

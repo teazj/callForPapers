@@ -247,6 +247,7 @@ angular.module('CallForPaper')
 		 */
 		$scope.processForm = function(isValid) {
 			$scope.formData.sending = true;
+			$scope.sendError = false;
 			var model = {};
 			angular.extend(model, $scope.formData.help);
 			angular.extend(model, $scope.formData.speaker);
@@ -293,6 +294,7 @@ angular.module('CallForPaper')
 		 */
 		$scope.processSaveForm = function() {
 			$scope.formData.sending = true;
+			$scope.sendError = false;
 			var model = {};
 			angular.extend(model, $scope.formData.help);
 			angular.extend(model, $scope.formData.speaker);

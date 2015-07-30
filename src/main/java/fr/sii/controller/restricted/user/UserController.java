@@ -132,9 +132,11 @@ public class UserController {
 
         ObjectMapper m = new ObjectMapper();
         String profilString = m.writeValueAsString(profil);
-        u.setProfile(profilString);
-        userService.put(u.getEntityId(), u);
-        googleService.updateProfilSessions(profil, Long.parseLong(claimsSet.getSubject()));
+        if(!u.getProfile().equals(profilString)) {
+            u.setProfile(profilString);
+            userService.put(u.getEntityId(), u);
+            googleService.updateProfilSessions(profil, Long.parseLong(claimsSet.getSubject()));
+        }
         return profil;
     }
 }
