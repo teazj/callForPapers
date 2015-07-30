@@ -80,14 +80,11 @@ angular.module('CallForPaper')
 		 * update profil
 		 * @type {string} profile img blob key 
 		 */
-		$scope.verify = false;
 		$scope.sendError = false;
 		$scope.sendSuccess = false;
+		$scope.sending = false;
 		$scope.update = function(profilImageKey) {
-			$scope.verify = true;
 			if ($scope.formData.isValid) {
-				// put
-				$scope.sending = true;
 				$scope.formData.imageProfilKey = profilImageKey.key;
 				RestrictedUser.update({}, $scope.formData, function(success) {
 					$scope.sendSuccess = true;
@@ -108,31 +105,26 @@ angular.module('CallForPaper')
 		 */
 		$scope.upload = function(files) {
 			if (files && files.length) {
-				$scope.verify = true;
-				if ($scope.formData.isValid) {
-					// put
-					$scope.sending = true;
-					RestrictedProfilImage.getUploadUri().$promise.then(function(respUrl) {
-						var url = respUrl.uri;
-						for (var i = 0; i < files.length; i++) {
-							var file = files[i];
-							Upload.upload({
-								url: url,
-								file: file,
-								fileName: 'profil-' + $auth.getPayload().sub,
-								sendFieldsAs: "form"
-							}).progress(function(evt) {
-								var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-							}).success(function(data, status, headers, config) {
-								$scope.update(data);
-							}).error(function(data, status, headers, config) {
-								$scope.sendSuccess = false;
-								$scope.sendError = true;
-								$scope.sending = false;
-							});
-						}
-					}, function() {})
-				}
+				RestrictedProfilImage.getUploadUri().$promise.then(function(respUrl) {
+					var url = respUrl.uri;
+					for (var i = 0; i < files.length; i++) {
+						var file = files[i];
+						Upload.upload({
+							url: url,
+							file: file,
+							fileName: 'profil-' + $auth.getPayload().sub,
+							sendFieldsAs: "form"
+						}).progress(function(evt) {
+							var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+						}).success(function(data, status, headers, config) {
+							$scope.update(data);
+						}).error(function(data, status, headers, config) {
+							$scope.sendSuccess = false;
+							$scope.sendError = true;
+							$scope.sending = false;
+						});
+					}
+				}, function() {})
 			} else {
 				$scope.update({
 					key: $scope.formData.imageProfilKey
@@ -158,6 +150,9 @@ angular.module('CallForPaper')
 		$scope.doVerify = function(files) {
 			$scope.verify = true;
 			if ($scope.formData.isValid) {
+				$scope.sendError = false;
+				$scope.sendSuccess = false;
+				$scope.sending = true;
 				$scope.upload(files);
 			}
 		}
