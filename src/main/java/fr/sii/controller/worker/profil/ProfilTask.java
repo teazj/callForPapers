@@ -30,7 +30,7 @@ public class ProfilTask {
     }
 
     /**
-     * Update all sessions in spreadsheat with new profil
+     * Update all sessions in spreadsheet with new profil
      * @param request
      * @param response
      * @throws ServiceException
