@@ -80,6 +80,12 @@ angular.module('CallForPaper', [
           }
         },
       })
+      // Config
+      .state('admin.config', {
+        url: '/config',
+        templateUrl: 'views/admin/config.html',
+        controller: 'AdminConfigCtrl'
+      })
       // Session
       .state('admin.sessions', {
         url: '/sessions',
@@ -193,7 +199,8 @@ angular.module('CallForPaper', [
           templateUrl: 'views/restricted/form/form.html',
           controller: 'FormCtrl',
           resolve: {
-            verified: AuthServiceProvider.$get().verified
+            verified: AuthServiceProvider.$get().verified,
+            isOpen: AppConfigProvider.$get().isOpen
           }
         },
         '@app.form': {

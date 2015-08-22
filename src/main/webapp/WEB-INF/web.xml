@@ -102,6 +102,18 @@
         <url-pattern>/api/restricted/*</url-pattern>
     </filter-mapping>
 
+
+    <!--Submission Security-->
+    <filter>
+        <filter-name>submissionFilter</filter-name>
+        <filter-class>fr.sii.config.filter.SubmissionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>submissionFilter</filter-name>
+        <url-pattern>/api/restricted/sessions/*</url-pattern>
+        <url-pattern>/api/restricted/sessions</url-pattern>
+    </filter-mapping>
+
     <!--Spreadsheet autorisation-->
     <security-constraint>
         <web-resource-collection>

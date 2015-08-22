@@ -23,6 +23,7 @@ angular.module('CallForPaper')
       },
       "dashboard": {
         "createNewSession": "Créer un nouveau talk",
+        "submissionDisabled": "La soumission de nouvelles candidatures est désactivée.",
         "editionTalks": "Talks en cours d'édition",
         "noEditionTalks": "Vous n'avez pas de talk en cours d'édition",
         "sendedTalks": "Talks envoyés",
@@ -180,6 +181,8 @@ angular.module('CallForPaper')
       },
       "admin": {
         "logout": "Se déconnecter",
+        "config": "Configuration",
+        "allowSubmissions": "Autoriser les utilisateurs à poster de nouveaux talks ?",
         "session": "Talk",
         "sessions": "Talks",
         "administration": "Administration",
@@ -286,6 +289,7 @@ angular.module('CallForPaper')
       },
       "dashboard": {
         "createNewSession": "Create a new talk",
+        "submissionDisabled": "Submitting new talks is disabled.",
         "editionTalks": "Talks available for editing",
         "noEditionTalks": "You don't have any draft",
         "sendedTalks": "Submitted talks",
@@ -444,6 +448,8 @@ angular.module('CallForPaper')
       },
       "admin": {
         "logout": "Logout",
+        "config": "Configuration",
+        "allowSubmissions": "Allow users to submit new talks ?",
         "session": "Talk",
         "sessions": "Talks",
         "administration": "Administration",

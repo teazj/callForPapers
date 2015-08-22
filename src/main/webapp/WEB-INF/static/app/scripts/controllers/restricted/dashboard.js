@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedDraft', 'AuthService', function($scope, $filter, RestrictedSession, RestrictedDraft, AuthService) {
+	.controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedDraft', 'AuthService', 'Application', function($scope, $filter, RestrictedSession, RestrictedDraft, AuthService, Application) {
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 		
 		/**
@@ -58,4 +58,8 @@ angular.module('CallForPaper')
 			$scope.konamiCode = !$scope.konamiCode;
 			$scope.$apply();
 		}
+
+        Application.get(function(config) {
+            $scope.submission = config.open;
+        });
 	}]);

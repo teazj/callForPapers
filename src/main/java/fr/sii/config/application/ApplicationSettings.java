@@ -4,6 +4,8 @@ package fr.sii.config.application;
  * Created by tmaugin on 30/04/2015.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.appengine.api.datastore.*;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -62,5 +64,19 @@ public class ApplicationSettings {
 
     public void setConfigured(boolean configured) {
         this.configured = configured;
+    }
+
+    @JsonProperty
+    public boolean getOpen() {
+        Key applicationConfigKey = KeyFactory.createKey("Config", "Application");
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        boolean data = false;
+        try {
+            Entity refreshToken = datastore.get(applicationConfigKey);
+            data = (boolean) refreshToken.getProperty("enableSubmissions");
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+        return data;
     }
 }

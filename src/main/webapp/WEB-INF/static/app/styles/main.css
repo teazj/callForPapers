@@ -508,3 +508,7 @@ tags-input .tags.focused {
 .pointer{
   cursor: pointer;
 }
+
+.toggle {
+  float: right;
+}

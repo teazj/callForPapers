@@ -88,6 +88,8 @@
 	<bean id="profilTask" class="fr.sii.controller.worker.profil.ProfilTask">
 		<property name="googleService" ref="spreadsheetService"></property>
 	</bean>
+	<bean id="configController" class="fr.sii.controller.admin.config.ConfigController">
+	</bean>
 
 	<!-- Static Resource Config -->
 	<context:property-placeholder location="WEB-INF/application-test.properties" ignore-unresolvable="true"/>
