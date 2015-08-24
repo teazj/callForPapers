@@ -3,14 +3,17 @@
     <div class="panel-body">
       <div ng-if="isVerified">
         <div class="row">
-          <div ng-show="submission !== undefined" class="col-sm-8 col-lg-6">
-            <a ng-show="submission === true" ui-sref="app.form" class="btn btn-block btn-primary">
-              <span>{{'dashboard.createNewSession' | translate}}</span>
-            </a>
-            <div>
-              <h4 ng-show="submission === false"><span style="color: #E35050"class="mdi-alert-warning"></span>&nbsp;{{'dashboard.submissionDisabled' | translate}}</h4>
+            <div ng-if="stats !== undefined" style="margin-top:10px" class="col-md-4 col-lg-3">
+              <h4>{{'dashboard.submittedTalks' | translate}}{{::stats.meter.talks}}</h4>
             </div>
-          </div>
+            <div ng-show="submission !== undefined" class="col-sm-8 col-lg-6">
+              <a ng-show="submission === true" ui-sref="app.form" class="btn btn-block btn-primary">
+                <span>{{'dashboard.createNewSession' | translate}}</span>
+              </a>
+              <div>
+                <h4 ng-show="submission === false"><span style="color: #E35050"class="mdi-alert-warning"></span>&nbsp;{{'dashboard.submissionDisabled' | translate}}</h4>
+              </div>
+            </div>
         </div>
         <br>
         <div class="row">

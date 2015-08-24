@@ -18,9 +18,10 @@ angular.module('CallForPaper')
 		});
 
 		/**
-		 * Get eventName
+		 * Get eventName and closing date
 		 */
 		Application.get(function(config) {
 			$scope.title = config.eventName;
+			$scope.releaseDate = config.releaseDate;
 		})
 	}]);

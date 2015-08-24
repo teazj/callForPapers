@@ -67,6 +67,9 @@
 	<bean id="adminStatsService" class="fr.sii.service.admin.stats.AdminStatsService">
 		<property name="googleService" ref="spreadsheetService"></property>
 	</bean>
+	<bean id="restrictedStatsService" class="fr.sii.service.restricted.stats.RestrictedStatsService">
+		<property name="googleService" ref="spreadsheetService"></property>
+	</bean>
 	<bean id="emailingService" class="fr.sii.service.email.EmailingService" init-method="login">
 		<property name="emailingSettings" ref="emailingSettings"></property>
 		<property name="emailingRepository" ref="emailingRepository"></property>

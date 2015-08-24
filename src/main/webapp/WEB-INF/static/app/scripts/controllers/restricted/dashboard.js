@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedDraft', 'AuthService', 'Application', function($scope, $filter, RestrictedSession, RestrictedDraft, AuthService, Application) {
+	.controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedDraft', 'AuthService', 'Application', 'RestrictedStats', function($scope, $filter, RestrictedSession, RestrictedDraft, AuthService, Application, RestrictedStats) {
 		$scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 		
 		/**
@@ -62,4 +62,11 @@ angular.module('CallForPaper')
         Application.get(function(config) {
             $scope.submission = config.open;
         });
+
+        /**
+		 * Get stats
+		 */
+		RestrictedStats.meter().$promise.then(function(statsTmp) {
+			$scope.stats = statsTmp;
+		});
 	}]);

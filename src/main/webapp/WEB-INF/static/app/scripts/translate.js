@@ -34,6 +34,7 @@ angular.module('CallForPaper')
         "noSendedTalks": "Vous n'avez pas encore proposé de talk",
         "verification": "Vérification",
         "verificationNeeded": "Un e-mail a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.",
+        "submittedTalks": "Nombre de talks soumis : "
       },
       "profil": {
         "save": "Sauvegarder",
@@ -302,6 +303,7 @@ angular.module('CallForPaper')
         "noSendedTalks": "You don't have submitted any talk yet",
         "verification": "Verification",
         "verificationNeeded": "An email has been sent to your address, click the link in it to confirm your account.",
+        "submittedTalks": "Submitted talks count: "
       },
       "profil": {
         "save": "Save",

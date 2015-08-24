@@ -68,9 +68,12 @@
 	</bean>
     <bean id="profilImageController" class="fr.sii.controller.restricted.user.ProfilImagController">
     </bean>
-    <bean id="adminStatsController" class="fr.sii.controller.admin.meter.AdminStatsController">
+	<bean id="adminStatsController" class="fr.sii.controller.admin.meter.AdminStatsController">
 		<property name="adminStatsService" ref="adminStatsService"></property>
-    </bean>
+	</bean>
+	<bean id="restrictedStatsController" class="fr.sii.controller.restricted.meter.RestrictedStatsController">
+		<property name="restrictedStatsService" ref="restrictedStatsService"></property>
+	</bean>
     <bean id="commonProfilImageController" class="fr.sii.controller.common.user.CommonProfilImageController">
         <property name="userService" ref="userService"></property>
 		<property name="globalSettings" ref="globalSettings"></property>
