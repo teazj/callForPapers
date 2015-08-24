@@ -11,7 +11,8 @@ angular.module('CallForPaper')
         "login": "Se connecter",
         "logout": "Se déconnecter",
         "dashboard": "Dashboard",
-        "profil": "Profil"
+        "profil": "Profil",
+        "openUntil": "Ouvert jusqu'au "
       },
       "languageModal": {
         "choose": "Choisissez une langue",
@@ -129,7 +130,8 @@ angular.module('CallForPaper')
         "labelHotel": "Hébergement",
         "hotel": "J'ai besoin d’une aide financière pour l’hotel.",
         "date": "Pour quelle(s) date(s) ? :",
-        "sendError": "Erreur lors de l'envoi veuillez réessayer"
+        "sendError": "Erreur lors de l'envoi veuillez réessayer",
+        "sryClosedSince": "Désolé, le CFP est fermé depuis le "
       },
       "confirmModal": {
         "title": "Confirmation",
@@ -277,7 +279,8 @@ angular.module('CallForPaper')
         "login": "Login",
         "logout": "Logout",
         "dashboard": "Dashboard",
-        "profil": "Profil"
+        "profil": "Profil",
+        "openUntil": "Open until the "
       },
       "languageModal": {
         "choose": "Choose a language",
@@ -354,7 +357,7 @@ angular.module('CallForPaper')
         "hintBio": "Describe yourself with a few words. This description will be use to fill the website.",
         "social": "Other URLs (Blog, Linkedin, ...) :",
         "twitter": "Twitter Profil :",
-        "googlePlus": "Google Plus Profil :",
+        "googlePlus": "Google Plus Profil:",
         "github": "Github Profil :",
         "hintSocial": "Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog."
       },
@@ -396,7 +399,8 @@ angular.module('CallForPaper')
         "labelHotel": "Housing",
         "hotel": "I need financial help for the hotel.",
         "place": "Where are you coming from ?:",
-        "sendError": "An error occurred during the submission, please retry."
+        "sendError": "An error occurred during the submission, please retry.",
+        "sryClosedSince": "Sorry, submissions are closed since the "
       },
       "confirmModal": {
         "title": "Confirmation",

@@ -36,6 +36,8 @@ angular.module('CallForPaper')
                     $injector.get('$state').go('404');
                 } else if (rejection.status === 409) {
                     // Nothing
+                }  else if (rejection.status === 400) {
+                    // Nothing
                 } else {
                     backendcommunication();
                 }

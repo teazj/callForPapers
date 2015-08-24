@@ -57,6 +57,7 @@
 		</div>
 	</div>
 	<p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
+	<p ng-show="sendErrorClose" class="col-sm-12 bg-danger alert"><span ng-if="releaseDate === undefined">{{'dashboard.submissionDisabled' | translate}}</span><span ng-if="releaseDate !== undefined">{{'step3.sryClosedSince' | translate}}{{::releaseDate}}.</span></p>
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-left" style="padding-bottom: 10px">
 		<a ui-sref="app.form.step2" class="btn btn-block btn-warning">
 			<span class="mdi-navigation-arrow-back pull-left"></span>

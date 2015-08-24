@@ -32,7 +32,7 @@
                     </span>              
                   </td>
                   <td>
-                      <a ui-sref='app.form({id: draft.added})'><span class="action glyphicon glyphicon-pencil pull-right white" aria-hidden="true"></span></a>
+                      <a ng-show="submission" ui-sref='app.form({id: draft.added})'><span class="action glyphicon glyphicon-pencil pull-right white" aria-hidden="true"></span></a>
                   </td>
                   <td>
                       <span ng-click="delete(draft.added)" class="action glyphicon glyphicon-remove pull-right white" aria-hidden="true"></span>

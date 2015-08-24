@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', 'RestrictedDraft', 'RestrictedUser', '$state', '$stateParams', '$q', 'RestrictedProfilImage', 'Upload', '$auth', function($scope, $filter, $translate, RestrictedSession, RestrictedDraft, RestrictedUser, $state, $stateParams, $q, RestrictedProfilImage, Upload, $auth) {
+	.controller('FormCtrl', ['$scope', '$filter', '$translate', 'RestrictedSession', 'RestrictedDraft', 'RestrictedUser', '$state', '$stateParams', '$q', 'RestrictedProfilImage', 'Upload', '$auth', 'Application', function($scope, $filter, $translate, RestrictedSession, RestrictedDraft, RestrictedUser, $state, $stateParams, $q, RestrictedProfilImage, Upload, $auth, Application) {
 		// we will store all of our form data in this object
 		$scope.formData = {};
 		$scope.formData.steps = {};
@@ -248,6 +248,7 @@ angular.module('CallForPaper')
 		$scope.processForm = function(isValid) {
 			$scope.formData.sending = true;
 			$scope.sendError = false;
+			$scope.sendErrorClose = false;
 			var model = {};
 			angular.extend(model, $scope.formData.help);
 			angular.extend(model, $scope.formData.speaker);
@@ -264,6 +265,10 @@ angular.module('CallForPaper')
 							$state.go('app.form.result');
 						}, function(error) {
 							$scope.formData.sending = false;
+							if(error.status === 400) {
+								$scope.sendErrorClose = true;
+								return;
+							}
 							$scope.sendError = true;
 						});
 					} else {
@@ -273,6 +278,10 @@ angular.module('CallForPaper')
 							$state.go('app.form.result');
 						}, function(error) {
 							$scope.formData.sending = false;
+							if(error.status === 400) {
+								$scope.sendErrorClose = true;
+								return;
+							}
 							$scope.sendError = true;
 						});
 					}
@@ -336,4 +345,9 @@ angular.module('CallForPaper')
 		$scope.hoverDifficulty = function(value) {
 			$scope.formData.session.difficultyLabel = ([$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')])[value - 1];
 		};
+
+
+        Application.get(function(config) {
+            $scope.releaseDate = config.releaseDate;
+        });
 	}]);
