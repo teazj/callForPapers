@@ -27,7 +27,7 @@ public class GlobalControllerExceptionHandler {
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         resp.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        logger.log(Level.WARNING, e.toString());
+        logger.log(Level.WARNING, e.toString(), e);
         e.printStackTrace();
         return new ResponseEntity<Object>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
     }
