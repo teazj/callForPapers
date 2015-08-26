@@ -35,6 +35,6 @@ public class RestrictedStatsController {
     @RequestMapping(value="/meter", method= RequestMethod.GET)
     @ResponseBody
     public RestrictedMeter getMeter() throws IOException, ServiceException, EntityNotFoundException {
-        return restrictedStatsService.getCommonMeter();
+        return restrictedStatsService.getRestrictedMeter();
     }
 }

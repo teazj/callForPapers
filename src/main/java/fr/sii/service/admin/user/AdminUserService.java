@@ -23,13 +23,12 @@ public class AdminUserService {
         return adminUserRespository.findAll();
     }
 
-    public AdminUser getCurrentUser()
-    {
+    public AdminUser getCurrentUser() throws NotFoundException {
         com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
         com.google.appengine.api.users.User user = userService.getCurrentUser();
         if(user == null)
         {
-            return null;
+            throw new NotFoundException("User not found");
         }
         String id = user.getUserId();
         String idParsed = id.substring(0, id.length() - 2);

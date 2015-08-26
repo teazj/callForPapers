@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.google.gdata.util.ServiceException;
 import fr.sii.domain.admin.meter.AdminMeter;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.spreadsheet.SpreadsheetService;
 
@@ -29,7 +30,7 @@ public class AdminStatsService {
         this.googleService = googleService;
     }
 
-    public AdminMeter getAdminMeter() throws ServiceException, EntityNotFoundException, IOException {
+    public AdminMeter getAdminMeter() throws ServiceException, EntityNotFoundException, IOException, NotFoundException {
         Cache cache;
         AdminMeter adminMeter = null;
         try {
@@ -49,10 +50,10 @@ public class AdminStatsService {
         return adminMeter;
     }
 
-    private AdminMeter processMeter() throws ServiceException, EntityNotFoundException, IOException {
+    private AdminMeter processMeter() throws ServiceException, EntityNotFoundException, IOException, NotFoundException {
         AdminMeter meter = new AdminMeter();
         meter.setDrafts(googleService.getRowsDraft().size());
-        List<RowResponse> rowResponses = googleService.getRowsSession();
+        List<RowResponse> rowResponses = googleService.getRowsSessionAdmin();
         Set<String> unique = new HashSet<String>();
         for (RowResponse rowResponse : rowResponses) {
             unique.add(rowResponse.getEmail());

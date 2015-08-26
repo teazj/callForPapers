@@ -54,7 +54,7 @@ public class AdminRateController {
      * @return
      */
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminRate postRate(@Valid @RequestBody AdminRate adminRate) {
+    @ResponseBody public AdminRate postRate(@Valid @RequestBody AdminRate adminRate) throws NotFoundException {
         adminRate.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         return adminRateService.save(adminRate);
     }
@@ -113,7 +113,7 @@ public class AdminRateController {
      */
     @RequestMapping(value="/row/{rowId}/user/me", method= RequestMethod.GET)
     @ResponseBody
-    public AdminRate getRateByRowIdAndUserId(@PathVariable Long rowId) {
+    public AdminRate getRateByRowIdAndUserId(@PathVariable Long rowId) throws NotFoundException {
         Long userId = adminUserServiceCustom.getCurrentUser().getEntityId();
         return adminRateService.findByRowIdAndUserId(rowId, userId);
     }

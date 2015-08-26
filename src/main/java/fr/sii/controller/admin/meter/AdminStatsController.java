@@ -3,6 +3,7 @@ package fr.sii.controller.admin.meter;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import fr.sii.domain.admin.meter.AdminMeter;
+import fr.sii.domain.exception.NotFoundException;
 import fr.sii.service.admin.stats.AdminStatsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ public class AdminStatsController {
      */
     @RequestMapping(value="/meter", method= RequestMethod.GET)
     @ResponseBody
-    public AdminMeter getMeter() throws IOException, ServiceException, EntityNotFoundException {
+    public AdminMeter getMeter() throws IOException, ServiceException, EntityNotFoundException, NotFoundException {
         return adminStatsService.getAdminMeter();
     }
 }

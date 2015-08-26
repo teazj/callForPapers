@@ -78,8 +78,8 @@ public class AdminSessionController {
      */
     @RequestMapping(value="/sessions", method= RequestMethod.GET)
     @ResponseBody
-    public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException, EntityNotFoundException {
-        return googleService.getRowsSession();
+    public List<RowResponse> getGoogleSpreadsheets() throws IOException, ServiceException, EntityNotFoundException, NotFoundException {
+        return googleService.getRowsSessionAdmin();
     }
 
     /**

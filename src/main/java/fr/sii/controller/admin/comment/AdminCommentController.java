@@ -67,7 +67,7 @@ public class AdminCommentController {
      * @return
      */
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminComment postComment(@Valid @RequestBody AdminComment adminComment) {
+    @ResponseBody public AdminComment postComment(@Valid @RequestBody AdminComment adminComment) throws NotFoundException {
         adminComment.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
         return adminCommentService.save(adminComment);
     }

@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.google.gdata.util.ServiceException;
 import fr.sii.domain.restricted.meter.RestrictedMeter;
+import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
 import fr.sii.service.spreadsheet.SpreadsheetService;
 
@@ -29,7 +30,7 @@ public class RestrictedStatsService {
         this.googleService = googleService;
     }
 
-    public RestrictedMeter getCommonMeter() throws ServiceException, EntityNotFoundException, IOException {
+    public RestrictedMeter getRestrictedMeter() throws ServiceException, EntityNotFoundException, IOException {
         Cache cache;
         RestrictedMeter restrictedMeter = null;
         try {
@@ -51,8 +52,8 @@ public class RestrictedStatsService {
 
     private RestrictedMeter processMeter() throws ServiceException, EntityNotFoundException, IOException {
         RestrictedMeter meter = new RestrictedMeter();
-        List<RowResponse> rowResponses = googleService.getRowsSession();
-        meter.setTalks(rowResponses.size());
+        List<Row> rows = googleService.getRowsSession();
+        meter.setTalks(rows.size());
         return meter;
     }
 }
