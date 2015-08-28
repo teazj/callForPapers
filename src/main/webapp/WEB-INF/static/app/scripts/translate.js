@@ -12,7 +12,7 @@ angular.module('CallForPaper')
         "logout": "Se déconnecter",
         "dashboard": "Dashboard",
         "profil": "Profil",
-        "openUntil": "Ouvert jusqu'au "
+        "openUntil": "Ouvert jusqu'au ",
         "decision": "Délibération le "
       },
       "languageModal": {
@@ -282,7 +282,7 @@ angular.module('CallForPaper')
         "logout": "Logout",
         "dashboard": "Dashboard",
         "profil": "Profil",
-        "openUntil": "Open until the "
+        "openUntil": "Open until the ",
         "decision": "Decision the "
       },
       "languageModal": {
