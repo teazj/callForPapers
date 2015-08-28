@@ -24,6 +24,9 @@ public class ApplicationSettings {
     @Value("${app.releasedate}")
     private String releaseDate;
 
+    @Value("${app.decisiondate}")
+    private String decisionDate;
+
     private boolean configured = false;
 
     public String getEventName() {
@@ -56,6 +59,14 @@ public class ApplicationSettings {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getDecisionDate() {
+        return decisionDate;
+    }
+
+    public void setDecisionDate(String decisionDate) {
+        this.decisionDate = decisionDate;
     }
 
     public boolean isConfigured() {
