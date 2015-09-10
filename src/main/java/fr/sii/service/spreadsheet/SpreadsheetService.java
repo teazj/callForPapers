@@ -52,7 +52,9 @@ public class SpreadsheetService {
     private final String SESSIONS_KEY_ADMIN = "SessionsAdmin";
 
     private Cache cache;
-    static {
+
+    @PostConstruct
+    public void prepareCache() {
         CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
         Map properties = new HashMap<>();
         properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
