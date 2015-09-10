@@ -24,6 +24,7 @@ import fr.sii.service.admin.rate.AdminRateService;
 import fr.sii.service.admin.session.AdminViewedSessionService;
 import fr.sii.service.admin.user.AdminUserService;
 
+import javax.annotation.PostConstruct;
 import javax.cache.Cache;
 import javax.cache.CacheException;
 import javax.cache.CacheFactory;
