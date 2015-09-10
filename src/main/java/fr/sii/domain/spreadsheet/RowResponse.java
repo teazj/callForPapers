@@ -120,8 +120,12 @@ public class RowResponse extends RowSession implements Serializable {
             Map<String,String> stringStringMap = new HashMap<>(4);
             stringStringMap.put("email", adminRate.getUser().getEmail());
             stringStringMap.put("name", adminRate.getUser().getName());
-            stringStringMap.put("love", adminRate.isLove());
-            stringStringMap.put("hate", adminRate.isHate());
+            if(adminRate.isLove()) {
+                stringStringMap.put("love", "true");
+            }
+            if(adminRate.isHate()) {
+                stringStringMap.put("hate", "true");
+            }
             voteUsersEmail.add(stringStringMap);
         }
         return voteUsersEmail;
