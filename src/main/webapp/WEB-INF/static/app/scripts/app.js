@@ -92,6 +92,11 @@ angular.module('CallForPaper', [
         templateUrl: 'views/admin/sessions.html',
         controller: 'AdminSessionsCtrl'
       })
+      .state('admin.sessions_export', {
+        url: '/sessions/export',
+        templateUrl: 'views/admin/sessions-export.html',
+        controller: 'AdminSessionsExportCtrl'
+      })
       .state('admin.session', {
         url: '/sessions/:id?tab',
         templateUrl: 'views/admin/session.html',

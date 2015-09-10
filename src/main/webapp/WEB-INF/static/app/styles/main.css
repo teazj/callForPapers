@@ -512,3 +512,37 @@ tags-input .tags.focused {
 .toggle {
   float: right;
 }
+
+/*session export to print */
+.export-web {
+  page-break-inside: avoid;
+  height: 220px;
+  background-color: #FF5722!important;
+  margin-top: 20px;
+}
+.export-discovery {
+  page-break-inside: avoid;
+  height: 220px;
+  background-color: #03A9F4!important;
+  margin-top: 20px;
+}
+.export-cloud {
+  page-break-inside: avoid;
+  height: 220px;
+  background-color: #8BC34A!important;
+  margin-top: 20px;
+}
+.export-mobile {
+  page-break-inside: avoid;
+  height: 220px;
+  background-color: #9E9E9E!important;
+  margin-top: 20px;
+}
+.jumbotron {
+  background-color: #fff!important;
+    padding: 19px!important;
+    margin-bottom: 20px!important;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 2px!important;
+    border: 0!important;
+}
