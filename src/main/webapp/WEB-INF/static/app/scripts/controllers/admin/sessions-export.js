@@ -2,8 +2,6 @@
 
 angular.module('CallForPaper')
 	.controller('AdminSessionsExportCtrl', ['$scope', 'AdminSession', function($scope, AdminSession) {
-		$scope.sessions = [];
-		
 		/**
 		 * Get all sessions (talks)
 		 * @param  {void}
