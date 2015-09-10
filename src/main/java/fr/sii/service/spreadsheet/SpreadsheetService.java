@@ -51,6 +51,13 @@ public class SpreadsheetService {
     private final String SESSIONS_KEY = "Sessions";
     private final String SESSIONS_KEY_ADMIN = "SessionsAdmin";
 
+    private Cache cache;
+    static {
+        CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+        Map properties = new HashMap<>();
+        properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
+        cache = cacheFactory.createCache(properties);
+    }
 
     public void setAdminViewedSessionService(AdminViewedSessionService adminViewedSessionService) {
         this.adminViewedSessionService = adminViewedSessionService;
@@ -197,14 +204,9 @@ public class SpreadsheetService {
 
     public List<RowResponse> getRowsSessionAdmin() throws IOException, ServiceException, EntityNotFoundException, NotFoundException {
 
-        // Use cache
-        Cache cache;
         List<RowResponse> rowResponses = null;
         try {
-            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-            Map properties = new HashMap<>();
-            properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
-            cache = cacheFactory.createCache(properties);
+            // Use cache
             rowResponses = (List<RowResponse>) cache.get(SESSIONS_KEY_ADMIN);
             if(rowResponses == null) {
                 rowResponses = matchRatesAndComment(spreadsheetRepository.getRowsSession());
@@ -258,14 +260,10 @@ public class SpreadsheetService {
         return rowResponses;
     }
     public List<Row> getRowsSession() throws IOException, ServiceException, EntityNotFoundException {
-        // Use cache
-        Cache cache;
+        
         List<Row> rows = null;
         try {
-            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-            Map properties = new HashMap<>();
-            properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
-            cache = cacheFactory.createCache(properties);
+            // Use cache
             rows = (List<Row>) cache.get(SESSIONS_KEY);
             if(rows == null) {
                 rows = spreadsheetRepository.getRowsSession();
@@ -287,13 +285,8 @@ public class SpreadsheetService {
     }
 
     public List<Row> getRowsDraft() throws IOException, ServiceException, EntityNotFoundException {
-        Cache cache;
         List<Row> rowsDraft = null;
         try {
-            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-            Map properties = new HashMap<>();
-            properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.MINUTES.toSeconds(5));
-            cache = cacheFactory.createCache(properties);
             rowsDraft = (List<Row>) cache.get(DRAFTS_KEY);
             if(rowsDraft == null) {
                 rowsDraft = spreadsheetRepository.getRowsDraft();

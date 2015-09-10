@@ -117,9 +117,11 @@ public class RowResponse extends RowSession implements Serializable {
         List<Map<String,String>> voteUsersEmail = new ArrayList<>();
         if(adminRates == null) return voteUsersEmail;
         for(AdminRate adminRate : adminRates) {
-            Map<String,String> stringStringMap = new HashMap<>();
+            Map<String,String> stringStringMap = new HashMap<>(4);
             stringStringMap.put("email", adminRate.getUser().getEmail());
             stringStringMap.put("name", adminRate.getUser().getName());
+            stringStringMap.put("love", adminRate.isLove());
+            stringStringMap.put("hate", adminRate.isHate());
             voteUsersEmail.add(stringStringMap);
         }
         return voteUsersEmail;
