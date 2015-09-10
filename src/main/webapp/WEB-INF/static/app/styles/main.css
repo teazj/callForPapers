@@ -517,25 +517,25 @@ tags-input .tags.focused {
 .export-web {
   page-break-inside: avoid;
   height: 220px;
-  background-color: #FF5722!important;
+  background-color: #f7c63d!important;
   margin-top: 20px;
 }
 .export-discovery {
   page-break-inside: avoid;
   height: 220px;
-  background-color: #03A9F4!important;
+  background-color: #da483c!important;
   margin-top: 20px;
 }
 .export-cloud {
   page-break-inside: avoid;
   height: 220px;
-  background-color: #8BC34A!important;
+  background-color: #6388c5!important;
   margin-top: 20px;
 }
 .export-mobile {
   page-break-inside: avoid;
   height: 220px;
-  background-color: #9E9E9E!important;
+  background-color: #0c9a54!important;
   margin-top: 20px;
 }
 .jumbotron {
