@@ -92,13 +92,13 @@ angular.module('CallForPaper', [
         templateUrl: 'views/admin/sessions.html',
         controller: 'AdminSessionsCtrl'
       })
-      .state('admin.export.postit', {
-        url: '/export/sessions/postit',
+      .state('admin.export_postit', {
+        url: '/export/postit',
         templateUrl: 'views/admin/sessions-export.html',
         controller: 'AdminSessionsExportCtrl'
       })
-      .state('admin.export.json', {
-        url: '/export/sessions/json',
+      .state('admin.export_json', {
+        url: '/export/json',
         templateUrl: 'views/admin/sessions-export-json.html',
         controller: 'AdminSessionsExportJsonCtrl'
       })
