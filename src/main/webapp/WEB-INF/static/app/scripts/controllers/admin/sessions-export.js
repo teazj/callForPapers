@@ -20,7 +20,7 @@ angular.module('CallForPaper')
 		 * @return {[AdminSession]}
 		 */
 		AdminSession.query().$promise.then(function(sessionsTmp) {
-			_.forEach(sessionsTmp, function(session) {
+			_.map(sessionsTmp, function(session) {
 				return {
 					id: session.email,
 					topspeaker: false,
