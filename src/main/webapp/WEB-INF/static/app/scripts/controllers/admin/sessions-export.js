@@ -20,7 +20,7 @@ angular.module('CallForPaper')
 		 * @return {[AdminSession]}
 		 */
 		AdminSession.query().$promise.then(function(sessionsTmp) {
-			_.map(sessionsTmp, function(session) {
+			$scope.sessions = _.map(sessionsTmp, function(session) {
 				return {
 					id: session.email,
 					topspeaker: false,
@@ -59,8 +59,7 @@ angular.module('CallForPaper')
 					    "slides":"",
 					    "speakers":[session.email]
 		            }]
-				}
+				};
 			});
-			$scope.sessions = sessionsTmp;
 		});
 }]);
