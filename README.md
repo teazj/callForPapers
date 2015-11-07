@@ -67,6 +67,8 @@
 
 ### Edit CFP Settings
 
+Add following environment variables in your system.
+
 
 Edit `src/main/webapp/WEB-INF/appengine-web.xml` replace the informations to suit your need :
 
