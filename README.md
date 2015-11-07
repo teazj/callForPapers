@@ -139,6 +139,12 @@ Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers toke
 
 ## Deployment :
 
+Some NodeJS tools are required to build, like Grunt. You can install them locally with:
+
+```shell
+npm install
+```
+
 ### App Engine :
 
 ```shell
@@ -151,6 +157,7 @@ mvn appengine:update [-Dmaven.test.skip=true]
 ### Local :
 
 ```shell
+npm install
 grunt build
 mvn appengine:devserver [-Dmaven.test.skip=true]
 ```
