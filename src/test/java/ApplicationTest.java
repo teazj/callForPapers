@@ -1,5 +1,9 @@
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +26,19 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ApplicationTest {
+
+    private static final LocalServiceTestHelper helper =
+            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+    @BeforeClass
+    public static void beforeClass() {
+        helper.setUp();
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        helper.tearDown();
+    }
 
     @Autowired
     WebApplicationContext webApplicationContext;
