@@ -35,9 +35,9 @@ angular.module('CallForPaper', [
     'ngAria'
   ])
   .constant('Config', {
-    'recaptcha': '6Lcn4gcTAAAAAPATfe-4XVAh8bI4CW7HUAAwbNvy',
-    'googleClientId': '595606955444-hv8v62e1g0qtk5v2nrnn696m18tg1p12.apps.googleusercontent.com',
-    'githubClientId': 'ebeee4b3339f42197096'
+    'recaptcha': '6LdxgxATAAAAAFUCo5RuwxxCGF20b-UWaawAM0nM',
+    'googleClientId': '980998530813-um48to1pf2be7tn9d9ar29d7si41a5kd.apps.googleusercontent.com',
+    'githubClientId': '5fb632a6027ffe32338b'
   })
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
