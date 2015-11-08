@@ -13,12 +13,12 @@
 			</column>
 
 			<column name="email" type="varchar(255)"/>
-			<column name="github" type="varchar(255)"/>
-			<column name="google" type="varchar(255)"/>
+			<column name="github_id" type="varchar(255)"/>
+			<column name="google_id" type="varchar(255)"/>
 			<column name="password" type="varchar(62)"/>
 			<column name="verified" type="boolean" defaultValueBoolean="false"/>
 
-			<column name="verifyToken" type="varchar(255)"/>
+			<column name="verify_token" type="varchar(255)"/>
 
 			<!-- user profile -->
 			<column name="lastname" type="varchar(255)"/>
@@ -32,7 +32,7 @@
 			<column name="social" type="text"/>
 
 			<column name="image" type="blob"/>
-			<column name="imageSocialUrl" type="text"/>
+			<column name="image_social_url" type="text"/>
 
 		</createTable>
 

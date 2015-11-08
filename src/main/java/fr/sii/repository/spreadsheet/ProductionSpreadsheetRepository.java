@@ -28,7 +28,7 @@ import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.GoogleSpreadsheetCellAddress;
 import fr.sii.domain.spreadsheet.Row;
-import fr.sii.domain.user.UserProfil;
+import fr.sii.dto.user.UserProfil;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 

@@ -3,7 +3,7 @@ package fr.sii.controller.worker.profil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
-import fr.sii.domain.user.UserProfil;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.service.spreadsheet.SpreadsheetService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

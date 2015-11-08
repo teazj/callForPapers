@@ -1,4 +1,4 @@
-package fr.sii.domain.user;
+package fr.sii.dto.user;
 
 /**
  * Created by tmaugin on 05/06/2015.

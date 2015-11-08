@@ -12,8 +12,8 @@ import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
-import fr.sii.domain.user.User;
-import fr.sii.domain.user.UserProfil;
+import fr.sii.entity.User;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.user.UserService;
 import org.springframework.stereotype.Controller;
@@ -27,10 +27,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by tmaugin on 05/06/2015.
- * SII
- */
 @Controller
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
 public class UserController {
@@ -58,30 +54,25 @@ public class UserController {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");
         }
 
-        ObjectMapper m = new ObjectMapper();
-        String userProfile = u.getProfile();
-        userProfile = (userProfile == null) ? "{}" : userProfile;
-        UserProfil p = m.readValue(userProfile, UserProfil.class);
-
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("email", u.getEmail());
-        map.put("name", p.getName());
-        map.put("firstname", p.getFirstname());
-        map.put("phone", p.getPhone());
-        map.put("company", p.getCompany());
-        map.put("bio", p.getBio());
-        map.put("social", p.getSocial());
-        map.put("twitter", p.getTwitter());
-        map.put("googlePlus", p.getGooglePlus());
-        map.put("github", p.getGithub());
-        map.put("imageProfilKey", p.getImageProfilKey());
-        map.put("socialProfilImageUrl", p.getSocialProfilImageUrl());
+        map.put("name", u.getLastname());
+        map.put("firstname", u.getFirstname());
+        map.put("phone", u.getPhone());
+        map.put("company", u.getCompany());
+        map.put("bio", u.getBio());
+        map.put("social", u.getSocial());
+        map.put("twitter", u.getTwitter());
+        map.put("googlePlus", u.getGoogleplus());
+        map.put("github", u.getGithub());
+        map.put("imageProfilKey", u.getImageProfilKey());
+        map.put("socialProfilImageUrl", u.getImageSocialUrl());
 
         return map;
     }
@@ -106,7 +97,7 @@ public class UserController {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");

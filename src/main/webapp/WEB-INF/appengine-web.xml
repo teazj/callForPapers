@@ -10,20 +10,20 @@
     <sessions-enabled>true</sessions-enabled>
     <use-google-connector-j>true</use-google-connector-j>
     <env-variables>
-        <env-var name="ENV" value="${ENV}"/>
-        <env-var name="GOOGLE_LOGIN" value="${GOOGLE_LOGIN}"/>
-        <env-var name="GOOGLE_PASSWORD" value="${GOOGLE_PASSWORD}" />
-        <env-var name="GOOGLE_CLIENT_ID" value="${GOOGLE_CLIENT_ID}"/>
-        <env-var name="GOOGLE_CLIENT_SECRET" value="${GOOGLE_CLIENT_SECRET}"/>
-        <env-var name="GITHUB_CLIENT_ID" value="${GITHUB_CLIENT_ID}"/>
-        <env-var name="GITHUB_CLIENT_SECRET" value="${GITHUB_CLIENT_SECRET}"/>
-        <env-var name="EMAIL_SENDER" value="${EMAIL_SENDER}"/>
-        <env-var name="AUTH_SECRET_TOKEN" value="${AUTH_SECRET_TOKEN}"/>
-        <env-var name="AUTH_CAPTCHA_PUBLIC" value="${AUTH_CAPTCHA_PUBLIC}"/>
-        <env-var name="AUTH_CAPTCHA_SECRET" value="${AUTH_CAPTCHA_SECRET}"/>
-        <env-var name="DB_HOST" value="${DB_HOST}"/>
-        <env-var name="DB_NAME" value="${DB_NAME}"/>
-        <env-var name="DB_USER" value="${DB_USER}"/>
-        <env-var name="DB_PASS" value="${DB_PASS}"/>
+        <env-var name="ENV" value="dev"/>
+        <env-var name="GOOGLE_LOGIN" value="alexthomazo@gmail.com"/>
+        <env-var name="GOOGLE_PASSWORD" value="" />
+        <env-var name="GOOGLE_CLIENT_ID" value="980998530813-um48to1pf2be7tn9d9ar29d7si41a5kd.apps.googleusercontent.com"/>
+        <env-var name="GOOGLE_CLIENT_SECRET" value="g4uJRnvOF_nIESvYcdq1gksd"/>
+        <env-var name="GITHUB_CLIENT_ID" value="5fb632a6027ffe32338b"/>
+        <env-var name="GITHUB_CLIENT_SECRET" value="f6f6ec707257776b1eda31ecd97ed12a3535e013"/>
+        <env-var name="EMAIL_SENDER" value="alex+cfp@thomazo.info"/>
+        <env-var name="AUTH_SECRET_TOKEN" value="7d9e847482440f00821b05023259f92f87205d23"/>
+        <env-var name="AUTH_CAPTCHA_PUBLIC" value="6LdxgxATAAAAAFUCo5RuwxxCGF20b-UWaawAM0nM"/>
+        <env-var name="AUTH_CAPTCHA_SECRET" value="6LdxgxATAAAAAB9s-u4m0EN9oKWnMZGsDIR7WbuG"/>
+        <env-var name="DB_HOST" value="saturne"/>
+        <env-var name="DB_NAME" value="breizhcamp"/>
+        <env-var name="DB_USER" value="breizhcamp"/>
+        <env-var name="DB_PASS" value="breizhcamp"/>
     </env-variables>
 </appengine-web-app>

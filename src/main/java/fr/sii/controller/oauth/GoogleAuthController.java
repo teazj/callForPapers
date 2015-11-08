@@ -16,7 +16,7 @@ import com.google.api.services.plus.model.Person;
 import com.nimbusds.jose.JOSEException;
 import fr.sii.config.google.GoogleSettings;
 import fr.sii.domain.token.Token;
-import fr.sii.domain.user.User;
+import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +30,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 
-/**
- * Created by tmaugin on 13/05/2015.
- */
 @Controller
 @RequestMapping(value="/auth/google", produces = "application/json; charset=utf-8")
 public class GoogleAuthController {

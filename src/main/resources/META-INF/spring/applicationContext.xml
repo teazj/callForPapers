@@ -86,6 +86,6 @@
 		<property name="adminViewedSessionService" ref="adminViewedSessionService"></property>
 	</bean>
 	<bean id="userService" class="fr.sii.service.user.UserService">
-		<property name="userRespository" ref="userRespository"></property>
+		<property name="userRepo" ref="userRepo"></property>
 	</bean>
 </beans>

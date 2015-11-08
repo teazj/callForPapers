@@ -3,7 +3,7 @@ package fr.sii.service.admin.contact;
 import fr.sii.domain.admin.contact.AdminContact;
 import fr.sii.domain.admin.user.AdminUser;
 import fr.sii.domain.exception.NotFoundException;
-import fr.sii.domain.user.User;
+import fr.sii.entity.User;
 import fr.sii.repository.admin.contact.AdminContactRepository;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.user.UserService;

@@ -1,30 +1,24 @@
-package fr.sii.domain.user;
+package fr.sii.dto.user;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Created by tmaugin on 18/05/2015.
  */
-public class SignupUser {
+public class LoginUser {
 
     @NotNull(message = "Email field is required")
     private String email;
-    @Size(min = 6)
     @NotNull(message = "Password field is required")
     private String password;
-    @NotNull(message = "Captcha field is required")
-    private String captcha;
 
-    public SignupUser(String email, String password, String captcha) {
+    public LoginUser(String email, String password, String captcha) {
         this.email = email;
         this.password = password;
-        this.captcha = captcha;
     }
 
-    public SignupUser() {
+    public LoginUser() {
     }
-
     public String getEmail() {
         return email;
     }
@@ -39,13 +33,5 @@ public class SignupUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getCaptcha() {
-        return captcha;
-    }
-
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
     }
 }

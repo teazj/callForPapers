@@ -14,7 +14,7 @@ import com.nimbusds.jose.JOSEException;
 import fr.sii.config.github.GithubSettings;
 import fr.sii.domain.exception.CustomException;
 import fr.sii.domain.token.Token;
-import fr.sii.domain.user.User;
+import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
 import fr.sii.service.github.GithubService;
 import org.springframework.stereotype.Controller;
@@ -29,9 +29,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 
-/**
- * Created by tmaugin on 13/05/2015.
- */
 @Controller
 @RequestMapping(value="/auth/github", produces = "application/json; charset=utf-8")
 public class GithubAuthController {

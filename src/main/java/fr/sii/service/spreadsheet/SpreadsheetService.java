@@ -17,7 +17,7 @@ import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
 import fr.sii.domain.spreadsheet.RowResponse;
-import fr.sii.domain.user.UserProfil;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.repository.spreadsheet.SpreadsheetRepository;
 import fr.sii.service.admin.comment.AdminCommentService;
 import fr.sii.service.admin.rate.AdminRateService;

@@ -11,7 +11,7 @@ import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.*;
 import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.spreadsheet.Row;
-import fr.sii.domain.user.User;
+import fr.sii.entity.User;
 import fr.sii.service.admin.contact.AdminContactService;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.auth.AuthUtils;
@@ -30,9 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by tmaugin on 24/07/2015.
- */
+
 @Controller
 @RequestMapping(value="api/restricted/contacts", produces = "application/json; charset=utf-8")
 public class ContactController {
@@ -102,7 +100,7 @@ public class ContactController {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");
@@ -164,7 +162,7 @@ public class ContactController {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");
@@ -204,7 +202,7 @@ public class ContactController {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");

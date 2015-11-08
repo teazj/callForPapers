@@ -5,7 +5,7 @@ import com.google.gdata.util.ServiceException;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.spreadsheet.Row;
-import fr.sii.domain.user.UserProfil;
+import fr.sii.dto.user.UserProfil;
 
 import java.io.IOException;
 import java.util.List;
