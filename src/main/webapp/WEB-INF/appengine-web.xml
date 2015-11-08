@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>devfestnantes2015-cfp</application>
-    <version>v10</version>
+    <application>bzhcampdev</application>
+    <version>v1</version>
     <threadsafe>true</threadsafe>
     <module>default</module>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
     <sessions-enabled>true</sessions-enabled>
+    <use-google-connector-j>true</use-google-connector-j>
     <env-variables>
         <env-var name="ENV" value="${ENV}"/>
         <env-var name="GOOGLE_LOGIN" value="${GOOGLE_LOGIN}"/>
@@ -20,5 +21,9 @@
         <env-var name="AUTH_SECRET_TOKEN" value="${AUTH_SECRET_TOKEN}"/>
         <env-var name="AUTH_CAPTCHA_PUBLIC" value="${AUTH_CAPTCHA_PUBLIC}"/>
         <env-var name="AUTH_CAPTCHA_SECRET" value="${AUTH_CAPTCHA_SECRET}"/>
+        <env-var name="DB_HOST" value="${DB_HOST}"/>
+        <env-var name="DB_NAME" value="${DB_NAME}"/>
+        <env-var name="DB_USER" value="${DB_USER}"/>
+        <env-var name="DB_PASS" value="${DB_PASS}"/>
     </env-variables>
 </appengine-web-app>
