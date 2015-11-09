@@ -1,6 +1,7 @@
 import fr.sii.config.email.EmailingSettings;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(locations={"classpath:META-INF/spring/applicationContextTest.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class PropertyTest {
 
     @Autowired
