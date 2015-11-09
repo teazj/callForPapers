@@ -59,7 +59,7 @@
 		<property name="adminViewedSessionRepository" ref="adminViewedSessionRepository"></property>
 	</bean>
 	<bean id="adminUserService" class="fr.sii.service.admin.user.AdminUserService">
-		<property name="adminUserRespository" ref="adminUserRespository"></property>
+		<property name="adminUserRepo" ref="adminUserRepo"></property>
 	</bean>
 	<bean id="authService" class="fr.sii.service.auth.AuthService">
 		<property name="userService" ref="userService"></property>

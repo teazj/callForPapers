@@ -1,4 +1,4 @@
-package fr.sii.repository.user;
+package fr.sii.repository;
 
 import fr.sii.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

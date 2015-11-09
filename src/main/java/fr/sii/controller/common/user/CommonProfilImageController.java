@@ -1,14 +1,9 @@
 package fr.sii.controller.common.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.common.Uri;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.entity.User;
-import fr.sii.dto.user.UserProfil;
 import fr.sii.service.user.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +16,6 @@ import java.io.IOException;
 
 @RequestMapping(value="/api/profil")
 public class CommonProfilImageController {
-
-    private final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     private UserService userService;
 
@@ -37,20 +30,6 @@ public class CommonProfilImageController {
     }
 
     /**
-     * Get image for given BlobKey
-     * @param req
-     * @param res
-     * @param blobKeyParam
-     * @throws IOException
-     */
-    @RequestMapping(value="/image/{blobKeyParam}", method= RequestMethod.GET)
-    @ResponseBody
-    public void getProfileImage(HttpServletRequest req, HttpServletResponse res, @PathVariable String blobKeyParam) throws IOException {
-        BlobKey blobKey = new BlobKey(blobKeyParam);
-        blobstoreService.serve(blobKey, res);
-    }
-
-    /**
      * Get user profil image key
      * @param req
      * @param res
@@ -62,22 +41,14 @@ public class CommonProfilImageController {
     @ResponseBody
     public void getProfileImageByUserId(HttpServletRequest req, HttpServletResponse res,  @PathVariable Integer id) throws IOException, NotFoundException {
         User u = userService.findById(id);
-        if(u == null)
-        {
-            throw new NotFoundException("User not found");
-        }
+        if (u == null) throw new NotFoundException("User not found");
 
-        ObjectMapper m = new ObjectMapper();
-        String userProfile = u.getProfile();
-        userProfile = (userProfile == null) ? "{}" : userProfile;
-        UserProfil p = m.readValue(userProfile, UserProfil.class);
-
-        if(p.getImageProfilKey() != null) {
-            BlobKey blobKey = new BlobKey((p.getImageProfilKey()));
-            blobstoreService.serve(blobKey, res);
-        } else {
+        byte[] image = u.getImage();
+        if (image.length == 0) {
             throw new NotFoundException("Image not found");
         }
+
+        res.getOutputStream().write(image);
     }
 
     /**
@@ -93,22 +64,16 @@ public class CommonProfilImageController {
     @ResponseBody
     public Uri getProfilImageUrlByUserId(HttpServletRequest req, HttpServletResponse res, @PathVariable Integer id) throws IOException, NotFoundException {
         User u = userService.findById(id);
-        if(u == null)
-        {
-            throw new NotFoundException("User not found");
-        }
+        if (u == null) throw new NotFoundException("User not found");
 
-        ObjectMapper m = new ObjectMapper();
-        String userProfile = u.getProfile();
-        userProfile = (userProfile == null) ? "{}" : userProfile;
-        UserProfil p = m.readValue(userProfile, UserProfil.class);
+        byte[] image = u.getImage();
 
-        if(p.getImageProfilKey() != null) {
+        if(image.length > 0) {
             return new Uri(globalSettings.getHostname() + "/api/profil/image/user/" + id);
         }
 
-        if(p.getSocialProfilImageUrl() != null && !p.getSocialProfilImageUrl().equals("")) {
-            return new Uri(p.getSocialProfilImageUrl());
+        if(u.getImageSocialUrl() != null && u.getImageSocialUrl().length() > 0) {
+            return new Uri(u.getImageSocialUrl());
         }
         return new Uri();
     }

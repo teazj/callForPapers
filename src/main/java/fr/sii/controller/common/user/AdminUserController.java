@@ -2,7 +2,7 @@ package fr.sii.controller.common.user;
 
 import com.google.appengine.api.users.UserServiceFactory;
 import fr.sii.config.spreadsheet.SpreadsheetSettings;
-import fr.sii.domain.admin.user.AdminUserInfo;
+import fr.sii.dto.AdminUserInfo;
 import fr.sii.domain.common.Redirect;
 import fr.sii.domain.common.Uri;
 import org.springframework.stereotype.Controller;

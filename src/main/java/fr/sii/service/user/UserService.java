@@ -1,7 +1,7 @@
 package fr.sii.service.user;
 
 import fr.sii.entity.User;
-import fr.sii.repository.user.UserRepo;
+import fr.sii.repository.UserRepo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

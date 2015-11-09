@@ -60,7 +60,6 @@
 	<bean id="homeController" class="fr.sii.controller.HomeController"></bean>
 	<bean id="sessionController" class="fr.sii.controller.restricted.session.SessionController">
 		<property name="googleService" ref="spreadsheetService"></property>
-		<property name="applicationSettings" ref="applicationSettings"></property>
 		<property name="emailingService" ref="emailingService"></property>
 		<property name="globalSettings" ref="globalSettings"></property>
 	</bean>
