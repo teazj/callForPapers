@@ -118,7 +118,7 @@ public class ContactController {
                 bcc.add(adminUser.getEmail());
             }
             HashMap<String, String> map = new HashMap<>();
-            map.put("name", u.getFirstname() + " " + u.getLastname() );
+            map.put("name", u.getFirstname());
             map.put("talk", talk.getName());
             map.put("hostname", globalSettings.getHostname());
             map.put("id", String.valueOf(talkId));
