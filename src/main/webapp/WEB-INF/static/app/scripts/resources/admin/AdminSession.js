@@ -1,7 +1,10 @@
 angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', function(resourceRetries) {
   return resourceRetries('api/admin/sessions/:id', null, 
   	{
-        update: { method:'PUT' },
+        update: { 
+        	method:'PUT',
+        	url: 'api/admin/sessions/:id'
+        },
         delete: {
 			method: 'DELETE',
 			url: 'api/admin/sessions/:id'

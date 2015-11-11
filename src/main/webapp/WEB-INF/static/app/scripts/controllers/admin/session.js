@@ -470,6 +470,24 @@ angular.module('CallForPaper')
 			});
 		}
 
+		$scope.updateTalk = function(){
+			var modalInstance = $modal.open({
+				animation: true,
+				templateUrl: 'views/admin/changeTrackModal.html',
+				controller: 'ChangeTrackModalInstanceCtrl',
+				resolve: {
+					session: function() {
+						return $scope.session;
+					}
+				}
+			});
+			modalInstance.result.then(function(session) {
+				updateTalk(session);
+			}, function() {
+				// cancel
+			});
+		} 
+
 		$scope.changeTrack = function() {
 			var modalInstance = $modal.open({
 				animation: true,
@@ -503,6 +521,21 @@ angular.module('CallForPaper')
 				$scope.changeTrackButtonAnimationDisabled = true;
 			})
 		}
+
+		var updateTalk = function(session){
+			$scope.changeTrackButtonAnimationDisabled = false;
+			AdminSession.update({id : $stateParams.id}, session).$promise.then(function(sessionTmp){
+				updateComments();
+				$scope.session.track = sessionTmp.track;
+			    Notification.success({
+                    message: $filter('translate')('admin.trackModified'),
+                    delay: 3000
+                });
+				$scope.changeTrackButtonAnimationDisabled = true;
+			}, function(){
+				$scope.changeTrackButtonAnimationDisabled = true;
+			})
+		}
 	}])
 	.controller('EditModalInstanceCtrl', ['$scope', '$modalInstance', 'comment', function($scope, $modalInstance, comment) {
 		$scope.commentMsg = comment;
@@ -516,9 +549,9 @@ angular.module('CallForPaper')
 	}])
 	.controller('ChangeTrackModalInstanceCtrl', ['$scope', '$modalInstance', 'session', function($scope, $modalInstance, session) {
 		$scope.session = session;
-		$scope.track = session.track;
+		//$scope.track = session.track;
 		$scope.ok = function() {
-			$modalInstance.close($scope.track);
+			$modalInstance.close($scope.session);
 		};
 
 		$scope.cancel = function() {

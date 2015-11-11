@@ -25,6 +25,7 @@
 					<li role="presentation" class=""><button href="#help" role="tab" id="help-tab" data-toggle="tab" aria-controls="help" aria-expanded="false">{{'admin.financialHelp' | translate}}</button></li>
 					<li role="presentation" class=""><button href="#vote" role="tab" id="vote-tab" data-toggle="tab" aria-controls="vote" aria-expanded="false">{{'admin.deliberation' | translate}}</button></li>
 					<li role="presentation" ng-class="{active : tab === 'contact'}"><button href="#contact" role="tab" id="contact-tab" data-toggle="tab" aria-controls="contact" aria-expanded="false">{{'admin.contact' | translate}}</button></li>
+					<li role="presentation" class=""><button href="#vote" role="tab" id="vote-tab" data-toggle="tab" aria-controls="vote" aria-expanded="false">{{'admin.schedule' | translate}}</button></li>
 				</ul>
 				<div id="tabContent" class="tab-content tile">
 					<br>
@@ -145,7 +146,7 @@
 										<div class="">
 											<input readonly type="text" name="track" class="form-control" ng-value="'step2.tracks.' + session.track | translate" id="track">
 										</div>
-										<button ng-click="changeTrack()" type="button" ng-disabled="!changeTrackButtonAnimationDisabled" class="btn btn-success pull-right ng-binding" tabindex="0"><span ng-hide="changeTrackButtonAnimationDisabled" class="mdi-navigation-refresh glyphicon-refresh-animate pull-right"></span>{{'admin.modify' | translate}}&nbsp;
+										<button ng-click="updateTalk()" type="button" ng-disabled="!changeTrackButtonAnimationDisabled" class="btn btn-success pull-right ng-binding" tabindex="0"><span ng-hide="changeTrackButtonAnimationDisabled" class="mdi-navigation-refresh glyphicon-refresh-animate pull-right"></span>{{'admin.modify' | translate}}&nbsp;
 										</button>
 									</div>
 								</div>

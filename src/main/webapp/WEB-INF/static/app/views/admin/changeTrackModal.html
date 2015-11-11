@@ -1,15 +1,64 @@
 <div class="modal-header">
     <h3 class="modal-title">{{'editModal.title' | translate}}</h3>
+    <br />
 </div>
 <div class="modal-body" bs-has>
+	<label class="control-label" for="track">{{'step2.track' | translate}}</label>
 	<select ng-model="track" id="track" name="track" required class="form-control">
 		<option ng-selected="session.track === 'cloud'" value="cloud">{{'step2.tracks.cloud' | translate}}</option>
 		<option ng-selected="session.track === 'mobile'" value="mobile">{{'step2.tracks.mobile' | translate}}</option>
 		<option ng-selected="session.track === 'web'" value="web">{{'step2.tracks.web' | translate}}</option>
 		<option ng-selected="session.track === 'discovery'" value="discovery">{{'step2.tracks.discovery' | translate}}</option>
 	</select>
+	<br />
+	<label class="control-label" for="difficulty">{{'step2.difficulty' | translate}}</label>
+	<div>
+		<span required rating ng-model="session.difficulty" id="difficulty" name="difficulty" max="3" readonly="false" on-hover="hoverDifficulty(value)" on-leave="overStar = null"></span>
+			<label>{{session.difficultyLabel}}</label>
+		</div>
+
+	<br />
+
+	<label class="control-label" for="track">{{'step2.type' | translate}}</label>
+	<div>{{'step2.hintType' | translate}}</div>
+	<div>
+		<select ng-model="session.type" id="type" name="type" required class="form-control">
+			<option ng-selected="session.type === 'conference'" value="conference">{{'step2.types.conference' | translate}}</option>
+			<option ng-selected="session.type === 'codelab'" value="codelab">{{'step2.types.codelab' | translate}}</option>
+		</select>
+	</div>
+
+	<br />
+	<label class="control-label" for="sessionName">{{'step2.name' | translate}}</label>
+	<div>
+		<input required type="text" name="sessionName" class="form-control" ng-model="session.sessionName" id="sessionName" value="session.sessionName">
+	</div>
+	<br />
+
+	<label class="control-label" for="description">{{'step2.description' | translate}}</label>
+	<div>{{'step2.hintDescription' | translate}}</div>
+	<div>
+		<div md-preview="session.description"></div>
+		<textarea required name="description" class="form-control" ng-model="session.description" id="description" rows="3">{{'session.description'}}</textarea>
+	</div>
+
+	<br />
+	<label class="control-label" for="references">{{'step2.references' | translate}}</label>
+	<div>{{'step2.hintReferences' | translate}}</div>
+	<div>
+		<div md-preview="session.references"></div>
+		<textarea class="form-control" name="references" id="references" ng-model="session.references"  rows="3">{{'session.references'}}</textarea>
+	</div>
+	<br />
+
+	<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
+	<div>{{'step2.hintCospeaker' | translate}}</div>
+	<div>
+		<div md-preview="session.coSpeaker"></div>
+		<textarea class="form-control" name="coSpeaker" id="coSpeaker" ng-model="session.coSpeaker"  rows="3">{{'session.coSpeaker'}}</textarea>
+	</div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="session.track === track" ng-click="ok()">{{'editModal.confirm' | translate}}</button>
+    <button class="btn btn-primary" ng-click="ok()">{{'editModal.confirm' | translate}}</button>
     <button class="btn btn-warning" ng-click="cancel()">{{'editModal.cancel' | translate}}</button>
 </div>
