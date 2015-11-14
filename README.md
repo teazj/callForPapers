@@ -161,6 +161,16 @@ npm install
 grunt build
 mvn appengine:devserver [-Dmaven.test.skip=true]
 ```
+
+In addition to these instructions, a Grunt task is available to facilitate contributions to the client code. It uses
+BrowserSync to start a static server for files in `src/main/webapp/WEB-INF/static/app` directory. Requests to the
+backend and OAuth requests are forwarded thanks to an HTTP Proxy also configured in the `Gruntfile`.
+
+```shell
+$ cd src/main/webapp/WEB-INF/static
+$ grunt serve
+```
+
 *For local deployment, set all `appengine-web.xml` env-var in you OS with the same value.*
 
  - Go to : http://127.0.0.1:8080
