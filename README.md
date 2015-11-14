@@ -167,7 +167,7 @@ BrowserSync to start a static server for files in `src/main/webapp/WEB-INF/stati
 backend and OAuth requests are forwarded thanks to an HTTP Proxy also configured in the `Gruntfile`.
 
 ```shell
-$ cd  src/main/webapp/WEB-INF/static
+$ cd src/main/webapp/WEB-INF/static
 $ grunt serve
 ```
 
