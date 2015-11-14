@@ -7,15 +7,31 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
+
+  var httpProxy = require('http-proxy');
+
+  var proxy = httpProxy.createProxyServer({
+    target: 'http://localhost:8080/'
+  });
+
+  var proxyMiddleware = function (req, res, next) {
+    if (['/api', '/_ah', '/auth'].find(function (path) {
+      return req.url.indexOf(path) === 0;
+    })) {
+      proxy.web(req, res);
+    } else {
+      next();
+    }
+  };
 
   grunt.initConfig({
     bower: {
       install: {
-        options : {
-          copy : false
+        options: {
+          copy: false
         }
       }
     },
@@ -27,24 +43,28 @@ module.exports = function(grunt) {
     autoprefixer: {
       options: ['last 1 version, > 5%'],
       dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: '.tmp/styles/',
+            src: '{,*/}*.css',
+            dest: '.tmp/styles/'
+          }
+        ]
       }
     },
     clean: {
       dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*'
-          ]
-        }]
+        files: [
+          {
+            dot: true,
+            src: [
+              '.tmp',
+              '<%= yeoman.dist %>/*',
+              '!<%= yeoman.dist %>/.git*'
+            ]
+          }
+        ]
       },
       server: '.tmp'
     },
@@ -54,29 +74,33 @@ module.exports = function(grunt) {
         sourceRoot: ''
       },
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/scripts',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/scripts',
-          ext: '.js'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/scripts',
+            src: '{,*/}*.coffee',
+            dest: '.tmp/scripts',
+            ext: '.js'
+          }
+        ]
       },
       test: {
-        files: [{
-          expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/spec',
-          ext: '.js'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: 'test/spec',
+            src: '{,*/}*.coffee',
+            dest: '.tmp/spec',
+            ext: '.js'
+          }
+        ]
       }
     },
     // not used since Uglify task does concat,
     // but still available if needed
     /*concat: {
-      dist: {}
-    },*/
+     dist: {}
+     },*/
     rev: {
       dist: {
         files: {
@@ -104,22 +128,26 @@ module.exports = function(grunt) {
     },
     imagemin: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/images',
+            src: '{,*/}*.{png,jpg,jpeg}',
+            dest: '<%= yeoman.dist %>/images'
+          }
+        ]
       }
     },
     svgmin: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/images'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/images',
+            src: '{,*/}*.svg',
+            dest: '<%= yeoman.dist %>/images'
+          }
+        ]
       }
     },
     cssmin: {
@@ -139,52 +167,58 @@ module.exports = function(grunt) {
       dist: {
         options: {
           /*removeCommentsFromCDATA: true,
-          // https://github.com/yeoman/grunt-usemin/issues/44
-          //collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeOptionalTags: true*/
+           // https://github.com/yeoman/grunt-usemin/issues/44
+           //collapseWhitespace: true,
+           collapseBooleanAttributes: true,
+           removeAttributeQuotes: true,
+           removeRedundantAttributes: true,
+           useShortDoctype: true,
+           removeEmptyAttributes: true,
+           removeOptionalTags: true*/
         },
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/**/*.html'],
-          dest: '<%= yeoman.dist %>'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>',
+            src: ['*.html', 'views/**/*.html'],
+            dest: '<%= yeoman.dist %>'
+          }
+        ]
       }
     },
     // Put files not handled in other tasks here
     copy: {
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            'images/{,*/}*.{gif,webp,png,jpg}',
-            'styles/fonts/*',
-            'fonts/*',
-            'lib/**/*'
-          ]
-        }, {
-          expand: true,
-          cwd: '<%= yeoman.app %>/styles/fonts/',
-          src: ['**'],
-          dest: '<%= yeoman.dist %>/fonts/'
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: [
-            'generated/*'
-          ]
-        }]
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              '*.{ico,png,txt}',
+              '.htaccess',
+              'images/{,*/}*.{gif,webp,png,jpg}',
+              'styles/fonts/*',
+              'fonts/*',
+              'lib/**/*'
+            ]
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/styles/fonts/',
+            src: ['**'],
+            dest: '<%= yeoman.dist %>/fonts/'
+          },
+          {
+            expand: true,
+            cwd: '.tmp/images',
+            dest: '<%= yeoman.dist %>/images',
+            src: [
+              'generated/*'
+            ]
+          }
+        ]
       },
       styles: {
         expand: true,
@@ -205,7 +239,7 @@ module.exports = function(grunt) {
       dist: [
         'coffee',
         'copy:styles',
-        'imagemin',
+//        'imagemin',
         'svgmin',
         'htmlmin'
       ]
@@ -217,12 +251,14 @@ module.exports = function(grunt) {
     },
     ngmin: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>/scripts',
-          src: '*.js',
-          dest: '<%= yeoman.dist %>/scripts'
-        }]
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.dist %>/scripts',
+            src: '*.js',
+            dest: '<%= yeoman.dist %>/scripts'
+          }
+        ]
       }
     },
     uglify: {
@@ -233,10 +269,37 @@ module.exports = function(grunt) {
           ]
         }
       }
-    }
+    },
+    browserSync: {
+      dev: {
+        bsFiles: {
+          src: [
+            'app/**/*.html',
+            'app/**/*.json',
+            'app/styles/**/*.css',
+            'app/scripts/**/*.{js,html}',
+            'app/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+            '.tmp/**/*.{css,js}'
+          ]
+        }
+      },
+      options: {
+        watchTask: true,
+        server: {
+          baseDir: "./app",
+          middleware: proxyMiddleware
+        }
+      }
+    },
+    watch: {}
   });
 
   grunt.loadNpmTasks('grunt-bower-task');
+
+  grunt.registerTask('serve', [
+    'browserSync',
+    'watch'
+  ]);
 
   grunt.registerTask('build', [
     'bower:install',
