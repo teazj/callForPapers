@@ -1,17 +1,21 @@
 package fr.sii.config;
 
-import com.zaxxer.hikari.HikariDataSource;
-import liquibase.integration.spring.SpringLiquibase;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import javax.sql.DataSource;
+import com.zaxxer.hikari.HikariDataSource;
+
+import liquibase.integration.spring.SpringLiquibase;
 
 /**
  * Settings for MySQL database connection
  */
 @Configuration
+@EnableJpaRepositories("fr.sii.repository")
 public class DatabaseConfig {
 
 	@Value("${db.host}")

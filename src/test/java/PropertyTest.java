@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  * Created by tmaugin on 08/04/2015.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContextTest.xml","classpath:META-INF/spring/dispatcherServletTest.xml"})
+@ContextConfiguration(locations={"classpath:META-INF/spring/applicationContext*.xml","classpath:META-INF/spring/dispatcherServlet*.xml"})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PropertyTest {
