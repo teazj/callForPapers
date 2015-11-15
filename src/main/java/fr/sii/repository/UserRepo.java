@@ -9,9 +9,9 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 
     List<User> findByEmail(String email);
 
-    List<User> findByGoogle(String providerId);
+    List<User> findByGoogleId(String providerId);
 
-    List<User> findByGithub(String providerId);
+    List<User> findByGithubId(String providerId);
 
     List<User> findByVerifyToken(String verifyToken);
 

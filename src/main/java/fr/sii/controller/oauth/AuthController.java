@@ -17,7 +17,7 @@ import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.user.UserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-@Controller
+@RestController
 @RequestMapping(value="/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
 
@@ -40,29 +40,18 @@ public class AuthController {
             NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
             UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private GlobalSettings globalSettings;
 
+    @Autowired
     private EmailingService emailingService;
 
+    @Autowired
     private AuthSettings authSettings;
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public void setGlobalSettings(GlobalSettings globalSettings) {
-        this.globalSettings = globalSettings;
-    }
-
-    public void setEmailingService(EmailingService emailingService) {
-        this.emailingService = emailingService;
-    }
-
-    public void setAuthSettings(AuthSettings authSettings) {
-        this.authSettings = authSettings;
-    }
 
     /**
      * Log user in
@@ -74,7 +63,6 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value="/login", method=RequestMethod.POST)
-    @ResponseBody
     public Token login(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
         User foundUser = userService.findByemail(user.getEmail());
         if (foundUser != null
@@ -97,7 +85,6 @@ public class AuthController {
      * @throws Exception
      */
     @RequestMapping(value="/signup", method=RequestMethod.POST)
-    @ResponseBody
     public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid SignupUser signupUser) throws Exception {
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
@@ -149,7 +136,6 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value="/verify", method=RequestMethod.GET)
-    @ResponseBody
     public Token verify(HttpServletResponse res,HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken) throws JOSEException, IOException {
         Token token = null;
 
@@ -206,7 +192,6 @@ public class AuthController {
      * @throws IllegalAccessException
      */
     @RequestMapping(value="/unlink/{provider}", method=RequestMethod.GET)
-    @ResponseBody
     public void unlink(HttpServletResponse res,HttpServletRequest req, @PathVariable("provider") String provider) throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
 

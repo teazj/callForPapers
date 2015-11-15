@@ -5,29 +5,22 @@ import fr.sii.domain.common.Uri;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.entity.User;
 import fr.sii.service.user.UserService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@RestController
 @RequestMapping(value="/api/profil")
 public class CommonProfilImageController {
 
+    @Autowired
     private UserService userService;
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
+    @Autowired
     private GlobalSettings globalSettings;
-
-    public void setGlobalSettings(GlobalSettings globalSettings) {
-        this.globalSettings = globalSettings;
-    }
 
     /**
      * Get user profil image key
@@ -38,7 +31,6 @@ public class CommonProfilImageController {
      * @throws NotFoundException
      */
     @RequestMapping(value="/image/user/{id}", method= RequestMethod.GET)
-    @ResponseBody
     public void getProfileImageByUserId(HttpServletRequest req, HttpServletResponse res,  @PathVariable Integer id) throws IOException, NotFoundException {
         User u = userService.findById(id);
         if (u == null) throw new NotFoundException("User not found");
@@ -61,7 +53,6 @@ public class CommonProfilImageController {
      * @throws NotFoundException
      */
     @RequestMapping(value="/image/user/url/{id}", method= RequestMethod.GET)
-    @ResponseBody
     public Uri getProfilImageUrlByUserId(HttpServletRequest req, HttpServletResponse res, @PathVariable Integer id) throws IOException, NotFoundException {
         User u = userService.findById(id);
         if (u == null) throw new NotFoundException("User not found");

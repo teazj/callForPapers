@@ -1,6 +1,7 @@
 package fr.sii.config.google;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by tmaugin on 13/05/2015.
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * Google provider settings
  */
+@Component
 public class GoogleSettings {
     @Value("${google.clientid}")
     String clientId;

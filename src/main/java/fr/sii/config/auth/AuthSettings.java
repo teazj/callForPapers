@@ -2,6 +2,7 @@ package fr.sii.config.auth;
 
 import fr.sii.service.auth.AuthUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
@@ -12,6 +13,7 @@ import javax.annotation.PostConstruct;
 /**
  * Authentification settings
  */
+@Component
 public class AuthSettings {
     @Value("${auth.secrettoken}")
     String secretToken;

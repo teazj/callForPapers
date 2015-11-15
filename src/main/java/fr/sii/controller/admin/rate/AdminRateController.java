@@ -1,131 +1,98 @@
 package fr.sii.controller.admin.rate;
 
-import fr.sii.domain.admin.rate.AdminRate;
 import fr.sii.domain.exception.NotFoundException;
-import fr.sii.service.admin.rate.AdminRateService;
+import fr.sii.dto.RateAdmin;
+import fr.sii.service.RateAdminService;
 import fr.sii.service.admin.user.AdminUserService;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created by tmaugin on 24/04/2015.
- */
-@Controller
+@RestController
 @RequestMapping(value="api/admin/rates", produces = "application/json; charset=utf-8")
 public class AdminRateController {
 
-    private AdminRateService adminRateService;
-
+    @Autowired
     private AdminUserService adminUserServiceCustom;
 
-    public void setAdminRateService(AdminRateService adminRateService) {
-        this.adminRateService = adminRateService;
-    }
-
-    public void setAdminUserServiceCustom(AdminUserService adminUserServiceCustom) {
-        this.adminUserServiceCustom = adminUserServiceCustom;
-    }
+    @Autowired
+    private RateAdminService rateService;
 
     /**
      * Get all ratings
-     * @return
      */
-    @RequestMapping(method= RequestMethod.GET)
-    @ResponseBody
-    public List<AdminRate> getRates() {
-        return adminRateService.findAll();
+    @RequestMapping(method = RequestMethod.GET)
+    public List<RateAdmin> getRates() {
+        return rateService.getAll();
     }
 
     /**
      * Delete all ratings
      */
-    @RequestMapping(method= RequestMethod.DELETE)
-    @ResponseBody
+    @RequestMapping(method = RequestMethod.DELETE)
     public void deleteRates() {
-        adminRateService.deleteAll();
+        rateService.deleteAll();
     }
 
     /**
      * Add a new rating
-     * @param adminRate
-     * @return
      */
     @RequestMapping(method=RequestMethod.POST)
-    @ResponseBody public AdminRate postRate(@Valid @RequestBody AdminRate adminRate) throws NotFoundException {
-        adminRate.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
-        return adminRateService.save(adminRate);
+    public RateAdmin postRate(@Valid @RequestBody RateAdmin rate) throws NotFoundException {
+        return rateService.add(rate, adminUserServiceCustom.getCurrentUser(), rate.getTalkId());
     }
 
     /**
      * Edit a rating
-     * @param id
-     * @param adminRate
-     * @return
-     * @throws NotFoundException
      */
-    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    @ResponseBody public AdminRate putRate(@PathVariable Long id, @Valid @RequestBody AdminRate adminRate) throws NotFoundException {
-        adminRate.setUserId(adminUserServiceCustom.getCurrentUser().getEntityId());
-        return adminRateService.put(id, adminRate);
+    @RequestMapping(value= "/{rateId}", method=RequestMethod.PUT)
+    public RateAdmin putRate(@PathVariable int rateId, @Valid @RequestBody RateAdmin rate) {
+        rate.setId(rateId);
+        return rateService.edit(rate);
     }
 
     /**
      * Get a specific rating
-     * @param id
-     * @return
-     * @throws NotFoundException
      */
-    @RequestMapping(value="/{id}", method= RequestMethod.GET)
-    @ResponseBody
-    public AdminRate getRate(@PathVariable Long id) throws NotFoundException {
-        return adminRateService.findOne(id);
+    @RequestMapping(value= "/{rateId}", method= RequestMethod.GET)
+    public RateAdmin getRate(@PathVariable int rateId) {
+        return rateService.get(rateId);
     }
 
     /**
      * Get all rating for a given user
-     * @param id
+     * @param userId
      * @return
      */
-    @RequestMapping(value="/user/{id}", method= RequestMethod.GET)
-    @ResponseBody
-    public List<AdminRate> getRateByUserId(@PathVariable Long id) {
-        return adminRateService.findByUserId(id);
+    @RequestMapping(value= "/user/{userId}", method= RequestMethod.GET)
+    public List<RateAdmin> getRateByUserId(@PathVariable int userId) {
+        return rateService.findForUser(userId);
     }
 
     /**
      * Get all ratings for a given session
-     * @param id
-     * @return
      */
-    @RequestMapping(value="/row/{id}", method= RequestMethod.GET)
-    @ResponseBody
-    public List<AdminRate> getRatesByRowId(@PathVariable Long id) {
-        return adminRateService.findByRowId(id);
+    @RequestMapping(value= "/session/{talkId}", method= RequestMethod.GET)
+    public List<RateAdmin> getRatesByTalkId(@PathVariable int talkId) {
+        return rateService.findForTalk(talkId);
     }
 
     /**
      * Get rating for current user and a session
-     * @param rowId
-     * @return
      */
-    @RequestMapping(value="/row/{rowId}/user/me", method= RequestMethod.GET)
-    @ResponseBody
-    public AdminRate getRateByRowIdAndUserId(@PathVariable Long rowId) throws NotFoundException {
-        Long userId = adminUserServiceCustom.getCurrentUser().getEntityId();
-        return adminRateService.findByRowIdAndUserId(rowId, userId);
+    @RequestMapping(value= "/session/{talkId}/user/me", method = RequestMethod.GET)
+    public List<RateAdmin> getRateByRowIdAndUserId(@PathVariable int talkId) throws NotFoundException {
+        int adminId = adminUserServiceCustom.getCurrentUser().getId();
+        return rateService.findForTalkAndAdmin(talkId, adminId);
     }
 
     /**
      * Delete specific rating
-     * @param id
-     * @throws NotFoundException
      */
-    @RequestMapping(value="/{id}", method= RequestMethod.DELETE)
-    @ResponseBody
-    public void deleteRate(@PathVariable Long id) throws NotFoundException {
-        adminRateService.delete(id);
+    @RequestMapping(value= "/{rateId}", method= RequestMethod.DELETE)
+    public void deleteRate(@PathVariable int rateId) {
+        rateService.delete(rateId);
     }
 }

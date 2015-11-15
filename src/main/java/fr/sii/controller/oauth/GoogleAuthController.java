@@ -18,11 +18,8 @@ import fr.sii.config.google.GoogleSettings;
 import fr.sii.domain.token.Token;
 import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,12 +27,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping(value="/auth/google", produces = "application/json; charset=utf-8")
 public class GoogleAuthController {
 
+    @Autowired
     GoogleSettings googleSettings;
 
+    @Autowired
     AuthService authService;
 
     public void setGoogleSettings(GoogleSettings googleSettings) {
@@ -57,7 +56,6 @@ public class GoogleAuthController {
      * @throws ParseException
      */
     @RequestMapping(method= RequestMethod.POST)
-    @ResponseBody
     public Token loginGoogle(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)
             throws IOException, JOSEException, ParseException {
 

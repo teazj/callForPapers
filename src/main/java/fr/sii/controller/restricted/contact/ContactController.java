@@ -3,7 +3,6 @@ package fr.sii.controller.restricted.contact;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
-import fr.sii.config.auth.AuthSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.CustomException;
@@ -16,11 +15,9 @@ import fr.sii.entity.AdminUser;
 import fr.sii.entity.User;
 import fr.sii.service.CommentUserService;
 import fr.sii.service.TalkUserService;
-import fr.sii.service.admin.contact.AdminContactService;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
-import fr.sii.service.spreadsheet.SpreadsheetService;
 import fr.sii.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,59 +34,24 @@ import java.util.List;
 @RequestMapping(value="api/restricted/sessions/{talkId}/contacts", produces = "application/json; charset=utf-8")
 public class ContactController {
 
-    private AdminContactService adminContactService;
 
-    private SpreadsheetService googleService;
-
+    @Autowired
     private AdminUserService adminUserServiceCustom;
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private EmailingService emailingService;
 
+    @Autowired
     private GlobalSettings globalSettings;
-
-    private AuthSettings authSettings;
 
     @Autowired
     private CommentUserService commentService;
 
     @Autowired
     private TalkUserService talkUserService;
-
-    public void setAuthSettings(AuthSettings authSettings) {
-        this.authSettings = authSettings;
-    }
-
-
-    public void setGlobalSettings(GlobalSettings globalSettings) {
-
-        this.globalSettings = globalSettings;
-    }
-
-    public void setAdminContactService(AdminContactService adminContactService) {
-        this.adminContactService = adminContactService;
-    }
-
-    public void setUserService(UserService userService) {
-
-        this.userService = userService;
-    }
-
-    public void setAdminUserServiceCustom(AdminUserService adminUserServiceCustom) {
-        this.adminUserServiceCustom = adminUserServiceCustom;
-    }
-
-    public void setGoogleService(SpreadsheetService googleService) {
-
-        this.googleService = googleService;
-    }
-
-    public void setEmailingService(EmailingService emailingService) {
-
-        this.emailingService = emailingService;
-    }
-
 
     /**
      * Get all contact message for a given session

@@ -1,12 +1,7 @@
 package fr.sii.controller.admin.config;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.Key;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -15,7 +10,7 @@ import javax.validation.Valid;
  * Created by tmaugin on 16/07/2015.
  * SII
  */
-@Controller
+@RestController
 @RequestMapping(value="api/admin/config", produces = "application/json; charset=utf-8")
 public class ConfigController {
 
@@ -25,7 +20,6 @@ public class ConfigController {
      * @return key
      */
     @RequestMapping(value="/enableSubmissions", method= RequestMethod.POST)
-    @ResponseBody
     public fr.sii.domain.common.Key postEnableSubmissions(@Valid @RequestBody fr.sii.domain.common.Key key) {
         Key applicationConfigKey = KeyFactory.createKey("Config", "Application");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

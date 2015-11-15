@@ -2,18 +2,18 @@ package fr.sii.service.user;
 
 import fr.sii.entity.User;
 import fr.sii.repository.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 @Transactional
 public class UserService {
 
+    @Autowired
 	private UserRepo userRepo;
-
-	public void setUserRepo(UserRepo userRepo) {
-		this.userRepo = userRepo;
-	}
 
 	public User save(User user) {
 		return userRepo.save(user);
@@ -52,13 +52,13 @@ public class UserService {
 	public User findByProvider(User.Provider provider, String providerId) {
 		switch (provider) {
 			case GOOGLE:
-				List<User> users = userRepo.findByGoogle(providerId);
+				List<User> users = userRepo.findByGoogleId(providerId);
 				if (!users.isEmpty())
 					return users.get(0);
 				else
 					return null;
 			case GITHUB:
-				List<User> users2 = userRepo.findByGithub(providerId);
+				List<User> users2 = userRepo.findByGithubId(providerId);
 				if (!users2.isEmpty())
 					return users2.get(0);
 				else

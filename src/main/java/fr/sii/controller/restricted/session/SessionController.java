@@ -15,7 +15,6 @@ import fr.sii.repository.UserRepo;
 import fr.sii.service.TalkUserService;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
-import fr.sii.service.spreadsheet.SpreadsheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +29,10 @@ import java.util.List;
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
 public class SessionController {
 
-    private SpreadsheetService googleService;
-
+    @Autowired
     private EmailingService emailingService;
 
+    @Autowired
     private GlobalSettings globalSettings;
 
     @Autowired
@@ -41,19 +40,6 @@ public class SessionController {
 
     @Autowired
     private TalkUserService talkService;
-
-    public void setGoogleService(SpreadsheetService googleService) {
-        this.googleService = googleService;
-    }
-
-    public void setEmailingService(EmailingService emailingService) {
-        this.emailingService = emailingService;
-    }
-
-    public void setGlobalSettings(GlobalSettings globalSettings) {
-        this.globalSettings = globalSettings;
-    }
-
 
     /**
      * Add a session

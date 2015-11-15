@@ -5,12 +5,14 @@ package fr.sii.config.spreadsheet;
  */
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 
 /**
  * Google Spreadsheet settings
  */
+@Component
 public class SpreadsheetSettings {
 
     @Value("${google.login}")

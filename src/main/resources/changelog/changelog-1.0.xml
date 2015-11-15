@@ -111,10 +111,10 @@
             <column name="hate" type="boolean" defaultValueBoolean="true"/>
 
             <column name="talk" type="int">
-                <constraints foreignKeyName="comment_talk" referencedTableName="talks" referencedColumnNames="id"/>
+                <constraints foreignKeyName="rate_talk" referencedTableName="talks" referencedColumnNames="id"/>
             </column>
             <column name="admin" type="int">
-                <constraints foreignKeyName="comment_admin" referencedTableName="admins" referencedColumnNames="id"/>
+                <constraints foreignKeyName="rate_admin" referencedTableName="admins" referencedColumnNames="id"/>
             </column>
         </createTable>
 

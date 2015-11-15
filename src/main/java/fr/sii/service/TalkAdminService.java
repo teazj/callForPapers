@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Service for managing talks by the admins
  */
@@ -22,6 +25,16 @@ public class TalkAdminService {
     private MapperFacade mapper;
 
     /**
+     * Retrieve all talks
+     * @param states List of states the talk must be
+     * @return List of talks
+     */
+    public List<TalkAdmin> findAll(Talk.State... states) {
+        List<Talk> talks = talkRepo.findByStateIn(Arrays.asList(states));
+        return mapper.mapAsList(talks, TalkAdmin.class);
+    }
+
+    /**
      * Retrieve a talk
      * @param talkId Id of the talk to retrieve
      * @return Talk or null if not found
@@ -29,5 +42,28 @@ public class TalkAdminService {
     public TalkAdmin getOne(int talkId) {
         Talk talk = talkRepo.findOne(talkId);
         return mapper.map(talk, TalkAdmin.class);
+    }
+
+    /**
+     * Edit a talk
+     * @param talkAdmin Talk to edit
+     * @return Edited talk
+     */
+    public TalkAdmin edit(TalkAdmin talkAdmin) {
+        Talk talk = talkRepo.findOne(talkAdmin.getId());
+        mapper.map(talkAdmin, talk);
+        return mapper.map(talk, TalkAdmin.class);
+    }
+
+    /**
+     * Delete a talk
+     * @param talkId Id of the talk to delete
+     * @return Deleted talk
+     */
+    public TalkAdmin delete(int talkId) {
+        Talk talk = talkRepo.findOne(talkId);
+        TalkAdmin deleted = mapper.map(talk, TalkAdmin.class);
+        talkRepo.delete(talk);
+        return deleted;
     }
 }

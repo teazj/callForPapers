@@ -1,9 +1,6 @@
 package fr.sii.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -51,10 +48,12 @@ public class Rate {
         return hate;
     }
 
+    @ManyToOne
     public Talk getTalk() {
         return talk;
     }
 
+    @ManyToOne
     public AdminUser getAdminUser() {
         return adminUser;
     }

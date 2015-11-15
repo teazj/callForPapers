@@ -33,6 +33,7 @@ public class TalkUserService {
     /**
      * Retrieve all talks for a User
      * @param userId Id of the user
+     * @param states List of states the talk must be
      * @return List of talks
      */
     public List<TalkUser> findAll(int userId, Talk.State... states) {
