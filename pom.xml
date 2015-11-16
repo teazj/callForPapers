@@ -383,27 +383,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Spring & db -->
-			<plugin>
-				<groupId>org.datanucleus</groupId>
-				<artifactId>datanucleus-maven-plugin</artifactId>
-				<version>3.3.2</version>
-				<configuration>
-					<api>JPA</api>
-					<persistenceUnitName>MyUnit</persistenceUnitName>
-					<log4jConfiguration>${basedir}/src/main/resources/log4j.properties</log4jConfiguration>
-					<verbose>true</verbose>
-                    <fork>false</fork>   <!-- Solve windows line too long error -->
-				</configuration>
-				<executions>
-					<execution>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>enhance</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 </project>
