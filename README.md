@@ -94,6 +94,10 @@ Edit `src/main/webapp/WEB-INF/appengine-web.xml` replace the informations to sui
         <env-var name="AUTH_SECRET_TOKEN" value="yourRandomSecretToken"/> <!--random secret token for jwt-->
         <env-var name="AUTH_CAPTCHA_PUBLIC" value="yourRecaptchaPublicToken"/> <!--recaptcha public key-->
         <env-var name="AUTH_CAPTCHA_SECRET" value="yourRecaptchaSecretToken"/> <!--recaptcha private key-->
+        <env-var name="DB_HOST" value="yourDbHost"/> <!--Database host and port (e.g. localhost:3306)-->
+        <env-var name="DB_NAME" value="yourDbName"/> <!--Name of the CFP database-->
+        <env-var name="DB_USER" value="yourDbUser"/> <!--User to connect to the database-->
+        <env-var name="DB_PASS" value="yourDbPassword"/> <!--Password to connect to database--> 
     </env-variables>
 </appengine-web-app>
 ```
@@ -126,6 +130,11 @@ app.community=GDG Nantes // community name (for email)
 app.date=06/11/2015 // event date
 app.releasedate=01/09/2015 // speakers publication date
 app.hostname=http://aesthetic-fx-89513.appspot.com // root domain (email images/links)
+
+db.host=${DB_HOST}
+db.name=${DB_NAME}
+db.user=${DB_USER}
+db.pass=${DB_PASS}
 ```
 Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers tokens :
 

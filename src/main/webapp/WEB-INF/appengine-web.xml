@@ -21,7 +21,7 @@
         <env-var name="AUTH_SECRET_TOKEN" value="7d9e847482440f00821b05023259f92f87205d23"/>
         <env-var name="AUTH_CAPTCHA_PUBLIC" value="6LdxgxATAAAAAFUCo5RuwxxCGF20b-UWaawAM0nM"/>
         <env-var name="AUTH_CAPTCHA_SECRET" value="6LdxgxATAAAAAB9s-u4m0EN9oKWnMZGsDIR7WbuG"/>
-        <env-var name="DB_HOST" value="saturne"/>
+        <env-var name="DB_HOST" value="localhost"/>
         <env-var name="DB_NAME" value="breizhcamp"/>
         <env-var name="DB_USER" value="breizhcamp"/>
         <env-var name="DB_PASS" value="breizhcamp"/>
