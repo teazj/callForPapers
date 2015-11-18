@@ -1,4 +1,4 @@
-package fr.sii.domain.restricted.meter;
+package fr.sii.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

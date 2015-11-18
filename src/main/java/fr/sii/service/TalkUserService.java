@@ -42,6 +42,15 @@ public class TalkUserService {
     }
 
     /**
+     * Count number of talks the users has submitted (drafts included)
+     * @param userId Id of the user
+     * @return Number of talks
+     */
+    public int count(int userId) {
+        return talkRepo.countByUserId(userId);
+    }
+
+    /**
      * Retrieve a talk which belong to the user
      * @param userId Id of the user to retrieve
      * @param talkId Id of the talk to retrieve
