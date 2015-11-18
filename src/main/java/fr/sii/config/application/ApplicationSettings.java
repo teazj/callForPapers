@@ -29,7 +29,7 @@ public class ApplicationSettings {
     @Value("${app.decisiondate}")
     private String decisionDate;
 
-    private boolean configured = false;
+    private boolean configured = true;
 
     public String getEventName() {
         return eventName;
