@@ -23,7 +23,7 @@ public class Rate {
     private AdminUser adminUser;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
