@@ -5,21 +5,21 @@ angular.module('CallForPaper')
         /**
          * Intercep every request and popup a notification if error
          */
-        
+
         // Debounce error notifications
         var backendcommunication = lodash.throttle(function() {
             $injector.get('Notification').error({
                 message: $filter('translate')('error.backendcommunication'),
                 delay: 3000
             });
-        },3000)
+        }, 3000)
 
         var noInternet = lodash.throttle(function() {
             $injector.get('Notification').error({
                 message: $filter('translate')('error.noInternet'),
                 delay: 3000
             });
-        },3000)
+        }, 3000)
 
         return {
             response: function(response) {
@@ -36,7 +36,7 @@ angular.module('CallForPaper')
                     $injector.get('$state').go('404');
                 } else if (rejection.status === 409) {
                     // Nothing
-                }  else if (rejection.status === 400) {
+                } else if (rejection.status === 400) {
                     // Nothing
                 } else {
                     backendcommunication();

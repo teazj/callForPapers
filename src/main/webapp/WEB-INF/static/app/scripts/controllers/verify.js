@@ -8,7 +8,7 @@ angular.module('CallForPaper')
 
         /**
          * Verify user account
-         * @param  {userId} 
+         * @param  {userId}
          * @param  {verificationToken}
          */
         Verify.get($stateParams.id, $stateParams.token)
