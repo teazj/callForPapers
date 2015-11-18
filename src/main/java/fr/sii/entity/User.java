@@ -79,10 +79,12 @@ public class User {
 		return email;
 	}
 
+	@Column(name = "github_id")
 	public String getGithubId() {
 		return githubId;
 	}
 
+    @Column(name = "google_id")
 	public String getGoogleId() {
 		return googleId;
 	}
@@ -95,6 +97,7 @@ public class User {
 		return verified;
 	}
 
+    @Column(name = "verify_token")
 	public String getVerifyToken() {
 		return verifyToken;
 	}
@@ -139,6 +142,7 @@ public class User {
 		return image;
 	}
 
+    @Column(name = "image_social_url")
 	public String getImageSocialUrl() {
 		return imageSocialUrl;
 	}
