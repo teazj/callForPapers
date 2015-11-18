@@ -12,14 +12,14 @@ angular.module('CallForPaper')
                 message: $filter('translate')('error.backendcommunication'),
                 delay: 3000
             });
-        }, 3000)
+        }, 3000);
 
         var noInternet = lodash.throttle(function() {
             $injector.get('Notification').error({
                 message: $filter('translate')('error.noInternet'),
                 delay: 3000
             });
-        }, 3000)
+        }, 3000);
 
         return {
             response: function(response) {
@@ -43,5 +43,5 @@ angular.module('CallForPaper')
                 }
                 return $q.reject(rejection);
             }
-        }
-    }])
+        };
+    }]);

@@ -10,7 +10,7 @@ angular.module('CallForPaper')
             sessions: [],
             sessionscodelab: [],
             sessionsconference: []
-        }
+        };
 
         var type = '';
         /**
@@ -18,7 +18,9 @@ angular.module('CallForPaper')
          **/
         if (localStorageService.isSupported) {
             var typeString = localStorageService.get('nextPreviousSessionType');
-            if (typeString != null) type = typeString;
+            if (typeString !== null) {
+                type = typeString;
+            }
             var sessionsString = localStorageService.get('nextPreviousSession' + type);
             try {
                 if (sessionsString !== null) {
@@ -40,7 +42,7 @@ angular.module('CallForPaper')
         nextPreviousSessionService.setSessions = function(array, typeTmp) {
             var sessionsTmp = array.map(function(session) {
                 return session.added;
-            })
+            });
             scope.sessionsByType['sessions' + typeTmp] = sessionsTmp;
             localStorageService.set('nextPreviousSession' + typeTmp, sessionsTmp);
         };
@@ -48,14 +50,18 @@ angular.module('CallForPaper')
         nextPreviousSessionService.getNextSessions = function(currentSessionId) {
             var index = scope.sessionsByType['sessions' + type].indexOf(parseInt(currentSessionId, 10));
             if (index !== -1) {
-                if (index < scope.sessionsByType['sessions' + type].length - 1) return scope.sessionsByType['sessions' + type][index + 1];
+                if (index < scope.sessionsByType['sessions' + type].length - 1) {
+                    return scope.sessionsByType['sessions' + type][index + 1];
+                }
             }
             return null;
         };
         nextPreviousSessionService.getPreviousSessions = function(currentSessionId) {
             var index = scope.sessionsByType['sessions' + type].indexOf(parseInt(currentSessionId, 10));
             if (index !== -1) {
-                if (index > 0) return scope.sessionsByType['sessions' + type][index - 1];
+                if (index > 0) {
+                    return scope.sessionsByType['sessions' + type][index - 1];
+                }
             }
             return null;
         };

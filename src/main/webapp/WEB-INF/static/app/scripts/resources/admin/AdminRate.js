@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('AdminRate', ['$resource', function($resource) {
     return $resource('api/admin/rates/:id', null,
         {

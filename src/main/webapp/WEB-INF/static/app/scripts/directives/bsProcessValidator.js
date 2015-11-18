@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bs-has', [])
     .factory('bsProcessValidator', ['$timeout', function($timeout) {
         return function(scope, element, ngClass, bsClass) {
@@ -23,7 +25,7 @@ angular.module('bs-has', [])
         };
     }])
     .factory('bsSubmitValidator', ['$timeout', function($timeout) {
-        return function(scope, element, ngClass, bsClass, state) {
+        return function(scope, element, ngClass, bsClass) {
             $timeout(function() {
                 var input = element.find('input');
                 if (!input.length) {
@@ -40,7 +42,7 @@ angular.module('bs-has', [])
                         if (value) {
                             element.toggleClass(bsClass, input.hasClass(ngClass));
                         }
-                    })
+                    });
                 }
             }, 100);
         };
@@ -64,7 +66,7 @@ angular.module('bs-has', [])
     .directive('bsHas', ['bsProcessValidator', 'bsSubmitValidator', function(bsProcessValidator, bsSubmitValidator) {
         return {
             restrict: 'A',
-            link: function(scope, element, attrs) {
+            link: function(scope, element) {
                 bsProcessValidator(scope, element, 'ng-valid', 'has-success');
                 bsProcessValidator(scope, element, 'ng-invalid', 'has-error');
                 bsSubmitValidator(scope, element, 'ng-invalid', 'has-error');

@@ -24,5 +24,5 @@ angular.module('CallForPaper')
             $scope.title = config.eventName;
             $scope.releaseDate = config.releaseDate;
             $scope.decisionDate = config.decisionDate;
-        })
+        });
     }]);

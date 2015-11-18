@@ -263,7 +263,7 @@ angular.module('CallForPaper', [
                 debounceDelay: 200,
                 loadOnDownArrow: true,
                 loadOnEmpty: true
-            })
+            });
     }])
     .config(['$translateProvider', function($translateProvider) {
         $translateProvider.useCookieStorage();

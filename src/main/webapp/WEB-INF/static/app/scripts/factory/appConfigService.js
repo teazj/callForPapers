@@ -11,13 +11,13 @@ angular.module('CallForPaper')
             Application.get(function(config) {
                 if (config.configured === false) {
                     deferred.reject();
-                    $state.go("config.about");
+                    $state.go('config.about');
                 } else {
                     deferred.resolve();
                 }
-            })
+            });
             return deferred.promise;
-        }]
+        }];
         /**
          * Redirect user if submissions not allowed
          */
@@ -26,12 +26,12 @@ angular.module('CallForPaper')
             Application.get(function(config) {
                 if (config.open === false) {
                     deferred.reject();
-                    $state.go("app.dashboard");
+                    $state.go('app.dashboard');
                 } else {
                     deferred.resolve();
                 }
-            })
+            });
             return deferred.promise;
-        }]
+        }];
         return appConfigService;
-    })
+    });

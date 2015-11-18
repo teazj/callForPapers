@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('AdminComment', ['$resource', function($resource) {
     return $resource('api/admin/comments/:id', {},
         {

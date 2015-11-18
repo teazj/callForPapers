@@ -9,13 +9,13 @@ angular.module('CallForPaper')
                 Application.get(function(config) {
                     if (config.configured === true) {
                         deferred.reject();
-                        $state.go("config");
+                        $state.go('config');
                     } else {
                         deferred.resolve();
                     }
-                })
+                });
                 return deferred.promise;
             }];
             return $appConfig;
-        }
+        };
     });

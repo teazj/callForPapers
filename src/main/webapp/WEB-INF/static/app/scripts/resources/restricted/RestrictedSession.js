@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('RestrictedSession', ['resourceRetries', function(resourceRetries) {
     return resourceRetries('api/restricted/sessions/:id', null,
         {

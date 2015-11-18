@@ -6,7 +6,7 @@ angular.module('CallForPaper')
         $scope.alreadyLinked = false;
         $scope.authenticate = function(provider) {
             $scope.loading = true;
-            $auth.authenticate(provider).then(function(response) {
+            $auth.authenticate(provider).then(function() {
                 // Signed In.
                 $scope.$emit('authenticate');
                 $scope.loading = false;

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', function(resourceRetries) {
     return resourceRetries('api/admin/sessions/:id', null,
         {

@@ -12,7 +12,7 @@ angular.module('CallForPaper')
          * @param  {verificationToken}
          */
         Verify.get($stateParams.id, $stateParams.token)
-            .success(function(data, status) {
+            .success(function(data) {
                 $auth.setToken(data.token, true);
                 $scope.verified = true;
             })

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('RestrictedStats', ['resourceRetries', function(resourceRetries) {
     return resourceRetries('api/restricted/stats', null,
         {

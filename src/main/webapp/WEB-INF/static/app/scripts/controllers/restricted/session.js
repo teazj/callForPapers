@@ -19,12 +19,18 @@ angular.module('CallForPaper')
             if (sessionTmp.social !== null) {
                 var links = sessionTmp.social.split(',').map(function(value) {
                     return $filter('createLinks')(value);
-                })
+                });
                 $scope.session.socialLinks = links;
             }
-            if (sessionTmp.twitter !== null) $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
-            if (sessionTmp.googlePlus !== null) $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
-            if (sessionTmp.github !== null) $scope.session.github = $filter('createLinks')(sessionTmp.github);
+            if (sessionTmp.twitter !== null) {
+                $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
+            }
+            if (sessionTmp.googlePlus !== null) {
+                $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
+            }
+            if (sessionTmp.github !== null) {
+                $scope.session.github = $filter('createLinks')(sessionTmp.github);
+            }
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
             // Get profil image
@@ -48,8 +54,8 @@ angular.module('CallForPaper')
                 rowId: $stateParams.id
             }, function(contactsTmp) {
                 $scope.contacts = contactsTmp;
-            })
-        }
+            });
+        };
         updateContacts();
 
         $scope.captchaShow = true;
@@ -71,16 +77,16 @@ angular.module('CallForPaper')
                 'comment': $scope.contactMsg,
                 'rowId': $stateParams.id,
                 'captcha': $scope.captcha
-            }, function(c) {
+            }, function() {
                 $scope.captchaShow = !$scope.captchaShow;
-                $scope.contactMsg = "";
+                $scope.contactMsg = '';
                 $scope.contactButtonDisabled = false;
                 updateContacts();
-            }, function(c) {
+            }, function() {
                 $scope.captchaShow = !$scope.captchaShow;
                 $scope.contactButtonDisabled = false;
             });
-        }
+        };
 
         /**
          * PUT contact on server
@@ -89,11 +95,11 @@ angular.module('CallForPaper')
         var putContact = function(contact) {
             RestrictedContact.update({
                 id: contact.id
-            }, contact, function(c) {
+            }, contact, function() {
                 updateContacts();
-            }, function(c) {
+            }, function() {
             });
-        }
+        };
 
         /**
          * Open modal for editing
@@ -117,6 +123,6 @@ angular.module('CallForPaper')
             }, function() {
                 // cancel
             });
-        }
+        };
 
     }]);

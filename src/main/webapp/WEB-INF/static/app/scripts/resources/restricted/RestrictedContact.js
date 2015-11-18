@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('RestrictedContact', ['$resource', function($resource) {
     return $resource('api/restricted/contacts/:id', {},
         {

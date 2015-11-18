@@ -2,7 +2,9 @@
 
 angular.module('CallForPaper')
     .controller('AdminSessionsCtrl', ['$scope', 'AdminSession', '$filter', 'ngTableParams', '$q', 'Notification', 'screenSize', 'AdminStats', 'localStorageService', 'NextPreviousSessionService', function($scope, AdminSession, $filter, ngTableParams, $q, Notification, screenSize, AdminStats, localStorageService, NextPreviousSessionService) {
-        var sessions = []
+
+        /* jshint newcap: false */
+        var sessions = [];
         $scope.sessions = [];
         $scope.sessionsAll = [];
         $scope.screenSize = screenSize;
@@ -17,7 +19,7 @@ angular.module('CallForPaper')
          */
         AdminSession.query().$promise.then(function(sessionsTmp) {
             sessions = sessionsTmp.map(function(session) {
-                session.fullname = session.name + " " + session.firstname;
+                session.fullname = session.name + ' ' + session.firstname;
                 session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];
                 return session;
             });
@@ -31,7 +33,7 @@ angular.module('CallForPaper')
         });
 
         // Set labels
-        $scope.difficulties = function(column) {
+        $scope.difficulties = function() {
             var def = $q.defer();
             var difficulties = [{
                 'id': '1',
@@ -48,7 +50,7 @@ angular.module('CallForPaper')
         };
 
         // Set labels
-        $scope.tracks = function(column) {
+        $scope.tracks = function() {
             var def = $q.defer();
             var difficulties = [{
                 'id': 'web',
@@ -94,7 +96,7 @@ angular.module('CallForPaper')
                 localStorageService.set('tableParams', params.$params);
             }
             $defer.resolve($scope.sessions);
-        }
+        };
 
         /**
          * Initialize tables
@@ -157,7 +159,7 @@ angular.module('CallForPaper')
                 });
             // Current visible Tab => 1st
             NextPreviousSessionService.setType('');
-        }
+        };
 
         /**
          * Set active Tab type
@@ -165,7 +167,7 @@ angular.module('CallForPaper')
          */
         $scope.setActiveTab = function(type) {
             NextPreviousSessionService.setType(type);
-        }
+        };
 
         /**
          * Filter tables according to checkbox state
@@ -173,9 +175,9 @@ angular.module('CallForPaper')
          */
         $scope.handleNotReviewed = function() {
             if ($scope.notReviewed === true) {
-                $scope.tableParams.filter()['reviewed'] = false;
+                $scope.tableParams.filter().reviewed = false;
             } else {
-                $scope.tableParams.filter()['reviewed'] = '';
+                $scope.tableParams.filter().reviewed = '';
             }
-        }
+        };
     }]);

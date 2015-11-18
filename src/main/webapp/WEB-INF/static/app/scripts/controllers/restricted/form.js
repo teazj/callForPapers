@@ -11,14 +11,14 @@ angular.module('CallForPaper')
         $scope.language = $translate.use();
 
         $scope.formData.speaker = {};
-        $scope.formData.speaker.phone = "";
+        $scope.formData.speaker.phone = '';
         $scope.formData.session = {};
         $scope.formData.help = {};
 
         var id = $stateParams.id;
         var parseRow = function(id) {
             // If editing
-            if (id !== "") {
+            if (id !== '') {
                 RestrictedDraft.get({
                     id: id
                 }).$promise.then(function(draft) {
@@ -27,78 +27,120 @@ angular.module('CallForPaper')
                         for (var key in draft) {
                             if (draft.hasOwnProperty(key)) {
                                 switch (key) {
-                                    case "bio":
-                                        if (draft[key] !== null) $scope.formData.speaker.bio = draft[key];
+                                    case 'bio':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.bio = draft[key];
+                                        }
                                         break;
-                                    case "coSpeaker":
-                                        if (draft[key] !== null) $scope.formData.session.coSpeaker = draft[key];
+                                    case 'coSpeaker':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.session.coSpeaker = draft[key];
+                                        }
                                         break;
-                                    case "company":
-                                        if (draft[key] !== null) $scope.formData.speaker.company = draft[key];
+                                    case 'company':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.company = draft[key];
+                                        }
                                         break;
-                                    case "description":
-                                        if (draft[key] !== null) $scope.formData.session.description = draft[key];
+                                    case 'description':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.session.description = draft[key];
+                                        }
                                         break;
-                                    case "difficulty":
+                                    case 'difficulty':
                                         if (draft[key] !== null) {
                                             $scope.formData.session.difficulty = draft[key];
                                             $scope.hoverDifficulty(draft[key]);
                                         }
                                         break;
-                                    case "email":
-                                        if (draft[key] !== null) $scope.formData.speaker.email = draft[key];
+                                    case 'email':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.email = draft[key];
+                                        }
                                         break;
-                                    case "financial":
-                                        if (draft[key] !== null) $scope.formData.help.financial = draft[key];
+                                    case 'financial':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.help.financial = draft[key];
+                                        }
                                         break;
-                                    case "firstname":
-                                        if (draft[key] !== null) $scope.formData.speaker.firstname = draft[key];
+                                    case 'firstname':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.firstname = draft[key];
+                                        }
                                         break;
-                                    case "hotel":
-                                        if (draft[key] !== null) $scope.formData.help.hotel = draft[key];
+                                    case 'hotel':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.help.hotel = draft[key];
+                                        }
                                         break;
-                                    case "hotelDate":
-                                        if (draft[key] !== null) $scope.formData.help.hotelDate = draft[key];
+                                    case 'hotelDate':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.help.hotelDate = draft[key];
+                                        }
                                         break;
-                                    case "name":
-                                        if (draft[key] !== null) $scope.formData.speaker.name = draft[key];
+                                    case 'name':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.name = draft[key];
+                                        }
                                         break;
-                                    case "phone":
-                                        if (draft[key] !== null) $scope.formData.speaker.phone = draft[key];
+                                    case 'phone':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.phone = draft[key];
+                                        }
                                         break;
-                                    case "references":
-                                        if (draft[key] !== null) $scope.formData.session.references = draft[key];
+                                    case 'references':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.session.references = draft[key];
+                                        }
                                         break;
-                                    case "sessionName":
-                                        if (draft[key] !== null) $scope.formData.session.sessionName = draft[key];
+                                    case 'sessionName':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.session.sessionName = draft[key];
+                                        }
                                         break;
-                                    case "social":
-                                        if (draft[key] !== null && draft[key] != "") $scope.formData.speaker.socialArray = draft[key].split(", ").map(function(value) {
-                                            return {
-                                                text: value
-                                            };
-                                        });
+                                    case 'social':
+                                        if (draft[key] !== null && draft[key] !== '') {
+                                            $scope.formData.speaker.socialArray = draft[key].split(', ').map(function(value) {
+                                                return {
+                                                    text: value
+                                                };
+                                            });
+                                        }
                                         break;
-                                    case "twitter":
-                                        if (draft[key] !== null) $scope.formData.speaker.twitter = draft[key];
+                                    case 'twitter':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.twitter = draft[key];
+                                        }
                                         break;
-                                    case "googlePlus":
-                                        if (draft[key] !== null) $scope.formData.speaker.googlePlus = draft[key];
+                                    case 'googlePlus':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.googlePlus = draft[key];
+                                        }
                                         break;
-                                    case "github":
-                                        if (draft[key] !== null) $scope.formData.speaker.github = draft[key];
+                                    case 'github':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.speaker.github = draft[key];
+                                        }
                                         break;
-                                    case "track":
-                                        if (draft[key] !== null) $scope.formData.session.track = draft[key];
+                                    case 'track':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.session.track = draft[key];
+                                        }
                                         break;
-                                    case "type":
-                                        if (draft[key] !== null) $scope.formData.session.type = draft[key];
+                                    case 'type':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.session.type = draft[key];
+                                        }
                                         break;
-                                    case "travel":
-                                        if (draft[key] !== null) $scope.formData.help.travel = draft[key];
+                                    case 'travel':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.help.travel = draft[key];
+                                        }
                                         break;
-                                    case "travelFrom":
-                                        if (draft[key] !== null) $scope.formData.help.travelFrom = draft[key];
+                                    case 'travelFrom':
+                                        if (draft[key] !== null) {
+                                            $scope.formData.help.travelFrom = draft[key];
+                                        }
                                         break;
                                 }
                             }
@@ -111,23 +153,27 @@ angular.module('CallForPaper')
                                     if (profil.hasOwnProperty(key)) {
                                         switch (key) {
 
-                                            case "imageProfilKey":
-                                                if (profil[key] !== undefined) $scope.formData.speaker.imageProfilKey = profil[key];
+                                            case 'imageProfilKey':
+                                                if (profil[key] !== undefined) {
+                                                    $scope.formData.speaker.imageProfilKey = profil[key];
+                                                }
                                                 break;
-                                            case "socialProfilImageUrl":
-                                                if (profil[key] !== undefined) $scope.formData.speaker.socialProfilImageUrl = profil[key];
+                                            case 'socialProfilImageUrl':
+                                                if (profil[key] !== undefined) {
+                                                    $scope.formData.speaker.socialProfilImageUrl = profil[key];
+                                                }
                                                 break;
                                         }
                                     }
                                 }
                             }
-                        })
+                        });
 
                     } else {
                         // Not existing
-                        $state.go("404");
+                        $state.go('404');
                     }
-                })
+                });
             } else {
                 // Not editing => new one
                 // Get user profil / parse it
@@ -136,53 +182,77 @@ angular.module('CallForPaper')
                         for (var key in profil) {
                             if (profil.hasOwnProperty(key)) {
                                 switch (key) {
-                                    case "bio":
-                                        if (profil[key] !== null) $scope.formData.speaker.bio = profil[key];
+                                    case 'bio':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.bio = profil[key];
+                                        }
                                         break;
-                                    case "company":
-                                        if (profil[key] !== null) $scope.formData.speaker.company = profil[key];
+                                    case 'company':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.company = profil[key];
+                                        }
                                         break;
-                                    case "email":
-                                        if (profil[key] !== null) $scope.formData.speaker.email = profil[key];
+                                    case 'email':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.email = profil[key];
+                                        }
                                         break;
-                                    case "firstname":
-                                        if (profil[key] !== null) $scope.formData.speaker.firstname = profil[key];
+                                    case 'firstname':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.firstname = profil[key];
+                                        }
                                         break;
-                                    case "name":
-                                        if (profil[key] !== null) $scope.formData.speaker.name = profil[key];
+                                    case 'name':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.name = profil[key];
+                                        }
                                         break;
-                                    case "phone":
-                                        if (profil[key] !== null) $scope.formData.speaker.phone = profil[key];
+                                    case 'phone':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.phone = profil[key];
+                                        }
                                         break;
-                                    case "imageProfilKey":
-                                        if (profil[key] !== undefined) $scope.formData.speaker.imageProfilKey = profil[key];
+                                    case 'imageProfilKey':
+                                        if (profil[key] !== undefined) {
+                                            $scope.formData.speaker.imageProfilKey = profil[key];
+                                        }
                                         break;
-                                    case "socialProfilImageUrl":
-                                        if (profil[key] !== undefined) $scope.formData.speaker.socialProfilImageUrl = profil[key];
+                                    case 'socialProfilImageUrl':
+                                        if (profil[key] !== undefined) {
+                                            $scope.formData.speaker.socialProfilImageUrl = profil[key];
+                                        }
                                         break;
-                                    case "social":
-                                        if (profil[key] !== null && profil[key] != "") $scope.formData.speaker.socialArray = profil[key].split(", ").map(function(value) {
-                                            return {
-                                                text: value
-                                            };
-                                        });
+                                    case 'social':
+                                        if (profil[key] !== null && profil[key] !== '') {
+                                            $scope.formData.speaker.socialArray = profil[key].split(', ').map(function(value) {
+                                                return {
+                                                    text: value
+                                                };
+                                            });
+                                        }
                                         break;
-                                    case "twitter":
-                                        if (profil[key] !== null) $scope.formData.speaker.twitter = profil[key];
+                                    case 'twitter':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.twitter = profil[key];
+                                        }
                                         break;
-                                    case "googlePlus":
-                                        if (profil[key] !== null) $scope.formData.speaker.googlePlus = profil[key];
+                                    case 'googlePlus':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.googlePlus = profil[key];
+                                        }
                                         break;
-                                    case "github":
-                                        if (profil[key] !== null) $scope.formData.speaker.github = profil[key];
+                                    case 'github':
+                                        if (profil[key] !== null) {
+                                            $scope.formData.speaker.github = profil[key];
+                                        }
                                         break;
                                 }
                             }
                         }
                     }
-                })
+                });
             }
-        }
+        };
         parseRow(id);
 
         /**
@@ -195,25 +265,24 @@ angular.module('CallForPaper')
                 // put
                 RestrictedProfilImage.getUploadUri().$promise.then(function(respUrl) {
                     var url = respUrl.uri;
-                    for (var i = 0; i < $scope.formData.speaker.files.length; i++) {
-                        var file = $scope.formData.speaker.files[i];
+                    _.each($scope.formData.speaker.files, function(file) {
                         Upload.upload({
                             url: url,
                             file: file,
                             fileName: 'profil-' + $auth.getPayload().sub,
-                            sendFieldsAs: "form"
+                            sendFieldsAs: 'form'
                         }).progress(function(evt) {
                             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                             deferred.notify(progressPercentage);
-                        }).success(function(data, status, headers, config) {
+                        }).success(function(data) {
                             deferred.resolve(data);
-                        }).error(function(data, status, headers, config) {
+                        }).error(function(data, status) {
                             deferred.reject(status);
                         });
-                    }
+                    });
                 }, function(err) {
                     deferred.reject(err);
-                })
+                });
             } else {
                 deferred.resolve({
                     key: $scope.formData.speaker.imageProfilKey
@@ -237,7 +306,7 @@ angular.module('CallForPaper')
                 deferred.reject(error);
             });
             return deferred.promise;
-        }
+        };
 
 
         /**
@@ -245,7 +314,7 @@ angular.module('CallForPaper')
          * @param  {Boolean}
          * @return {void}
          */
-        $scope.processForm = function(isValid) {
+        $scope.processForm = function() {
             $scope.formData.sending = true;
             $scope.sendError = false;
             $scope.sendErrorClose = false;
@@ -256,11 +325,11 @@ angular.module('CallForPaper')
 
             upload().then(function(profilImageKey) {
                 updateProfile(profilImageKey).then(function() {
-                    if (id !== "") {
+                    if (id !== '') {
                         // put
                         RestrictedSession.update({
                             id: id
-                        }, model).$promise.then(function(success) {
+                        }, model).$promise.then(function() {
                             $scope.formData.sending = false;
                             $state.go('app.form.result');
                         }, function(error) {
@@ -273,7 +342,7 @@ angular.module('CallForPaper')
                         });
                     } else {
                         // save
-                        RestrictedSession.save(model).$promise.then(function(success) {
+                        RestrictedSession.save(model).$promise.then(function() {
                             $scope.formData.sending = false;
                             $state.go('app.form.result');
                         }, function(error) {
@@ -289,11 +358,11 @@ angular.module('CallForPaper')
                 }, function() {
                     $scope.formData.sending = false;
                     $scope.sendError = true;
-                })
-            }, function(err) {
+                });
+            }, function() {
                 $scope.formData.sending = false;
                 $scope.sendError = true;
-            })
+            });
         };
 
         /**
@@ -312,27 +381,27 @@ angular.module('CallForPaper')
             // empty previous completed field
             for (var key in model) {
                 if (model[key] === undefined) {
-                    model[key] = "";
+                    model[key] = '';
                 }
             }
 
-            if (id !== "") {
+            if (id !== '') {
                 // put
                 RestrictedDraft.update({
                     id: id
-                }, model).$promise.then(function(success) {
+                }, model).$promise.then(function() {
                     $scope.formData.sending = false;
                     $state.go('app.dashboard');
-                }, function(error) {
+                }, function() {
                     $scope.formData.sending = false;
                     $scope.sendError = true;
                 });
             } else {
                 // save
-                RestrictedDraft.save(model).$promise.then(function(success) {
+                RestrictedDraft.save(model).$promise.then(function() {
                     $scope.formData.sending = false;
                     $state.go('app.dashboard');
-                }, function(error) {
+                }, function() {
                     $scope.formData.sending = false;
                     $scope.sendError = true;
                 });

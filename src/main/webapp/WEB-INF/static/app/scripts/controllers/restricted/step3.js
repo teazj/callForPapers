@@ -21,7 +21,7 @@ angular.module('CallForPaper')
             }
         }, function(isValid) {
             $scope.$parent.formData.steps.isValid[2] = isValid;
-        })
+        });
 
         $scope.verify = false;
         $scope.doVerify = function() {
@@ -41,7 +41,7 @@ angular.module('CallForPaper')
             } else {
                 //form not valid
             }
-        }
+        };
     }])
     .controller('ModalInstanceCtrl', ['$scope', '$modalInstance', function($scope, $modalInstance) {
         $scope.ok = function() {

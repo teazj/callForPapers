@@ -1,6 +1,6 @@
 (function() {
-    "use strict";
-    angular.module("internationalPhoneNumber", []).directive('internationalPhoneNumber', ['$timeout', function($timeout) {
+    'use strict';
+    angular.module('internationalPhoneNumber', []).directive('internationalPhoneNumber', ['$timeout', function($timeout) {
         return {
             restrict: 'A',
             require: '^ngModel',
@@ -29,7 +29,7 @@
                     onlyCountries: void 0,
                     preferredCountries: ['us', 'gb'],
                     responsiveDropdown: false,
-                    utilsScript: ""
+                    utilsScript: ''
                 };
                 angular.forEach(options, function(value, key) {
                     var option;
@@ -38,13 +38,17 @@
                     }
                     option = attrs[key];
                     if (key === 'preferredCountries') {
-                        return options.preferredCountries = handleWhatsSupposedToBeAnArray(option);
+                        options.preferredCountries = handleWhatsSupposedToBeAnArray(option);
+                        return options.preferredCountries;
                     } else if (key === 'onlyCountries') {
-                        return options.onlyCountries = handleWhatsSupposedToBeAnArray(option);
-                    } else if (typeof value === "boolean") {
-                        return options[key] = option === "true";
+                        options.onlyCountries = handleWhatsSupposedToBeAnArray(option);
+                        return options.onlyCountries;
+                    } else if (typeof value === 'boolean') {
+                        options[key] = option === 'true';
+                        return options[key];
                     } else {
-                        return options[key] = option;
+                        options[key] = option;
+                        return options[key];
                     }
                 });
                 watchOnce = scope.$watch('ngModel', function(newValue) {
@@ -80,10 +84,10 @@
                     if (!value) {
                         return value;
                     } else {
-                        return element.intlTelInput("isValidNumber");
+                        return element.intlTelInput('isValidNumber');
                     }
                 };
-                element.on('blur keyup change', function(event) {
+                element.on('blur keyup change', function() {
                     return scope.$apply(read);
                 });
                 return element.on('$destroy', function() {

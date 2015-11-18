@@ -3,8 +3,9 @@
 angular.module('CallForPaper')
     .controller('ConfigCtrl', ['$scope', '$rootScope', '$translate', 'AuthService', function($scope, $rootScope, $translate, AuthService) {
         $scope.isConnected = false;
-        if (AuthService.user !== null)
+        if (AuthService.user !== null) {
             $scope.isConnected = AuthService.user.connected;
+        }
 
         $scope.language = $translate.use();
 

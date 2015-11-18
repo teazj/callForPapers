@@ -27,8 +27,8 @@ angular.module('CallForPaper')
                 if (response.status === 409) {
                     $scope.alreadyExists = true;
                 } else if (response.status === 400) {
-                    $scope.password = "";
-                    $scope.confirmPassword = "";
+                    $scope.password = '';
+                    $scope.confirmPassword = '';
                 }
             });
         };

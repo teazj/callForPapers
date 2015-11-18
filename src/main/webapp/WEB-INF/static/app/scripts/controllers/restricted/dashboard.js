@@ -13,13 +13,13 @@ angular.module('CallForPaper')
         var querySession = function() {
             RestrictedSession.query(function(sessionsTmp) {
                 $scope.sessions = sessionsTmp.map(function(session) {
-                    session.fullname = session.name + " " + session.firstname;
+                    session.fullname = session.name + ' ' + session.firstname;
                     session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];
                     return session;
                 });
                 $scope.sessionsLoaded = true;
             });
-        }
+        };
 
         /**
          * Get current user drafts
@@ -29,10 +29,10 @@ angular.module('CallForPaper')
         $scope.draftsLoaded = false;
         var queryDraft = function() {
             RestrictedDraft.query().$promise.then(function(draftsTmp) {
-                $scope.drafts = draftsTmp
+                $scope.drafts = draftsTmp;
                 $scope.draftsLoaded = true;
             });
-        }
+        };
 
         /**
          * Delete draft
@@ -45,7 +45,7 @@ angular.module('CallForPaper')
             }).$promise.then(function() {
                 queryDraft();
             });
-        }
+        };
 
         $scope.isVerified = AuthService.isVerified();
         if ($scope.isVerified) {
@@ -57,7 +57,7 @@ angular.module('CallForPaper')
         $scope.launchKonami = function() {
             $scope.konamiCode = !$scope.konamiCode;
             $scope.$apply();
-        }
+        };
 
         Application.get(function(config) {
             $scope.submission = config.open;

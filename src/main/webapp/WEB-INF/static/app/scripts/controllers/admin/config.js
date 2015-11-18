@@ -7,7 +7,7 @@ angular.module('CallForPaper')
             $scope.submission = false;
             Application.get(function(config) {
                 $scope.submission = config.open;
-            })
+            });
 
             /**
              * Enable or disable submission of new talks
@@ -17,10 +17,10 @@ angular.module('CallForPaper')
             $scope.toggleSubmit = function(value) {
                 $http.post('/api/admin/config/enableSubmissions', {
                     key: value
-                }).then(function(response) {
+                }).then(function() {
                 }, function() {
                     $scope.submission = !value;
                 });
-            }
+            };
         }
     ]);

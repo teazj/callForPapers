@@ -12,8 +12,8 @@ angular.module('CallForPaper')
         authService.init = function() {
             AdminUser.getCurrentUser(function(userInfo) {
                 authService.user = userInfo;
-            })
-        }
+            });
+        };
 
         /**
          * Get login url with custom redirection url
@@ -75,20 +75,20 @@ angular.module('CallForPaper')
             var deferred = $q.defer();
             authService.getCurrentUser().then(function(userInfo) {
                 // connected
-                if (userInfo.connected == true) {
+                if (userInfo.connected === true) {
                     // admin
-                    if (userInfo.admin == true) {
+                    if (userInfo.admin === true) {
                         deferred.resolve();
                         // not admin
                     } else {
                         // not autorized
-                        $state.go("403");
+                        $state.go('403');
                         deferred.reject();
                     }
                 } else {
                     // login with admin redirection
                     authService.getCustomLoginUrl({
-                        "redirect": "/#/admin"
+                        redirect: '/#/admin'
                     }).then(function(login) {
                         if (login.uri !== null) {
                             // go to login page
@@ -97,13 +97,13 @@ angular.module('CallForPaper')
                         }
                     }, function() {
                         // error
-                        $state.go("app.login");
+                        $state.go('app.login');
                         deferred.reject();
-                    })
+                    });
                 }
-            })
+            });
             return deferred.promise;
-        }]
+        }];
 
         /**
          * Redirect user if not connected to google and can't configure the app
@@ -117,12 +117,12 @@ angular.module('CallForPaper')
                         deferred.resolve();
                     } else {
                         deferred.reject();
-                        $state.go("config.403");
+                        $state.go('config.403');
                     }
                 } else {
                     // login with admin redirection
                     authService.getCustomLoginUrl({
-                        "redirect": "/#/config"
+                        redirect: '/#/config'
                     }).then(function(login) {
                         if (login.uri !== null) {
                             // go to login page
@@ -131,13 +131,13 @@ angular.module('CallForPaper')
                         }
                     }, function() {
                         // error
-                        $state.go("app.login");
+                        $state.go('app.login');
                         deferred.reject();
-                    })
+                    });
                 }
-            })
+            });
             return deferred.promise;
-        }]
+        }];
 
         /**
          * Verify if the user is currently logged and has confirmed his email (or logged with provider)
@@ -156,7 +156,7 @@ angular.module('CallForPaper')
                 }
             }
             return deferred.promise;
-        }]
+        }];
 
         /**
          * Verify if the user is currently logged and has confirmed his email (or logged with provider)
@@ -173,7 +173,7 @@ angular.module('CallForPaper')
                     return true;
                 }
             }
-        }
+        };
         /**
          * Verify if the user is currently logged
          */
@@ -189,7 +189,7 @@ angular.module('CallForPaper')
                 }
             }
             return deferred.promise;
-        }]
+        }];
 
         /**
          * Login the user and redirect to the given state
@@ -208,8 +208,8 @@ angular.module('CallForPaper')
                         $state.go(state);
                     }
                 }
-            })
-        }
+            });
+        };
 
 
         /**
@@ -224,8 +224,8 @@ angular.module('CallForPaper')
                 } else {
                     $state.go(state);
                 }
-            })
-        }
+            });
+        };
 
         /**
          * Get current logged in user info
@@ -240,6 +240,6 @@ angular.module('CallForPaper')
                 promise.reject();
             });
             return promise.promise;
-        }
+        };
         return authService;
-    }])
+    }]);

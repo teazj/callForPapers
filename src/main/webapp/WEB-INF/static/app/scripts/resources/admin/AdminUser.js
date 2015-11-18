@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('CallForPaper').factory('AdminUser', ['$resource', function($resource) {
     return $resource('/api/adminUser/:id', null, {
         getCurrentUser: {

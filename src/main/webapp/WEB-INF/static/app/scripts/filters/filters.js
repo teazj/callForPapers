@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('customFilters', [])
     /**
      * Truncate too long string to  255 chars
@@ -6,9 +8,14 @@ angular.module('customFilters', [])
      */
     .filter('truncate', ['$sce', function($sce) {
         return function(input) {
-            if (!angular.isString(input)) return input;
-            if (input.length > 255)    return $sce.trustAsHtml(input.substring(0, 255) + " ...");
-            else return $sce.trustAsHtml(input);
+            if (!angular.isString(input)) {
+                return input;
+            }
+            if (input.length > 255) {
+                return $sce.trustAsHtml(input.substring(0, 255) + '…');
+            } else {
+                return $sce.trustAsHtml(input);
+            }
         };
     }])
     /**
@@ -18,11 +25,13 @@ angular.module('customFilters', [])
      */
     .filter('createLinks', ['$sce', function($sce) {
         return function(str) {
-            if (!angular.isString(str)) return source;
+            if (!angular.isString(str)) {
+                return str;
+            }
             var strTmp = str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(http[^\s]+)/g, '<a target="_blank" href="$1">$1</a>');
             var strTmp2 = strTmp.replace(/(^|[^@\w])@(\w{1,15})\b/g, '<a target="_blank" href="http://twitter.com/$2">@$2</a>');
             return $sce.trustAsHtml(strTmp2);
-        }
+        };
     }])
     /**
      * Remove all accents
@@ -31,7 +40,9 @@ angular.module('customFilters', [])
      */
     .filter('removeAccents', function removeAccents() {
         return function(source) {
-            if (!angular.isString(source)) return source;
+            if (!angular.isString(source)) {
+                return source;
+            }
             var accent = [
                     /[\300-\306]/g, /[\340-\346]/g, // A, a
                     /[\310-\313]/g, /[\350-\353]/g, // E, e
@@ -56,7 +67,9 @@ angular.module('customFilters', [])
      */
     .filter('mdToPlaintext', ['marked', function(marked) {
         return function(text) {
-            if (!angular.isString(text)) return text;
+            if (!angular.isString(text)) {
+                return text;
+            }
             return String(marked(text)).replace(/<[^>]+>/gm, '');
         };
     }]);

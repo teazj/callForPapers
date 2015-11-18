@@ -21,12 +21,20 @@ angular.module('CallForPaper')
             if (sessionTmp.social !== null) {
                 var links = sessionTmp.social.split(',').map(function(value) {
                     return $filter('createLinks')(value);
-                })
+                });
                 $scope.session.socialLinks = links;
             }
-            if (sessionTmp.twitter !== null) $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
-            if (sessionTmp.googlePlus !== null) $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
-            if (sessionTmp.github !== null) $scope.session.github = $filter('createLinks')(sessionTmp.github);
+            if (sessionTmp.twitter !== null) {
+                $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
+            }
+
+            if (sessionTmp.googlePlus !== null) {
+                $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
+            }
+
+            if (sessionTmp.github !== null) {
+                $scope.session.github = $filter('createLinks')(sessionTmp.github);
+            }
 
             // Set difficulty key
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
@@ -50,7 +58,7 @@ angular.module('CallForPaper')
             AdminSession.setViewed({
                 id: $stateParams.id
             }, {});
-        }
+        };
 
         /**
          * Get next/previous session ID according to previous filter
@@ -64,28 +72,29 @@ angular.module('CallForPaper')
                 combo: 'left',
                 description: $filter('translate')('admin.previous'),
                 callback: function() {
-                    if ($scope.previous)
+                    if ($scope.previous) {
                         $state.go('admin.session', {id: $scope.previous});
+                    }
                 }
             })
             .add({
                 combo: 'right',
                 description: $filter('translate')('admin.next'),
                 callback: function() {
-                    if ($scope.next)
+                    if ($scope.next) {
                         $state.go('admin.session', {id: $scope.next});
-
+                    }
                 }
             })
             .add({
                 combo: 'up',
                 description: $filter('translate')('admin.main'),
                 callback: function() {
-                    if ($scope.next)
+                    if ($scope.next) {
                         $state.go('admin.sessions');
-
+                    }
                 }
-            })
+            });
 
         /**
          * get comments of the session
@@ -97,8 +106,8 @@ angular.module('CallForPaper')
             }, function(commentsTmp) {
                 setTimeout(setViewed, 1000);
                 $scope.comments = commentsTmp;
-            })
-        }
+            });
+        };
         updateComments();
 
         $scope.commentButtonDisabled = false;
@@ -112,14 +121,14 @@ angular.module('CallForPaper')
             AdminComment.save({
                 'comment': $scope.commentMsg,
                 'rowId': $stateParams.id
-            }, function(c) {
-                $scope.commentMsg = "";
+            }, function() {
+                $scope.commentMsg = '';
                 $scope.commentButtonDisabled = false;
                 updateComments();
-            }, function(c) {
+            }, function() {
                 $scope.commentButtonDisabled = false;
             });
-        }
+        };
 
         /**
          * PUT comment on server
@@ -128,11 +137,11 @@ angular.module('CallForPaper')
         var putComment = function(comment) {
             AdminComment.update({
                 id: comment.id
-            }, comment, function(c) {
+            }, comment, function() {
                 updateComments();
-            }, function(c) {
+            }, function() {
             });
-        }
+        };
 
         /**
          * Open modal for editing
@@ -156,7 +165,7 @@ angular.module('CallForPaper')
             }, function() {
                 // cancel
             });
-        }
+        };
 
         /**
          * Delete comment
@@ -166,11 +175,11 @@ angular.module('CallForPaper')
         var deleteComment = function(comment) {
             AdminComment.delete({
                 id: comment.id
-            }, function(c) {
+            }, function() {
                 updateComments();
-            }, function(c) {
+            }, function() {
             });
-        }
+        };
 
         /**
          * Open confirmation modal
@@ -193,7 +202,7 @@ angular.module('CallForPaper')
             }, function() {
                 // cancel
             });
-        }
+        };
 
         /**
          * get rates of the session
@@ -211,14 +220,13 @@ angular.module('CallForPaper')
                 // average
                 $scope.mean = ratesTmp.reduce(function(x, y) {
                         return y.rate + x;
-                    }, 0) / (votedCount == 0 ? 1 : votedCount);
+                    }, 0) / (votedCount === 0 ? 1 : votedCount);
 
                 $scope.rates = ratesTmp.filter(function(element) {
                     return element.user.email !== AuthService.user.email;
-                })
-
-            })
-        }
+                });
+            });
+        };
         updateRates();
 
         $scope.yourRate = {
@@ -240,11 +248,13 @@ angular.module('CallForPaper')
                 if ($scope.yourRate.rate === 0) {
                     $scope.noVote = true;
                 }
-                if ($scope.yourRate.hate || $scope.yourRate.love) $scope.changed = true;
+                if ($scope.yourRate.hate || $scope.yourRate.love) {
+                    $scope.changed = true;
+                }
                 $scope.hate = $scope.yourRate.hate;
                 $scope.love = $scope.yourRate.love;
             }
-        })
+        });
 
         $scope.rateButtonDisabled = false;
 
@@ -272,12 +282,12 @@ angular.module('CallForPaper')
                     'hate': $scope.yourRate.hate,
                     'love': $scope.yourRate.love,
                     'rowId': $stateParams.id
-                }, function(c) {
+                }, function() {
                     $scope.rateButtonDisabled = false;
                     updateRates();
                 });
             }
-        }
+        };
 
         /**
          * Delete current session
@@ -294,11 +304,11 @@ angular.module('CallForPaper')
                     id: $stateParams.id
                 }, function() {
                     $state.go('admin.sessions');
-                })
+                });
             }, function() {
                 // cancel
             });
-        }
+        };
 
         /**
          * Handle checkbox/ratiung states
@@ -319,7 +329,7 @@ angular.module('CallForPaper')
                         $scope.love = false;
                     } else {
                         $scope.yourRate.rate = 0;
-                        $scope.noVote = false
+                        $scope.noVote = false;
                         $scope.hate = false;
                         $scope.love = false;
                     }
@@ -330,10 +340,10 @@ angular.module('CallForPaper')
                         $scope.yourRate.hate = true;
                         $scope.yourRate.love = false;
                         $scope.love = false;
-                        $scope.noVote = false
+                        $scope.noVote = false;
                     } else {
                         $scope.yourRate.rate = 0;
-                        $scope.noVote = false
+                        $scope.noVote = false;
                         $scope.hate = false;
                         $scope.love = false;
                     }
@@ -344,40 +354,40 @@ angular.module('CallForPaper')
                         $scope.yourRate.hate = false;
                         $scope.yourRate.love = true;
                         $scope.hate = false;
-                        $scope.noVote = false
+                        $scope.noVote = false;
                     } else {
                         $scope.yourRate.rate = 0;
-                        $scope.noVote = false
+                        $scope.noVote = false;
                         $scope.hate = false;
                         $scope.love = false;
                     }
                     break;
             }
-        }
+        };
 
         /**
          * Reset all other checkbox and vote 0
          * @return {void}
          */
         $scope.handleNoVote = function() {
-            voteState(NO_VOTE)
-        }
+            voteState(NO_VOTE);
+        };
 
         /**
          * Reset all other checkbox and vote 1
          * @return {void}
          */
         $scope.handleHate = function() {
-            voteState(HATE)
-        }
+            voteState(HATE);
+        };
 
         /**
          * Reset all other checkbox and vote 5
          * @return {void}
          */
         $scope.handleLove = function() {
-            voteState(LOVE)
-        }
+            voteState(LOVE);
+        };
 
         /**
          * Reset checkbox on vote
@@ -385,7 +395,7 @@ angular.module('CallForPaper')
          */
         $scope.$watch(function() {
             return $scope.yourRate.rate;
-        }, function(rate) {
+        }, function() {
             if ($scope.yourRate.rate !== 0 && !$scope.changed) {
                 $scope.changed = false;
                 $scope.noVote = false;
@@ -412,8 +422,8 @@ angular.module('CallForPaper')
             }, function(contactsTmp) {
                 setTimeout(setViewed, 1000);
                 $scope.contacts = contactsTmp;
-            })
-        }
+            });
+        };
         updateContacts();
 
         $scope.contactButtonDisabled = false;
@@ -427,14 +437,14 @@ angular.module('CallForPaper')
             AdminContact.save({
                 'comment': $scope.contactMsg,
                 'rowId': $stateParams.id
-            }, function(c) {
-                $scope.contactMsg = "";
+            }, function() {
+                $scope.contactMsg = '';
                 $scope.contactButtonDisabled = false;
                 updateContacts();
-            }, function(c) {
+            }, function() {
                 $scope.contactButtonDisabled = false;
             });
-        }
+        };
 
         /**
          * PUT contact on server
@@ -443,11 +453,11 @@ angular.module('CallForPaper')
         var putContact = function(contact) {
             AdminContact.update({
                 id: contact.id
-            }, contact, function(c) {
+            }, contact, function() {
                 updateContacts();
-            }, function(c) {
+            }, function() {
             });
-        }
+        };
 
         /**
          * Open modal for editing
@@ -471,7 +481,7 @@ angular.module('CallForPaper')
             }, function() {
                 // cancel
             });
-        }
+        };
 
         $scope.updateTalk = function() {
             var modalInstance = $modal.open({
@@ -489,7 +499,7 @@ angular.module('CallForPaper')
             }, function() {
                 // cancel
             });
-        }
+        };
 
         $scope.changeTrack = function() {
             var modalInstance = $modal.open({
@@ -507,7 +517,7 @@ angular.module('CallForPaper')
             }, function() {
                 // cancel
             });
-        }
+        };
 
         $scope.changeTrackButtonAnimationDisabled = true;
         var putTrack = function(track) {
@@ -522,8 +532,8 @@ angular.module('CallForPaper')
                 $scope.changeTrackButtonAnimationDisabled = true;
             }, function() {
                 $scope.changeTrackButtonAnimationDisabled = true;
-            })
-        }
+            });
+        };
 
         var updateTalk = function(session) {
             $scope.changeTrackButtonAnimationDisabled = false;
@@ -537,8 +547,8 @@ angular.module('CallForPaper')
                 $scope.changeTrackButtonAnimationDisabled = true;
             }, function() {
                 $scope.changeTrackButtonAnimationDisabled = true;
-            })
-        }
+            });
+        };
     }])
     .controller('EditModalInstanceCtrl', ['$scope', '$modalInstance', 'comment', function($scope, $modalInstance, comment) {
         $scope.commentMsg = comment;

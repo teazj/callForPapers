@@ -18,6 +18,6 @@ angular.module('CallForPaper')
             }, function() {
                 $scope.error = true;
                 $scope.success = false;
-            })
+            });
         };
     }]);
