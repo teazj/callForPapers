@@ -49,11 +49,13 @@ public class Rate {
     }
 
     @ManyToOne
+    @JoinColumn(name = "talk")
     public Talk getTalk() {
         return talk;
     }
 
     @ManyToOne
+    @JoinColumn(name = "admin")
     public AdminUser getAdminUser() {
         return adminUser;
     }

@@ -66,6 +66,7 @@ public class Talk {
     }
 
     @ManyToOne
+    @JoinColumn(name = "user")
     public User getUser() {
         return user;
     }
