@@ -1,45 +1,28 @@
 package fr.sii.controller.restricted.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
-import fr.sii.domain.user.User;
-import fr.sii.domain.user.UserProfil;
+import fr.sii.dto.user.UserProfil;
+import fr.sii.entity.User;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.user.UserService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by tmaugin on 05/06/2015.
- * SII
- */
-@Controller
+@RestController
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
 public class UserController {
 
+    @Autowired
     private UserService userService;
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * Get current user profil
@@ -50,7 +33,6 @@ public class UserController {
      * @throws IOException
      */
     @RequestMapping(value="/user", method= RequestMethod.GET)
-    @ResponseBody
     public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
@@ -58,30 +40,26 @@ public class UserController {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");
         }
 
-        ObjectMapper m = new ObjectMapper();
-        String userProfile = u.getProfile();
-        userProfile = (userProfile == null) ? "{}" : userProfile;
-        UserProfil p = m.readValue(userProfile, UserProfil.class);
-
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("email", u.getEmail());
-        map.put("name", p.getName());
-        map.put("firstname", p.getFirstname());
-        map.put("phone", p.getPhone());
-        map.put("company", p.getCompany());
-        map.put("bio", p.getBio());
-        map.put("social", p.getSocial());
-        map.put("twitter", p.getTwitter());
-        map.put("googlePlus", p.getGooglePlus());
-        map.put("github", p.getGithub());
-        map.put("imageProfilKey", p.getImageProfilKey());
-        map.put("socialProfilImageUrl", p.getSocialProfilImageUrl());
+        map.put("name", u.getLastname());
+        map.put("firstname", u.getFirstname());
+        map.put("phone", u.getPhone());
+        map.put("company", u.getCompany());
+        map.put("bio", u.getBio());
+        map.put("social", u.getSocial());
+        map.put("twitter", u.getTwitter());
+        map.put("googlePlus", u.getGoogleplus());
+        map.put("github", u.getGithub());
+        //TODO
+        //map.put("imageProfilKey", u.getImageProfilKey());
+        map.put("socialProfilImageUrl", u.getImageSocialUrl());
 
         return map;
     }
@@ -98,15 +76,17 @@ public class UserController {
      * @throws ServiceException
      */
     @RequestMapping(value="/user", method= RequestMethod.PUT)
-    @ResponseBody
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException, EntityNotFoundException, ServiceException {
+        return null;
+        //TODO
+        /*
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
             throw new NotVerifiedException("User must be verified");
         }
 
-        User u = userService.findById(Long.parseLong(claimsSet.getSubject()));
+        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
         if(u == null)
         {
             throw new NotFoundException("User not found");
@@ -138,5 +118,6 @@ public class UserController {
             queue.add(options);
         }
         return profil;
+        */
     }
 }

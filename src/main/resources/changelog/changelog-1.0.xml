@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="1" author="alex">
+		<createTable tableName="users">
+			<column name="id" type="int">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+
+			<column name="email" type="varchar(255)"/>
+			<column name="github_id" type="varchar(255)"/>
+			<column name="google_id" type="varchar(255)"/>
+			<column name="password" type="varchar(62)"/>
+			<column name="verified" type="boolean" defaultValueBoolean="false"/>
+
+			<column name="verify_token" type="varchar(255)"/>
+
+			<!-- user profile -->
+			<column name="lastname" type="varchar(255)"/>
+			<column name="firstname" type="varchar(255)"/>
+			<column name="company" type="varchar(255)"/>
+			<column name="phone" type="varchar(25)"/>
+			<column name="bio" type="text"/>
+			<column name="twitter" type="text"/>
+			<column name="googleplus" type="text"/>
+			<column name="github" type="text"/>
+			<column name="social" type="text"/>
+
+			<column name="image" type="blob"/>
+			<column name="image_social_url" type="text"/>
+
+		</createTable>
+
+		<addAutoIncrement tableName="users" columnName="id" columnDataType="int"/>
+	</changeSet>
+
+
+	<changeSet id="2" author="alex">
+		<createTable tableName="admins">
+			<column name="id" type="int">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+
+            <column name="name" type="varchar(255)"/>
+			<column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+		</createTable>
+
+		<addAutoIncrement tableName="admins" columnName="id" columnDataType="int"/>
+	</changeSet>
+
+    <changeSet id="3" author="alex">
+        <createTable tableName="talks">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="state" type="varchar(10)"><constraints nullable="false"/></column>
+            <column name="name" type="varchar(255)"><constraints nullable="false"/></column>
+            <column name="type" type="varchar(50)"/>
+            <column name="track" type="varchar(50)"/>
+            <column name="description" type="text"/>
+            <column name="references" type="text"/>
+            <column name="difficulty" type="int"/>
+            <column name="added" type="datetime"/>
+
+            <column name="user" type="int">
+                <constraints foreignKeyName="talk_user" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="talks" columnName="id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="4" author="alex">
+        <createTable tableName="comments">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="comment" type="text"><constraints nullable="false"/></column>
+            <column name="added" type="datetime"><constraints nullable="false"/></column>
+            <column name="internal" type="boolean" defaultValueBoolean="false"/>
+
+            <column name="talk" type="int">
+                <constraints foreignKeyName="comment_talk" referencedTableName="talks" referencedColumnNames="id"/>
+            </column>
+            <column name="admin" type="int">
+                <constraints foreignKeyName="comment_admin" referencedTableName="admins" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="comments" columnName="id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="5" author="alex">
+        <createTable tableName="rates">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="rate" type="int"><constraints nullable="false"/></column>
+            <column name="added" type="datetime"><constraints nullable="false"/></column>
+            <column name="love" type="boolean" defaultValueBoolean="false"/>
+            <column name="hate" type="boolean" defaultValueBoolean="true"/>
+
+            <column name="talk" type="int">
+                <constraints foreignKeyName="rate_talk" referencedTableName="talks" referencedColumnNames="id"/>
+            </column>
+            <column name="admin" type="int">
+                <constraints foreignKeyName="rate_admin" referencedTableName="admins" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="rates" columnName="id" columnDataType="int"/>
+    </changeSet>
+
+</databaseChangeLog>

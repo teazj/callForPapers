@@ -2,6 +2,7 @@ package fr.sii.repository.email;
 
 import fr.sii.config.email.EmailingSettings;
 import fr.sii.domain.email.Email;
+import org.springframework.stereotype.Component;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -18,6 +19,7 @@ import java.util.Properties;
 /**
  * Created by tmaugin on 02/04/2015.
  */
+@Component
 public class ProductionEmailingRepository implements EmailingRepository {
     private EmailingSettings emailingSettings;
     private Properties props;

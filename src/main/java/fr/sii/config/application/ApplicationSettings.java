@@ -7,10 +7,12 @@ package fr.sii.config.application;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.appengine.api.datastore.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Public application settings
  */
+@Component
 public class ApplicationSettings {
     @Value("${app.eventName}")
     private String eventName;

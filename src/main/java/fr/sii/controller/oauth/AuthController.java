@@ -7,9 +7,9 @@ import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.BadRequestException;
 import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.token.Token;
-import fr.sii.domain.user.LoginUser;
-import fr.sii.domain.user.SignupUser;
-import fr.sii.domain.user.User;
+import fr.sii.dto.user.LoginUser;
+import fr.sii.dto.user.SignupUser;
+import fr.sii.entity.User;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.auth.PasswordService;
 import fr.sii.service.email.EmailingService;
@@ -17,7 +17,7 @@ import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.user.UserService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +28,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-/**
- * Created by tmaugin on 15/05/2015.
- */
-@Controller
+@RestController
 @RequestMapping(value="/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
 
@@ -43,29 +40,18 @@ public class AuthController {
             NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
             UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
+    @Autowired
     private UserService userService;
 
+    @Autowired
     private GlobalSettings globalSettings;
 
+    @Autowired
     private EmailingService emailingService;
 
+    @Autowired
     private AuthSettings authSettings;
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public void setGlobalSettings(GlobalSettings globalSettings) {
-        this.globalSettings = globalSettings;
-    }
-
-    public void setEmailingService(EmailingService emailingService) {
-        this.emailingService = emailingService;
-    }
-
-    public void setAuthSettings(AuthSettings authSettings) {
-        this.authSettings = authSettings;
-    }
 
     /**
      * Log user in
@@ -77,13 +63,11 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value="/login", method=RequestMethod.POST)
-    @ResponseBody
     public Token login(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
         User foundUser = userService.findByemail(user.getEmail());
         if (foundUser != null
                 && PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
-            Token token = AuthUtils.createToken(req.getRemoteHost(), foundUser.getEntityId().toString(), foundUser.isVerified());
-            return token;
+            return AuthUtils.createToken(req.getRemoteHost(), String.valueOf(foundUser.getId()), foundUser.isVerified());
         }
         res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         res.getWriter().write(LOGING_ERROR_MSG);
@@ -101,9 +85,7 @@ public class AuthController {
      * @throws Exception
      */
     @RequestMapping(value="/signup", method=RequestMethod.POST)
-    @ResponseBody
     public Token signup(HttpServletResponse res,HttpServletRequest req, @RequestBody @Valid SignupUser signupUser) throws Exception {
-        Token token = null;
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
@@ -117,7 +99,7 @@ public class AuthController {
                 res.getWriter().write(CONFLICT_MSG_EMAIL);
                 res.getWriter().flush();
                 res.getWriter().close();
-                return token;
+                return null;
         }
 
         // Create new user
@@ -127,22 +109,20 @@ public class AuthController {
         user.setVerifyToken(verifyToken);
         user.setPassword(PasswordService.hashPassword(signupUser.getPassword()));
         user.setEmail(signupUser.getEmail());
-        user.setProfile("{}");
         // Save user
         User savedUser = userService.save(user);
 
         // Send validation email
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("link", globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+        map.put("link", globalSettings.getHostname() + "/#/verify?id=" + String.valueOf(savedUser.getId()) + "&token=" + savedUser.getVerifyToken());
         map.put("hostname", globalSettings.getHostname());
-        logger.info(globalSettings.getHostname() + "/#/verify?id=" + savedUser.getEntityId() + "&token=" + savedUser.getVerifyToken());
+        logger.info(globalSettings.getHostname() + "/#/verify?id=" + String.valueOf(savedUser.getId()) + "&token=" + savedUser.getVerifyToken());
 
         Email email = new Email(savedUser.getEmail(),"Confirmation de votre adresse e-mail","verify.html",map);
         emailingService.send(email);
 
         // Return JWT
-        token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEntityId().toString(), savedUser.isVerified());
-        return token;
+        return AuthUtils.createToken(req.getRemoteHost(), String.valueOf(savedUser.getId()), savedUser.isVerified());
     }
 
     /**
@@ -156,12 +136,11 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value="/verify", method=RequestMethod.GET)
-    @ResponseBody
-    public Token verify(HttpServletResponse res,HttpServletRequest req, @RequestParam("id") String id, @RequestParam("token") String verifyToken) throws JOSEException, IOException {
+    public Token verify(HttpServletResponse res,HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken) throws JOSEException, IOException {
         Token token = null;
 
         // Search user
-        User foundUser = userService.findById(Long.parseLong(id));
+        User foundUser = userService.findById(id);
         if (foundUser == null) {
                 res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 res.getWriter().write(NOT_FOUND_MSG);
@@ -186,8 +165,8 @@ public class AuthController {
             {
                 foundUser.setVerified(true);
                 foundUser.setVerifyToken(null);
-                User savedUser = userService.put(foundUser.getEntityId(), foundUser);
-                token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEntityId().toString(), savedUser.isVerified());
+                User savedUser = userService.save(foundUser);
+                token = AuthUtils.createToken(req.getRemoteHost(), String.valueOf(savedUser.getId()), savedUser.isVerified());
                 return token;
             }
             else
@@ -213,7 +192,6 @@ public class AuthController {
      * @throws IllegalAccessException
      */
     @RequestMapping(value="/unlink/{provider}", method=RequestMethod.GET)
-    @ResponseBody
     public void unlink(HttpServletResponse res,HttpServletRequest req, @PathVariable("provider") String provider) throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
@@ -226,7 +204,7 @@ public class AuthController {
         }
 
         String subject = AuthUtils.getSubject(authHeader);
-        User foundUser = userService.findById(Long.parseLong(subject));
+        User foundUser = userService.findById(Integer.parseInt(subject));
 
         if (foundUser == null) {
             res.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -236,10 +214,8 @@ public class AuthController {
             return;
         }
 
-        User userToUnlink = foundUser;
-
         // check that the user is not trying to unlink the only sign-in method
-        if (userToUnlink.getSignInMethodCount() == 1) {
+        if (foundUser.getSignInMethodCount() == 1) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.getWriter().write(String.format(UNLINK_ERROR_MSG, provider));
             res.getWriter().flush();
@@ -248,11 +224,10 @@ public class AuthController {
         }
 
         try {
-            userToUnlink.setProviderId(User.Provider.valueOf(provider.toUpperCase()), null);
+            foundUser.setProviderId(User.Provider.valueOf(provider.toUpperCase()), null);
+            userService.save(foundUser);
         } catch (final IllegalArgumentException e) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-        userService.put(userToUnlink.getEntityId(), userToUnlink);
-        return;
     }
 }

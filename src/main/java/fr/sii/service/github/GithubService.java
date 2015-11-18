@@ -3,6 +3,7 @@ package fr.sii.service.github;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sii.domain.exception.CustomException;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.net.URLConnection;
 /**
  * Created by tmaugin on 13/05/2015.
  */
+@Service
 public class GithubService {
 
     /**

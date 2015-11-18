@@ -14,14 +14,11 @@ import com.nimbusds.jose.JOSEException;
 import fr.sii.config.github.GithubSettings;
 import fr.sii.domain.exception.CustomException;
 import fr.sii.domain.token.Token;
-import fr.sii.domain.user.User;
+import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
 import fr.sii.service.github.GithubService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,30 +26,18 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 
-/**
- * Created by tmaugin on 13/05/2015.
- */
-@Controller
+@RestController
 @RequestMapping(value="/auth/github", produces = "application/json; charset=utf-8")
 public class GithubAuthController {
 
+    @Autowired
     GithubService githubService;
 
+    @Autowired
     GithubSettings githubSettings;
 
+    @Autowired
     AuthService authService;
-
-    public void setGithubService(GithubService githubService) {
-        this.githubService = githubService;
-    }
-
-    public void setGithubSettings(GithubSettings githubSettings) {
-        this.githubSettings = githubSettings;
-    }
-
-    public void setAuthService(AuthService authService) {
-        this.authService = authService;
-    }
 
     /**
      * Log in with Github
@@ -66,7 +51,6 @@ public class GithubAuthController {
      * @throws ParseException
      */
     @RequestMapping(method= RequestMethod.POST)
-    @ResponseBody
     public Token doGet(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)
             throws IOException, CustomException, JOSEException, ParseException {
         String accessTokenUrl = "https://github.com/login/oauth/access_token";

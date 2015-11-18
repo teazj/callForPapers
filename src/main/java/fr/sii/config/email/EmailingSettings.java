@@ -5,10 +5,12 @@ package fr.sii.config.email;
  */
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Email settings
  */
+@Component
 public class EmailingSettings {
     @Value("${email.emailsender}")
     private String emailSender;
