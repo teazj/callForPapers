@@ -151,8 +151,10 @@ Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers toke
 Some NodeJS tools are required to build, like Grunt. You can install them locally with:
 
 ```shell
+npm install -g grunt-cli
 npm install
 ```
+Java 7 is required by the AppEngine SDK.
 
 ### App Engine :
 
