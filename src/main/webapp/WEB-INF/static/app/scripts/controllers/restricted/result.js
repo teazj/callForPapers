@@ -1,4 +1,4 @@
 'use strict';
 
-angular.module('CallForPaper')
-	.controller('ResultCtrl', ['$scope', function($scope) {}]);
+angular.module('CallForPaper').controller('ResultCtrl', ['$scope', function() {
+}]);

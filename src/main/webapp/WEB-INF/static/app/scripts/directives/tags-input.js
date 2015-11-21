@@ -90,8 +90,7 @@
                 return tagText &&
                     tagText.length >= options.minLength &&
                     tagText.length <= options.maxLength &&
-                    options.allowedTagsPattern.test(tagText) &&
-                    !tiUtil.findInObjectArray(self.items, tag, options.keyProperty || options.displayProperty) &&
+                    options.allowedTagsPattern.test(tagText) && !tiUtil.findInObjectArray(self.items, tag, options.keyProperty || options.displayProperty) &&
                     onTagAdding({
                         $tag: tag
                     });

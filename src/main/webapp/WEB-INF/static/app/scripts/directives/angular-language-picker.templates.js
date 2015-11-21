@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('templates-k8LanguagePicker', ['lang-picker-button.html', 'lang-picker.html']);
 
 angular.module("lang-picker-button.html", []).run(["$templateCache", function($templateCache) {

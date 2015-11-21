@@ -1,28 +1,28 @@
 'use strict';
 
 angular.module('CallForPaper')
-	.controller('HeaderCtrl', ['$scope', '$rootScope', '$translate', '$auth', 'Application', function($scope, $rootScope, $translate, $auth, Application) {
-		$scope.language = $translate.use();
+    .controller('HeaderCtrl', ['$scope', '$rootScope', '$translate', '$auth', 'Application', function($scope, $rootScope, $translate, $auth, Application) {
+        $scope.language = $translate.use();
 
-		$scope.changeLanguage = function(key) {
-			$translate.use(key);
-		};
+        $scope.changeLanguage = function(key) {
+            $translate.use(key);
+        };
 
-		$rootScope.$on('$translateChangeEnd', function(event, args) {
-			$scope.language = args.language;
-		});
+        $rootScope.$on('$translateChangeEnd', function(event, args) {
+            $scope.language = args.language;
+        });
 
-		$scope.isAuthenticated = $auth.isAuthenticated();
-		$scope.$on('authenticate', function() {
-			$scope.isAuthenticated = $auth.isAuthenticated();
-		});
+        $scope.isAuthenticated = $auth.isAuthenticated();
+        $scope.$on('authenticate', function() {
+            $scope.isAuthenticated = $auth.isAuthenticated();
+        });
 
-		/**
-		 * Get eventName and closing date
-		 */
-		Application.get(function(config) {
-			$scope.title = config.eventName;
-			$scope.releaseDate = config.releaseDate;
-			$scope.decisionDate = config.decisionDate;
-		})
-	}]);
+        /**
+         * Get eventName and closing date
+         */
+        Application.get(function(config) {
+            $scope.title = config.eventName;
+            $scope.releaseDate = config.releaseDate;
+            $scope.decisionDate = config.decisionDate;
+        });
+    }]);
