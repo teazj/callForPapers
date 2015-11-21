@@ -1,6 +1,7 @@
 package fr.sii.controller.admin.config;
 
-import com.google.appengine.api.datastore.*;
+import fr.sii.service.admin.config.ApplicationConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,6 +15,9 @@ import javax.validation.Valid;
 @RequestMapping(value="api/admin/config", produces = "application/json; charset=utf-8")
 public class ConfigController {
 
+    @Autowired
+    private ApplicationConfigService applicationConfigService;
+
     /**
      * Disable or enable submission of new talks
      * @param key enable submission if true, else disable
@@ -21,11 +25,12 @@ public class ConfigController {
      */
     @RequestMapping(value="/enableSubmissions", method= RequestMethod.POST)
     public fr.sii.domain.common.Key postEnableSubmissions(@Valid @RequestBody fr.sii.domain.common.Key key) {
-        Key applicationConfigKey = KeyFactory.createKey("Config", "Application");
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Entity config = new Entity(applicationConfigKey);
-        config.setProperty("enableSubmissions", key.getKey().toLowerCase().equals("true"));
-        datastore.put(config);
+
+        if (key.getKey().equals("true"))
+            applicationConfigService.openCfp();
+        if (key.getKey().equals("false"))
+            applicationConfigService.closeCfp();
+
         return key;
     }
 }

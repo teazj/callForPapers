@@ -1,35 +1,17 @@
-package fr.sii.config.application;
-
-/**
- * Created by tmaugin on 30/04/2015.
- */
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.appengine.api.datastore.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+package fr.sii.dto;
 
 /**
  * Public application settings
  */
-@Component
 public class ApplicationSettings {
-    @Value("${app.eventName}")
+
     private String eventName;
-
-    @Value("${app.community}")
     private String community;
-
-    @Value("${app.date}")
     private String date;
-
-    @Value("${app.releasedate}")
     private String releaseDate;
-
-    @Value("${app.decisiondate}")
     private String decisionDate;
-
-    private boolean configured = true;
+    private boolean configured;
+    private boolean open;
 
     public String getEventName() {
         return eventName;
@@ -79,17 +61,11 @@ public class ApplicationSettings {
         this.configured = configured;
     }
 
-    @JsonProperty
-    public boolean getOpen() {
-        Key applicationConfigKey = KeyFactory.createKey("Config", "Application");
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        boolean data = false;
-        try {
-            Entity refreshToken = datastore.get(applicationConfigKey);
-            data = (boolean) refreshToken.getProperty("enableSubmissions");
-        } catch (EntityNotFoundException e) {
-            return false;
-        }
-        return data;
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 }

@@ -127,5 +127,45 @@
                       columnDataType="text"
                       tableName="talks"/>
     </changeSet>
-    
+
+    <changeSet id="7" author="lhuet">
+        <createTable tableName="cfpconfig">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="key" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="varchar(255)"></column>
+        </createTable>
+        <addAutoIncrement tableName="cfpconfig" columnName="id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="8" author="lhuet">
+        <insert tableName="cfpconfig">
+            <column name="key" value="eventName"></column>
+            <column name="value" value="BreizhCamp 2016"></column>
+        </insert>
+        <insert tableName="cfpconfig">
+            <column name="key" value="community"></column>
+            <column name="value" value="BreizhCamp"></column>
+        </insert>
+        <insert tableName="cfpconfig">
+            <column name="key" value="date"></column>
+            <column name="value" value="23/03/2016"></column>
+        </insert>
+        <insert tableName="cfpconfig">
+            <column name="key" value="releaseDate"></column>
+            <column name="value" value="13/01/2016"></column>
+        </insert>
+        <insert tableName="cfpconfig">
+            <column name="key" value="decisionDate"></column>
+            <column name="value" value="25/01/2016"></column>
+        </insert>
+        <insert tableName="cfpconfig">
+            <column name="key" value="open"></column>
+            <column name="value" value="true"></column>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

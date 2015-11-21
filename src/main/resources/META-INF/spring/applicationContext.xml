@@ -20,6 +20,11 @@
 		<property name="packagesToScan" value="fr.sii.entity" />
 		<property name="jpaVendorAdapter" ref="hibernateAdapator"/>
 		<property name="dataSource" ref="dataSource"/>
+		<property name="jpaProperties">
+			<value>
+				hibernate.globally_quoted_identifiers=true
+			</value>
+		</property>
 	</bean>
 
 	<!--beans-->

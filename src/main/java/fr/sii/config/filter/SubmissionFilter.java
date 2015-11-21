@@ -1,6 +1,7 @@
 package fr.sii.config.filter;
 
-import com.google.appengine.api.datastore.*;
+import fr.sii.service.admin.config.ApplicationConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,9 @@ import java.io.IOException;
 public class SubmissionFilter implements Filter {
 
     private final String SUBMISSION_DISABLED = "Submissions disabled";
+
+    @Autowired
+    private ApplicationConfigService applicationConfigService;
 
     /**
      * Reject request if submissions not allowed
@@ -29,15 +33,7 @@ public class SubmissionFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        Key applicationConfigKey = KeyFactory.createKey("Config", "Application");
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        boolean submissionsAllowed = false;
-        try {
-            Entity refreshToken = datastore.get(applicationConfigKey);
-            submissionsAllowed = (boolean) refreshToken.getProperty("enableSubmissions");
-        } catch (EntityNotFoundException e) {
-            // submissionsAllowed = false;
-        }
+        boolean submissionsAllowed = applicationConfigService.isCfpOpen();
 
         if(!submissionsAllowed) {
             switch(httpRequest.getMethod().toUpperCase()) {

@@ -1,6 +1,7 @@
 package fr.sii.controller.common.application;
 
-import fr.sii.config.application.ApplicationSettings;
+import fr.sii.dto.ApplicationSettings;
+import fr.sii.service.admin.config.ApplicationConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplicationController {
 
     @Autowired
-    private ApplicationSettings applicationSettings;
+    private ApplicationConfigService applicationConfigService;
 
     /**
      * Obtain application settings, (name, dates, ...)
@@ -22,6 +23,7 @@ public class ApplicationController {
      */
     @RequestMapping(value="/application", method= RequestMethod.GET)
     public ApplicationSettings getApplicationSettings() {
-        return applicationSettings;
+
+        return applicationConfigService.getAppConfig();
     }
 }
