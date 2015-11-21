@@ -1,7 +1,11 @@
 package fr.sii.service.user;
 
+import fr.sii.dto.TalkUser;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.User;
 import fr.sii.repository.UserRepo;
+import ma.glasnost.orika.MapperFacade;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,9 @@ public class UserService {
 
     @Autowired
 	private UserRepo userRepo;
+
+	@Autowired
+	private MapperFacade mapper;
 
 	public User save(User user) {
 		return userRepo.save(user);
@@ -53,7 +60,7 @@ public class UserService {
 		switch (provider) {
 			case GOOGLE:
 				List<User> users = userRepo.findByGoogleId(providerId);
-				if (!users.isEmpty())
+			if (!users.isEmpty())
 					return users.get(0);
 				else
 					return null;
@@ -66,5 +73,11 @@ public class UserService {
 			default:
 				throw new IllegalArgumentException();
 		}
+	}
+
+	public void update(int userId, UserProfil profil) {
+		User user = userRepo.findOne(userId);
+		mapper.map(profil, user);
+		userRepo.flush();
 	}
 }

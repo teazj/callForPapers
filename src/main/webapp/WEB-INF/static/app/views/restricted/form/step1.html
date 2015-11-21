@@ -12,9 +12,9 @@
         </div>
     </div>
     <div class="form-group" bs-has verify="verify">
-        <label class="control-label" for="name">{{'step1.name' | translate}}</label>
+        <label class="control-label" for="lastname">{{'step1.lastname' | translate}}</label>
         <div>
-            <input required type="text" name="name" ng-class="{'ng-verify' : verify}" class="form-control" id="name" ng-model="formData.speaker.name">
+            <input required type="text" name="lastname" ng-class="{'ng-verify' : verify}" class="form-control" id="lastname" ng-model="formData.speaker.lastname">
         </div>
     </div>
     <div class="form-group" bs-has verify="verify">
@@ -41,7 +41,7 @@
                 <span style="vertical-align: top;" class="mdi-action-delete" ng-if="formData.speaker.socialProfilImageUrl || formData.speaker.imageProfilKey || (formData.speaker.files && formData.speaker.files.length > 0)" ng-click="removeImage()"></span>
             </div>
             <div class="col-xs-12 col-md-6">
-                <div ngf-drop ng-model="formData.speaker.files" class="drop-box" 
+                <div ngf-drop ng-model="formData.speaker.files" class="drop-box"
                 ngf-drag-over-class="dragover"
                 ngf-multiple="false"
                 ngf-allow-dir="false"
@@ -91,7 +91,7 @@
         </div>
     </div>
     <div class="form-group" bs-has verify="verify">
-        <label class="control-label" for="googlePlus">{{'step1.googlePlus' | translate}}</label>
+        <label class="control-label" for="googleplus">{{'step1.googleplus' | translate}}</label>
         <div>
             <input type="text" class="form-control" name="googlePlus" id="googlePlus" ng-model="formData.speaker.googlePlus">
         </div>

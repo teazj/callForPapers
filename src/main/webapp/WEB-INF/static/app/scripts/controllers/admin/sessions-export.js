@@ -41,7 +41,7 @@ angular.module('CallForPaper')
                     company: session.company,
                     about: session.bio,
                     socials: [
-                        {class: 'google-plus', link: session.googlePlus},
+                        {class: 'google-plus', link: session.googleplus},
                         {class: 'twitter', link: session.twitter},
                         {class: 'github', link: session.github},
                         {class: 'site', link: session.social}

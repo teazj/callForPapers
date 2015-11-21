@@ -82,7 +82,7 @@ angular.module('CallForPaper')
             'step1': {
                 'warning': 'Attention les informations enregistrées lors de cette étape modifieront votre profil pour tous les talks déjà proposés.',
                 'email': 'Adresse email * :',
-                'name': 'Nom * :',
+                'lastname': 'Nom * :',
                 'firstname': 'Prénom * :',
                 'phone': 'Téléphone :',
                 'errorPhone': 'Entrez un numéro de téléphone correct',
@@ -91,7 +91,7 @@ angular.module('CallForPaper')
                 'hintBio': 'Décrivez vous en quelques mots. Cette description sera utilisée sur le site web.',
                 'social': 'Autres URLs (Blog, Linkedin, ...) :',
                 'twitter': 'Profil Twitter :',
-                'googlePlus': 'Profil Google Plus :',
+                'googleplus': 'Profil Google Plus :',
                 'github': 'Profil Github :',
                 'hintSocial': 'Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog.'
             },
@@ -353,7 +353,7 @@ angular.module('CallForPaper')
             'step1': {
                 'warning': 'Warning ! The informations given during this step will also be used for the talks already submitted.',
                 'email': 'Email *:',
-                'name': 'Name *:',
+                'lastname': 'Name *:',
                 'firstname': 'Firstname *:',
                 'phone': 'Phone:',
                 'errorPhone': 'Please enter a correct phone number',
@@ -362,7 +362,7 @@ angular.module('CallForPaper')
                 'hintBio': 'Describe yourself with a few words. This description will be use to fill the website.',
                 'social': 'Other URLs (Blog, Linkedin, ...) :',
                 'twitter': 'Twitter Profil :',
-                'googlePlus': 'Google Plus Profil:',
+                'googleplus': 'Google Plus Profil:',
                 'github': 'Github Profil :',
                 'hintSocial': 'Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog.'
             },

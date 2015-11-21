@@ -25,8 +25,8 @@ angular.module('CallForPaper')
             if (sessionTmp.twitter !== null) {
                 $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
             }
-            if (sessionTmp.googlePlus !== null) {
-                $scope.session.googlePlus = $filter('createLinks')(sessionTmp.googlePlus);
+            if (sessionTmp.googleplus !== null) {
+                $scope.session.googleplus = $filter('createLinks')(sessionTmp.googleplus);
             }
             if (sessionTmp.github !== null) {
                 $scope.session.github = $filter('createLinks')(sessionTmp.github);

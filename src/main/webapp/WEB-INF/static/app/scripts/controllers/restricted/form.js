@@ -78,9 +78,9 @@ angular.module('CallForPaper')
                                             $scope.formData.help.hotelDate = draft[key];
                                         }
                                         break;
-                                    case 'name':
+                                    case 'lastname':
                                         if (draft[key] !== null) {
-                                            $scope.formData.speaker.name = draft[key];
+                                            $scope.formData.speaker.lastname = draft[key];
                                         }
                                         break;
                                     case 'phone':
@@ -112,9 +112,9 @@ angular.module('CallForPaper')
                                             $scope.formData.speaker.twitter = draft[key];
                                         }
                                         break;
-                                    case 'googlePlus':
+                                    case 'googleplus':
                                         if (draft[key] !== null) {
-                                            $scope.formData.speaker.googlePlus = draft[key];
+                                            $scope.formData.speaker.googleplus = draft[key];
                                         }
                                         break;
                                     case 'github':
@@ -202,9 +202,9 @@ angular.module('CallForPaper')
                                             $scope.formData.speaker.firstname = profil[key];
                                         }
                                         break;
-                                    case 'name':
+                                    case 'lastname':
                                         if (profil[key] !== null) {
-                                            $scope.formData.speaker.name = profil[key];
+                                            $scope.formData.speaker.lastname = profil[key];
                                         }
                                         break;
                                     case 'phone':
@@ -236,9 +236,9 @@ angular.module('CallForPaper')
                                             $scope.formData.speaker.twitter = profil[key];
                                         }
                                         break;
-                                    case 'googlePlus':
+                                    case 'googleplus':
                                         if (profil[key] !== null) {
-                                            $scope.formData.speaker.googlePlus = profil[key];
+                                            $scope.formData.speaker.googleplus = profil[key];
                                         }
                                         break;
                                     case 'github':

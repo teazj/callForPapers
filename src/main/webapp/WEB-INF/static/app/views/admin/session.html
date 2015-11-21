@@ -11,7 +11,7 @@
 			<a style="color:inherit" tooltip="{{'admin.previous' | translate}}" ng-if="previous" ui-sref="admin.session({ id: previous })" class="pull-left">
 				<span class="mdi-navigation-chevron-left arrow"></span>
 			</a>
-			<h1>{{::session.sessionName}} - 
+			<h1>{{::session.sessionName}} -
 				<span style="font-size: 0.7em">
 					<span>{{'admin.mean' | translate}}&nbsp;:&nbsp;</span>
 					<span ng-if="mean === 0">{{'admin.none' | translate}}</span>
@@ -53,9 +53,9 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label" for="name">{{'step1.name' | translate}}</label>
+									<label class="control-label" for="lastname">{{'step1.lastname' | translate}}</label>
 									<div class="">
-										<input readonly type="text" name="name" class="form-control" id="name" ng-model="session.name">
+										<input readonly type="text" name="lastname" class="form-control" id="lastname" ng-model="session.lastname">
 									</div>
 								</div>
 								<div class="form-group">
@@ -89,7 +89,7 @@
 									<label class="control-label" for="twitter">{{'step1.twitter' | translate}}</label>&nbsp;<span ng-bind-html="session.twitter"></span>
 								</div>
 								<div class="form-group" bs-has verify="verify">
-									<label class="control-label" for="googlePlus">{{'step1.googlePlus' | translate}}</label>&nbsp;<span ng-bind-html="session.googlePlus"></span>
+									<label class="control-label" for="googlePlus">{{'step1.googleplus' | translate}}</label>&nbsp;<span ng-bind-html="session.googlePlus"></span>
 								</div>
 								<div class="form-group" bs-has verify="verify">
 									<label class="control-label" for="github">{{'step1.github' | translate}}</label>&nbsp;<span ng-bind-html="session.github"></span>
@@ -329,7 +329,7 @@
 									</div>
 									<div ng-if="!$last" class="col-xs-12"><hr></div>
 								</div>
-								
+
 								<div ng-if="rates.length > 0" class="col-xs-12"><strong><hr></strong></div>
 								<div class="col-xs-12">
 									<strong>{{'admin.mean' | translate}}&nbsp;:&nbsp;</strong>

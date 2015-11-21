@@ -5,24 +5,24 @@ package fr.sii.dto.user;
  * SII
  */
 public class UserProfil {
-    private String name;
+    private String lastname;
     private String firstname;
     private String company;
     private String phone;
     private String bio;
     private String social;
     private String twitter;
-    private String googlePlus;
+    private String googleplus;
     private String github;
     private String imageProfilKey;
     private String socialProfilImageUrl;
 
-    public String getName() {
-        return name;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getFirstname() {
@@ -73,12 +73,12 @@ public class UserProfil {
         this.twitter = twitter;
     }
 
-    public String getGooglePlus() {
-        return googlePlus;
+    public String getGoogleplus() {
+        return googleplus;
     }
 
-    public void setGooglePlus(String googlePlus) {
-        this.googlePlus = googlePlus;
+    public void setGoogleplus(String googleplus) {
+        this.googleplus = googleplus;
     }
 
     public String getGithub() {

@@ -6,7 +6,7 @@ angular.module('CallForPaper')
             return $scope.form.email.$valid && $scope.form.name.$valid && $scope.form.firstname.$valid &&
                 ($scope.form.phone.$valid || $scope.$parent.formData.speaker.phone === '') &&
                 $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid &&
-                $scope.form.twitter.$valid && $scope.form.googlePlus.$valid && $scope.form.github.$valid;
+                $scope.form.twitter.$valid && $scope.form.googleplus.$valid && $scope.form.github.$valid;
         }, function(isValid) {
             $scope.$parent.formData.steps.isValid[0] = isValid;
         });

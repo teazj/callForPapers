@@ -48,14 +48,14 @@ public class UserController {
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("email", u.getEmail());
-        map.put("name", u.getLastname());
+        map.put("lastname", u.getLastname());
         map.put("firstname", u.getFirstname());
         map.put("phone", u.getPhone());
         map.put("company", u.getCompany());
         map.put("bio", u.getBio());
         map.put("social", u.getSocial());
         map.put("twitter", u.getTwitter());
-        map.put("googlePlus", u.getGoogleplus());
+        map.put("googleplus", u.getGoogleplus());
         map.put("github", u.getGithub());
         //TODO
         //map.put("imageProfilKey", u.getImageProfilKey());
@@ -77,9 +77,9 @@ public class UserController {
      */
     @RequestMapping(value="/user", method= RequestMethod.PUT)
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException, EntityNotFoundException, ServiceException {
-        return null;
+
         //TODO
-        /*
+
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
         if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
         {
@@ -92,32 +92,9 @@ public class UserController {
             throw new NotFoundException("User not found");
         }
 
-        // remove old image if different from posted
-        try {
-            BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-            ObjectMapper m = new ObjectMapper();
-            String userProfil = u.getProfile();
-            userProfil = (userProfil == null) ? "{}" : userProfil;
-            UserProfil p = m.readValue(userProfil, UserProfil.class);
-            if(p.getImageProfilKey() != null && !p.getImageProfilKey().equals(profil.getImageProfilKey())) {
-                blobstoreService.delete(new BlobKey(p.getImageProfilKey()));
-            }
-        } catch (IOException | RuntimeException e) {
-            e.printStackTrace();
-        }
+        userService.update(u.getId(),profil);
 
-        ObjectMapper m = new ObjectMapper();
-        String profilString = m.writeValueAsString(profil);
-
-        if(!u.getProfile().equals(profilString)) {
-            u.setProfile(profilString);
-            userService.put(u.getEntityId(), u);
-            Queue queue = QueueFactory.getQueue("profil");
-            // Add profil update to the queue
-            TaskOptions options = TaskOptions.Builder.withUrl("/worker/profil").param("profil", profilString).param("userId", claimsSet.getSubject());
-            queue.add(options);
-        }
         return profil;
-        */
+        
     }
 }

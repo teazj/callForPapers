@@ -7,7 +7,7 @@ angular.module('CallForPaper')
         $scope.formData.imageProfilKey = null;
 
         $scope.$watch(function() {
-            return $scope.form.name.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone === '') && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid && $scope.form.twitter.$valid && $scope.form.googlePlus.$valid && $scope.form.github.$valid;
+            return $scope.form.lastname.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone === '') && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid && $scope.form.twitter.$valid && $scope.form.googleplus.$valid && $scope.form.github.$valid;
         }, function(isValid) {
             $scope.formData.isValid = isValid;
         });
@@ -49,9 +49,9 @@ angular.module('CallForPaper')
                                     $scope.formData.firstname = profil[key];
                                 }
                                 break;
-                            case 'name':
+                            case 'lastname':
                                 if (profil[key] !== null) {
-                                    $scope.formData.name = profil[key];
+                                    $scope.formData.lastname = profil[key];
                                 }
                                 break;
                             case 'phone':
@@ -83,9 +83,9 @@ angular.module('CallForPaper')
                                     $scope.formData.twitter = profil[key];
                                 }
                                 break;
-                            case 'googlePlus':
+                            case 'googleplus':
                                 if (profil[key] !== null) {
-                                    $scope.formData.googlePlus = profil[key];
+                                    $scope.formData.googleplus = profil[key];
                                 }
                                 break;
                             case 'github':
