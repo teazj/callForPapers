@@ -121,4 +121,11 @@
         <addAutoIncrement tableName="rates" columnName="id" columnDataType="int"/>
     </changeSet>
 
+    <changeSet id="6" author="lhuet">
+        <renameColumn newColumnName="refs"
+                      oldColumnName="references"
+                      columnDataType="text"
+                      tableName="talks"/>
+    </changeSet>
+    
 </databaseChangeLog>

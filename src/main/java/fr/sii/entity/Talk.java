@@ -53,6 +53,7 @@ public class Talk {
         return description;
     }
 
+    @Column(name = "refs")
     public String getReferences() {
         return references;
     }
