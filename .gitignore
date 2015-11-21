@@ -6,10 +6,7 @@ target-grunt
 **/node_modules
 **/npm-debug.log
 **/bower_components
-src/main/webapp/WEB-INF/static/dist
-src/main/webapp/WEB-INF/static/.tmp
-src/main/webapp/WEB-INF/static/.sass-cache
-
+src/main/webapp/WEB-INF/static/
 
 ### Eclipse ###
 *.pydevproject

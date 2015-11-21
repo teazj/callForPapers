@@ -28,9 +28,9 @@ var gulp = require('gulp'),
 var devPort = 3000;
 
 var yeoman = {
-    app: 'src/main/webapp/WEB-INF/static/app/',
-    dist: 'src/main/webapp/WEB-INF/static/dist/',
-    tmp: 'src/main/webapp/WEB-INF/static/.tmp/'
+    app: 'src/main/static/app/',
+    dist: 'src/main/webapp/WEB-INF/static/app/',
+    tmp: 'src/main/static/.tmp/'
 };
 
 var middlewareDef = function() {
