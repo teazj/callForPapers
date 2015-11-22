@@ -25,20 +25,21 @@ angular.module('CallForPaper')
             if (sessionTmp.speaker.twitter !== null) {
                 $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
             }
-            if (sessionTmp.googleplus !== null) {
+            if (sessionTmp.speake.googleplus !== null) {
                 $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
             }
-            if (sessionTmp.github !== null) {
+            if (sessionTmp.speake.github !== null) {
                 $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
             }
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
             // Get profil image
-            CommonProfilImage.get({
-                id: $scope.session.speaker.id
-            }).$promise.then(function(imgUriTmp) {
-                $scope.session.profilImageUrl = imgUriTmp.uri;
-            });
+            //TODO remove GAE dependance
+            //CommonProfilImage.get({
+            //    id: $scope.session.speaker.id
+            //}).$promise.then(function(imgUriTmp) {
+            //    $scope.session.speaker.profilImageUrl = imgUriTmp.uri;
+           // });
         });
 
         /**
@@ -56,7 +57,7 @@ angular.module('CallForPaper')
                 $scope.contacts = contactsTmp;
             });
         };
-        updateContacts();
+        //TODO call updateContacts();
 
         $scope.captchaShow = true;
         $scope.recaptchaId = Config.recaptcha;
@@ -75,7 +76,7 @@ angular.module('CallForPaper')
             $scope.contactButtonDisabled = true;
             RestrictedContact.save({
                 'comment': $scope.contactMsg,
-                'rowId': $stateParams.id,
+                'id': $stateParams.id,
                 'captcha': $scope.captcha
             }, function() {
                 $scope.captchaShow = !$scope.captchaShow;

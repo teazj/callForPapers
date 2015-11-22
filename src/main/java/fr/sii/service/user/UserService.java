@@ -78,6 +78,7 @@ public class UserService {
 	public void update(int userId, UserProfil profil) {
 		User user = userRepo.findOne(userId);
 		mapper.map(profil, user);
-		userRepo.flush();
+        user.setId(userId);
+        userRepo.saveAndFlush(user);
 	}
 }

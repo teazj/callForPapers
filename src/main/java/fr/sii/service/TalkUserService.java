@@ -61,6 +61,7 @@ public class TalkUserService {
         Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
         TalkUser talkUser = mapper.map(talk, TalkUser.class);
         UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
+        user.setSocialProfilImageUrl(talk.getUser().getImageSocialUrl());
         talkUser.setSpeaker(user);
         return talkUser;
     }
