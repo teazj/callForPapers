@@ -25,10 +25,10 @@ angular.module('CallForPaper')
             if (sessionTmp.speaker.twitter !== null) {
                 $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
             }
-            if (sessionTmp.speake.googleplus !== null) {
+            if (sessionTmp.speaker.googleplus !== null) {
                 $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
             }
-            if (sessionTmp.speake.github !== null) {
+            if (sessionTmp.speaker.github !== null) {
                 $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
             }
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
@@ -57,7 +57,7 @@ angular.module('CallForPaper')
                 $scope.contacts = contactsTmp;
             });
         };
-        //TODO call updateContacts();
+        updateContacts();
 
         $scope.captchaShow = true;
         $scope.recaptchaId = Config.recaptcha;

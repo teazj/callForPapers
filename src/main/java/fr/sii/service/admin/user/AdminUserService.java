@@ -31,10 +31,8 @@ public class AdminUserService {
         com.google.appengine.api.users.User user = userService.getCurrentUser();
         if(user == null) throw new NotFoundException("User not found");
 
-        String id = user.getUserId();
-        String idParsed = id.substring(0, id.length() - 2);
-        int userId = Integer.parseInt(idParsed);
-        AdminUser admin = adminUserRepo.findOne(userId);
+        //TODO unicité à verifier
+        AdminUser admin = adminUserRepo.findByEmail(user.getEmail());
         if (admin == null) {
             admin = save(user);
         }
@@ -48,12 +46,8 @@ public class AdminUserService {
     }
 
     public AdminUser save(com.google.appengine.api.users.User user) {
-        String id = user.getUserId();
-        String idParsed = id.substring(0, id.length() - 2);
-        int userId = Integer.parseInt(idParsed);
 
         AdminUser adminUser = new AdminUser();
-        adminUser.setId(userId);
         adminUser.setName(user.getNickname());
         adminUser.setEmail(user.getEmail());
 

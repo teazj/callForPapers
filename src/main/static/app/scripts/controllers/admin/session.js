@@ -104,11 +104,11 @@ angular.module('CallForPaper')
             AdminComment.getByRowId({
                 rowId: $stateParams.id
             }, function(commentsTmp) {
-                setTimeout(setViewed, 1000);
+               //TODO quel route ? setTimeout(setViewed, 1000);
                 $scope.comments = commentsTmp;
             });
         };
-        //TODO comment updateComments();
+        updateComments();
 
         $scope.commentButtonDisabled = false;
 
@@ -227,7 +227,7 @@ angular.module('CallForPaper')
                 });
             });
         };
-        //TODO rates updateRates();
+        updateRates();
 
         $scope.yourRate = {
             rate: 0,
@@ -240,21 +240,21 @@ angular.module('CallForPaper')
          * @param  {long : rowId}
          * @return {AdminRate}
          */
-       //TODO AdminRate.getByRowIdAndUserId({
-       //     'rowId': $stateParams.id,
-       // }, function(rateTmp) {
-       //     if (rateTmp.id !== undefined) {
-       //         $scope.yourRate = rateTmp;
-       //        if ($scope.yourRate.rate === 0) {
-       //             $scope.noVote = true;
-       //         }
-       //               if ($scope.yourRate.hate || $scope.yourRate.love) {
-       //             $scope.changed = true;
-       //         }
-       //         $scope.hate = $scope.yourRate.hate;
-       //         $scope.love = $scope.yourRate.love;
-       //     }
-       // });
+       AdminRate.getByRowIdAndUserId({
+            'rowId': $stateParams.id,
+        }, function(rateTmp) {
+            if (rateTmp.id !== undefined) {
+                $scope.yourRate = rateTmp;
+               if ($scope.yourRate.rate === 0) {
+                    $scope.noVote = true;
+                }
+                      if ($scope.yourRate.hate || $scope.yourRate.love) {
+                    $scope.changed = true;
+                }
+                $scope.hate = $scope.yourRate.hate;
+                $scope.love = $scope.yourRate.love;
+            }
+        });
 
         $scope.rateButtonDisabled = false;
 
@@ -420,11 +420,11 @@ angular.module('CallForPaper')
             AdminContact.getByRowId({
                 rowId: $stateParams.id
             }, function(contactsTmp) {
-                setTimeout(setViewed, 1000);
+               //TODO quel route ? setTimeout(setViewed, 1000);
                 $scope.contacts = contactsTmp;
             });
         };
-        //TODO contact updateContacts();
+        updateContacts();
 
         $scope.contactButtonDisabled = false;
 

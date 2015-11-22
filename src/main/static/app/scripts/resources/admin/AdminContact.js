@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('CallForPaper').factory('AdminContact', ['$resource', function($resource) {
-    return $resource('api/admin/contacts/:id', {},
+    return $resource('api/admin/sessions/:rowId/contacts', {},
         {
             getByRowId: {
-                url: 'api/admin/contacts/row/:rowId',
+                url: 'api/admin/sessions/:rowId/contacts',
                 method: 'GET',
                 isArray: true
             },

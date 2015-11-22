@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('CallForPaper').factory('RestrictedContact', ['$resource', function($resource) {
-    return $resource('api/restricted/sessions/:id/contacts', {},
+    return $resource('api/restricted/sessions/:rowId/contacts', {},
         {
             getByRowId: {
-                url: 'api/restricted/sessions/contacts/row/:rowId',
+                url: 'api/restricted/sessions/:rowId/contacts',
                 method: 'GET',
                 isArray: true
             },

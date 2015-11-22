@@ -35,13 +35,16 @@
 								<div class="form-group">
 									<label class="control-label">{{'profil.avatar' | translate}}</label>
 									<div ng-if="session !== null">
-										<a ng-if="session.profilImageUrl !== null" target="_blank" ng-href="{{session.profilImageUrl}}">
-											<img class="avatar" ng-src="{{session.profilImageUrl}}" alt="avatar">
+										<a ng-if="session.profilImageUrl !== undefined" target="_blank" ng-href="{{session.speaker.profilImageUrl}}">
+											<img class="avatar" ng-src="{{session.speaker.profilImageUrl}}" alt="avatar">
 										</a>
 									</div>
 									<div ng-if="session !== null">
-										<img ng-if="session.profilImageUrl === null" class="avatar" src="/lib/images/placeholder.png" alt="avatar">
+										<img ng-if="session.speaker.profilImageUrl === undefined && session.speaker.socialProfilImageUrl === undefined" class="avatar" src="/lib/images/placeholder.png" alt="avatar">
 									</div>
+                  <div ng-if="session.speaker.profilImageUrl === undefined && session.speaker.socialProfilImageUrl !== undefined">
+                    <img ng-if="session.speaker.socialProfilImageUrl !== null" class="avatar"  ng-src="{{session.speaker.socialProfilImageUrl}}" alt="avatar">
+                  </div>
 								</div>
 								<div class="form-group">
 									<label class="control-label" for="email" >{{'step1.email' | translate}}</label>

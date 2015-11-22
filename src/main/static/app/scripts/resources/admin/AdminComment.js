@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('CallForPaper').factory('AdminComment', ['$resource', function($resource) {
-    return $resource('api/admin/comments/:id', {},
+    return $resource('api/admin/sessions/:rowId/comments', {},
         {
             getAll: {
                 method: 'GET',
                 isArray: true
             },
             getByRowId: {
-                url: 'api/admin/comments/row/:rowId',
+                url: 'api/admin/sessions/:rowId/comments',
                 method: 'GET',
                 isArray: true
             },

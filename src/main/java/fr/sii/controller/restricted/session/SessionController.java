@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gdata.util.ServiceException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.config.global.GlobalSettings;
+import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
-public class SessionController {
+public class SessionController extends RestrictedController {
 
     @Autowired
     private EmailingService emailingService;
@@ -158,17 +159,5 @@ public class SessionController {
         return talkService.editDraft(userId, talkUser);
     }
 
-    /**
-     * Retrieve user id from request token
-     * @param req Request
-     * @return User id from token
-     * @throws NotVerifiedException If token invalid and user id can't be read
-     */
-    private int retrieveUserId(HttpServletRequest req) throws NotVerifiedException {
-        JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
-        if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified")) {
-            throw new NotVerifiedException("User must be verified");
-        }
-        return Integer.parseInt(claimsSet.getSubject());
-    }
+
 }
