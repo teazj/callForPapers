@@ -18,33 +18,33 @@ angular.module('CallForPaper')
 
             // Add links to socials
             $scope.session.socialLinks = [];
-            if (sessionTmp.social !== null) {
-                var links = sessionTmp.social.split(',').map(function(value) {
+            if (sessionTmp.speaker.social !== undefined) {
+                var links = sessionTmp.speaker.social.split(',').map(function(value) {
                     return $filter('createLinks')(value);
                 });
                 $scope.session.socialLinks = links;
             }
-            if (sessionTmp.twitter !== null) {
-                $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
+            if (sessionTmp.speaker.twitter !== null) {
+                $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
             }
 
-            if (sessionTmp.googleplus !== null) {
-                $scope.session.googleplus = $filter('createLinks')(sessionTmp.googleplus);
+            if (sessionTmp.speaker.googleplus !== null) {
+                $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
             }
 
-            if (sessionTmp.github !== null) {
-                $scope.session.github = $filter('createLinks')(sessionTmp.github);
+            if (sessionTmp.speaker.github !== null) {
+                $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
             }
 
             // Set difficulty key
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
-            // Get profil image
-            CommonProfilImage.get({
-                id: $scope.session.userId
-            }).$promise.then(function(imgUriTmp) {
-                $scope.session.profilImageUrl = imgUriTmp.uri;
-            });
+            //TODO Get profil image
+            //CommonProfilImage.get({
+            //    id: $scope.session.userId
+            //}).$promise.then(function(imgUriTmp) {
+            //    $scope.session.profilImageUrl = imgUriTmp.uri;
+            //});
         });
 
         // For gravatar
@@ -108,7 +108,7 @@ angular.module('CallForPaper')
                 $scope.comments = commentsTmp;
             });
         };
-        updateComments();
+        //TODO comment updateComments();
 
         $scope.commentButtonDisabled = false;
 
@@ -227,7 +227,7 @@ angular.module('CallForPaper')
                 });
             });
         };
-        updateRates();
+        //TODO rates updateRates();
 
         $scope.yourRate = {
             rate: 0,
@@ -240,21 +240,21 @@ angular.module('CallForPaper')
          * @param  {long : rowId}
          * @return {AdminRate}
          */
-        AdminRate.getByRowIdAndUserId({
-            'rowId': $stateParams.id,
-        }, function(rateTmp) {
-            if (rateTmp.id !== undefined) {
-                $scope.yourRate = rateTmp;
-                if ($scope.yourRate.rate === 0) {
-                    $scope.noVote = true;
-                }
-                if ($scope.yourRate.hate || $scope.yourRate.love) {
-                    $scope.changed = true;
-                }
-                $scope.hate = $scope.yourRate.hate;
-                $scope.love = $scope.yourRate.love;
-            }
-        });
+       //TODO AdminRate.getByRowIdAndUserId({
+       //     'rowId': $stateParams.id,
+       // }, function(rateTmp) {
+       //     if (rateTmp.id !== undefined) {
+       //         $scope.yourRate = rateTmp;
+       //        if ($scope.yourRate.rate === 0) {
+       //             $scope.noVote = true;
+       //         }
+       //               if ($scope.yourRate.hate || $scope.yourRate.love) {
+       //             $scope.changed = true;
+       //         }
+       //         $scope.hate = $scope.yourRate.hate;
+       //         $scope.love = $scope.yourRate.love;
+       //     }
+       // });
 
         $scope.rateButtonDisabled = false;
 
@@ -424,7 +424,7 @@ angular.module('CallForPaper')
                 $scope.contacts = contactsTmp;
             });
         };
-        updateContacts();
+        //TODO contact updateContacts();
 
         $scope.contactButtonDisabled = false;
 

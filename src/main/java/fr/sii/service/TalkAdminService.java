@@ -1,6 +1,8 @@
 package fr.sii.service;
 
 import fr.sii.dto.TalkAdmin;
+import fr.sii.dto.TalkUser;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.Talk;
 import fr.sii.repository.TalkRepo;
 import ma.glasnost.orika.MapperFacade;
@@ -41,7 +43,11 @@ public class TalkAdminService {
      */
     public TalkAdmin getOne(int talkId) {
         Talk talk = talkRepo.findOne(talkId);
-        return mapper.map(talk, TalkAdmin.class);
+        TalkAdmin talkAdmin = mapper.map(talk, TalkAdmin.class);
+        UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
+        user.setSocialProfilImageUrl(talk.getUser().getImageSocialUrl());
+        talkAdmin.setSpeaker(user);
+        return talkAdmin;
     }
 
     /**
