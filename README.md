@@ -146,47 +146,67 @@ Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers toke
   })
 ```
 
-## Deployment :
+## Deployment
 
-Some NodeJS tools are required to build, like Grunt. You can install them locally with:
+* NodeJS is required to run frontend build tools. The build has been tested with version 4.2.2. Its installation is
+included in the Maven build. However, if you want to contribute to frontend, you may install it by yourself to be able
+to use frontend build tools from the command line. 
+* Java 7 is required by the AppEngine SDK.
 
-```shell
-npm install -g grunt-cli
-npm install
+### App Engine
+
+*TO UPDATE*
+```bash
+$ npm install
+$ bower install
+$ gulp build
+$ mvn appengine:update [-Dmaven.test.skip=true]
 ```
-Java 7 is required by the AppEngine SDK.
+ Go to : http://YOUR_APP_ID.appspot.com
 
-### App Engine :
+### Local
 
-```shell
-grunt build
-mvn appengine:update [-Dmaven.test.skip=true]
-```
- - Go to : http://YOUR_APP_ID.appspot.com
+#### Backend development
 
+If you intend to contribute to backend exclusively and don't want to deal with the NodeJS tools necessary for frontend
+development and build, you can start the application with the following command:
 
-### Local :
-
-```shell
-npm install
-grunt build
-mvn appengine:devserver [-Dmaven.test.skip=true]
+```bash
+$ mvn appengine:devserver -Pautojs [-Dmaven.test.skip=true]
 ```
 
-In addition to these instructions, a Grunt task is available to facilitate contributions to the client code. It uses
-BrowserSync to start a static server for files in `src/main/webapp/WEB-INF/static/app` directory. Requests to the
-backend and OAuth requests are forwarded thanks to an HTTP Proxy also configured in the `Gruntfile`.
+#### Frontend development
 
-```shell
-$ cd src/main/webapp/WEB-INF/static
-$ grunt serve
-```
+Frontend contributors can use usual frontend build tools from the command line:
+
+* Gulp and Bower are required to build. You can install them with:
+    ```bash
+    $ npm install -g gulp bower
+    ```
+
+* To install build tools dependencies specified in `package.json`, you have to run the following in project root folder:
+    ```bash
+    $ npm install
+    ```
+
+* To install project third party libraries specified in `bower.json`, you have to run the following in project root folder:
+    ```bash
+    $ bower install
+    ```
+
+A Gulp task `gulp serve` is available to facilitate contributions to the front code. It starts a
+web server on port 3000 for files in `src/main/webapp/WEB-INF/static/app` directory. Livereload is configured and
+requests to the backend are forwarded to the AppEngine development server (`http://127.0.0.1:8080`) thanks to an proxy.
+
+    ```bash
+    $ gulp serve # or gulp serve:dist for minified version of front files, but no livereload in this case
+    ```
 
 *For local deployment, set all `appengine-web.xml` env-var in you OS with the same value.*
 
  - Go to : http://127.0.0.1:8080
 
- - The application will guide you througth the process to link your Google Drive account to the application.
+ - The application will guide you through the process to link your Google Drive account to the application.
 
 ## Usage :
 
