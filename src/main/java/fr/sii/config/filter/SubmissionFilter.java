@@ -2,6 +2,9 @@ package fr.sii.config.filter;
 
 import fr.sii.service.admin.config.ApplicationConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +18,6 @@ public class SubmissionFilter implements Filter {
 
     private final String SUBMISSION_DISABLED = "Submissions disabled";
 
-    @Autowired
     private ApplicationConfigService applicationConfigService;
 
     /**
@@ -52,6 +54,10 @@ public class SubmissionFilter implements Filter {
     public void destroy() { /* unused */ }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException { /* unused */ }
+    public void init(FilterConfig filterConfig) throws ServletException {
+        ServletContext servletContext = filterConfig.getServletContext();
+        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        applicationConfigService = (ApplicationConfigService) webApplicationContext.getBean(ApplicationConfigService.class);
+    }
 
 }
