@@ -17,6 +17,7 @@ public class UserProfil {
     private String github;
     private String imageProfilKey;
     private String socialProfilImageUrl;
+    private String email;
 
     public String getLastname() {
         return lastname;
@@ -111,5 +112,13 @@ public class UserProfil {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

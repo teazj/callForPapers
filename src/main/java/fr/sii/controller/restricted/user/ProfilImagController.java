@@ -1,8 +1,5 @@
 package fr.sii.controller.restricted.user;
 
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import fr.sii.domain.common.Key;
 import fr.sii.domain.common.Uri;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tmaugin on 09/07/2015.
@@ -23,8 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
 public class ProfilImagController {
-
-    private final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     /**
      * Upload profil image to the Blobstore
@@ -36,12 +29,7 @@ public class ProfilImagController {
      */
     @RequestMapping(value="/upload", method= RequestMethod.POST)
     public Key upload(HttpServletRequest req, HttpServletResponse res) throws IOException, URISyntaxException {
-        Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
-        List<BlobKey> blobKeys = blobs.get("file");
-
-        if (blobKeys != null && !blobKeys.isEmpty()) {
-            return new Key( blobKeys.get(0).getKeyString());
-        }
+        //TODO
         return new Key();
     }
 
@@ -53,6 +41,8 @@ public class ProfilImagController {
      */
     @RequestMapping(value="/upload", method= RequestMethod.GET)
     public Uri getUploadUrl(HttpServletRequest req, HttpServletResponse res) {
-        return new Uri(blobstoreService.createUploadUrl("/api/restricted/upload"));
+
+        //TODO
+        return new Uri();
     }
 }
