@@ -20,7 +20,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     less = require('gulp-less'),
     path = require('path'),
-    del = require('del');
+    del = require('del'),
+    sourcemaps = require('gulp-sourcemaps');
 
 /*var KarmaServer = require('karma').Server,
  karmaConfigFile = __dirname + '/karma.conf.js';*/
@@ -156,10 +157,10 @@ gulp.task('usemin', ['images', 'styles', 'copy'], function() {
                     vendor_css: ['concat', rev()],
                     main_css: [autoprefixer(), 'concat', rev()],
                     html: [minifyHtml(minifyHtmlOptions)],
-                    ie_js: [uglify(), 'concat', rev()],
-                    vendor_js: [uglify(), 'concat', rev()],
-                    modules_js: [ngAnnotate(), uglify(), 'concat', rev()], // some 3rd party libs need ngAnnotate
-                    app_js: [ngAnnotate(), uglify(), 'concat', rev()]
+                    ie_js: [sourcemaps.init(), uglify(), 'concat', rev(), sourcemaps.write('./')],
+                    vendor_js: [sourcemaps.init(), uglify(), 'concat', rev(), sourcemaps.write('./')],
+                    modules_js: [sourcemaps.init(), ngAnnotate(), uglify(), 'concat', rev(), sourcemaps.write('./')], // some 3rd party libs need ngAnnotate
+                    app_js: [sourcemaps.init(), ngAnnotate(), uglify(), 'concat', rev(), sourcemaps.write('./')]
                 })),
             // minify all HTML files in yeoman.app sub-dirs except bower_components
             gulp.src(yeoman.app + '!(bower_components)/{*,**/*}.html')
