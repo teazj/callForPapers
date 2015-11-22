@@ -5,6 +5,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -49,6 +50,7 @@ public class ApplicationTest {
     }
 
     @Test
+    @Ignore
     public void test1_getApplicetion() {
         given()
                 .contentType("application/json")
