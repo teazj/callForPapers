@@ -146,9 +146,38 @@ Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers toke
   })
 ```
 
-## Deployment :
+## Deployment
 
-NodeJS is required to run build tools. The build has been tested with version 4.2.2.
+* NodeJS is required to run frontend build tools. The build has been tested with version 4.2.2. Its installation is
+included in the Maven build. However, if you want to contribute to frontend, you may install it by yourself to be able
+to use frontend build tools from the command line. 
+* Java 7 is required by the AppEngine SDK.
+
+### App Engine
+
+*TO UPDATE*
+```bash
+$ npm install
+$ bower install
+$ gulp build
+$ mvn appengine:update [-Dmaven.test.skip=true]
+```
+ Go to : http://YOUR_APP_ID.appspot.com
+
+### Local
+
+#### Backend development
+
+If you intend to contribute to backend exclusively and don't want to deal with the NodeJS tools necessary for frontend
+development and build, you can start the application with the following command:
+
+```bash
+$ mvn appengine:devserver -Pautojs [-Dmaven.test.skip=true]
+```
+
+#### Frontend development
+
+Frontend contributors can use usual frontend build tools from the command line:
 
 * Gulp and Bower are required to build. You can install them with:
     ```bash
@@ -164,32 +193,12 @@ NodeJS is required to run build tools. The build has been tested with version 4.
     ```bash
     $ bower install
     ```
-* Java 7 is required by the AppEngine SDK.
 
-### App Engine :
+A Gulp task `gulp serve` is available to facilitate contributions to the front code. It starts a
+web server on port 3000 for files in `src/main/webapp/WEB-INF/static/app` directory. Livereload is configured and
+requests to the backend are forwarded to the AppEngine development server (`http://127.0.0.1:8080`) thanks to an proxy.
 
-```bash
-$ npm install
-$ bower install
-$ gulp build
-$ mvn appengine:update [-Dmaven.test.skip=true]
-```
- Go to : http://YOUR_APP_ID.appspot.com
-
-### Local :
-
-```bash
-$ npm install
-$ bower install
-$ gulp build
-$ mvn appengine:devserver [-Dmaven.test.skip=true]
-```
-
-In addition to these instructions, a Gulp task is available to facilitate contributions to the front code. It starts a
-web server for files in `src/main/webapp/WEB-INF/static/app` directory. Livereload is configured and requests to the
-backend are forwarded to the AppEngine development server (`http://127.0.0.1:8080`) thanks to an proxy.
-
-    ```shell
+    ```bash
     $ gulp serve # or gulp serve:dist for minified version of front files, but no livereload in this case
     ```
 
