@@ -63,9 +63,9 @@ public class RateAdminService {
      * @param adminId Id of the admin to get
      * @return Rate or null if not talk rated by this admin
      */
-    public List<RateAdmin> findForTalkAndAdmin(int talkId, int adminId) {
-        List<Rate> rates = rateRepo.findByTalkIdAndAdminUserId(talkId, adminId);
-        return mapper.mapAsList(rates, RateAdmin.class);
+    public RateAdmin findForTalkAndAdmin(int talkId, int adminId) {
+        Rate rates = rateRepo.findByTalkIdAndAdminUserId(talkId, adminId);
+        return mapper.map(rates, RateAdmin.class);
     }
 
     /**

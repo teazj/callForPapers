@@ -118,7 +118,7 @@ angular.module('CallForPaper')
          */
         $scope.postComment = function() {
             $scope.commentButtonDisabled = true;
-            AdminComment.save({
+            AdminComment.save({rowId: $stateParams.id },{
                 'comment': $scope.commentMsg,
                 'rowId': $stateParams.id
             }, function() {
@@ -135,7 +135,7 @@ angular.module('CallForPaper')
          * @return {AdminComment} edited comment
          */
         var putComment = function(comment) {
-            AdminComment.update({
+            AdminComment.update({rowId: $stateParams.id },{
                 id: comment.id
             }, comment, function() {
                 updateComments();
@@ -173,7 +173,7 @@ angular.module('CallForPaper')
          * @return {AdminComment} blank comment
          */
         var deleteComment = function(comment) {
-            AdminComment.delete({
+            AdminComment.delete({rowId: $stateParams.id },{
                 id: comment.id
             }, function() {
                 updateComments();
@@ -268,7 +268,7 @@ angular.module('CallForPaper')
                     'rate': $scope.yourRate.rate,
                     'hate': $scope.yourRate.hate,
                     'love': $scope.yourRate.love,
-                    'rowId': $stateParams.id
+                    'talkId': $stateParams.id
                 }, function(c) {
                     $scope.yourRate.id = c.id;
                     $scope.rateButtonDisabled = false;
@@ -434,7 +434,7 @@ angular.module('CallForPaper')
          */
         $scope.postContact = function() {
             $scope.contactButtonDisabled = true;
-            AdminContact.save({
+            AdminContact.save({rowId: $stateParams.id },{
                 'comment': $scope.contactMsg,
                 'rowId': $stateParams.id
             }, function() {
@@ -451,7 +451,7 @@ angular.module('CallForPaper')
          * @return {AdminContact} edited contact
          */
         var putContact = function(contact) {
-            AdminContact.update({
+            AdminContact.update({rowId: $stateParams.id },{
                 id: contact.id
             }, contact, function() {
                 updateContacts();

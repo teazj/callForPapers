@@ -47,6 +47,7 @@ public class TalkAdminService {
         UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
         user.setSocialProfilImageUrl(talk.getUser().getImageSocialUrl());
         talkAdmin.setSpeaker(user);
+        talkAdmin.setUserId(user.getId());
         return talkAdmin;
     }
 

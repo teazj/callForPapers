@@ -74,7 +74,7 @@ angular.module('CallForPaper')
          */
         $scope.postContact = function() {
             $scope.contactButtonDisabled = true;
-            RestrictedContact.save({
+            RestrictedContact.save({rowId: $stateParams.id},{
                 'comment': $scope.contactMsg,
                 'id': $stateParams.id,
                 'captcha': $scope.captcha
@@ -95,6 +95,7 @@ angular.module('CallForPaper')
          */
         var putContact = function(contact) {
             RestrictedContact.update({
+                rowId: $stateParams.id,
                 id: contact.id
             }, contact, function() {
                 updateContacts();

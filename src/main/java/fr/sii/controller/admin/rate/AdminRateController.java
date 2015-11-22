@@ -83,7 +83,7 @@ public class AdminRateController {
      * Get rating for current user and a session
      */
     @RequestMapping(value= "/session/{talkId}/user/me", method = RequestMethod.GET)
-    public List<RateAdmin> getRateByRowIdAndUserId(@PathVariable int talkId) throws NotFoundException {
+    public RateAdmin getRateByRowIdAndUserId(@PathVariable int talkId) throws NotFoundException {
         int adminId = adminUserServiceCustom.getCurrentUser().getId();
         return rateService.findForTalkAndAdmin(talkId, adminId);
     }

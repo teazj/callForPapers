@@ -8,6 +8,8 @@ angular.module('CallForPaper').factory('RestrictedContact', ['$resource', functi
                 method: 'GET',
                 isArray: true
             },
-            update: {method: 'PUT'}
+            update: {method: 'PUT',
+             url: 'api/restricted/sessions/:rowId/contacts/:id'
+             }
         });
 }]);

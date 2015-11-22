@@ -12,5 +12,5 @@ public interface RateRepo extends JpaRepository<Rate, Integer> {
 
     List<Rate> findByTalkId(int talkId);
 
-    List<Rate> findByTalkIdAndAdminUserId(int talkId, int adminId);
+    Rate findByTalkIdAndAdminUserId(int talkId, int adminId);
 }

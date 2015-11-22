@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper').factory('AdminRate', ['$resource', function($resource) {
-    return $resource('api/admin/rates/:id', null,
+    return $resource('api/admin/rates', null,
         {
             update: {method: 'PUT', url: 'api/admin/rates/:id'},
             getByRowIdAndUserId: {
