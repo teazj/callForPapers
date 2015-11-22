@@ -3,7 +3,7 @@
 angular.module('CallForPaper')
     .controller('Step1Ctrl', ['$scope', '$state', function($scope, $state) {
         $scope.$watch(function() {
-            return $scope.form.email.$valid && $scope.form.name.$valid && $scope.form.firstname.$valid &&
+            return $scope.form.email.$valid && $scope.form.lastname.$valid && $scope.form.firstname.$valid &&
                 ($scope.form.phone.$valid || $scope.$parent.formData.speaker.phone === '') &&
                 $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid &&
                 $scope.form.twitter.$valid && $scope.form.googleplus.$valid && $scope.form.github.$valid;
