@@ -5,6 +5,7 @@ package fr.sii.dto.user;
  * SII
  */
 public class UserProfil {
+    private int id;
     private String lastname;
     private String firstname;
     private String company;
@@ -103,5 +104,12 @@ public class UserProfil {
 
     public void setSocialProfilImageUrl(String socialProfilImageUrl) {
         this.socialProfilImageUrl = socialProfilImageUrl;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

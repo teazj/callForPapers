@@ -1,6 +1,7 @@
 package fr.sii.service;
 
 import fr.sii.dto.TalkUser;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.Talk;
 import fr.sii.entity.User;
 import fr.sii.repository.TalkRepo;
@@ -58,7 +59,10 @@ public class TalkUserService {
      */
     public TalkUser getOne(int userId, int talkId) {
         Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
-        return mapper.map(talk, TalkUser.class);
+        TalkUser talkUser = mapper.map(talk, TalkUser.class);
+        UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
+        talkUser.setSpeaker(user);
+        return talkUser;
     }
 
     /**

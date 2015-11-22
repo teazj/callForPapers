@@ -16,26 +16,26 @@ angular.module('CallForPaper')
 
             // Add link to social
             $scope.session.socialLinks = [];
-            if (sessionTmp.social !== null) {
-                var links = sessionTmp.social.split(',').map(function(value) {
+            if (sessionTmp.speaker.social !== null) {
+                var links = sessionTmp.speaker.social.split(',').map(function(value) {
                     return $filter('createLinks')(value);
                 });
                 $scope.session.socialLinks = links;
             }
-            if (sessionTmp.twitter !== null) {
-                $scope.session.twitter = $filter('createLinks')(sessionTmp.twitter);
+            if (sessionTmp.speaker.twitter !== null) {
+                $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
             }
             if (sessionTmp.googleplus !== null) {
-                $scope.session.googleplus = $filter('createLinks')(sessionTmp.googleplus);
+                $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
             }
             if (sessionTmp.github !== null) {
-                $scope.session.github = $filter('createLinks')(sessionTmp.github);
+                $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
             }
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
             // Get profil image
             CommonProfilImage.get({
-                id: $scope.session.userId
+                id: $scope.session.speaker.id
             }).$promise.then(function(imgUriTmp) {
                 $scope.session.profilImageUrl = imgUriTmp.uri;
             });
