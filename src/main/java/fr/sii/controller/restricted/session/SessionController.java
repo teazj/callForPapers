@@ -98,7 +98,7 @@ public class SessionController {
         TalkUser saved = talkService.submitDraftToTalk(userId, talkUser);
 
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("name", user.getFirstname());
+        map.put("name", user.getFirstname()+" "+user.getLastname());
         map.put("talk", saved.getName());
         map.put("hostname", globalSettings.getHostname());
         map.put("id", String.valueOf(saved.getId()));

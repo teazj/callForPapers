@@ -30,9 +30,9 @@
                 <tr ng-repeat="draft in drafts">
                   <td>
                     <span>
-                      <span ng-if="draft.sessionName">{{draft.sessionName}}, {{'dashboard.modifiedAt' | translate}}</span>
-                      <span ng-if="!draft.sessionName">{{'dashboard.draftModifiedAt' | translate}}</span>{{draft.added | date:"dd/MM/yyyy, HH:mm:ss"}}
-                    </span>              
+                      <span ng-if="draft.name">{{draft.name}}, {{'dashboard.modifiedAt' | translate}}</span>
+                      <span ng-if="!draft.name">{{'dashboard.draftModifiedAt' | translate}}</span>{{draft.added | date:"dd/MM/yyyy, HH:mm:ss"}}
+                    </span>
                   </td>
                   <td>
                       <a ng-show="submission" ui-sref='app.form({id: draft.added})'><span class="action glyphicon glyphicon-pencil pull-right white" aria-hidden="true"></span></a>
@@ -68,7 +68,7 @@
               <tbody>
                 <tr ng-repeat="session in sessions">
                   <td ui-sref='app.session({id: session.added})'>
-                    {{session.sessionName}}, {{'dashboard.postedAt' | translate}} {{session.added | date:"dd/MM/yyyy, HH:mm:ss"}}
+                    {{session.name}}, {{'dashboard.postedAt' | translate}} {{session.added | date:"dd/MM/yyyy, HH:mm:ss"}}
                   </td>
                 </tr>
                 <tr ng-show="sessions.length === 0 && sessionsLoaded">

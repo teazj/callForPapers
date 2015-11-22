@@ -13,7 +13,7 @@ angular.module('CallForPaper')
         var querySession = function() {
             RestrictedSession.query(function(sessionsTmp) {
                 $scope.sessions = sessionsTmp.map(function(session) {
-                    session.fullname = session.name + ' ' + session.firstname;
+                    session.fullname =  session.firstname;
                     session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];
                     return session;
                 });
