@@ -33,16 +33,5 @@ public class ProfilImagController {
         return new Key();
     }
 
-    /**
-     * Obtain Blobstore upload URL
-     * @param req
-     * @param res
-     * @return
-     */
-    @RequestMapping(value="/upload", method= RequestMethod.GET)
-    public Uri getUploadUrl(HttpServletRequest req, HttpServletResponse res) {
 
-        //TODO
-        return new Uri();
-    }
 }

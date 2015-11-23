@@ -36,7 +36,7 @@ public class CommonProfilImageController {
         if (u == null) throw new NotFoundException("User not found");
 
         byte[] image = u.getImage();
-        if (image.length == 0) {
+        if (image == null || image.length == 0) {
             throw new NotFoundException("Image not found");
         }
 
@@ -59,7 +59,7 @@ public class CommonProfilImageController {
 
         byte[] image = u.getImage();
 
-        if(image == null || image.length > 0) {
+        if(image != null && image.length > 0) {
             return new Uri(globalSettings.getHostname() + "/api/profil/image/user/" + id);
         }
 

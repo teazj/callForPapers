@@ -34,12 +34,11 @@ angular.module('CallForPaper')
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
             // Get profil image
-            //TODO remove GAE dependance
-            //CommonProfilImage.get({
-            //    id: $scope.session.speaker.id
-            //}).$promise.then(function(imgUriTmp) {
-            //    $scope.session.speaker.profilImageUrl = imgUriTmp.uri;
-           // });
+            CommonProfilImage.get({
+                id: $scope.session.speaker.id
+            }).$promise.then(function(imgUriTmp) {
+                $scope.session.speaker.profilImageUrl = imgUriTmp.uri;
+            });
         });
 
         /**

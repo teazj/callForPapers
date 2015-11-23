@@ -22,11 +22,8 @@
 										</a>
 									</div>
 									<div ng-if="session !== null">
-										<img ng-if="session.speaker.profilImageUrl === undefined && session.speaker.socialProfilImageUrl === undefined" class="avatar" src="/lib/images/placeholder.png" alt="avatar">
+										<img ng-if="session.speaker.profilImageUrl === undefined" class="avatar" src="/lib/images/placeholder.png" alt="avatar">
 									</div>
-                  <div ng-if="session.speaker.profilImageUrl === undefined && session.speaker.socialProfilImageUrl !== undefined">
-                    <img ng-if="session.speaker.socialProfilImageUrl !== null" class="avatar"  ng-src="{{session.speaker.socialProfilImageUrl}}" alt="avatar">
-                  </div>
 								</div>
 
 
