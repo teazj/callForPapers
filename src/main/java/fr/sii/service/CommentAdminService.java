@@ -85,8 +85,7 @@ public class CommentAdminService {
      * @param comment Comment to delete
      * @return Deleted comment
      */
-    public CommentUser delete(CommentUser comment) {
-        commentRepo.delete(comment.getId());
-        return comment;
+    public void delete(int comment) {
+        commentRepo.delete(comment);
     }
 }

@@ -2,6 +2,8 @@ package fr.sii.dto;
 
 import java.util.Date;
 
+import fr.sii.dto.user.UserProfil;
+
 /**
  * Comment DTO sent to the speaker
  */
@@ -10,6 +12,7 @@ public class CommentUser {
     private int id;
     private String comment;
     private String adminName;
+    private UserProfil user;
     private Date added;
 
     public int getId() {
@@ -42,5 +45,13 @@ public class CommentUser {
 
     public void setAdded(Date added) {
         this.added = added;
+    }
+
+    public UserProfil getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfil user) {
+        this.user = user;
     }
 }

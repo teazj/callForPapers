@@ -12,6 +12,8 @@ angular.module('CallForPaper').factory('AdminComment', ['$resource', function($r
                 method: 'GET',
                 isArray: true
             },
-            update: {method: 'PUT'}
+            update: {method: 'PUT',url: 'api/admin/sessions/:rowId/comments/:id'},
+            delete: {method: 'DELETE',url: 'api/admin/sessions/:rowId/comments/:id'}
+
         });
 }]);

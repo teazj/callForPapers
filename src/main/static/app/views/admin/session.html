@@ -247,8 +247,8 @@
 									<div class="col-xs-8 col-sm-10 col-md-10">
 										<div class="col-xs-12">
 											<span ng-if="!comment.deleted === true">
-												<span tooltip="{{'admin.edit' | translate}}" ng-click="editComment(comment)" ng-show="adminEmail &&comment.user.email === adminEmail" class="mdi-content-create pull-right"></span>
-												<span tooltip="{{'admin.delete' | translate}}" ng-click="deleteComment(comment)" ng-show="adminEmail &&comment.user.email === adminEmail" class="mdi-content-clear pull-right"></span>
+												<span tooltip="{{'admin.edit' | translate}}" ng-click="editComment(comment)" ng-show="adminEmail && comment.user.email === adminEmail" class="mdi-content-create pull-right"></span>
+												<span tooltip="{{'admin.delete' | translate}}" ng-click="deleteComment(comment)" ng-show="adminEmail && comment.user.email === adminEmail" class="mdi-content-clear pull-right"></span>
 											</span>
 											<strong>{{::comment.user.name}} </strong><span class="weak">{{comment.added | relativeDate}}</span>
 										</div>

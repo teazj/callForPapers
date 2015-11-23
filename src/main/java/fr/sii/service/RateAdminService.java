@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,6 +88,7 @@ public class RateAdminService {
      */
     public RateAdmin add(RateAdmin rate, AdminUser admin, int talkId) {
         Rate newRate = mapper.map(rate, Rate.class);
+        newRate.setAdded(new Date());
         newRate.setAdminUser(admin);
         newRate.setTalk(talkRepo.getOne(talkId));
         rateRepo.save(newRate);
@@ -102,6 +104,8 @@ public class RateAdminService {
     public RateAdmin edit(RateAdmin rate) {
         Rate editRate = rateRepo.findOne(rate.getId());
         mapper.map(rate, editRate);
+        editRate.setAdded(new Date());
+        rateRepo.flush();
         return mapper.map(editRate, RateAdmin.class);
     }
 

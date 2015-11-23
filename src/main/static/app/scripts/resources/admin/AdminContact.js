@@ -8,6 +8,9 @@ angular.module('CallForPaper').factory('AdminContact', ['$resource', function($r
                 method: 'GET',
                 isArray: true
             },
-            update: {method: 'PUT'}
+            update: {
+                method: 'PUT',
+                url: 'api/admin/sessions/:rowId/contacts/:id'
+            }
         });
 }]);

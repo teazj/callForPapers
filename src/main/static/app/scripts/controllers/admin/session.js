@@ -135,9 +135,7 @@ angular.module('CallForPaper')
          * @return {AdminComment} edited comment
          */
         var putComment = function(comment) {
-            AdminComment.update({rowId: $stateParams.id },{
-                id: comment.id
-            }, comment, function() {
+            AdminComment.update({rowId: $stateParams.id,id: comment.id }, comment, function() {
                 updateComments();
             }, function() {
             });
@@ -173,9 +171,7 @@ angular.module('CallForPaper')
          * @return {AdminComment} blank comment
          */
         var deleteComment = function(comment) {
-            AdminComment.delete({rowId: $stateParams.id },{
-                id: comment.id
-            }, function() {
+            AdminComment.delete({rowId: $stateParams.id,id: comment.id }, function() {
                 updateComments();
             }, function() {
             });
@@ -451,7 +447,8 @@ angular.module('CallForPaper')
          * @return {AdminContact} edited contact
          */
         var putContact = function(contact) {
-            AdminContact.update({rowId: $stateParams.id },{
+            AdminContact.update({
+                rowId: $stateParams.id,
                 id: contact.id
             }, contact, function() {
                 updateContacts();
