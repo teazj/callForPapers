@@ -35,7 +35,7 @@
 								<div class="form-group">
 									<label class="control-label">{{'profil.avatar' | translate}}</label>
 									<div ng-if="session !== null">
-										<a ng-if="session.profilImageUrl !== undefined" target="_blank" ng-href="{{session.speaker.profilImageUrl}}">
+										<a ng-if="session.speaker.profilImageUrl !== undefined" target="_blank" ng-href="{{session.speaker.profilImageUrl}}">
 											<img class="avatar" ng-src="{{session.speaker.profilImageUrl}}" alt="avatar">
 										</a>
 									</div>
