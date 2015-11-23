@@ -1,19 +1,19 @@
 package fr.sii.service;
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.sii.dto.TalkUser;
-import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.Talk;
 import fr.sii.entity.User;
 import fr.sii.repository.TalkRepo;
 import fr.sii.repository.UserRepo;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Service for managing talks by the user
@@ -59,11 +59,7 @@ public class TalkUserService {
      */
     public TalkUser getOne(int userId, int talkId) {
         Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
-        TalkUser talkUser = mapper.map(talk, TalkUser.class);
-        UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
-        user.setSocialProfilImageUrl(talk.getUser().getImageSocialUrl());
-        talkUser.setSpeaker(user);
-        return talkUser;
+        return mapper.map(talk, TalkUser.class);
     }
 
     /**
