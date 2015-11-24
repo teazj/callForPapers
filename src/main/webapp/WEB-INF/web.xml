@@ -102,6 +102,19 @@
         <url-pattern>/api/restricted/*</url-pattern>
     </filter-mapping>
 
+    <!--Admin Security-->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>authAdminFilter</filter-name>
+        <filter-class>fr.sii.config.filter.AuthAdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authAdminFilter</filter-name>
+        <url-pattern>/api/test/*</url-pattern>
+    </filter-mapping>
 
     <!--Submission Security-->
     <filter>
@@ -114,16 +127,6 @@
         <url-pattern>/api/restricted/sessions</url-pattern>
     </filter-mapping>
 
-    <!--Spreadsheet autorisation-->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>spreadsheet</web-resource-name>
-            <url-pattern>/auth/spreadsheet/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
-    </security-constraint>
 
     <!--Csrf-->
     <filter>

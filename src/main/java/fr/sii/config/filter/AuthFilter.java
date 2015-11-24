@@ -13,22 +13,17 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Created by tmaugin on 15/05/2015.
+ * Filter reading auth token (JWT) to verify if user is correctly logged
  */
 public class AuthFilter implements Filter {
 
-    private static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",
+    protected static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",
             EXPIRE_ERROR_MSG = "Token has expired",
             JWT_ERROR_MSG = "Unable to parse JWT",
             JWT_INVALID_MSG = "Invalid JWT token";
 
     /**
      * Do Auth filter according to JWT token
-     * @param request
-     * @param response
-     * @param chain
-     * @throws IOException
-     * @throws ServletException
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
@@ -38,27 +33,12 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String authHeader = httpRequest.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
-        if (StringUtils.isBlank(authHeader) || authHeader.split(" ").length != 2) {
-            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, AUTH_ERROR_MSG);
-        } else {
-            JWTClaimsSet claimSet = null;
-            try {
-                claimSet = (JWTClaimsSet) AuthUtils.decodeToken(authHeader);
-            } catch (ParseException e) {
-                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, JWT_ERROR_MSG);
-                return;
-            } catch (JOSEException e) {
-                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, JWT_INVALID_MSG);
-                return;
-            }
+        try {
+            readToken(authHeader);
+            chain.doFilter(request, response);
 
-            // ensure that the token is not expired
-            if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
-                httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, EXPIRE_ERROR_MSG);
-                return;
-            } else {
-                chain.doFilter(request, response);
-            }
+        } catch (InvalidTokenException e) {
+            httpResponse.sendError(e.getResponseCode(), e.getMessage());
         }
     }
 
@@ -68,4 +48,50 @@ public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException { /* unused */ }
 
+    /**
+     * Retrieve auth token from auth header
+     * @param authHeader Auth header to read
+     * @return Token
+     * @throws InvalidTokenException If token is not valid
+     */
+    protected JWTClaimsSet readToken(String authHeader) throws InvalidTokenException {
+        JWTClaimsSet claimSet;
+        if (StringUtils.isBlank(authHeader) || authHeader.split(" ").length != 2) {
+            throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, AUTH_ERROR_MSG);
+        }
+
+        try {
+            claimSet = (JWTClaimsSet) AuthUtils.decodeToken(authHeader);
+        } catch (ParseException e) {
+            throw new InvalidTokenException(HttpServletResponse.SC_BAD_REQUEST, JWT_ERROR_MSG);
+        } catch (JOSEException e) {
+            throw new InvalidTokenException(HttpServletResponse.SC_BAD_REQUEST, JWT_INVALID_MSG);
+        }
+
+        // ensure that the token is not expired
+        if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
+            throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, EXPIRE_ERROR_MSG);
+        }
+        return claimSet;
+    }
+
+    /** Thrown if token is invalid */
+    protected class InvalidTokenException extends Exception {
+        private int responseCode;
+        private String message;
+
+        public InvalidTokenException(int responseCode, String message) {
+            this.responseCode = responseCode;
+            this.message = message;
+        }
+
+        public int getResponseCode() {
+            return responseCode;
+        }
+
+        @Override
+        public String getMessage() {
+            return message;
+        }
+    }
 }

@@ -3,7 +3,9 @@ package fr.sii.service.admin.user;
 import com.google.appengine.api.users.UserServiceFactory;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.entity.AdminUser;
+import fr.sii.entity.User;
 import fr.sii.repository.AdminUserRepo;
+import fr.sii.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +19,38 @@ public class AdminUserService {
     @Autowired
     private AdminUserRepo adminUserRepo;
 
-    public void setAdminUserRepo(AdminUserRepo adminUserRepo) {
-        this.adminUserRepo = adminUserRepo;
-    }
+    @Autowired
+    private UserRepo userRepo;
+
+    /** Current loggued admin, scoped request object */
+    @Autowired
+    private AdminUser currentAdmin;
 
     public List<AdminUser> findAll()
     {
         return adminUserRepo.findAll();
+    }
+
+    /**
+     * Retrieve an admin if the user e-mail match an admin e-mail
+     * @param userId Id of the connected user
+     * @return AdminUser if existing, null otherwise
+     */
+    public AdminUser findFromUserId(int userId) {
+        User user = userRepo.findOne(userId);
+        if (user == null) return null;
+        return adminUserRepo.findByEmail(user.getEmail());
+    }
+
+    /**
+     * Set connected admin for the current request
+     * @param admin Admin to set
+     */
+    public void setCurrentAdmin(AdminUser admin) {
+        //warning, do not replace the autowired object because it's a proxy around an object created by spring in the request
+        currentAdmin.setId(admin.getId());
+        currentAdmin.setEmail(admin.getEmail());
+        currentAdmin.setName(admin.getName());
     }
 
     public AdminUser getCurrentUser() throws NotFoundException {
@@ -38,11 +65,6 @@ public class AdminUserService {
         }
 
         return admin;
-    }
-
-    public void deleteAll()
-    {
-        adminUserRepo.deleteAll();
     }
 
     public AdminUser save(com.google.appengine.api.users.User user) {
