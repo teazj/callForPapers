@@ -1,4 +1,4 @@
-node {
+node("docker") {
 	
 	docker.image("node:4.2.2").inside {
 		sh """
