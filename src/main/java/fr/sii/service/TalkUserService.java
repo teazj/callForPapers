@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import fr.sii.entity.TalkFormat;
+import fr.sii.repository.TalkFormatRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,9 @@ public class TalkUserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private TalkFormatRepo talkFormatRepo;
 
     @Autowired
     private MapperFacade mapper;
@@ -118,6 +123,14 @@ public class TalkUserService {
     }
 
     /**
+     * Get all talk formats
+     * @return List of talk formats
+     */
+    public List<TalkFormat> getTalkFormat() {
+        return talkFormatRepo.findAll();
+    }
+
+    /**
      * Add a new talk into the database
      * @param user User who submit the talk
      * @param talkUser Talk to add
@@ -154,4 +167,5 @@ public class TalkUserService {
 
         return mapper.map(talk, TalkUser.class);
     }
+
 }

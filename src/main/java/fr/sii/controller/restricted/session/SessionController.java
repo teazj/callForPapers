@@ -11,6 +11,7 @@ import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.TalkUser;
 import fr.sii.entity.Talk;
+import fr.sii.entity.TalkFormat;
 import fr.sii.entity.User;
 import fr.sii.repository.UserRepo;
 import fr.sii.service.TalkUserService;
@@ -159,5 +160,12 @@ public class SessionController extends RestrictedController {
         return talkService.editDraft(userId, talkUser);
     }
 
+    /**
+     * Obtain list of talk formats
+     */
+    @RequestMapping(value = "talk/formats")
+    public List<TalkFormat> getTalkFormat() {
+        return talkService.getTalkFormat();
+    }
 
 }

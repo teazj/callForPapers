@@ -21,6 +21,7 @@ public class Talk {
     private String references;
     private Integer difficulty;
     private Date added;
+    private TalkFormat talkformat;
 
     private User user;
 
@@ -111,5 +112,15 @@ public class Talk {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "talkformat")
+    public TalkFormat getTalkFormat() {
+        return talkformat;
+    }
+
+    public void setTalkFormat(TalkFormat talkformat) {
+        this.talkformat = talkformat;
     }
 }
