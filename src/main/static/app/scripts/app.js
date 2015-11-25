@@ -30,7 +30,6 @@ angular.module('CallForPaper', [
         'hc.marked',
         'mdPreview',
         'LocalStorageModule',
-        'ngLodash',
         'cfp.hotkeys',
         'ngAria',
         'restangular',

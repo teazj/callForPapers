@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .factory('authHttpResponseInterceptor', ['$q', '$injector', '$filter', 'lodash', function($q, $injector, $filter, lodash) {
+    .factory('authHttpResponseInterceptor', ['$q', '$injector', '$filter', function($q, $injector, $filter) {
         /**
          * Intercep every request and popup a notification if error
          */
 
         // Debounce error notifications
-        var backendcommunication = lodash.throttle(function() {
+        var backendcommunication = _.throttle(function() {
             $injector.get('Notification').error({
                 message: $filter('translate')('error.backendcommunication'),
                 delay: 3000
             });
         }, 3000);
 
-        var noInternet = lodash.throttle(function() {
+        var noInternet = _.throttle(function() {
             $injector.get('Notification').error({
                 message: $filter('translate')('error.noInternet'),
                 delay: 3000
