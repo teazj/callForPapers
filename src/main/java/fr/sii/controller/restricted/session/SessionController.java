@@ -1,13 +1,23 @@
 package fr.sii.controller.restricted.session;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.gdata.util.ServiceException;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nimbusds.jwt.JWTClaimsSet;
+
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.email.Email;
-import fr.sii.domain.exception.ForbiddenException;
-import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.TalkUser;
 import fr.sii.entity.Talk;
@@ -17,14 +27,6 @@ import fr.sii.repository.UserRepo;
 import fr.sii.service.TalkUserService;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 
 @RestController
@@ -72,7 +74,7 @@ public class SessionController extends RestrictedController {
      * Get all session for the current user
      */
     @RequestMapping(value="/sessions", method= RequestMethod.GET)
-    public List<TalkUser> listTalks(HttpServletRequest req) throws IOException, ServiceException, NotVerifiedException, EntityNotFoundException {
+    public List<TalkUser> listTalks(HttpServletRequest req) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         return talkService.findAll(userId, Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
@@ -82,7 +84,7 @@ public class SessionController extends RestrictedController {
      * Get a session
      */
     @RequestMapping(value= "/sessions/{talkId}", method= RequestMethod.GET)
-    public TalkUser getGoogleSpreadsheet(HttpServletRequest req, @PathVariable Integer talkId) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
+    public TalkUser getGoogleSpreadsheet(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         return talkService.getOne(userId, talkId);
@@ -114,7 +116,7 @@ public class SessionController extends RestrictedController {
      * Add a new draft
      */
     @RequestMapping(value="/drafts", method=RequestMethod.POST)
-    public TalkUser addDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws NotVerifiedException, IOException, ServiceException, EntityNotFoundException {
+    public TalkUser addDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws NotVerifiedException {
         int userId = retrieveUserId(req);
         return talkService.addDraft(userId, talkUser);
     }
@@ -123,7 +125,7 @@ public class SessionController extends RestrictedController {
      * Get all drafts for current user
      */
     @RequestMapping(value="/drafts", method= RequestMethod.GET)
-    public List<TalkUser> listDrafts(HttpServletRequest req) throws IOException, ServiceException, NotVerifiedException, EntityNotFoundException {
+    public List<TalkUser> listDrafts(HttpServletRequest req) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         return talkService.findAll(userId, Talk.State.DRAFT);
@@ -133,7 +135,7 @@ public class SessionController extends RestrictedController {
      * Get a draft
      */
     @RequestMapping(value= "/drafts/{talkId}", method= RequestMethod.GET)
-    public TalkUser getDraft(HttpServletRequest req, @PathVariable Integer talkId) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
+    public TalkUser getDraft(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         return talkService.getOne(userId, talkId);
@@ -143,7 +145,7 @@ public class SessionController extends RestrictedController {
      * Delete a draft
      */
     @RequestMapping(value= "/drafts/{talkId}", method=RequestMethod.DELETE)
-    public TalkUser deleteDraft(HttpServletRequest req, @PathVariable Integer talkId) throws IOException, ServiceException, NotVerifiedException, NotFoundException, ForbiddenException, EntityNotFoundException {
+    public TalkUser deleteDraft(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         return talkService.deleteDraft(userId, talkId);
@@ -153,7 +155,7 @@ public class SessionController extends RestrictedController {
      * Edit a draft
      */
     @RequestMapping(value= "/drafts/{talkId}", method=RequestMethod.PUT)
-    public TalkUser editDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws NotVerifiedException, ServiceException, ForbiddenException, NotFoundException, IOException, EntityNotFoundException {
+    public TalkUser editDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         talkUser.setId(talkId);

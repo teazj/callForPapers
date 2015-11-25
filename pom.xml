@@ -10,11 +10,9 @@
     <artifactId>call-for-paper</artifactId>
 
     <properties>
-        <appengine.app.version>1</appengine.app.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.2.3.RELEASE</spring.version>
         <spring.data.jpa>1.9.0.RELEASE</spring.data.jpa>
-        <appengine.jdk>1.9.21</appengine.jdk>
     </properties>
 
     <prerequisites>
@@ -23,11 +21,6 @@
 
     <dependencies>
         <!-- Compile/runtime dependencies -->
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>${appengine.jdk}</version>
-        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -47,11 +40,6 @@
             <version>1.20.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.oauth-client</groupId>
-            <artifactId>google-oauth-client-appengine</artifactId>
-            <version>1.20.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson</artifactId>
             <version>1.20.0</version>
@@ -60,11 +48,6 @@
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client</artifactId>
-            <version>1.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.http-client</groupId>
-            <artifactId>google-http-client-appengine</artifactId>
             <version>1.20.0</version>
         </dependency>
 
@@ -97,27 +80,6 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.7</version>
-        </dependency>
-
-
-        <!-- Test Dependencies -->
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-testing</artifactId>
-            <version>${appengine.jdk}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-stubs</artifactId>
-            <version>${appengine.jdk}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-labs</artifactId>
-            <version>${appengine.jdk}</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- MySQL Database -->
@@ -261,18 +223,6 @@
         </dependency>
 
 
-        <!--Spreadsheet -->
-        <dependency>
-            <groupId>com.google.gdata</groupId>
-            <artifactId>core</artifactId>
-            <version>1.47.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-drive</artifactId>
-            <version>v2-rev170-1.20.0</version>
-        </dependency>
-
         <!--Utils -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
@@ -360,24 +310,6 @@
 							</excludes>
                         </resource>
                     </webResources>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.google.appengine</groupId>
-                <artifactId>appengine-maven-plugin</artifactId>
-                <version>${appengine.jdk}</version>
-                <configuration>
-                    <address>0.0.0.0</address>
-                    <enableJarClasses>false</enableJarClasses>
-                    <!-- Comment in the below snippet to bind to all IPs instead of just
-                                  localhost -->
-                    <!-- address>0.0.0.0</address> <port>8080</port -->
-                    <!-- Comment in the below snippet to enable local debugging with a remove
-                                  debugger like those included with Eclipse or IntelliJ -->
-                    <jvmFlags>
-                        <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
-                    </jvmFlags>
                 </configuration>
             </plugin>
 

@@ -1,20 +1,11 @@
 package fr.sii.repository.email;
 
-import fr.sii.config.email.EmailingSettings;
-import fr.sii.domain.email.Email;
+import java.util.Properties;
+
 import org.springframework.stereotype.Component;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeUtility;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import fr.sii.config.email.EmailingSettings;
+import fr.sii.domain.email.Email;
 
 /**
  * Created by tmaugin on 02/04/2015.
@@ -32,6 +23,8 @@ public class ProductionEmailingRepository implements EmailingRepository {
 
     public void send(Email email) throws Exception {
 
+        //TODO replace mail sending code
+        /*
         if(!emailingSettings.isSend())
             return;
         Templating t = new Templating(email.getTemplate());
@@ -63,5 +56,6 @@ public class ProductionEmailingRepository implements EmailingRepository {
         message.setSubject(MimeUtility.encodeText(email.getSubject(), "utf-8", "B"));
         message.setContent(t.getTemplate(), "text/html");
         Transport.send(message);
+        */
     }
 }

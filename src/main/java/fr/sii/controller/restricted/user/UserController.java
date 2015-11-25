@@ -1,21 +1,25 @@
 package fr.sii.controller.restricted.user;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.gdata.util.ServiceException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nimbusds.jwt.JWTClaimsSet;
+
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.User;
 import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
@@ -72,11 +76,9 @@ public class UserController {
      * @throws NotVerifiedException
      * @throws NotFoundException
      * @throws IOException
-     * @throws EntityNotFoundException
-     * @throws ServiceException
      */
     @RequestMapping(value="/user", method= RequestMethod.PUT)
-    public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException, EntityNotFoundException, ServiceException {
+    public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException {
 
         //TODO
 
@@ -95,6 +97,6 @@ public class UserController {
         userService.update(u.getId(),profil);
 
         return profil;
-        
+
     }
 }

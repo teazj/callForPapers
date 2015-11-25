@@ -34,6 +34,7 @@ public class DatabaseConfig {
     public DataSource dataSource() {
         HikariDataSource ds = new HikariDataSource();
 
+        ds.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
         ds.setJdbcUrl("jdbc:mysql://" + host + (host.endsWith("/") ? "" : "/") + name);
         if (user != null && user.length() > 0) {
             ds.setUsername(user);
@@ -41,6 +42,7 @@ public class DatabaseConfig {
         if (pass != null && pass.length() > 0) {
             ds.setPassword(pass);
         }
+        ds.setCatalog(name);
 
         ds.addDataSourceProperty("prepStmtCacheSize", 250);
         ds.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);

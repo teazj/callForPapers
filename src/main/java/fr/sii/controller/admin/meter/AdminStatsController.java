@@ -1,17 +1,13 @@
 package fr.sii.controller.admin.meter;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.gdata.util.ServiceException;
-import fr.sii.domain.admin.meter.AdminMeter;
-import fr.sii.domain.exception.NotFoundException;
-import fr.sii.service.admin.stats.AdminStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
+import fr.sii.domain.admin.meter.AdminMeter;
+import fr.sii.service.admin.stats.AdminStatsService;
 
 /**
  * Created by tmaugin on 16/07/2015.
@@ -30,14 +26,10 @@ public class AdminStatsController {
 
     /**
      * Get meter stats (talks count, draft count, ...)
-     * @return
-     * @throws IOException
-     * @throws ServiceException
-     * @throws EntityNotFoundException
      */
     @RequestMapping(value="/meter", method= RequestMethod.GET)
     @ResponseBody
-    public AdminMeter getMeter() throws IOException, ServiceException, EntityNotFoundException, NotFoundException {
+    public AdminMeter getMeter() {
         return adminStatsService.getAdminMeter();
     }
 }

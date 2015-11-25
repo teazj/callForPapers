@@ -3,12 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <!--disable xml validation in production-->
-    <context-param>
-        <param-name>contextClass</param-name>
-        <param-value>fr.sii.config.xml.CustomXmlWebApplicationContext</param-value>
-    </context-param>
-
     <!-- Enable UTF-8 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -46,6 +40,7 @@
                <param-name>contextConfigLocation</param-name>
                <param-value>classpath:META-INF/spring/dispatcherServlet.xml</param-value>
           </init-param>
+         <load-on-startup>1</load-on-startup>
      </servlet>
      <servlet-mapping>
           <servlet-name>dispatcherServlet</servlet-name>
@@ -63,17 +58,6 @@
 	        org.springframework.web.context.ContextLoaderListener
 	    </listener-class>
 	</listener>
-
-    <!--Worker Security-->
-        <security-constraint>
-            <web-resource-collection>
-                <web-resource-name>admin</web-resource-name>
-                <url-pattern>/worker/*</url-pattern>
-            </web-resource-collection>
-            <auth-constraint>
-                <role-name>admin</role-name>
-            </auth-constraint>
-        </security-constraint>
 
     <!--Access denied-->
         <error-page>

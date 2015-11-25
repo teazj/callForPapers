@@ -1,9 +1,21 @@
 package fr.sii.controller.oauth;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.auth.oauth2.TokenResponseException;
-import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.BasicAuthentication;
 import com.google.api.client.http.GenericUrl;
@@ -14,18 +26,11 @@ import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Person;
 import com.nimbusds.jose.JOSEException;
+
 import fr.sii.config.google.GoogleSettings;
 import fr.sii.domain.token.Token;
 import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value="/auth/google", produces = "application/json; charset=utf-8")
@@ -79,7 +84,7 @@ public class GoogleAuthController {
                                     new BasicAuthentication(client_id, client_secret))
                             .execute();
 
-            HttpTransport httpTransport = new UrlFetchTransport();
+            HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = new JacksonFactory();
             GoogleCredential credential = new GoogleCredential.Builder()
                     .setJsonFactory(jsonFactory)

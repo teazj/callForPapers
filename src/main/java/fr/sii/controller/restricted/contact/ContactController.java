@@ -1,13 +1,22 @@
 package fr.sii.controller.restricted.contact;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.gdata.util.ServiceException;
-import com.nimbusds.jwt.JWTClaimsSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.email.Email;
-import fr.sii.domain.exception.CustomException;
-import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.CommentUser;
@@ -17,18 +26,8 @@ import fr.sii.entity.User;
 import fr.sii.service.CommentUserService;
 import fr.sii.service.TalkUserService;
 import fr.sii.service.admin.user.AdminUserService;
-import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 @RestController
@@ -58,7 +57,7 @@ public class ContactController extends RestrictedController {
      * Get all contact message for a given session
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<CommentUser> getAll(@PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException, NotFoundException, ServiceException, ForbiddenException, EntityNotFoundException, IOException {
+    public List<CommentUser> getAll(@PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         return commentService.findAll(userId, talkId);
@@ -68,7 +67,7 @@ public class ContactController extends RestrictedController {
      * Add a contact message for the given session
      */
     @RequestMapping(method = RequestMethod.POST)
-    public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req) throws CustomException, ServiceException, EntityNotFoundException, IOException {
+    public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException, NotFoundException {
         User u = userService.findById(retrieveUserId(req));
         if(u == null) throw new NotFoundException("User not found");
         TalkUser talk = talkUserService.getOne(u.getId(), talkId);
@@ -98,7 +97,7 @@ public class ContactController extends RestrictedController {
      * Edit contact message
      */
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public CommentUser putContact(@PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req) throws NotFoundException, ForbiddenException, NotVerifiedException, ServiceException, EntityNotFoundException, IOException {
+    public CommentUser putContact(@PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         commentUser.setId(id);
