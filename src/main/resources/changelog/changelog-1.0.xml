@@ -168,6 +168,7 @@
         </insert>
     </changeSet>
 
+
     <changeSet id="9" author="lhuet">
         <createTable tableName="talkformat">
             <column name="id" type="int">
@@ -210,4 +211,17 @@
         </insert>
     </changeSet>
 
+
+
+    <changeSet id="10" author="sguernion">
+        <dropForeignKeyConstraint baseTableName="comments" constraintName="comment_admin" />
+        <dropColumn columnName="admin" tableName="comments"/>
+        <addColumn  tableName="comments">
+            <column name="user" type="int">
+                <constraints foreignKeyName="comment_user" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+        </addColumn >
+
+
+    </changeSet>
 </databaseChangeLog>

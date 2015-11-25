@@ -28,7 +28,7 @@ public class AdminCommentController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<CommentUser> getAll(@PathVariable int talkId) {
-        return commentService.findAll(talkId, false);
+        return commentService.findAll(talkId, true);
     }
 
     /**
@@ -37,7 +37,7 @@ public class AdminCommentController {
     @RequestMapping(method=RequestMethod.POST)
     public CommentUser postComment(@Valid @RequestBody CommentUser comment, @PathVariable int talkId) throws NotFoundException, IOException {
         AdminUser admin = adminUserServiceCustom.getCurrentUser();
-        return commentService.addComment(admin, talkId, comment, false);
+        return commentService.addComment(admin, talkId, comment, true);
     }
 
     /**

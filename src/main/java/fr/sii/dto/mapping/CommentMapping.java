@@ -17,7 +17,6 @@ public class CommentMapping implements Mapping {
     @Override
     public void mapClasses(MapperFactory mapperFactory) {
         mapperFactory.classMap(Comment.class, CommentUser.class)
-            .field("talk.user", "user")
             .byDefault()
             .register();
 

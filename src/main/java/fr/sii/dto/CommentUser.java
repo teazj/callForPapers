@@ -11,7 +11,6 @@ public class CommentUser {
 
     private int id;
     private String comment;
-    private String adminName;
     private UserProfil user;
     private Date added;
 
@@ -29,14 +28,6 @@ public class CommentUser {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public String getAdminName() {
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
     }
 
     public Date getAdded() {

@@ -54,6 +54,7 @@ public class CommentUserService {
         Comment comment = mapper.map(commentUser, Comment.class);
         comment.setAdded(new Date());
         comment.setTalk(talk);
+        comment.setUser(talk.getUser());
         comment.setInternal(false);
 
         Comment saved = commentRepo.save(comment);
@@ -72,7 +73,7 @@ public class CommentUserService {
     public CommentUser editComment(int userId, int talkId, CommentUser commentUser) {
         Comment comment = commentRepo.findByIdForTalkAndUser(commentUser.getId(), talkId, userId);
         if (comment == null) return null;
-        if (comment.getAdminUser() != null) return null; //cannot edit a comment posted by an admin
+        if (comment.getUser() != null && comment.getUser().getId() !=  userId) return null; //cannot edit a comment posted by an other user
 
         mapper.map(commentUser, comment);
         commentRepo.flush();

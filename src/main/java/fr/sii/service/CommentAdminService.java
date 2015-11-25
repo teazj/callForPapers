@@ -4,8 +4,10 @@ import fr.sii.dto.CommentUser;
 import fr.sii.entity.AdminUser;
 import fr.sii.entity.Comment;
 import fr.sii.entity.Talk;
+import fr.sii.entity.User;
 import fr.sii.repository.CommentRepo;
 import fr.sii.repository.TalkRepo;
+import fr.sii.repository.UserRepo;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class CommentAdminService {
 
     @Autowired
     private CommentRepo commentRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
     private MapperFacade mapper;
@@ -52,11 +57,12 @@ public class CommentAdminService {
     public CommentUser addComment(AdminUser admin, int talkId, CommentUser commentUser, boolean internal) {
         Talk talk = talkRepo.findOne(talkId);
         if (talk == null) return null;
+        User user = userRepo.findOne(admin.getId());
 
         Comment comment = mapper.map(commentUser, Comment.class);
         comment.setAdded(new Date());
         comment.setTalk(talk);
-        comment.setAdminUser(admin);
+        comment.setUser(user);
         comment.setInternal(internal);
 
         Comment saved = commentRepo.save(comment);

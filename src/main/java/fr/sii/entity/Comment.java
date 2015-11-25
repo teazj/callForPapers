@@ -17,7 +17,7 @@ public class Comment {
     private boolean internal;
 
     private Talk talk;
-    private AdminUser adminUser;
+    private User user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +46,9 @@ public class Comment {
     }
 
     @ManyToOne
-    @JoinColumn(name = "admin")
-    public AdminUser getAdminUser() {
-        return adminUser;
+    @JoinColumn(name = "user")
+    public User getUser() {
+        return user;
     }
 
 
@@ -72,7 +72,7 @@ public class Comment {
         this.talk = talk;
     }
 
-    public void setAdminUser(AdminUser adminUser) {
-        this.adminUser = adminUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -243,7 +243,7 @@
 									<div class="col-xs-8 col-sm-10 col-md-10">
 										<div class="col-xs-12">
 											<span tooltip="{{'contact.edit' | translate}}" ng-click="editContact(contact)" ng-show="contact.admin === false" class="mdi-content-create pull-right"></span>
-											<strong>{{::contact.user.name}} </strong><span class="weak">{{contact.added | relativeDate}}</span>
+											<strong>{{::contact.user.lastname}} {{::contact.user.firstname}} </strong><span class="weak">{{contact.added | relativeDate}}</span>
 										</div>
 										<div marked="::contact.comment">
 										</div>
