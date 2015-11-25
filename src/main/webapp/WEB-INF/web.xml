@@ -64,17 +64,6 @@
 	    </listener-class>
 	</listener>
 
-    <!--Admin Security-->
-        <security-constraint>
-            <web-resource-collection>
-                <web-resource-name>admin</web-resource-name>
-                <url-pattern>/api/admin/*</url-pattern>
-            </web-resource-collection>
-            <auth-constraint>
-                <role-name>admin</role-name>
-            </auth-constraint>
-        </security-constraint>
-
     <!--Worker Security-->
         <security-constraint>
             <web-resource-collection>
@@ -113,7 +102,7 @@
     </filter>
     <filter-mapping>
         <filter-name>authAdminFilter</filter-name>
-        <url-pattern>/api/test/*</url-pattern>
+        <url-pattern>/api/admin/*</url-pattern>
     </filter-mapping>
 
     <!--Submission Security-->

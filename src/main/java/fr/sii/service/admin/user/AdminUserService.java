@@ -1,16 +1,15 @@
 package fr.sii.service.admin.user;
 
-import com.google.appengine.api.users.UserServiceFactory;
-import fr.sii.domain.exception.NotFoundException;
-import fr.sii.entity.AdminUser;
-import fr.sii.entity.User;
-import fr.sii.repository.AdminUserRepo;
-import fr.sii.repository.UserRepo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import fr.sii.entity.AdminUser;
+import fr.sii.entity.User;
+import fr.sii.repository.AdminUserRepo;
+import fr.sii.repository.UserRepo;
 
 @Service
 @Transactional
@@ -53,28 +52,9 @@ public class AdminUserService {
         currentAdmin.setName(admin.getName());
     }
 
-    public AdminUser getCurrentUser() throws NotFoundException {
-        com.google.appengine.api.users.UserService userService = UserServiceFactory.getUserService();
-        com.google.appengine.api.users.User user = userService.getCurrentUser();
-        if(user == null) throw new NotFoundException("User not found");
-
-        //TODO unicité à verifier
-        AdminUser admin = adminUserRepo.findByEmail(user.getEmail());
-        if (admin == null) {
-            admin = save(user);
-        }
-
-        return admin;
+    public AdminUser getCurrentUser() {
+        if (currentAdmin.getEmail() == null) return null;
+        return currentAdmin;
     }
 
-    public AdminUser save(com.google.appengine.api.users.User user) {
-
-        AdminUser adminUser = new AdminUser();
-        adminUser.setName(user.getNickname());
-        adminUser.setEmail(user.getEmail());
-
-        AdminUser saved = adminUserRepo.save(adminUser);
-        adminUserRepo.flush();
-        return saved;
-    }
 }
