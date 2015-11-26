@@ -27,7 +27,7 @@
     "ionicons": "~2.0.1",
     "angular-recaptcha": "~2.2.3",
     "angular-loading-bar": "~0.7.1",
-    "bootstrap-material-design": "~0.3.0",
+    "bootstrap-material-design": "0.4.3",
     "arrive": "~2.2.0",
     "ngFx": "~1.1.0",
     "angular-off-click": "~0.0.7",

@@ -9,7 +9,7 @@
   <div class="col-lg-offset-2 col-lg-8">
     <form name="talkForm" class="form-horizontal" role="form" novalidate>
       <div class="form-group"
-           ng-class="{'has-success': talkForm.typeInput.$valid, 'has-error': talkForm.typeInput.$invalid && (talkForm.typeInput.$dirty || talkInvalid)}">
+           ng-class="{'has-success': talkForm.typeInput.$valid && talkForm.typeInput.$dirty, 'has-error': talkForm.typeInput.$invalid && (talkForm.typeInput.$dirty || talkInvalid)}">
         <label class="control-label">{{'step2.type' | translate}}</label>
         <div>{{'step2.hintType' | translate}}</div>
         <div>
@@ -20,14 +20,14 @@
         </div>
       </div>
       <div class="form-group"
-           ng-class="{'has-success': talkForm.nameInput.$valid, 'has-error': talkForm.nameInput.$invalid && (talkForm.nameInput.$dirty || talkInvalid)}">
+           ng-class="{'has-success': talkForm.nameInput.$valid && talkForm.nameInput.$dirty, 'has-error': talkForm.nameInput.$invalid && (talkForm.nameInput.$dirty || talkInvalid)}">
         <label class="control-label">{{'step2.name' | translate}}</label>
         <div>
           <input required type="text" name="nameInput" class="form-control" ng-model="talk.name">
         </div>
       </div>
       <div class="form-group"
-           ng-class="{'has-success': talkForm.descriptionInput.$valid, 'has-error': talkForm.descriptionInput.$invalid && (talkForm.descriptionInput.$dirty || talkInvalid)}">
+           ng-class="{'has-success': talkForm.descriptionInput.$valid && talkForm.descriptionInput.$dirty, 'has-error': talkForm.descriptionInput.$invalid && (talkForm.descriptionInput.$dirty || talkInvalid)}">
         <label class="control-label">{{'step2.description' | translate}}</label>
         <div>{{'step2.hintDescription' | translate}}</div>
         <div>
@@ -46,14 +46,14 @@
         </div>
       </div>
       <div class="form-group"
-           ng-class="{'has-success': talkForm.difficultyInput.$valid, 'has-error': talkForm.difficultyInput.$invalid && (talkForm.difficultyInput.$dirty || talkInvalid)}">
+           ng-class="{'has-success': talkForm.difficultyInput.$valid && talkForm.difficultyInput.$dirty, 'has-error': talkForm.difficultyInput.$invalid && (talkForm.difficultyInput.$dirty || talkInvalid)}">
         <label class="control-label">{{'step2.difficulty' | translate}}</label>
         <div>
           <span required rating ng-model="talk.difficulty" name="difficultyInput" max="3" readonly="false"></span>
         </div>
       </div>
       <div class="form-group"
-           ng-class="{'has-success': talkForm.trackInput.$valid, 'has-error': talkForm.trackInput.$invalid && (talkForm.trackInput.$dirty || talkInvalid)}">
+           ng-class="{'has-success': talkForm.trackInput.$valid && talkForm.trackInput.$dirty, 'has-error': talkForm.trackInput.$invalid && (talkForm.trackInput.$dirty || talkInvalid)}">
         <label class="control-label">{{'step2.track' | translate}}</label>
         <div>{{'step2.hintTrack' | translate}}</div>
         <div>
