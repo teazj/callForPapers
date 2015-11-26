@@ -1,5 +1,7 @@
 package fr.sii.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class Comment {
     }
 
     @NotNull
+    @Type(type="text")
     public String getComment() {
         return comment;
     }

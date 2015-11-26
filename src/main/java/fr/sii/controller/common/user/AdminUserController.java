@@ -29,6 +29,10 @@ public class AdminUserController {
     public AdminUserInfo getCurrentUser(HttpServletRequest req) {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
 
+        if (claimsSet == null) {
+            return new AdminUserInfo("./", false, false, false, "");
+        }
+
         AdminUser adminUser = adminUserService.findFromUserId(Integer.parseInt(claimsSet.getSubject()));
 
         if (adminUser == null) {

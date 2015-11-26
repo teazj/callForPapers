@@ -1,5 +1,7 @@
 package fr.sii.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -33,6 +35,7 @@ public class Talk {
     }
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     public State getState() {
         return state;
     }
@@ -50,10 +53,12 @@ public class Talk {
         return track;
     }
 
+    @Type(type="text")
     public String getDescription() {
         return description;
     }
 
+    @Type(type="text")
     @Column(name = "refs")
     public String getReferences() {
         return references;

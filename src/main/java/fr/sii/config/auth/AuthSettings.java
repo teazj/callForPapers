@@ -15,13 +15,13 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class AuthSettings {
-    @Value("${auth.secrettoken}")
+    @Value("${cfp.auth.secrettoken}")
     String secretToken;
 
-    @Value("${auth.captchasecret}")
+    @Value("${cfp.auth.captchasecret}")
     String captchaSecret;
 
-    @Value("${auth.captchapublic}")
+    @Value("${cfp.auth.captchapublic}")
     String captchaPublic;
 
     @PostConstruct

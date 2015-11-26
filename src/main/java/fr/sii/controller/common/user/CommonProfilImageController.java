@@ -29,7 +29,6 @@ public class CommonProfilImageController {
      * @param id
      * @throws IOException
      * @throws NotFoundException
-     */
     @RequestMapping(value="/image/user/{id}", method= RequestMethod.GET)
     public void getProfileImageByUserId(HttpServletRequest req, HttpServletResponse res,  @PathVariable Integer id) throws IOException, NotFoundException {
         User u = userService.findById(id);
@@ -51,7 +50,6 @@ public class CommonProfilImageController {
      * @return
      * @throws IOException
      * @throws NotFoundException
-     */
     @RequestMapping(value="/image/user/url/{id}", method= RequestMethod.GET)
     public Uri getProfilImageUrlByUserId(HttpServletRequest req, HttpServletResponse res, @PathVariable Integer id) throws IOException, NotFoundException {
         User u = userService.findById(id);
@@ -68,4 +66,5 @@ public class CommonProfilImageController {
         }
         return new Uri();
     }
+     */
 }

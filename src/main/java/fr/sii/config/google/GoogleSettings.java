@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GoogleSettings {
-    @Value("${google.clientid}")
+    @Value("${cfp.google.clientid}")
     String clientId;
-    @Value("${google.clientsecret}")
+    @Value("${cfp.google.clientsecret}")
     String clientSecret;
 
     public String getClientId() {

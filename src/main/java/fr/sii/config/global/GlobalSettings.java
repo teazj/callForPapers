@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GlobalSettings {
-    @Value("${database.loaded}")
+    @Value("${cfp.database.loaded}")
     private String databaseLoaded;
 
-    @Value("${app.hostname}")
+    @Value("${cfp.app.hostname}")
     private String hostname;
 
     public String getDatabaseLoaded() {

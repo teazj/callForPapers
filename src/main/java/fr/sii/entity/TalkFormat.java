@@ -1,5 +1,7 @@
 package fr.sii.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -42,6 +44,7 @@ public class TalkFormat {
         this.dureeMinutes = dureeMinutes;
     }
 
+    @Type(type="text")
     public String getDescription() {
         return description;
     }

@@ -5,11 +5,8 @@
 
 ## Features
 
- - Powered by App Engine
- - Spring Back-end
+ - Spring Boot Application
  - AngularJS Front-end
- - Google Spreadsheet
- - Datastore database
  - JWT Token
  - Localization (fr, en)
  - Material design
@@ -67,76 +64,14 @@
 
 ### Edit CFP Settings
 
-Add following environment variables in your system.
+Settings are provided by `application.properties` file or by JVM arguments.
 
+Development settings are in `config/application.properties` of this repo.
+Global settings are defined in `src/main/resources/application.properties`.
 
-Edit `src/main/webapp/WEB-INF/appengine-web.xml` replace the informations to suit your need :
+Please read Spring Boot documentation for more information: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>yourAppID</application>
-    <version>1</version>
-    <threadsafe>true</threadsafe>
-    <system-properties>
-        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-    </system-properties>
-    <sessions-enabled>true</sessions-enabled>
-    <env-variables>
-        <env-var name="ENV" value="dev"/>
-        <env-var name="GOOGLE_LOGIN" value="yourGoogleLogin"/> <!--owner's email of the spreadsheet (google drive account)-->
-        <env-var name="GOOGLE_PASSWORD" value="yourGooglePassword" /> <!-- optional password for testing purpose, empty string otherwise-->
-        <env-var name="GOOGLE_CLIENT_ID" value="yourGoogleClientId"/> <!--google oauth client id-->
-        <env-var name="GOOGLE_CLIENT_SECRET" value="youtGoogleClientSecret"/> <!--google oauth secret-->
-        <env-var name="GITHUB_CLIENT_ID" value="yourGithubClientId"/> <!--github oauth client id-->
-        <env-var name="GITHUB_CLIENT_SECRET" value="youtGithubClientSecret"/> <!--github oauth client secret-->
-        <env-var name="EMAIL_SENDER" value="yourEmailUsername"/> <!--sender's email address-->
-        <env-var name="AUTH_SECRET_TOKEN" value="yourRandomSecretToken"/> <!--random secret token for jwt-->
-        <env-var name="AUTH_CAPTCHA_PUBLIC" value="yourRecaptchaPublicToken"/> <!--recaptcha public key-->
-        <env-var name="AUTH_CAPTCHA_SECRET" value="yourRecaptchaSecretToken"/> <!--recaptcha private key-->
-        <env-var name="DB_HOST" value="yourDbHost"/> <!--Database host and port (e.g. localhost:3306)-->
-        <env-var name="DB_NAME" value="yourDbName"/> <!--Name of the CFP database-->
-        <env-var name="DB_USER" value="yourDbUser"/> <!--User to connect to the database-->
-        <env-var name="DB_PASS" value="yourDbPassword"/> <!--Password to connect to database--> 
-    </env-variables>
-</appengine-web-app>
-```
-Edit `src/main/webapp/WEB-INF/application-prod.properties` replace the informations to suit your need :
-
-```properties
-google.login=${GOOGLE_LOGIN}
-google.password=${GOOGLE_PASSWORD}
-google.spreadsheetName=CallForPaper // google spreadsheet name
-google.worksheetName=prod // google worksheet name
-google.clientid=${GOOGLE_CLIENT_ID}
-google.clientsecret=${GOOGLE_CLIENT_SECRET}
-
-github.clientid=${GITHUB_CLIENT_ID}
-github.clientsecret=${GITHUB_CLIENT_SECRET}
-
-auth.secrettoken=${AUTH_SECRET_TOKEN}
-auth.captchapublic=${AUTH_CAPTCHA_PUBLIC}
-auth.captchasecret=${AUTH_CAPTCHA_SECRET}  
-
-database.loaded=true
-
-email.emailsender=${EMAIL_SENDER}
-email.send=true // disable emailing
-
-webapp.dir=dist
-
-app.eventName=DevFest 2015 // navbar title "Call for paper - {{eventName}}"
-app.community=GDG Nantes // community name (for email)
-app.date=06/11/2015 // event date
-app.releasedate=01/09/2015 // speakers publication date
-app.hostname=http://aesthetic-fx-89513.appspot.com // root domain (email images/links)
-
-db.host=${DB_HOST}
-db.name=${DB_NAME}
-db.user=${DB_USER}
-db.pass=${DB_PASS}
-```
-Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers tokens :
+You also need to edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` to add your providers tokens:
 
 ```javascript
   .constant('Config', {
@@ -150,21 +85,15 @@ Edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` add your providers toke
 
 * NodeJS is required to run frontend build tools. The build has been tested with version 4.2.2. Its installation is
 included in the Maven build. However, if you want to contribute to frontend, you may install it by yourself to be able
-to use frontend build tools from the command line. 
-* Java 7 is required by the AppEngine SDK.
+to use frontend build tools from the command line.
 
-### App Engine
+### Development
 
-*TO UPDATE*
+You need a MySQL database to start the application. If you have Docker, you can launch one for development with
+
 ```bash
-$ npm install
-$ bower install
-$ gulp build
-$ mvn appengine:update [-Dmaven.test.skip=true]
+$ mysql.sh
 ```
- Go to : http://YOUR_APP_ID.appspot.com
-
-### Local
 
 #### Backend development
 
@@ -172,8 +101,10 @@ If you intend to contribute to backend exclusively and don't want to deal with t
 development and build, you can start the application with the following command:
 
 ```bash
-$ mvn appengine:devserver -Pautojs [-Dmaven.test.skip=true]
+$ mvn -Pautojs spring-boot:run
 ```
+
+You can start `Application.main` on your favorite IDE too.
 
 #### Frontend development
 

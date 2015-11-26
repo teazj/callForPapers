@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EmailingSettings {
-    @Value("${email.emailsender}")
+    @Value("${cfp.email.emailsender}")
     private String emailSender;
-    @Value("${email.send}")
+    @Value("${cfp.email.send}")
     private boolean send;
 
     public String getEmailSender() {

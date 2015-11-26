@@ -1,5 +1,6 @@
 package fr.sii.entity;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -40,8 +41,6 @@ public class User {
 	/** other url (blog, linkedin...) */
 	private String social;
 
-	/** local stored image for user */
-	private byte[] image;
 	/** link to remote user image (gravatar, google plus...) */
 	private String imageSocialUrl;
 
@@ -118,6 +117,7 @@ public class User {
 		return phone;
 	}
 
+    @Type(type="text")
 	public String getBio() {
 		return bio;
 	}
@@ -136,10 +136,6 @@ public class User {
 
 	public String getSocial() {
 		return social;
-	}
-
-	public byte[] getImage() {
-		return image;
 	}
 
     @Column(name = "image_social_url")
@@ -210,10 +206,6 @@ public class User {
 
 	public void setSocial(String social) {
 		this.social = social;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
 	}
 
 	public void setImageSocialUrl(String imageSocialUrl) {

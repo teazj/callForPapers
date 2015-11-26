@@ -24,16 +24,16 @@ public class GlobalControllerExceptionHandler {
     private static Logger logger = Logger.getLogger(GlobalControllerExceptionHandler.class.getName());
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
+        logger.log(Level.WARNING, e.toString(), e);
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         resp.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        logger.log(Level.WARNING, e.toString(), e);
-        e.printStackTrace();
         return new ResponseEntity<Object>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NotVerifiedException.class)
     public ResponseEntity<Object> handleException(NotVerifiedException e) {
+        logger.log(Level.FINE, e.toString(), e);
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.FORBIDDEN.value());
         resp.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
@@ -43,6 +43,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handleException(BadRequestException e) {
+        logger.log(Level.FINE, e.toString(), e);
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.BAD_REQUEST.value());
         resp.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
@@ -52,6 +53,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleException(NotFoundException e) {
+        logger.log(Level.FINE, e.toString(), e);
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.NOT_FOUND.value());
         resp.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -61,6 +63,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<Object> handleException(ForbiddenException e) {
+        logger.log(Level.FINE, e.toString(), e);
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.FORBIDDEN.value());
         resp.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
@@ -70,6 +73,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleException(MethodArgumentNotValidException e) {
+        logger.log(Level.FINE, e.toString(), e);
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.BAD_REQUEST.value());
         resp.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());

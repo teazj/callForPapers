@@ -15,16 +15,16 @@ import javax.validation.constraints.NotNull;
 @Component
 public class SpreadsheetSettings {
 
-    @Value("${google.login}")
+    @Value("${cfp.google.login}")
     @NotNull
     private String login;
-    @Value("${google.password}")
+    @Value("${cfp.google.password}")
     @NotNull
     private String password;
-    @Value("${google.spreadsheetName}")
+    @Value("${cfp.google.spreadsheetName}")
     @NotNull
     private String spreadsheetName;
-    @Value("${google.worksheetName}")
+    @Value("${cfp.google.worksheetName}")
     @NotNull
     private String worksheetName;
 

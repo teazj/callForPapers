@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GithubSettings {
-    @Value("${github.clientid}")
+    @Value("${cfp.github.clientid}")
     String clientId;
-    @Value("${github.clientsecret}")
+    @Value("${cfp.github.clientsecret}")
     String clientSecret;
 
     public String getClientId() {

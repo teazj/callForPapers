@@ -26,14 +26,11 @@
 			<column name="company" type="varchar(255)"/>
 			<column name="phone" type="varchar(25)"/>
 			<column name="bio" type="text"/>
-			<column name="twitter" type="text"/>
-			<column name="googleplus" type="text"/>
-			<column name="github" type="text"/>
-			<column name="social" type="text"/>
-
-			<column name="image" type="blob"/>
-			<column name="image_social_url" type="text"/>
-
+			<column name="twitter" type="varchar(255)"/>
+			<column name="googleplus" type="varchar(255)"/>
+			<column name="github" type="varchar(255)"/>
+			<column name="social" type="varchar(255)"/>
+			<column name="image_social_url" type="varchar(255)"/>
 		</createTable>
 
 		<addAutoIncrement tableName="users" columnName="id" columnDataType="int"/>
@@ -177,7 +174,7 @@
             <column name="libelle" type="varchar(64)">
                 <constraints nullable="false"></constraints>
             </column>
-            <column name="dureeMinutes" type="int"></column>
+            <column name="duree_minutes" type="int"></column>
             <column name="description" type="text"></column>
         </createTable>
         <addColumn tableName="talks">
@@ -188,25 +185,25 @@
         <insert tableName="talkformat">
             <column name="id" value="1"></column>
             <column name="libelle" value="Conférence"></column>
-            <column name="dureeMinutes" value="55"></column>
+            <column name="duree_minutes" value="55"></column>
             <column name="description" value="Conférence classique pour traiter d'un sujet pendant presque une heure."></column>
         </insert>
         <insert tableName="talkformat">
             <column name="id" value="2"></column>
             <column name="libelle" value="Quickie"></column>
-            <column name="dureeMinutes" value="15"></column>
+            <column name="duree_minutes" value="15"></column>
             <column name="description" value="Traiter un sujet spécifique ou un outil en 15 mn chrono !"></column>
         </insert>
         <insert tableName="talkformat">
             <column name="id" value="3"></column>
             <column name="libelle" value="Tools In Action"></column>
-            <column name="dureeMinutes" value="30"></column>
+            <column name="duree_minutes" value="30"></column>
             <column name="description" value="Place aux démos plutôt qu'au bla bla ... Ou comment épater la galerie en 30 mn !"></column>
         </insert>
         <insert tableName="talkformat">
             <column name="id" value="4"></column>
             <column name="libelle" value="Lab"></column>
-            <column name="dureeMinutes" value="55"></column>
+            <column name="duree_minutes" value="55"></column>
             <column name="description" value="Pas ou peu de slides ! Des exos, des exos, des exos ..."></column>
         </insert>
     </changeSet>
