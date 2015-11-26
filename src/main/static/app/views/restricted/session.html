@@ -238,7 +238,7 @@
 								</div>
 								<div ng-repeat="contact in contacts" class="col-xs-12 noPadding">
 									<div class="col-xs-4 col-sm-2 col-md-2">
-										<img class="img-responsive" gravatar-src="contact.user.email" gravatar-size="200">
+										<img class="img-responsive" ng-src="{{contact.user.socialProfilImageUrl}}" >
 									</div>
 									<div class="col-xs-8 col-sm-10 col-md-10">
 										<div class="col-xs-12">
