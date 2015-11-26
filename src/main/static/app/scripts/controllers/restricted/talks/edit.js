@@ -26,7 +26,8 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, t
         var talkService = isDraft ? Drafts : Sessions;
         if (validate(talk)) {
             $scope.sending = true;
-            return talkService.save(talk).then(function() {
+            return talkService.save(talk).then(function(savedTalk) {
+                $scope.talk = savedTalk;
                 $scope.sending = false;
             }, processError);
         } else {
