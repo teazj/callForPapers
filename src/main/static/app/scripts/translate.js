@@ -3,6 +3,20 @@
 angular.module('CallForPaper')
     .config(['$translateProvider', function($translateProvider) {
         $translateProvider.translations('fr-FR', {
+            DIALOGS_ERROR: 'Erreur',
+            DIALOGS_ERROR_MSG: 'Une erreur inconnue s\'est produite.',
+            DIALOGS_CLOSE: 'Fermer',
+            DIALOGS_PLEASE_WAIT: 'Veuillez patienter',
+            DIALOGS_PLEASE_WAIT_ELIPS: 'Veuillez patienter…',
+            DIALOGS_PLEASE_WAIT_MSG: 'Attente de la fin de l\'opération.',
+            DIALOGS_PERCENT_COMPLETE: '% Complet',
+            DIALOGS_NOTIFICATION: 'Notification',
+            DIALOGS_NOTIFICATION_MSG: 'Notification applicative Inconnu.',
+            DIALOGS_CONFIRMATION: 'Confirmation',
+            DIALOGS_CONFIRMATION_MSG: 'Confirmation requise.',
+            DIALOGS_OK: 'OK',
+            DIALOGS_YES: 'Oui',
+            DIALOGS_NO: 'Non',
             'lang': {
                 'fr-FR': 'Français',
                 'en-US': 'Anglais'
@@ -78,6 +92,14 @@ angular.module('CallForPaper')
                 'verified': 'Votre email a été vérifié',
                 'alreadyVerified': 'Ce compte a déjà été vérifié',
                 'notVerified': 'Erreur de vérification'
+            },
+            talk: {
+                edit: {
+                    title: {
+                        'new': 'Nouveau talk',
+                        'update': 'Modification du talk «{{name}}»'
+                    }
+                }
             },
             'step1': {
                 'warning': 'Attention les informations enregistrées lors de cette étape modifieront votre profil pour tous les talks déjà proposés.',
@@ -274,6 +296,20 @@ angular.module('CallForPaper')
             'over_a_year_from_now': 'dans plus d\'un an'
         });
         $translateProvider.translations('en-US', {
+            DIALOGS_ERROR: 'Error',
+            DIALOGS_ERROR_MSG: 'An unknown error has occurred.',
+            DIALOGS_CLOSE: 'Close',
+            DIALOGS_PLEASE_WAIT: 'Please Wait',
+            DIALOGS_PLEASE_WAIT_ELIPS: 'Please Wait…',
+            DIALOGS_PLEASE_WAIT_MSG: 'Waiting on operation to complete.',
+            DIALOGS_PERCENT_COMPLETE: '% Complete',
+            DIALOGS_NOTIFICATION: 'Notification',
+            DIALOGS_NOTIFICATION_MSG: 'Unknown application notification.',
+            DIALOGS_CONFIRMATION: 'Confirmation',
+            DIALOGS_CONFIRMATION_MSG: 'Confirmation required.',
+            DIALOGS_OK: 'OK',
+            DIALOGS_YES: 'Yes',
+            DIALOGS_NO: 'No',
             'lang': {
                 'fr-FR': 'French',
                 'en-US': 'English'
@@ -349,6 +385,14 @@ angular.module('CallForPaper')
                 'verified': 'Your email has been verified',
                 'alreadyVerified': 'This account is already verified',
                 'notVerified': 'Errror during verification'
+            },
+            talk: {
+                edit: {
+                    title: {
+                        'new': 'New talk',
+                        'update': 'Modification of talk "{{name}}"'
+                    }
+                }
             },
             'step1': {
                 'warning': 'Warning ! The informations given during this step will also be used for the talks already submitted.',

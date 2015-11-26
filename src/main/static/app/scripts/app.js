@@ -30,9 +30,10 @@ angular.module('CallForPaper', [
         'hc.marked',
         'mdPreview',
         'LocalStorageModule',
-        'ngLodash',
         'cfp.hotkeys',
-        'ngAria'
+        'ngAria',
+        'restangular',
+        'dialogs.main'
     ])
     .constant('Config', {
         'recaptcha': '6LdxgxATAAAAAFUCo5RuwxxCGF20b-UWaawAM0nM',
@@ -47,7 +48,10 @@ angular.module('CallForPaper', [
         $httpProvider.interceptors.push('authHttpResponseInterceptor');
         $httpProvider.interceptors.push('csrfInterceptor');
     }])
-    .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', 'AppConfigProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider, AppConfigProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', 'AppConfigProvider', 'RestangularProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider, AppConfigProvider, RestangularProvider) {
+
+        RestangularProvider.setBaseUrl('/api');
+
         $urlRouterProvider
             .when('', '/dashboard')
             .when('/', '/dashboard')
@@ -78,7 +82,7 @@ angular.module('CallForPaper', [
                             controller: 'AdminSessionsCtrl'
                         }
                     }
-                },
+                }
             })
             // Config
             .state('admin.config', {
@@ -159,7 +163,7 @@ angular.module('CallForPaper', [
                             isConfigured: AppConfigProvider.$get().isConfigured
                         }
                     }
-                },
+                }
             })
             .state('app.dashboard', {
                 url: '/dashboard',
@@ -200,6 +204,66 @@ angular.module('CallForPaper', [
                 controller: 'SignupCtrl'
             })
 
+            .state('app.talks', {
+                url: '/talks',
+                templateUrl: 'views/restricted/talks/talks.html',
+                abstract: true,
+                resolve: {
+                    verified: AuthServiceProvider.$get().verified,
+                    isOpen: AppConfigProvider.$get().isOpen
+                }
+            })
+            .state('app.talks.new', {
+                url: '/new',
+                templateUrl: 'views/restricted/talks/edit.html',
+                resolve: {
+                    talk: function() {
+                        return {
+                            type: null,          // Completely unnecessary, but gives an overview of the
+                            name: null,          // structure of a talk object
+                            description: null,
+                            references: null,
+                            difficulty: null,
+                            track: null
+                        };
+                    }
+                },
+                controller: 'AppTalksEditCtrl'
+            })
+            .state('app.talks.submitted', {
+                templateUrl: 'views/restricted/talks/submitted.html'
+            })
+
+            .state('app.drafts', {
+                url: '/drafts',
+                abstract: true,
+                templateUrl: 'views/restricted/talks/talks.html',
+                resolve: {
+                    verified: AuthServiceProvider.$get().verified,
+                    isOpen: AppConfigProvider.$get().isOpen
+                }
+            })
+            .state('app.drafts.edit', {
+                url: '/{id:int}/edit',
+                templateUrl: 'views/restricted/talks/edit.html',
+                resolve: {
+                    talk: function(Drafts, $stateParams) {
+                        var id = $stateParams.id;
+                        if (id) {
+                            return Drafts.get(id);
+                        } else {
+                            return null;
+                        }
+                    }
+                },
+                controller: 'AppTalksEditCtrl',
+                onEnter: function(talk, $state) {
+                    if (!talk) {
+                        $state.go('app.dashboard');
+                    }
+                }
+            })
+
 
             // Form
             .state('app.form', {
@@ -217,7 +281,7 @@ angular.module('CallForPaper', [
                         templateUrl: 'views/restricted/form/step1.html',
                         controller: 'Step1Ctrl'
                     }
-                },
+                }
             })
 
             .state('app.form.step2', {

@@ -4,7 +4,7 @@
       <div ng-if="isVerified">
         <div class="row">
             <div ng-show="submission !== undefined" class="col-md-6">
-              <a ng-show="submission === true" ui-sref="app.form" class="btn btn-block btn-primary">
+              <a ng-show="submission === true" ui-sref="app.talks.new" class="btn btn-block btn-primary">
                 <span>{{'dashboard.createNewSession' | translate}}</span>
               </a>
               <div>
@@ -35,7 +35,7 @@
                     </span>
                   </td>
                   <td>
-                      <a ng-show="submission" ui-sref='app.form({id: draft.id})'><span class="action glyphicon glyphicon-pencil pull-right white" aria-hidden="true"></span></a>
+                      <a ng-show="submission" ui-sref='app.drafts.edit({id: draft.id})'><span class="action glyphicon glyphicon-pencil pull-right white" aria-hidden="true"></span></a>
                   </td>
                   <td>
                       <span ng-click="delete(draft.id)" class="action glyphicon glyphicon-remove pull-right white" aria-hidden="true"></span>
