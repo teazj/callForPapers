@@ -59,6 +59,11 @@ angular.module('CallForPaper')
                                     $scope.formData.phone = profil[key];
                                 }
                                 break;
+                            case 'email':
+                                   if (profil[key] !== null) {
+                                       $scope.email = profil[key];
+                                   }
+                            break;
                             case 'imageProfilKey':
                                 if (profil[key] !== undefined) {
                                     $scope.formData.imageProfilKey = profil[key];
