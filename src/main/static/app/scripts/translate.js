@@ -85,7 +85,7 @@ angular.module('CallForPaper')
                 'passwordRequired': 'Le mot de passe est obligatoire',
                 'passwordMinLength': 'Le mot de passe doit contenir au moins 6 caractères',
                 'passwordMatch': 'Les mots de passe doivent être identiques',
-                'alreadyExists': 'Il existe déjà un utilisateur associé à cet adresse e-mail'
+                'alreadyExists': 'Il existe déjà un utilisateur associé à cette adresse e-mail'
             },
             'verify': {
                 'title': 'Verification de l\'email',
