@@ -67,11 +67,11 @@
 Settings are provided by `application.properties` file or by JVM arguments.
 
 Development settings are in `config/application.properties` of this repo.
-Global settings are defined in `src/main/resources/application.properties`.
+Global, embedded, settings are defined in `src/main/resources/application.properties`.
 
-Please read Spring Boot documentation for more information: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
+Please read [Spring Boot documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) for more information:
 
-You also need to edit `src/main/webapp/WEB-INF/static/app/scripts/app.js` to add your providers tokens:
+You also need to edit `src/main/static/app/scripts/app.js` to add your providers tokens:
 
 ```javascript
   .constant('Config', {
@@ -92,7 +92,7 @@ to use frontend build tools from the command line.
 You need a MySQL database to start the application. If you have Docker, you can launch one for development with
 
 ```bash
-$ mysql.sh
+$ mysql-dev.sh
 ```
 
 #### Backend development
@@ -101,10 +101,10 @@ If you intend to contribute to backend exclusively and don't want to deal with t
 development and build, you can start the application with the following command:
 
 ```bash
-$ mvn -Pautojs spring-boot:run
+$ mvn -Prelease spring-boot:run
 ```
 
-You can start `Application.main` on your favorite IDE too.
+You can start `fr.sii.Application#main()` on your favorite IDE too.
 
 #### Frontend development
 
@@ -126,18 +126,12 @@ Frontend contributors can use usual frontend build tools from the command line:
     ```
 
 A Gulp task `gulp serve` is available to facilitate contributions to the front code. It starts a
-web server on port 3000 for files in `src/main/webapp/WEB-INF/static/app` directory. Livereload is configured and
+web server on port 3000 for files in `src/main/static/app` directory. Livereload is configured and
 requests to the backend are forwarded to the AppEngine development server (`http://127.0.0.1:8080`) thanks to an proxy.
 
     ```bash
     $ gulp serve # or gulp serve:dist for minified version of front files, but no livereload in this case
     ```
-
-*For local deployment, set all `appengine-web.xml` env-var in you OS with the same value.*
-
- - Go to : http://127.0.0.1:8080
-
- - The application will guide you through the process to link your Google Drive account to the application.
 
 ## Usage :
 
@@ -153,7 +147,5 @@ requests to the backend are forwarded to the AppEngine development server (`http
 ### App entry points :
 
  - http://127.0.0.1:8080/ : User login page (create new talks)
-
- - http://127.0.0.1:8080/#/config : Google Drive linking panel (autorize CFP to access your account to create the spreadsheet)
 
  - http://127.0.0.1:8080/#/admin : Admin panel (rating, comment...)
