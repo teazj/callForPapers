@@ -57,8 +57,8 @@
             <artifactId>spring-boot-actuator</artifactId>
         </dependency>
         <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-remote-shell</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-remote-shell</artifactId>
         </dependency>
 
         <!--OAuth -->
@@ -218,16 +218,16 @@
                 <version>2.4</version>
                 <configuration>
                     <archiveClasses>true</archiveClasses>
-					<warSourceExcludes>WEB-INF/static/node_modules/</warSourceExcludes>
+                    <warSourceExcludes>WEB-INF/static/node_modules/</warSourceExcludes>
                     <webResources>
                         <!-- in order to interpolate version from pom into appengine-web.xml -->
                         <resource>
                             <directory>${basedir}/src/main/webapp/WEB-INF</directory>
                             <filtering>false</filtering>
                             <targetPath>WEB-INF</targetPath>
-							<excludes>
-								<exclude>static/node_modules/</exclude>
-							</excludes>
+                            <excludes>
+                                <exclude>static/node_modules/</exclude>
+                            </excludes>
                         </resource>
                     </webResources>
                 </configuration>
@@ -283,28 +283,6 @@
                                 <arguments>install</arguments>
                             </configuration>
                         </execution>
-                        <execution>
-                            <id>gulp build</id>
-                            <goals>
-                                <goal>gulp</goal>
-                            </goals>
-                            <phase>generate-resources</phase>
-                            <configuration>
-                                <arguments>clean build</arguments>
-                            </configuration>
-                        </execution>
-                        <!--
-                        <execution>
-                            <id>gulp test</id>
-                            <goals>
-                                <goal>gulp</goal>
-                            </goals>
-                            <phase>test</phase>
-                            <configuration>
-                                <arguments>test</arguments>
-                            </configuration>
-                        </execution>
-                        -->
                     </executions>
                 </plugin>
             </plugins>
@@ -331,6 +309,30 @@
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>gulp build</id>
+                                <goals>
+                                    <goal>gulp</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <arguments>clean build</arguments>
+                                </configuration>
+                            </execution>
+                            <!--
+                            <execution>
+                                <id>gulp test</id>
+                                <goals>
+                                    <goal>gulp</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <arguments>test</arguments>
+                                </configuration>
+                            </execution>
+                            -->
+                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>pl.project13.maven</groupId>
