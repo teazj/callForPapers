@@ -113,7 +113,7 @@ public class AuthController {
         User savedUser = userService.save(user);
 
         // Send validation email
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("link", globalSettings.getHostname() + "/#/verify?id=" + String.valueOf(savedUser.getId()) + "&token=" + savedUser.getVerifyToken());
         map.put("hostname", globalSettings.getHostname());
         logger.info(globalSettings.getHostname() + "/#/verify?id=" + String.valueOf(savedUser.getId()) + "&token=" + savedUser.getVerifyToken());

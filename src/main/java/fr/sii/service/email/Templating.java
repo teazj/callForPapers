@@ -1,4 +1,4 @@
-package fr.sii.repository.email;
+package fr.sii.service.email;
 
 /**
  * Created by tmaugin on 08/04/2015.

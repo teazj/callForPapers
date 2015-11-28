@@ -1,16 +1,13 @@
 package fr.sii.service.email;
 
-/**
- * Created by tmaugin on 02/04/2015.
- */
-
 import fr.sii.config.email.EmailingSettings;
 import fr.sii.domain.email.Email;
-import fr.sii.repository.email.EmailingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailingService {
@@ -19,14 +16,22 @@ public class EmailingService {
     private EmailingSettings emailingSettings;
 
     @Autowired
-    private EmailingRepository emailingRepository;
-
-    @PostConstruct
-    public void login(){
-        emailingRepository.login(emailingSettings);
-    }
+    private JavaMailSender mailSender;
 
     public void send(Email e) throws Exception {
-        emailingRepository.send(e);
+        if(!emailingSettings.isSend()) return;
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        Templating t = new Templating(e.getTemplate());
+        t.setData(e.getData());
+
+        helper.setFrom(emailingSettings.getEmailSender());
+        helper.setTo(e.getTo());
+        helper.setBcc(e.getBcc().toArray(new String[e.getBcc().size()]));
+        helper.setSubject(e.getSubject());
+        helper.setText(t.getTemplate(), true);
+
+        mailSender.send(message);
     }
 }

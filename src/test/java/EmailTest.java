@@ -1,4 +1,4 @@
-import fr.sii.repository.email.Templating;
+import fr.sii.service.email.Templating;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
