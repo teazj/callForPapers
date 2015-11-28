@@ -67,7 +67,7 @@ gulp.task('tdd', function() {
      }).start();*/
 });
 
-gulp.task('copy', function() {
+gulp.task('copy', ['styles'], function() {
     return es.merge(gulp.src([
             yeoman.app + '*.{ico,png,txt}',
             yeoman.app + '{403,404}.html',
@@ -75,7 +75,7 @@ gulp.task('copy', function() {
             yeoman.app + 'lib/**/*'
         ], {base: yeoman.app})
         .pipe(gulp.dest(yeoman.dist)),
-        gulp.src(yeoman.app + 'fonts/', {base: yeoman.app})
+        gulp.src(yeoman.tmp + 'fonts/*', {base: yeoman.tmp})
             .pipe(gulp.dest(yeoman.dist)));
 });
 
@@ -102,7 +102,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('styles', ['less'], function() {
-    gulp.src(yeoman.app + 'bower_components/**/fonts/*.{woff,woff2,svg,ttf,eot}')
+    return gulp.src(yeoman.app + 'bower_components/**/fonts/*.{woff,woff2,svg,ttf,eot}')
         .pipe(flatten())
         .pipe(gulp.dest(yeoman.tmp + 'fonts/'));
 });
@@ -142,7 +142,7 @@ gulp.task('serve:dist', ['build'], function() {
 
 gulp.task('build', ['usemin']);
 
-gulp.task('usemin', ['images', 'less', 'copy'], function() {
+gulp.task('usemin', ['images', 'copy'], function() {
 
         var minifyHtmlOptions = {empty: true, conditionals: true, loose: true};
 
