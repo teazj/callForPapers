@@ -3,6 +3,7 @@ package fr.sii.controller.common.application;
 import fr.sii.dto.ApplicationSettings;
 import fr.sii.service.admin.config.ApplicationConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,5 +26,15 @@ public class ApplicationController {
     public ApplicationSettings getApplicationSettings() {
 
         return applicationConfigService.getAppConfig();
+    }
+
+
+    /**
+     * save application settings, (name, dates, ...)
+     * @return
+     */
+    @RequestMapping(value="/application", method= RequestMethod.POST)
+    public void getApplicationSettings(@RequestBody ApplicationSettings settings) {
+        applicationConfigService.saveConfiguration(settings);
     }
 }

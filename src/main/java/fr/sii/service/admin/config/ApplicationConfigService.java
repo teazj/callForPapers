@@ -38,17 +38,26 @@ public class ApplicationConfigService {
     }
 
     public void openCfp() {
-        CfpConfig conf = cfpConfigRepo.findByKey("open");
-        conf.setValue("true");
-        cfpConfigRepo.save(conf);
-        System.out.println(conf.getKey() + " -> " + conf.getValue());
+        saveConf("open", "true");
     }
 
     public void closeCfp() {
-        CfpConfig conf = cfpConfigRepo.findByKey("open");
-        conf.setValue("false");
+        saveConf("open", "false");
+    }
+
+    public void saveConf(String key,String value){
+        CfpConfig conf = cfpConfigRepo.findByKey(key);
+        conf.setValue(value);
         cfpConfigRepo.save(conf);
         System.out.println(conf.getKey() + " -> " + conf.getValue());
     }
 
+    public void saveConfiguration(ApplicationSettings settings) {
+        saveConf("community", settings.getCommunity());
+        saveConf("eventName", settings.getEventName());
+        saveConf("date", settings.getDate());
+        saveConf("decisionDate", settings.getDecisionDate());
+        saveConf("releaseDate", settings.getReleaseDate());
+        saveConf("open", String.valueOf(settings.isOpen()));
+    }
 }

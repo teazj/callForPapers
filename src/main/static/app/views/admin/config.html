@@ -2,13 +2,47 @@
 	<div class="panel">
 		<div class="panel-body">
 			<h1>{{'admin.config' | translate}}</h1>
-			<hr>
-			<div class="togglebutton">
-				<label class="col-xs-12 col-md-6 col-lg-4">
-					{{'admin.allowSubmissions' | translate}}
-					<input type="checkbox" checked="submission" ng-model="submission" ng-change="toggleSubmit(submission)">
-				</label>
-			</div>
+            <form  id="confForm" name="form" xt-form role="form" novalidate>
+            <div class="form-group" bs-has verify="verify">
+                <div class="togglebutton">
+                    <label>{{'admin.allowSubmissions' | translate}}
+                        <input type="checkbox" checked="submission" ng-model="config.open" >
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" bs-has verify="verify">
+                <label for="community">{{'admin.community' | translate}}
+
+                    <input required type="text" name="community" ng-class="{'ng-verify' : verify}" class="form-control" id="community" ng-model="config.community">
+                </label>
+            </div>
+            <div class="form-group" bs-has verify="verify">
+                <label for="eventName">{{'admin.eventName' | translate}}
+
+                    <input required type="text" name="eventName" ng-class="{'ng-verify' : verify}" class="form-control" id="eventName" ng-model="config.eventName">
+                </label>
+            </div>
+            <div class="form-group" bs-has verify="verify">
+                <label  for="start">{{'admin.startDate' | translate}}
+                    <input required  type="date" name="start" ng-class="{'ng-verify' : verify}" class="form-control" id="start" value="{{ config.start | date: 'yyyy-MM-dd' }}" ng-model="config.start">
+                </label>
+            </div>
+            <div class="form-group" bs-has verify="verify">
+                <label  for="decision">{{'admin.decisionDate' | translate}}
+                    <input required type="date" name="decision" ng-class="{'ng-verify' : verify}" class="form-control" id="decision" value="{{ config.decision | date: 'yyyy-MM-dd' }}" ng-model="config.decision">
+                </label>
+
+            </div>
+            <div class="form-group" bs-has verify="verify">
+                <label  for="release">{{'admin.releaseDate' | translate}}
+                    <input required type="date" name="release" ng-class="{'ng-verify' : verify}" class="form-control" id="release" value="{{ config.release | date: 'yyyy-MM-dd' }}" ng-model="config.release">
+                </label>
+            </div>
+            </form>
+            <button ng-click="saveConfig()" ng-disabled="sending" class="btn btn-block btn-primary">
+                <span class="mdi-content-save pull-right" ng-class="{'glyphicon-refresh-animate' : sending, 'mdi-content-save' : !sending, 'mdi-navigation-refresh' : sending}"></span>
+                {{'admin.btn.save' | translate}}
+            </button>
 		</div>
 	</div>
 </div>

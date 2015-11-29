@@ -248,7 +248,14 @@ angular.module('CallForPaper')
                 'edit': 'Editer',
                 'delete': 'Supprimer',
                 'allType': 'Tous',
-                'newMessages': 'Nouveaux messages'
+                'newMessages': 'Nouveaux messages',
+                'community':'Nom de la communautée organisatrice',
+                'eventName':'Nom de l\'événement',
+                'decisionDate':'Date de fin des votes',
+                'releaseDate':'Date de fin des soumissions',
+                'startDate':'Date du début de l\'événement',
+                'configCfp':'Configuration du CFP',
+                'btn.save':'Sauvegarder'
 
             },
             'config': {
