@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, talk, Sessions, Drafts, RestrictedDraft, $state, $q, dialogs, translateFilter) {
+angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, talk, Sessions, Drafts, RestrictedDraft, $state, $q, dialogs, translateFilter,Notification) {
 
     $scope.talk = talk;
 
@@ -23,12 +23,18 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, t
     }
 
     function save(talk, isDraft) {
+        window.console.log("hellp")
         var talkService = isDraft ? Drafts : Sessions;
         if (validate(talk)) {
             $scope.sending = true;
             return talkService.save(talk).then(function(savedTalk) {
                 $scope.talk = savedTalk;
                 $scope.sending = false;
+                var notifMessage = isDraft ? translateFilter('talk.edit.saveDraft') : translateFilter('talk.saveSession');
+                
+                Notification.success(notifMessage);
+                
+                $state.go('app.dashboard');
             }, processError);
         } else {
             $scope.talkInvalid = true;

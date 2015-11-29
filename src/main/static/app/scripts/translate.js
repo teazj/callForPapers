@@ -97,7 +97,9 @@ angular.module('CallForPaper')
                     title: {
                         'new': 'Nouveau talk',
                         'update': 'Modification du talk «{{name}}»'
-                    }
+                    },
+                    saveDraft : "Brouillon enregistré.",
+                    saveSession : "Session enregistré.",
                 }
             },
             'step1': {
