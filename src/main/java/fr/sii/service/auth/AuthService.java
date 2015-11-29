@@ -96,6 +96,7 @@ public class AuthService {
                 if(imageProfilURL != null && !imageProfilURL.equals("")) {
                     userToSave.setImageProfilURL(imageProfilURL);
                 } else {
+                    
                     userToSave.setImageProfilURL(null);
                 }
                 userToSave = userService.save(userToSave);
