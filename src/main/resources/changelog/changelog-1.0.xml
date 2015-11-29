@@ -39,7 +39,7 @@
 
 	<changeSet id="2" author="alex">
 		<createTable tableName="admins">
-	
+
     		<column name="id" type="int">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -229,6 +229,13 @@
         <addColumn  tableName="users">
             <column name="image_profil_url" type="varchar(255)">
             </column>
+        </addColumn >
+    </changeSet>
+
+    <changeSet id="12" author="sguernion">
+        <addColumn  tableName="talks">
+            <column name="schedule_date" type="datetime" />
+            <column name="schedule_heure" type="varchar(5)"/>
         </addColumn >
     </changeSet>
 </databaseChangeLog>

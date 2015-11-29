@@ -24,8 +24,11 @@ public class Talk {
     private Integer difficulty;
     private Date added;
     private TalkFormat talkformat;
-
     private User user;
+
+    //schedule data
+    private Date date;
+    private String heure;
 
 
     @Id
@@ -127,5 +130,28 @@ public class Talk {
 
     public void setTalkFormat(TalkFormat talkformat) {
         this.talkformat = talkformat;
+    }
+
+    @Column(name="schedule_heure")
+    public String getHeure() {
+        return heure;
+    }
+
+    public void setHeure(String heure) {
+        this.heure = heure;
+    }
+
+    @Column(name="schedule_date")
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Transient
+    public int getDuree() {
+        return talkformat.getDureeMinutes();
     }
 }
