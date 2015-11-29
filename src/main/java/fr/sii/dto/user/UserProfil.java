@@ -15,8 +15,7 @@ public class UserProfil {
     private String twitter;
     private String googleplus;
     private String github;
-    private String imageProfilKey;
-    private String socialProfilImageUrl;
+    private String imageProfilURL;
     private String email;
 
     public String getLastname() {
@@ -91,21 +90,15 @@ public class UserProfil {
         this.github = github;
     }
 
-    public String getImageProfilKey() {
-        return imageProfilKey;
+    public String getImageProfilURL() {
+        return imageProfilURL;
     }
 
-    public void setImageProfilKey(String imageProfileKey) {
-        this.imageProfilKey = imageProfileKey;
+    public void setImageProfilURL(String imageProfilURL) {
+        this.imageProfilURL = imageProfilURL;
     }
 
-    public String getSocialProfilImageUrl() {
-        return socialProfilImageUrl;
-    }
 
-    public void setSocialProfilImageUrl(String socialProfilImageUrl) {
-        this.socialProfilImageUrl = socialProfilImageUrl;
-    }
     public int getId() {
         return id;
     }

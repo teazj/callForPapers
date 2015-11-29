@@ -41,8 +41,8 @@ public class User {
 	/** other url (blog, linkedin...) */
 	private String social;
 
-	/** link to remote user image (gravatar, google plus...) */
-	private String imageSocialUrl;
+	/** local stored image for user */
+	private String imageProfilURL;
 
 	/**
 	 * Count sign in provider the user has
@@ -138,9 +138,9 @@ public class User {
 		return social;
 	}
 
-    @Column(name = "image_social_url")
-	public String getImageSocialUrl() {
-		return imageSocialUrl;
+    @Column(name = "image_profil_url")
+	public String getImageProfilURL() {
+		return imageProfilURL;
 	}
 
 
@@ -208,7 +208,7 @@ public class User {
 		this.social = social;
 	}
 
-	public void setImageSocialUrl(String imageSocialUrl) {
-		this.imageSocialUrl = imageSocialUrl;
+	public void setImageProfilURL(String imageProfilURL) {
+		this.imageProfilURL = imageProfilURL;
 	}
 }

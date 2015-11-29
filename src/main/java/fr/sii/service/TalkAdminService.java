@@ -45,7 +45,7 @@ public class TalkAdminService {
         Talk talk = talkRepo.findOne(talkId);
         TalkAdmin talkAdmin = mapper.map(talk, TalkAdmin.class);
         UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
-        user.setSocialProfilImageUrl(talk.getUser().getImageSocialUrl());
+        user.setImageProfilURL(talk.getUser().getImageProfilURL());
         talkAdmin.setSpeaker(user);
         talkAdmin.setUserId(user.getId());
         return talkAdmin;

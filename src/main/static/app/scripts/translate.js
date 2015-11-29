@@ -56,7 +56,6 @@ angular.module('CallForPaper')
                 'success': 'Profil sauvegardé',
                 'error': 'Erreur lors de l\'enregistrement',
                 'avatar': 'Image de profil :',
-                'hintAvatar': 'Choisissez une photo pour le site web (taille 360x360 et 5Mo maximum)',
                 'dropImage': 'Déposer l\'image ici',
                 'selectImage': 'Parcourir'
             },

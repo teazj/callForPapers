@@ -71,42 +71,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label">{{'profil.avatar' | translate}}</label>
-                            <div>{{'profil.hintAvatar' | translate}}</div>
+                            <label class="control-label" for="social">{{'profil.avatar' | translate}}</label>
                             <div>
-                                <div class="col-xs-12 col-md-6">
-                                    <span ng-repeat="f in files">
-                                        <span>
-                                            <img alt="avatar" class="avatar" ngf-src="f" ngf-default-src="'/lib/images/placeholder.png'">
-                                        </span>
-                                    </span>
+                                <input type="text" class="form-control" name="avatar" id="avatar" ng-model="formData.imageProfilURL">
+                            </div>
+                            <div>
+                                <div class="col-s-12 col-md-6">
                                     <span>
-                                        <img ng-if="formData.imageProfilKey && !(files && files.length > 0)" class="avatar" ng-src="/api/profil/image/{{formData.imageProfilKey}}" alt="avatar">
-                                        <img ng-if="!formData.socialProfilImageUrl && !formData.imageProfilKey && !(files && files.length > 0)" class="avatar" ng-src="/lib/images/placeholder.png" alt="avatar">
-                                        <img ng-if="formData.socialProfilImageUrl && !(formData.imageProfilKey || (files && files.length > 0))" class="avatar" ng-src="{{formData.socialProfilImageUrl}}" alt="avatar">
+                                        <img ng-if="formData.imageProfilURL" class="avatar" ng-src="{{formData.imageProfilURL}}" alt="avatar">
+                                        <img ng-if="!formData.imageProfilURL" class="avatar" ng-src="/lib/images/placeholder.png" alt="avatar">
                                     </span>
-                                    <span style="vertical-align: top;" class="mdi-action-delete" ng-if="formData.socialProfilImageUrl || formData.imageProfilKey || (files && files.length > 0)" ng-click="removeImage()"></span>
-                                </div>
-                                <div class="col-xs-12 col-md-6">
-                                    <div ngf-drop ng-model="files" class="drop-box"
-                                    ngf-drag-over-class="dragover"
-                                    ngf-multiple="false"
-                                    ngf-allow-dir="false"
-                                    ngf-max-size='5000000'
-                                    ngf-accept="'image/*'">
-                                        {{'profil.dropImage' | translate}}
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3 col-md-6">
-                                        <button class="btn btn-block btn-info"
-                                        ng-model="files"
-                                        ngf-multiple="false"
-                                        ngf-allow-dir="false"
-                                        ngf-max-size='5000000'
-                                        ngf-accept="'image/*'"
-                                        ngf-select
-                                        >{{'profil.selectImage' | translate}}
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

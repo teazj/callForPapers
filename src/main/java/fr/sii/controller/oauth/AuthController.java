@@ -1,5 +1,8 @@
 package fr.sii.controller.oauth;
 
+import fr.sii.service.auth.GravatarUtils;
+
+
 import com.nimbusds.jose.JOSEException;
 import fr.sii.config.auth.AuthSettings;
 import fr.sii.config.global.GlobalSettings;
@@ -109,6 +112,11 @@ public class AuthController {
         user.setVerifyToken(verifyToken);
         user.setPassword(PasswordService.hashPassword(signupUser.getPassword()));
         user.setEmail(signupUser.getEmail());
+
+        String gravatarURL = GravatarUtils.getImageURL(signupUser.getEmail());
+        user.setImageProfilURL(gravatarURL);
+
+
         // Save user
         User savedUser = userService.save(user);
 
