@@ -39,12 +39,7 @@ angular.module('CallForPaper')
             // Set difficulty key
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
-
-            CommonProfilImage.get({
-                id: $scope.session.userId
-            }).$promise.then(function(imgUriTmp) {
-                $scope.session.speaker.profilImageUrl = imgUriTmp.uri;
-            });
+            $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUr;
         });
 
         // For gravatar

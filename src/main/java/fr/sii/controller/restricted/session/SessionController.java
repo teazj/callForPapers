@@ -50,12 +50,7 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value="/sessions", method=RequestMethod.POST)
     public TalkUser submitTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws Exception {
-        JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
-        if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified")) {
-            throw new NotVerifiedException("User must be verified");
-        }
-
-        User user = userRepo.findOne(Integer.parseInt(claimsSet.getSubject()));
+        User user = userRepo.findOne(retrieveUserId(req));
         TalkUser saved = talkService.submitTalk(user, talkUser);
 
         HashMap<String, String> map = new HashMap<String, String>();

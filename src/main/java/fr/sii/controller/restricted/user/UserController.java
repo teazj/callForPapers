@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 
+import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.user.UserProfil;
@@ -23,7 +24,7 @@ import fr.sii.service.user.UserService;
 
 @RestController
 @RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
-public class UserController {
+public class UserController extends RestrictedController {
 
     @Autowired
     private UserService userService;
@@ -38,13 +39,7 @@ public class UserController {
      */
     @RequestMapping(value="/user", method= RequestMethod.GET)
     public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
-        JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
-        if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
-        {
-            throw new NotVerifiedException("User must be verified");
-        }
-
-        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
+        User u = userService.findById(retrieveUserId(req));
         if(u == null)
         {
             throw new NotFoundException("User not found");
@@ -79,16 +74,7 @@ public class UserController {
      */
     @RequestMapping(value="/user", method= RequestMethod.PUT)
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException {
-
-        //TODO
-
-        JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
-        if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified"))
-        {
-            throw new NotVerifiedException("User must be verified");
-        }
-
-        User u = userService.findById(Integer.parseInt(claimsSet.getSubject()));
+        User u = userService.findById(retrieveUserId(req));
         if(u == null)
         {
             throw new NotFoundException("User not found");

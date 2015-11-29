@@ -13,18 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/restricted/stats")
-public class StatsController {
+public class StatsController extends RestrictedController {
 
     @Autowired
     private TalkUserService talkService;
 
     @RequestMapping("/meter")
     public RestrictedMeter meter(HttpServletRequest req) throws NotVerifiedException {
-        JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
-        if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified")) {
-            throw new NotVerifiedException("User must be verified");
-        }
-        int userId = Integer.parseInt(claimsSet.getSubject());
+        int userId = retrieveUserId(req);
 
         RestrictedMeter res = new RestrictedMeter();
         res.setTalks(talkService.count(userId));

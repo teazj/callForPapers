@@ -33,12 +33,9 @@ angular.module('CallForPaper')
             }
             $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
 
-            // Get profil image
-            CommonProfilImage.get({
-                id: $scope.session.speaker.id
-            }).$promise.then(function(imgUriTmp) {
-                $scope.session.speaker.profilImageUrl = imgUriTmp.uri;
-            });
+
+            $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUrl;
+
         });
 
         /**
