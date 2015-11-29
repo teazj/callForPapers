@@ -112,33 +112,6 @@ angular.module('CallForPaper', [
                 controller: 'AdminSessionCtrl'
             })
 
-            // App configuration
-            .state('config', {
-                abstract: true,
-                views: {
-                    '': {
-                        templateUrl: 'views/config/config.html',
-                        controller: 'ConfigCtrl'
-                    }
-                }
-            })
-            .state('config.autorize', {
-                url: '/config',
-                templateUrl: 'views/config/autorize.html',
-                controller: 'AutorizeCtrl',
-                resolve: {
-                    isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedConfig
-                }
-            })
-            .state('config.about', {
-                url: '/config/about',
-                templateUrl: 'views/config/about.html'
-            })
-            .state('config.403', {
-                templateUrl: 'views/config/403.html'
-            })
-
-
             // Login Admin
             .state('loginAdmin', {
                 url: '/admin/login',
