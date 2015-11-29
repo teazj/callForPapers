@@ -56,9 +56,7 @@ public class UserController extends RestrictedController {
         map.put("twitter", u.getTwitter());
         map.put("googleplus", u.getGoogleplus());
         map.put("github", u.getGithub());
-        //TODO
-        //map.put("imageProfilKey", u.getImageProfilKey());
-        map.put("socialProfilImageUrl", u.getImageSocialUrl());
+        map.put("imageProfilURL", u.getImageProfilURL());
 
         return map;
     }

@@ -69,9 +69,9 @@ angular.module('CallForPaper')
                                     $scope.formData.imageProfilKey = profil[key];
                                 }
                                 break;
-                            case 'socialProfilImageUrl':
+                            case 'imageProfilURL':
                                 if (profil[key] !== undefined) {
-                                    $scope.formData.socialProfilImageUrl = profil[key];
+                                    $scope.formData.imageProfilURL = profil[key];
                                 }
                                 break;
                             case 'social':
@@ -111,9 +111,8 @@ angular.module('CallForPaper')
         $scope.sendError = false;
         $scope.sendSuccess = false;
         $scope.sending = false;
-        $scope.update = function(profilImageKey) {
+        $scope.update = function() {
             if ($scope.formData.isValid) {
-                $scope.formData.imageProfilKey = profilImageKey.key;
                 RestrictedUser.update({}, $scope.formData, function() {
                     $scope.sendSuccess = true;
                     $scope.sendError = false;
@@ -127,39 +126,7 @@ angular.module('CallForPaper')
             }
         };
 
-        /**
-         * upload img then call update profil
-         * @param  {files} array containing the profil picture
-         */
-        $scope.upload = function(files) {
-            if (files && files.length) {
-                RestrictedProfilImage.getUploadUri().$promise.then(function(respUrl) {
-                    var url = respUrl.uri;
-                    _.each(files, function(file) {
-                        Upload.upload({
-                            url: url,
-                            file: file,
-                            fileName: 'profil-' + $auth.getPayload().sub,
-                            sendFieldsAs: 'form'
-                        }).progress(function(evt) {
-                            parseInt(100.0 * evt.loaded / evt.total);
-                        }).success(function(data) {
-                            $scope.update(data);
-                        }).error(function() {
-                            $scope.sendSuccess = false;
-                            $scope.sendError = true;
-                            $scope.sending = false;
-                        });
-                    });
-                }, function() {
-                });
-            } else {
-                $scope.update({
-                    key: $scope.formData.imageProfilKey
-                });
-            }
-        };
-
+  
         /**
          * remove selected img, then current img, then social pimg
          * @return {[type]} [description]
@@ -181,7 +148,7 @@ angular.module('CallForPaper')
                 $scope.sendError = false;
                 $scope.sendSuccess = false;
                 $scope.sending = true;
-                $scope.upload(files);
+                $scope.update()
             }
         };
     }]);

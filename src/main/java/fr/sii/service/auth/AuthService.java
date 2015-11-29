@@ -31,7 +31,7 @@ public class AuthService {
      * @throws ParseException
      * @throws JOSEException
      */
-    public Token processUser(HttpServletResponse res, HttpServletRequest req, User.Provider provider, String providerId, String email, String socialProfilImageUrl) throws IOException, ParseException, JOSEException {
+    public Token processUser(HttpServletResponse res, HttpServletRequest req, User.Provider provider, String providerId, String email, String imageProfilURL) throws IOException, ParseException, JOSEException {
 
         final String CONFLICT_MSG = "There is already a %s account that belongs to you",
                 CONFLICT_MSG_2 = "There is already an email associated with this account",
@@ -93,10 +93,11 @@ public class AuthService {
                 userToSave.setVerified(true);
                 userToSave.setProviderId(provider, providerId);
                 userToSave.setEmail(email);
-                if(socialProfilImageUrl != null && !socialProfilImageUrl.equals("")) {
-                    userToSave.setImageSocialUrl(socialProfilImageUrl);
+                if(imageProfilURL != null && !imageProfilURL.equals("")) {
+                    userToSave.setImageProfilURL(imageProfilURL);
                 } else {
-                    userToSave.setImageSocialUrl(null);
+                    
+                    userToSave.setImageProfilURL(null);
                 }
                 userToSave = userService.save(userToSave);
             }
