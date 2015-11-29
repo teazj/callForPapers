@@ -1,15 +1,14 @@
 package fr.sii.config.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by tmaugin on 22/05/2015.
- */
+@WebFilter
 public class CsrfFilter implements Filter {
 
     private static final String CSRF_TOKEN = "CSRF-TOKEN";

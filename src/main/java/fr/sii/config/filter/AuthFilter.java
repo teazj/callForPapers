@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.text.ParseException;
 /**
  * Filter reading auth token (JWT) to verify if user is correctly logged
  */
+@WebFilter(urlPatterns = "/api/restricted/*")
 public class AuthFilter implements Filter {
 
     protected static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",

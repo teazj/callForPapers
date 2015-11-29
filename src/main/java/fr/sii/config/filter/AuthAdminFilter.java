@@ -8,6 +8,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.IOException;
 /**
  * Filter reading auth token and check if user is admin
  */
+@WebFilter(urlPatterns = "/api/admin/*")
 public class AuthAdminFilter extends AuthFilter {
 
     private AdminUserService adminUserService;

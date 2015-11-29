@@ -5,13 +5,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by tmaugin on 03/04/2015.
- */
+@WebFilter
 public class CorsFilter extends OncePerRequestFilter {
 
     /**
