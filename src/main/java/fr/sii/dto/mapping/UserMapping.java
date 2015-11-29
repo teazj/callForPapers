@@ -20,7 +20,6 @@ public class UserMapping implements Mapping {
             .register();
 
         mapperFactory.classMap(User.class, UserProfil.class)
-            .field("imageSocialUrl", "socialProfilImageUrl")
             .byDefault()
             .register();
 
