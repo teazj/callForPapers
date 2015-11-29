@@ -30,8 +30,7 @@ var devPort = 3000;
 
 var yeoman = {
     app: 'src/main/static/app/',
-    dist: 'src/main/webapp/WEB-INF/static/app/',
-    tmp: 'src/main/static/.tmp/'
+    dist: 'target/classes/static/app/'
 };
 
 var middlewareDef = function() {
@@ -51,7 +50,7 @@ var middlewareDef = function() {
 };
 
 gulp.task('clean', function() {
-    del.sync([yeoman.dist, yeoman.tmp]);
+    del.sync([yeoman.dist]);
 });
 
 gulp.task('test', function() {
@@ -67,16 +66,14 @@ gulp.task('tdd', function() {
      }).start();*/
 });
 
-gulp.task('copy', ['styles'], function() {
-    return es.merge(gulp.src([
+gulp.task('copy', function() {
+    return gulp.src([
             yeoman.app + '*.{ico,png,txt}',
             yeoman.app + '{403,404}.html',
             yeoman.app + 'images/{,*/}*.{gif,webp,png,jpg}',
             yeoman.app + 'lib/**/*'
         ], {base: yeoman.app})
-        .pipe(gulp.dest(yeoman.dist)),
-        gulp.src(yeoman.tmp + 'fonts/*', {base: yeoman.tmp})
-            .pipe(gulp.dest(yeoman.dist)));
+        .pipe(gulp.dest(yeoman.dist));
 });
 
 gulp.task('images', function() {
@@ -88,7 +85,7 @@ gulp.task('images', function() {
 gulp.task('less', function() {
     return gulp.src([yeoman.app + 'styles/app.less', yeoman.app + 'styles/vendor.less'])
         .pipe(less())
-        .pipe(gulp.dest(yeoman.tmp + 'styles'));
+        .pipe(gulp.dest(yeoman.dist + 'styles'));
 });
 
 gulp.task('lint', function() {
@@ -101,16 +98,16 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('styles', ['less'], function() {
+gulp.task('fonts', function() {
     return gulp.src(yeoman.app + 'bower_components/**/fonts/*.{woff,woff2,svg,ttf,eot}')
         .pipe(flatten())
-        .pipe(gulp.dest(yeoman.tmp + 'fonts/'));
+        .pipe(gulp.dest(yeoman.dist + 'fonts/'));
 });
 
 gulp.task('serve', ['watch', 'tdd', 'lint'], function() {
     connect.server(
         {
-            root: [yeoman.app, yeoman.tmp],
+            root: [yeoman.app, yeoman.dist],
             port: devPort,
             livereload: true,
             middleware: middlewareDef
@@ -118,7 +115,7 @@ gulp.task('serve', ['watch', 'tdd', 'lint'], function() {
     );
 });
 
-gulp.task('watch', ['styles'], function() {
+gulp.task('watch', ['fonts', 'less'], function() {
     livereload.listen();
 
     var excludedGlob = '!' + yeoman.app + '{bower_components,bower_components/**}';
@@ -126,13 +123,21 @@ gulp.task('watch', ['styles'], function() {
     gulp.watch([yeoman.app + '**/*.js', excludedGlob], ['lint']).on('change', livereload.changed);
     gulp.watch([yeoman.app + '**/*.html', excludedGlob]).on('change', livereload.changed);
     gulp.watch([yeoman.app + '**/*.less', excludedGlob], ['less']);
-    gulp.watch([yeoman.tmp + 'styles/*.css']).on('change', livereload.changed);
+    gulp.watch([yeoman.dist + 'styles/*.css']).on('change', livereload.changed);
+});
+
+gulp.task('watch:spring', ['fonts', 'less'], function() {
+
+    var excludedGlob = '!' + yeoman.app + '{bower_components,bower_components/**}';
+
+    gulp.watch([yeoman.app + '**/*.js', excludedGlob], ['lint']);
+    gulp.watch([yeoman.app + '**/*.less', excludedGlob], ['less']);
 });
 
 gulp.task('serve:dist', ['build'], function() {
     connect.server(
         {
-            root: [yeoman.dist, yeoman.tmp],
+            root: [yeoman.dist],
             port: devPort,
             //livereload: true,
             middleware: middlewareDef
@@ -142,7 +147,7 @@ gulp.task('serve:dist', ['build'], function() {
 
 gulp.task('build', ['usemin']);
 
-gulp.task('usemin', ['images', 'copy'], function() {
+gulp.task('usemin', ['images', 'copy', 'fonts', 'less'], function() {
 
         var minifyHtmlOptions = {empty: true, conditionals: true, loose: true};
 

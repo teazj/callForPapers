@@ -17,6 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <front-tools.install-directory>${project.build.directory}/front-tools</front-tools.install-directory>
     </properties>
 
     <prerequisites>
@@ -200,8 +201,12 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.4.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
-
 
     <build>
         <plugins>
@@ -217,7 +222,7 @@
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>0.0.26</version>
                     <configuration>
-                        <installDirectory>${project.build.directory}/front-tools</installDirectory>
+                        <installDirectory>${front-tools.install-directory}</installDirectory>
                         <nodeVersion>v4.2.2</nodeVersion>
                         <npmVersion>3.3.12</npmVersion>
                     </configuration>
@@ -268,20 +273,30 @@
 
     <profiles>
         <profile>
-            <id>autojs</id>
+            <id>watch</id>
             <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/static</directory>
+                        <targetPath>static</targetPath>
+                    </resource>
+                </resources>
             </build>
         </profile>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <excludeDevtools>true</excludeDevtools>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
@@ -293,7 +308,7 @@
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>clean build</arguments>
+                                    <arguments>build</arguments>
                                 </configuration>
                             </execution>
                             <!--
