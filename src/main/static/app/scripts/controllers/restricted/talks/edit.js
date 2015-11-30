@@ -30,10 +30,8 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, t
             return talkService.save(talk).then(function(savedTalk) {
                 $scope.talk = savedTalk;
                 $scope.sending = false;
-                var notifMessage = isDraft ? translateFilter('talk.edit.saveDraft') : translateFilter('talk.saveSession');
-                
+                var notifMessage = isDraft ? translateFilter('talk.edit.saveDraft') : translateFilter('talk.edit.saveSession');
                 Notification.success(notifMessage);
-                
                 $state.go('app.dashboard');
             }, processError);
         } else {
@@ -46,10 +44,8 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, t
         dialogs.confirm(translateFilter('confirmModal.title'), translateFilter('confirmModal.text'), {
             size: 'md'
         }).result.then(function() {
-            save(talk).then(function() {
-                $state.go('app.talks.submitted', {}, {location: 'replace'});
-            });
-        });
+            save(talk);
+        }, processError);
     };
 
     $scope.saveDraft = function saveDraft(talk) {
