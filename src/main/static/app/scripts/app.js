@@ -213,9 +213,6 @@ angular.module('CallForPaper', [
                 },
                 controller: 'AppTalksEditCtrl'
             })
-            .state('app.talks.submitted', {
-                templateUrl: 'views/restricted/talks/submitted.html'
-            })
 
             .state('app.drafts', {
                 url: '/drafts',
