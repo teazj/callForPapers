@@ -77,7 +77,7 @@ public class UserController extends RestrictedController {
         {
             throw new NotFoundException("User not found");
         }
-
+        profil.setEmail(u.getEmail());
         userService.update(u.getId(),profil);
 
         return profil;
