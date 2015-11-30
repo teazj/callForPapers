@@ -1,8 +1,12 @@
 'use strict';
 
-angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, talk, Sessions, Drafts, RestrictedDraft, $state, $q, dialogs, translateFilter,Notification) {
+angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, talkformats, $scope, talk, Sessions, Drafts, $state, $q, dialogs, translateFilter, Notification) {
 
     $scope.talk = talk;
+    $scope.tracks = tracks;
+    $scope.talkFormats = talkformats;
+    //TalkService.formats.findAll().$promise.then(function(data) {$scope.talkFormats = data});
+
 
     $scope.sending = false;
 
@@ -23,7 +27,6 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, t
     }
 
     function save(talk, isDraft) {
-        window.console.log("hellp")
         var talkService = isDraft ? Drafts : Sessions;
         if (validate(talk)) {
             $scope.sending = true;

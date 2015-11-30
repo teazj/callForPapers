@@ -5,6 +5,8 @@ angular.module('CallForPaper')
         $scope.tab = $stateParams.tab;
 
         $scope.session = null;
+
+
         /**
          * Get talk
          * @return {RestrictedSession}
@@ -70,7 +72,7 @@ angular.module('CallForPaper')
          */
         $scope.postContact = function() {
             $scope.contactButtonDisabled = true;
-            RestrictedContact.save({rowId: $stateParams.id},{
+            RestrictedContact.save({rowId: $stateParams.id}, {
                 'comment': $scope.contactMsg,
                 'id': $stateParams.id,
                 'captcha': $scope.captcha

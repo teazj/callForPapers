@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import fr.sii.dto.TrackDto;
 import fr.sii.entity.TalkFormat;
+import fr.sii.entity.Track;
 import fr.sii.repository.TalkFormatRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import fr.sii.dto.TalkUser;
 import fr.sii.entity.Talk;
 import fr.sii.entity.User;
 import fr.sii.repository.TalkRepo;
+import fr.sii.repository.TrackRepo;
 import fr.sii.repository.UserRepo;
 import ma.glasnost.orika.MapperFacade;
 
@@ -32,6 +35,9 @@ public class TalkUserService {
 
     @Autowired
     private TalkFormatRepo talkFormatRepo;
+
+    @Autowired
+    private TrackRepo trackRepo;
 
     @Autowired
     private MapperFacade mapper;
@@ -161,6 +167,8 @@ public class TalkUserService {
         if (talk == null) return null;
         if (talk.getState() != Talk.State.DRAFT) return null;
         talkUser.setState(newState);
+        talk.setTrack(trackRepo.findOne(talkUser.getTrack()));
+
 
         mapper.map(talkUser, talk);
         talkRepo.flush();
@@ -168,4 +176,8 @@ public class TalkUserService {
         return mapper.map(talk, TalkUser.class);
     }
 
+    public List<TrackDto> getTracks() {
+        List<Track> tracks =  trackRepo.findAll();
+        return mapper.mapAsList(tracks, TrackDto.class);
+    }
 }

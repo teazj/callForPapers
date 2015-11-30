@@ -177,8 +177,21 @@ angular.module('CallForPaper', [
                 controller: 'SignupCtrl'
             })
 
+            .state('app.sessions', {
+                template: '<ui-view/>',
+                resolve: {
+                    tracks: function(TalkService) {
+                        return TalkService.tracks.findAll().$promise;
+                    },
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    }
+                }
+            })
+
             .state('app.talks', {
                 url: '/talks',
+                parent: 'app.sessions',
                 templateUrl: 'views/restricted/talks/talks.html',
                 abstract: true,
                 resolve: {
@@ -203,12 +216,10 @@ angular.module('CallForPaper', [
                 },
                 controller: 'AppTalksEditCtrl'
             })
-            .state('app.talks.submitted', {
-                templateUrl: 'views/restricted/talks/submitted.html'
-            })
 
             .state('app.drafts', {
                 url: '/drafts',
+                parent: 'app.sessions',
                 abstract: true,
                 templateUrl: 'views/restricted/talks/talks.html',
                 resolve: {

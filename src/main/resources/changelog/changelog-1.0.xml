@@ -238,4 +238,62 @@
             <column name="schedule_heure" type="varchar(5)"/>
         </addColumn >
     </changeSet>
+
+    <changeSet id="139" author="lhuet">
+        <createTable tableName="tracks">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+            <column name="libelle" type="varchar(64)">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="description" type="text"></column>
+        </createTable>
+        <dropColumn columnName="track" tableName="talks"/>
+        <addColumn tableName="talks">
+            <column name="track" type="int">
+                <constraints foreignKeyName="talk_track" referencedTableName="tracks" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+        <insert tableName="tracks">
+            <column name="id" value="1"></column>
+            <column name="libelle" value="BigData et Analytics"></column>
+            <column name="description" value="BigData et Analytics"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="2"></column>
+            <column name="libelle" value="Java, JVM, Javas SE/EE"></column>
+            <column name="description" value="Java, JVM, Javas SE/EE"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="3"></column>
+            <column name="libelle" value="Cloud, DevOps, Outils"></column>
+            <column name="description" value="Cloud, DevOps, Outils"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="4"></column>
+            <column name="libelle" value="Agilité, Méthodologie et Tests"></column>
+            <column name="description" value="Agilité, Méthodologie et Tests"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="5"></column>
+            <column name="libelle" value=" Objects connectés, IoT, Robotique"></column>
+            <column name="description" value=" Objects connectés, IoT, Robotique"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="6"></column>
+            <column name="libelle" value="Architecture, Performance et Sécurité"></column>
+            <column name="description" value="Architecture, Performance et Sécurité"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="7"></column>
+            <column name="libelle" value="Languages"></column>
+            <column name="description" value="Languages"></column>
+        </insert>
+        <insert tableName="tracks">
+            <column name="id" value="8"></column>
+            <column name="libelle" value="Keynote"></column>
+            <column name="description" value="Keynote"></column>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

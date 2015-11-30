@@ -1,94 +1,91 @@
 <div>
-  <div ng-switch="!!talk.id">
-    <h2 ng-switch-when="true">
-      <span translate="talk.edit.title.update" translate-values="{name: talk.name}"></span>
-    </h2>
-    <h2 ng-switch-default>{{'talk.edit.title.new' | translate}}</h2>
-    <strong>{{'steps.required' | translate}}</strong>
-  </div>
-  <div class="col-lg-offset-2 col-lg-8">
-    <form name="talkForm" class="form-horizontal" role="form" novalidate>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.typeInput.$valid && talkForm.typeInput.$dirty, 'has-error': talkForm.typeInput.$invalid && (talkForm.typeInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.type' | translate}}</label>
-        <div>{{'step2.hintType' | translate}}</div>
-        <div>
-          <select ng-model="talk.type" name="typeInput" required class="form-control">
-            <option value="conference">{{'step2.types.conference' | translate}}</option>
-            <option value="codelab">{{'step2.types.codelab' | translate}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.nameInput.$valid && talkForm.nameInput.$dirty, 'has-error': talkForm.nameInput.$invalid && (talkForm.nameInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.name' | translate}}</label>
-        <div>
-          <input required type="text" name="nameInput" class="form-control" ng-model="talk.name">
-        </div>
-      </div>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.descriptionInput.$valid && talkForm.descriptionInput.$dirty, 'has-error': talkForm.descriptionInput.$invalid && (talkForm.descriptionInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.description' | translate}}</label>
-        <div>{{'step2.hintDescription' | translate}}</div>
-        <div>
-          <div md-preview="talk.description"></div>
-          <textarea required name="descriptionInput" class="form-control" ng-model="talk.description"
-                    rows="3"></textarea>
-        </div>
-      </div>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.referencesInput.$valid && talkForm.referencesInput.$dirty, 'has-error': talkForm.referencesInput.$invalid && (talkForm.referencesInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.references' | translate}}</label>
-        <div>{{'step2.hintReferences' | translate}}</div>
-        <div>
-          <div md-preview="talk.references"></div>
-          <textarea class="form-control" name="referencesInput" ng-model="talk.references" rows="3"></textarea>
-        </div>
-      </div>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.difficultyInput.$valid && talkForm.difficultyInput.$dirty, 'has-error': talkForm.difficultyInput.$invalid && (talkForm.difficultyInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.difficulty' | translate}}</label>
-        <div>
-          <span required rating ng-model="talk.difficulty" name="difficultyInput" max="3" readonly="false"></span>
-        </div>
-      </div>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.trackInput.$valid && talkForm.trackInput.$dirty, 'has-error': talkForm.trackInput.$invalid && (talkForm.trackInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.track' | translate}}</label>
-        <div>{{'step2.hintTrack' | translate}}</div>
-        <div>
-          <select ng-model="talk.track" name="trackInput" required class="form-control">
-            <option value="cloud">{{'step2.tracks.cloud' | translate}}</option>
-            <option value="mobile">{{'step2.tracks.mobile' | translate}}</option>
-            <option value="web">{{'step2.tracks.web' | translate}}</option>
-            <option value="discovery">{{'step2.tracks.discovery' | translate}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group"
-           ng-class="{'has-success': talkForm.coSpeakerInput.$valid && talkForm.coSpeakerInput.$dirty, 'has-error': talkForm.coSpeakerInput.$invalid && (talkForm.coSpeakerInput.$dirty || talkInvalid)}">
-        <label class="control-label">{{'step2.cospeaker' | translate}}</label>
-        <div>{{'step2.hintCospeaker' | translate}}</div>
-        <div>
-          <div md-preview="talk.coSpeaker"></div>
-          <textarea class="form-control" name="coSpeakerInput" ng-model="talk.coSpeaker" rows="3"></textarea>
-        </div>
-      </div>
-      <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right">
-        <button ng-click="submit(talk)" class="btn btn-block btn-success" ng-disabled="sending">
+    <div ng-switch="!!talk.id">
+        <h2 ng-switch-when="true">
+            <span translate="talk.edit.title.update" translate-values="{name: talk.name}"></span>
+        </h2>
+        <h2 ng-switch-default>{{'talk.edit.title.new' | translate}}</h2>
+        <strong>{{'steps.required' | translate}}</strong>
+    </div>
+    <div class="col-lg-offset-2 col-lg-8">
+        <form name="talkForm" class="form-horizontal" role="form" novalidate>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.typeInput.$valid && talkForm.typeInput.$dirty, 'has-error': talkForm.typeInput.$invalid && (talkForm.typeInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.type' | translate}}</label>
+                <div>{{'step2.hintType' | translate}}</div>
+                <div>
+                    <select ng-model="talk.type" name="typeInput" required class="form-control">
+                        <option ng-repeat="format in talkFormats" value="{{format.id}}">{{format.libelle}} ({{format.dureeMinutes}} mn)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.nameInput.$valid && talkForm.nameInput.$dirty, 'has-error': talkForm.nameInput.$invalid && (talkForm.nameInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.name' | translate}}</label>
+                <div>
+                    <input required type="text" name="nameInput" class="form-control" ng-model="talk.name">
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.descriptionInput.$valid && talkForm.descriptionInput.$dirty, 'has-error': talkForm.descriptionInput.$invalid && (talkForm.descriptionInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.description' | translate}}</label>
+                <div>{{'step2.hintDescription' | translate}}</div>
+                <div>
+                    <div md-preview="talk.description"></div>
+                    <textarea required name="descriptionInput" class="form-control" ng-model="talk.description" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.referencesInput.$valid && talkForm.referencesInput.$dirty, 'has-error': talkForm.referencesInput.$invalid && (talkForm.referencesInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.references' | translate}}</label>
+                <div>{{'step2.hintReferences' | translate}}</div>
+                <div>
+                    <div md-preview="talk.references"></div>
+                    <textarea class="form-control" name="referencesInput" ng-model="talk.references"
+                              rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.difficultyInput.$valid && talkForm.difficultyInput.$dirty, 'has-error': talkForm.difficultyInput.$invalid && (talkForm.difficultyInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.difficulty' | translate}}</label>
+                <div>
+                    <span required rating ng-model="talk.difficulty" name="difficultyInput" max="3"
+                          readonly="false"></span>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.trackInput.$valid && talkForm.trackInput.$dirty, 'has-error': talkForm.trackInput.$invalid && (talkForm.trackInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.track' | translate}}</label>
+                <div>{{'step2.hintTrack' | translate}}</div>
+                <div>
+                    <select ng-model="talk.track" name="trackInput"
+                            ng-options="track.id as track.libelle for track in tracks" required class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-success': talkForm.coSpeakerInput.$valid && talkForm.coSpeakerInput.$dirty, 'has-error': talkForm.coSpeakerInput.$invalid && (talkForm.coSpeakerInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.cospeaker' | translate}}</label>
+                <div>{{'step2.hintCospeaker' | translate}}</div>
+                <div>
+                    <div md-preview="talk.coSpeaker"></div>
+                    <textarea class="form-control" name="coSpeakerInput" ng-model="talk.coSpeaker" rows="3"></textarea>
+                </div>
+            </div>
+            <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right">
+                <button ng-click="submit(talk)" class="btn btn-block btn-success" ng-disabled="sending">
           <span class="mdi-navigation-check pull-right"
                 ng-class="{'glyphicon-refresh-animate mdi-navigation-refresh': sending, 'mdi-navigation-check': !sending}"></span>
-          {{'steps.validate' | translate}}
-        </button>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right">
-        <button ng-click="saveDraft(talk)" class="btn btn-block btn-info" ng-disabled="sending">
+                    {{'steps.validate' | translate}}
+                </button>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 pull-right">
+                <button ng-click="saveDraft(talk)" class="btn btn-block btn-info" ng-disabled="sending">
           <span class="mdi-content-save pull-right"
                 ng-class="{'glyphicon-refresh-animate mdi-navigation-refresh' : sending, 'mdi-content-save' : !sending}"></span>
-          {{'steps.saveAsDraft' | translate}}
-        </button>
-      </div>
-    </form>
-  </div>
+                    {{'steps.saveAsDraft' | translate}}
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

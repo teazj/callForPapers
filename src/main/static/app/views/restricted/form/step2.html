@@ -42,11 +42,7 @@
 		<label class="control-label" for="track">{{'step2.track' | translate}}</label>
 		<div>{{'step2.hintTrack' | translate}}</div>
 		<div>
-			<select ng-model="formData.session.track" id="track" name="track" required class="form-control">
-				<option value="cloud">{{'step2.tracks.cloud' | translate}}</option>
-				<option value="mobile">{{'step2.tracks.mobile' | translate}}</option>
-				<option value="web">{{'step2.tracks.web' | translate}}</option>
-				<option value="discovery">{{'step2.tracks.discovery' | translate}}</option>
+			<select ng-model="formData.session.track" id="track" name="track" ng-option="track.id as track.libelle for track in tracks" required class="form-control">
 			</select>
 		</div>
 	</div>

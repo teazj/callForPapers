@@ -18,7 +18,7 @@ public class Talk {
     private State state;
     private String name;
     private String type;
-    private String track;
+    private Track track;
     private String description;
     private String references;
     private Integer difficulty;
@@ -52,7 +52,9 @@ public class Talk {
         return type;
     }
 
-    public String getTrack() {
+    @ManyToOne
+    @JoinColumn(name = "track")
+    public Track getTrack() {
         return track;
     }
 
@@ -98,7 +100,7 @@ public class Talk {
         this.type = type;
     }
 
-    public void setTrack(String track) {
+    public void setTrack(Track track) {
         this.track = track;
     }
 

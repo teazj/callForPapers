@@ -143,7 +143,7 @@
 									<div class="form-group">
 										<label class="control-label" for="track">{{'step2.track' | translate}}</label>
 										<div class="">
-											<input readonly type="text" name="track" class="form-control" ng-value="'step2.tracks.' + session.track | translate" id="track">
+											<input readonly type="text" name="track" class="form-control" ng-model="session.trackLabel" id="track">
 										</div>
 										<button ng-click="updateTalk()" type="button" ng-disabled="!changeTrackButtonAnimationDisabled" class="btn btn-success pull-right ng-binding" tabindex="0"><span ng-hide="changeTrackButtonAnimationDisabled" class="mdi-navigation-refresh glyphicon-refresh-animate pull-right"></span>{{'admin.modify' | translate}}&nbsp;
 										</button>

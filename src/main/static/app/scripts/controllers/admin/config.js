@@ -14,9 +14,9 @@ angular.module('CallForPaper')
             });
 
             $scope.toDate = function(stringDate){
-                 var datePartials = stringDate.split("/");
+                 var datePartials = stringDate.split('/');
                  return new Date(datePartials[2], datePartials[1] - 1, datePartials[0]);
-            }
+            };
 
             /**
              * Enable or disable submission of new talks
