@@ -99,7 +99,7 @@ angular.module('CallForPaper')
                         'update': 'Modification du talk «{{name}}»'
                     },
                     saveDraft : "Brouillon enregistré.",
-                    saveSession : "Session enregistré.",
+                    saveSession : "Session soumise. Un mail de confirmation vous a été envoyé.",
                 }
             },
             'step1': {
