@@ -1,13 +1,11 @@
 'use strict';
 
-angular.module('CallForPaper').controller('AppTalksEditCtrl', function(TalkService, $scope, talk, Sessions, Drafts, $state, $q, dialogs, translateFilter, Notification) {
-
+angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, talkformats, $scope, talk, Sessions, Drafts, $state, $q, dialogs, translateFilter, Notification) {
 
     $scope.talk = talk;
-
-    TalkService.tracks.findAll().$promise.then(function(data) {$scope.tracks = data});
-
-    TalkService.formats.findAll().$promise.then(function(data) {$scope.talkFormats = data});
+    $scope.tracks = tracks;
+    $scope.talkFormats = talkformats;
+    //TalkService.formats.findAll().$promise.then(function(data) {$scope.talkFormats = data});
 
 
     $scope.sending = false;

@@ -180,8 +180,11 @@ angular.module('CallForPaper', [
             .state('app.sessions', {
                 template: '<ui-view/>',
                 resolve: {
-                    tracks: function(Tracks) {
-                        return Tracks.findAll().$promise;
+                    tracks: function(TalkService) {
+                        return TalkService.tracks.findAll().$promise;
+                    },
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
                     }
                 }
             })
