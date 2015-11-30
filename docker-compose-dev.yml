@@ -12,7 +12,6 @@ web:
 
 database:
     image: mysql:5.7
-    name: database
     ports:
       - 3306:3306
     environment:
