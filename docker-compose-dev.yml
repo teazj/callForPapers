@@ -1,0 +1,24 @@
+web:
+    build: .
+    dockerfile: Dockerfile.dev
+    ports: 
+      - 8080:8080
+      - 80:3000
+      - 35729:35729
+    volumes:
+      - .:/work
+    links:
+      - database
+
+database:
+    image: mysql:5.7
+    name: database
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=cfpbreizhroot
+      - MYSQL_DATABASE=cfpdev
+      - MYSQL_USER=cfpdev
+      - MYSQL_PASSWORD=galettesaucisse
+
+

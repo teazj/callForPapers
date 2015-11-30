@@ -1,0 +1,26 @@
+FROM maven:3.3.3-jdk-8
+
+MAINTAINER team@breizhcamp.org
+
+ENV NODE_VERSION 4.2.2
+
+RUN curl -SL "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" | tar xz -C /usr/local --strip-components=1
+
+WORKDIR /work
+ADD package.json /work/package.json
+ADD bower.json   /work/bower.json
+ADD pom.xml      /work/pom.xml
+
+RUN npm install -g bower gulp
+RUN npm install
+RUN bower --allow-root install
+
+RUN mvn dependency:go-offline
+
+ADD / /work
+
+EXPOSE 3000
+EXPOSE 35729
+EXPOSE 8080
+
+CMD /work/run.sh
