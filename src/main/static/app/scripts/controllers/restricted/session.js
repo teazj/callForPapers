@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', 'RestrictedContact', '$modal', 'Config','Tracks', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal, Config,Tracks) {
+    .controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', 'RestrictedContact', '$modal', 'Config', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal, Config) {
         $scope.tab = $stateParams.tab;
 
         $scope.session = null;
@@ -72,7 +72,7 @@ angular.module('CallForPaper')
          */
         $scope.postContact = function() {
             $scope.contactButtonDisabled = true;
-            RestrictedContact.save({rowId: $stateParams.id},{
+            RestrictedContact.save({rowId: $stateParams.id}, {
                 'comment': $scope.contactMsg,
                 'id': $stateParams.id,
                 'captcha': $scope.captcha

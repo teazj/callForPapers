@@ -98,8 +98,8 @@ angular.module('CallForPaper')
                         'new': 'Nouveau talk',
                         'update': 'Modification du talk «{{name}}»'
                     },
-                    saveDraft : "Brouillon enregistré.",
-                    saveSession : "Session soumise. Un mail de confirmation vous a été envoyé.",
+                    saveDraft: 'Brouillon enregistré.',
+                    saveSession: 'Session soumise. Un mail de confirmation vous a été envoyé.'
                 }
             },
             'step1': {
@@ -250,13 +250,13 @@ angular.module('CallForPaper')
                 'delete': 'Supprimer',
                 'allType': 'Tous',
                 'newMessages': 'Nouveaux messages',
-                'community':'Nom de la communautée organisatrice',
-                'eventName':'Nom de l\'événement',
-                'decisionDate':'Date de fin des votes',
-                'releaseDate':'Date de fin des soumissions',
-                'startDate':'Date du début de l\'événement',
-                'configCfp':'Configuration du CFP',
-                'btn.save':'Sauvegarder'
+                'community': 'Nom de la communautée organisatrice',
+                'eventName': 'Nom de l\'événement',
+                'decisionDate': 'Date de fin des votes',
+                'releaseDate': 'Date de fin des soumissions',
+                'startDate': 'Date du début de l\'événement',
+                'configCfp': 'Configuration du CFP',
+                'btn.save': 'Sauvegarder'
 
             },
             'config': {
@@ -399,7 +399,9 @@ angular.module('CallForPaper')
                     title: {
                         'new': 'New talk',
                         'update': 'Modification of talk "{{name}}"'
-                    }
+                    },
+                    saveDraft: 'Draft saved.',
+                    saveSession: 'Session submitted. A confirmation email has been sent to you.'
                 }
             },
             'step1': {

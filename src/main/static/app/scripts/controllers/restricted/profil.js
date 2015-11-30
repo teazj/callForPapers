@@ -126,7 +126,7 @@ angular.module('CallForPaper')
             }
         };
 
-  
+
         /**
          * remove selected img, then current img, then social pimg
          * @return {[type]} [description]
@@ -148,7 +148,7 @@ angular.module('CallForPaper')
                 $scope.sendError = false;
                 $scope.sendSuccess = false;
                 $scope.sending = true;
-                $scope.update()
+                $scope.update();
             }
         };
     }]);

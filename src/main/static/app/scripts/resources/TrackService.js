@@ -7,6 +7,6 @@ angular.module('CallForPaper').factory('Tracks', ['resourceRetries', function(re
                 url: '/api/restricted/talk/tracks',
                 method: 'GET',
                 isArray: true
-            },
+            }
         });
 }]);

@@ -177,8 +177,18 @@ angular.module('CallForPaper', [
                 controller: 'SignupCtrl'
             })
 
+            .state('app.sessions', {
+                template: '<ui-view/>',
+                resolve: {
+                    tracks: function(Tracks) {
+                        return Tracks.findAll().$promise;
+                    }
+                }
+            })
+
             .state('app.talks', {
                 url: '/talks',
+                parent: 'app.sessions',
                 templateUrl: 'views/restricted/talks/talks.html',
                 abstract: true,
                 resolve: {
@@ -209,6 +219,7 @@ angular.module('CallForPaper', [
 
             .state('app.drafts', {
                 url: '/drafts',
+                parent: 'app.sessions',
                 abstract: true,
                 templateUrl: 'views/restricted/talks/talks.html',
                 resolve: {
