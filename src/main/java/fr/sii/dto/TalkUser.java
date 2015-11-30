@@ -14,7 +14,8 @@ public class TalkUser {
     private Talk.State state;
     private String name;
     private String type;
-    private String track;
+    private int track;
+    private String trackLabel;
     private String description;
     private String references;
     private Integer difficulty;
@@ -54,11 +55,11 @@ public class TalkUser {
         this.type = type;
     }
 
-    public String getTrack() {
+    public int getTrack() {
         return track;
     }
 
-    public void setTrack(String track) {
+    public void setTrack(int track) {
         this.track = track;
     }
 
@@ -101,5 +102,14 @@ public class TalkUser {
     public void setSpeaker(UserProfil speaker) {
         this.speaker = speaker;
     }
+
+    public String getTrackLabel() {
+        return trackLabel;
+    }
+
+    public void setTrackLabel(String trackLabel) {
+        this.trackLabel = trackLabel;
+    }
+
 
 }

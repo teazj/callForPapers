@@ -48,7 +48,7 @@
 											<td ng-href="{{'/#/admin/sessions/' + session.id}}" class="pointer" filter="{'fullname': 'text'}" data-title="'admin.speaker' | translate">{{::session.firstname}} {{::session.name}}</td>
 											<td class="col-xs-3 noPadding pointer" filter="{'sessionName': 'text'}" data-title="'admin.title' | translate">{{::session.sessionName}}</td>
 											<td class="pointer" filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
-											<td class="pointer" filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{ 'step2.tracks.' + session.track | translate}}</td>
+											<td class="pointer" filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{::session.trackLabel}}</td>
 											<td class="col-xs-12 noPadding pointer" filter="{'description': 'text'}" data-title="'admin.description' | translate" ng-bind-html="::session.description | mdToPlaintext | truncate"></td>
 											<td class="pointer" sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td class="pointer" sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>

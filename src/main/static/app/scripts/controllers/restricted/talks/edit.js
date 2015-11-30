@@ -1,10 +1,14 @@
 'use strict';
 
-angular.module('CallForPaper').controller('AppTalksEditCtrl', function($scope, talk, Sessions, Drafts, RestrictedDraft, $state, $q, dialogs, translateFilter,Notification) {
+angular.module('CallForPaper').controller('AppTalksEditCtrl', function(Tracks,$scope, talk, Sessions, Drafts, RestrictedDraft, $state, $q, dialogs, translateFilter,Notification) {
 
     $scope.talk = talk;
 
     $scope.sending = false;
+
+     Tracks.findAll().$promise.then(function(data) {
+                $scope.tracks = data;
+            });
 
     function validate(talk) {
         // Validation is only about some required fields

@@ -20,6 +20,7 @@ import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.TalkUser;
+import fr.sii.dto.TrackDto;
 import fr.sii.entity.Talk;
 import fr.sii.entity.TalkFormat;
 import fr.sii.entity.User;
@@ -164,5 +165,15 @@ public class SessionController extends RestrictedController {
     public List<TalkFormat> getTalkFormat() {
         return talkService.getTalkFormat();
     }
+
+
+    /**
+     * Get all session for the current user
+     */
+    @RequestMapping(value="talk/tracks", method= RequestMethod.GET)
+    public List<TrackDto> getTrack() throws NotVerifiedException {
+        return talkService.getTracks();
+    }
+
 
 }
