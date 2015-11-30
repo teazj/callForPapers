@@ -1,4 +1,5 @@
 <div>
+<<<<<<< 24c72c9ff6f6c4f5fdbcc8fc5b6ac6ac665fcf70
     <div ng-switch="!!talk.id">
         <h2 ng-switch-when="true">
             <span translate="talk.edit.title.update" translate-values="{name: talk.name}"></span>
@@ -14,8 +15,7 @@
                 <div>{{'step2.hintType' | translate}}</div>
                 <div>
                     <select ng-model="talk.type" name="typeInput" required class="form-control">
-                        <option value="conference">{{'step2.types.conference' | translate}}</option>
-                        <option value="codelab">{{'step2.types.codelab' | translate}}</option>
+                        <option ng-repeat="format in talkFormats" value="{{format.id}}">{{format.libelle}} ({{format.dureeMinutes}} mn)</option>
                     </select>
                 </div>
             </div>
@@ -32,8 +32,7 @@
                 <div>{{'step2.hintDescription' | translate}}</div>
                 <div>
                     <div md-preview="talk.description"></div>
-          <textarea required name="descriptionInput" class="form-control" ng-model="talk.description"
-                    rows="3"></textarea>
+                    <textarea required name="descriptionInput" class="form-control" ng-model="talk.description" rows="3"></textarea>
                 </div>
             </div>
             <div class="form-group"
