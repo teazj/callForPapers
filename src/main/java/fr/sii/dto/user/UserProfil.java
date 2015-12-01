@@ -1,5 +1,8 @@
 package fr.sii.dto.user;
 
+import java.util.Set;
+import fr.sii.dto.TalkUser;
+
 /**
  * Created by tmaugin on 05/06/2015.
  * SII
@@ -17,6 +20,7 @@ public class UserProfil {
     private String github;
     private String imageProfilURL;
     private String email;
+    private Set<TalkUser> cospeakerTalks;
 
     public String getLastname() {
         return lastname;
@@ -113,5 +117,13 @@ public class UserProfil {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setcospeakerTalks(Set<TalkUser> cospeakerTalks) {
+        this.cospeakerTalks = cospeakerTalks;
+    }
+
+    public Set<TalkUser> getCospeakerTalks() {
+        return cospeakerTalks;
     }
 }

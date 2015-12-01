@@ -4,7 +4,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
-
+import java.util.HashSet;
+import java.util.Set;
 /**
  * Speaker account
  */
@@ -43,6 +44,19 @@ public class User {
 
 	/** local stored image for user */
 	private String imageProfilURL;
+
+
+	private Set<Talk> cospeakerTalks;
+
+	@ManyToMany(cascade=CascadeType.ALL, mappedBy="cospeakers")  
+	public Set<Talk> getCospeakerTalks()  
+	{  
+		return cospeakerTalks;  
+	}  
+	public void setCospeakerTalks(Set<Talk> cospeakerTalks)  
+	{  
+		this.cospeakerTalks = cospeakerTalks;  
+	} 
 
 	/**
 	 * Count sign in provider the user has

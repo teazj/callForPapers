@@ -5,7 +5,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-
+import java.util.HashSet;
+import java.util.Set;
 /**
  * Talk
  */
@@ -25,11 +26,25 @@ public class Talk {
     private Date added;
     private TalkFormat talkformat;
     private User user;
-
     //schedule data
     private Date date;
     private String heure;
 
+    private Set<User> cospeakers = new HashSet<User>();
+
+
+    //cospeakers
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name="cospeakers", 
+                joinColumns={@JoinColumn(name="talk_id")}, 
+                inverseJoinColumns={@JoinColumn(name="user_id")})
+    public Set<User> getCospeakers() {
+        return cospeakers;
+    }
+
+    public void setCospeakers(Set<User> cospeakers) {
+        this.cospeakers = cospeakers;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -156,4 +171,8 @@ public class Talk {
     public int getDuree() {
         return talkformat.getDureeMinutes();
     }
+
+
+    
+
 }
