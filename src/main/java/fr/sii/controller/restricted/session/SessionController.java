@@ -175,5 +175,17 @@ public class SessionController extends RestrictedController {
         return talkService.getTracks();
     }
 
+    /**
+     * Get all co-session for the current user
+     */
+    @RequestMapping(value="/cosessions", method= RequestMethod.GET)
+    public List<TalkUser> getCoSessions(HttpServletRequest req) throws NotVerifiedException {
+        int userId = retrieveUserId(req);
+        
+        System.out.println(userId);
+
+        return talkService.getCospeakerTalks(userId);
+    }
+
 
 }

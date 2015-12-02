@@ -1,7 +1,7 @@
 package fr.sii.entity;
 
 import org.hibernate.annotations.Type;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

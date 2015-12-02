@@ -41,6 +41,7 @@ angular.module('CallForPaper')
                 'createNewSession': 'Créer un nouveau talk',
                 'submissionDisabled': 'La soumission de nouvelles candidatures est désactivée.',
                 'editionTalks': 'Talks en cours d\'édition',
+                'editionCoTalks': 'Talks (en tant que cospeaker) en cours d\'édition',
                 'noEditionTalks': 'Vous n\'avez pas de talk en cours d\'édition',
                 'sendedTalks': 'Talks envoyés',
                 'draftModifiedAt': 'Brouillon modifié le ',

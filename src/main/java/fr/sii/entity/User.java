@@ -2,6 +2,7 @@ package fr.sii.entity;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -48,6 +49,7 @@ public class User {
 
 	private Set<Talk> cospeakerTalks;
 
+	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL, mappedBy="cospeakers")  
 	public Set<Talk> getCospeakerTalks()  
 	{  

@@ -180,4 +180,10 @@ public class TalkUserService {
         List<Track> tracks =  trackRepo.findAll();
         return mapper.mapAsList(tracks, TrackDto.class);
     }
+
+    public List<TalkUser> getCospeakerTalks(int userId)
+    {
+        User user = userRepo.findById(userId);
+        return mapper.mapAsList(user.getCospeakerTalks(), TalkUser.class);
+    }
 }

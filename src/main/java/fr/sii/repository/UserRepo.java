@@ -8,6 +8,7 @@ import java.util.List;
 public interface UserRepo extends JpaRepository<User, Integer> {
 
     List<User> findByEmail(String email);
+    User findById(int userId);
 
     List<User> findByGoogleId(String providerId);
 

@@ -87,6 +87,35 @@
           <img style="max-width: 100%;margin: 0 auto;display: block;" ng-show="konamiCode" src="/images/pacman.gif" alt="pacman">
         </div>
       </div>
+      <div class="row">
+          <div class="col-md-6">
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>{{'dashboard.editionCoTalks' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="coTalk in coTalks">
+                  <td ui-sref='app.session({id: coTalk.id})'>
+                    {{coTalk.name}}, {{'dashboard.postedAt' | translate}} {{coTalk.added | date:"dd/MM/yyyy, HH:mm:ss"}}
+                  </td>
+                </tr>
+                <tr ng-show="coTalks.length === 0 && coTalksLoaded">
+                  <td>
+                    <span>{{'dashboard.noEditionTalks' | translate}}</span>
+                  </td>
+                </tr>
+                <tr ng-show="!coTalksLoaded">
+                  <td>
+                    <span class="loading mdi-navigation-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
       <div ng-if="!isVerified">
         <div class="row">
           <div class="center-form panel col-md-6 col-md-offset-3">

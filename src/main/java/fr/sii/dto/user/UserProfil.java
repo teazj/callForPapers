@@ -2,6 +2,7 @@ package fr.sii.dto.user;
 
 import java.util.Set;
 import fr.sii.dto.TalkUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by tmaugin on 05/06/2015.
@@ -123,6 +124,7 @@ public class UserProfil {
         this.cospeakerTalks = cospeakerTalks;
     }
 
+    @JsonIgnore
     public Set<TalkUser> getCospeakerTalks() {
         return cospeakerTalks;
     }
