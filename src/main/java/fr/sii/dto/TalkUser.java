@@ -14,7 +14,6 @@ public class TalkUser {
     private Talk.State state;
     private String name;
     private int format;
-    private String formatLabel;
     private int track;
     private String trackLabel;
     private String description;
@@ -54,14 +53,6 @@ public class TalkUser {
 
     public void setFormat(int format) {
         this.format = format;
-    }
-
-    public String getFormatLabel() {
-        return formatLabel;
-    }
-
-    public void setFormatLabel(String formatLabel) {
-        this.formatLabel = formatLabel;
     }
 
     public int getTrack() {

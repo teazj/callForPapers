@@ -168,7 +168,7 @@ public class TalkUserService {
         if (talk.getState() != Talk.State.DRAFT) return null;
         talkUser.setState(newState);
         talk.setTrack(trackRepo.findOne(talkUser.getTrack()));
-
+        talk.setTalkFormat(talkFormatRepo.findOne(talkUser.getFormat()));
 
         mapper.map(talkUser, talk);
         talkRepo.flush();

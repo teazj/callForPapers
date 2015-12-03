@@ -19,7 +19,6 @@ public class TalkMapping implements Mapping {
             .field("track.id", "track")
             .field("track.libelle", "trackLabel")
             .field("talkFormat.id", "format")
-            .field("talkFormat.libelle", "formatLabel")
             .byDefault()
             .register();
 
