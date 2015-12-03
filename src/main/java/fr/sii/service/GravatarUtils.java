@@ -1,4 +1,4 @@
-package fr.sii.service.auth;
+package fr.sii.service;
 
 
 import fr.sii.service.auth.MD5Utils;
