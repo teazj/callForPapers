@@ -21,7 +21,9 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     path = require('path'),
     del = require('del'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    zip = require('gulp-zip'),
+    rename = require("gulp-rename");
 
 /*var KarmaServer = require('karma').Server,
  karmaConfigFile = __dirname + '/karma.conf.js';*/
@@ -168,5 +170,15 @@ gulp.task('usemin', ['images', 'copy', 'fonts', 'less'], function() {
         ).pipe(gulp.dest(yeoman.dist));
     }
 );
+
+gulp.task('webjar', ['build'], function() {
+    return gulp.src(yeoman.dist + '/**')
+        .pipe(rename(function (path) {
+            path.dirname =  "/META-INF/resources/" + path.dirname;
+            return path;
+        }))
+        .pipe(zip('call-for-paper-front.jar'))
+        .pipe(gulp.dest('target'));
+});
 
 gulp.task('default', ['build']);
