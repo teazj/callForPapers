@@ -5,14 +5,12 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
     $scope.talk = talk;
     $scope.tracks = tracks;
     $scope.talkFormats = talkformats;
-    //TalkService.formats.findAll().$promise.then(function(data) {$scope.talkFormats = data});
-
 
     $scope.sending = false;
 
     function validate(talk) {
         // Validation is only about some required fields
-        return _.every(['type', 'name', 'description', 'difficulty', 'track'], function(field) {
+        return _.every(['format', 'name', 'description', 'difficulty', 'track'], function(field) {
             return Boolean(talk[field]);
         });
     }

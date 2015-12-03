@@ -228,7 +228,7 @@ angular.module('CallForPaper', [
                 resolve: {
                     talk: function() {
                         return {
-                            type: null,          // Completely unnecessary, but gives an overview of the
+                            format: null,          // Completely unnecessary, but gives an overview of the
                             name: null,          // structure of a talk object
                             description: null,
                             references: null,

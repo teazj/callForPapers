@@ -9,11 +9,11 @@
     <div class="col-lg-offset-2 col-lg-8">
         <form name="talkForm" class="form-horizontal" role="form" novalidate>
             <div class="form-group"
-                 ng-class="{'has-success': talkForm.typeInput.$valid && talkForm.typeInput.$dirty, 'has-error': talkForm.typeInput.$invalid && (talkForm.typeInput.$dirty || talkInvalid)}">
+                 ng-class="{'has-success': talkForm.formatInput.$valid && talkForm.formatInput.$dirty, 'has-error': talkForm.formatInput.$invalid && (talkForm.formatInput.$dirty || talkInvalid)}">
                 <label class="control-label">{{'step2.type' | translate}}</label>
-                <div>{{'step2.hintType' | translate}}</div>
+                <div>{{talkFormats[talk.format].description}}</div>
                 <div>
-                    <select ng-model="talk.type" name="typeInput" required class="form-control">
+                    <select ng-model="talk.format" name="formatInput" required class="form-control">
                         <option ng-repeat="format in talkFormats" value="{{format.id}}">{{format.libelle}} ({{format.dureeMinutes}} mn)</option>
                     </select>
                 </div>

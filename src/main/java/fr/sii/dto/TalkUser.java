@@ -13,7 +13,8 @@ public class TalkUser {
     private int id;
     private Talk.State state;
     private String name;
-    private String type;
+    private int format;
+    private String formatLabel;
     private int track;
     private String trackLabel;
     private String description;
@@ -47,12 +48,20 @@ public class TalkUser {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public int getFormat() {
+        return format;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setFormat(int format) {
+        this.format = format;
+    }
+
+    public String getFormatLabel() {
+        return formatLabel;
+    }
+
+    public void setFormatLabel(String formatLabel) {
+        this.formatLabel = formatLabel;
     }
 
     public int getTrack() {
