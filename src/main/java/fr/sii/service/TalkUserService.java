@@ -181,9 +181,12 @@ public class TalkUserService {
         return mapper.mapAsList(tracks, TrackDto.class);
     }
 
-    public List<TalkUser> getCospeakerTalks(int userId)
-    {
-        User user = userRepo.findById(userId);
-        return mapper.mapAsList(user.getCospeakerTalks(), TalkUser.class);
+    /**
+     * Retrieve the talk list whom the user is cospeaker
+     * @param userId Id of the user to retrieve cospeaker talks
+     * @return List of talks
+     */
+    public List<TalkUser> getCospeakerTalks(int userId) {
+        return mapper.mapAsList(talkRepo.findByCospeakers(userId), TalkUser.class);
     }
 }

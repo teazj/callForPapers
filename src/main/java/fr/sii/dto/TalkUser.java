@@ -1,10 +1,9 @@
 package fr.sii.dto;
 
+import java.util.Date;
+
 import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.Talk;
-
-import java.util.Date;
-import java.util.Set;
 
 /**
  * Talk DTO for user view
@@ -22,7 +21,6 @@ public class TalkUser {
     private Integer difficulty;
     private Date added;
     private UserProfil speaker;
-    private Set<UserProfil> cospeakers;
 
 
     public int getId() {
@@ -112,14 +110,5 @@ public class TalkUser {
     public void setTrackLabel(String trackLabel) {
         this.trackLabel = trackLabel;
     }
-
-    public void setCospeakers(Set<UserProfil> cospeakers) {
-        this.cospeakers = cospeakers;
-    }
-
-    public Set<UserProfil> getCospeakers() {
-        return cospeakers;
-    }
-
 
 }

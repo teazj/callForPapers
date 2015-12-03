@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.email.Email;
@@ -26,7 +24,6 @@ import fr.sii.entity.TalkFormat;
 import fr.sii.entity.User;
 import fr.sii.repository.UserRepo;
 import fr.sii.service.TalkUserService;
-import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.email.EmailingService;
 
 
@@ -181,11 +178,7 @@ public class SessionController extends RestrictedController {
     @RequestMapping(value="/cosessions", method= RequestMethod.GET)
     public List<TalkUser> getCoSessions(HttpServletRequest req) throws NotVerifiedException {
         int userId = retrieveUserId(req);
-        
-        System.out.println(userId);
-
         return talkService.getCospeakerTalks(userId);
     }
-
 
 }

@@ -1,12 +1,19 @@
 package fr.sii.entity;
 
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 /**
  * Speaker account
  */
@@ -49,16 +56,6 @@ public class User {
 
 	private Set<Talk> cospeakerTalks;
 
-	@JsonIgnore
-	@ManyToMany(cascade=CascadeType.ALL, mappedBy="cospeakers")  
-	public Set<Talk> getCospeakerTalks()  
-	{  
-		return cospeakerTalks;  
-	}  
-	public void setCospeakerTalks(Set<Talk> cospeakerTalks)  
-	{  
-		this.cospeakerTalks = cospeakerTalks;  
-	} 
 
 	/**
 	 * Count sign in provider the user has
@@ -159,6 +156,11 @@ public class User {
 		return imageProfilURL;
 	}
 
+    @ManyToMany(mappedBy = "cospeakers", fetch = FetchType.LAZY)
+    public Set<Talk> getCospeakerTalks() {
+        return cospeakerTalks;
+    }
+
 
 	public void setId(int id) {
 		this.id = id;
@@ -227,4 +229,8 @@ public class User {
 	public void setImageProfilURL(String imageProfilURL) {
 		this.imageProfilURL = imageProfilURL;
 	}
+
+    public void setCospeakerTalks(Set<Talk> cospeakerTalks) {
+        this.cospeakerTalks = cospeakerTalks;
+    }
 }
