@@ -66,20 +66,34 @@ angular.module('CallForPaper', [
             .otherwise('/login');
 
         $stateProvider
+            .state('main', {
+                abstract: true,
+                templateUrl: 'views/header.html',
+                resolve: {
+                    config: function(Application) {
+                        return Application.get().$promise;
+                    }
+                },
+                controller: 'HeaderCtrl',
+                controllerAs: 'header'
+            })
             .state('admin', {
+                parent: 'main',
                 url: '/admin',
                 abstract: true,
                 views: {
+                    'side-menu': {
+                        templateUrl: 'views/admin/_side-menu.html'
+                    },
+                    'top-menu': {
+                        templateUrl: 'views/admin/_top-menu.html'
+                    },
                     '': {
                         templateUrl: 'views/admin/admin.html',
                         controller: 'AdminCtrl',
                         resolve: {
                             isAutorizedAdmin: AuthServiceProvider.$get().isAutorizedAdmin,
                             isConfigured: AppConfigProvider.$get().isConfigured
-                        },
-                        '@admin': {
-                            templateUrl: 'views/admin/sessions.html',
-                            controller: 'AdminSessionsCtrl'
                         }
                     }
                 }
@@ -127,13 +141,22 @@ angular.module('CallForPaper', [
 
             // Restricted
             .state('app', {
+                parent: 'main',
                 abstract: true,
                 views: {
+                    'side-menu': {
+                        templateUrl: 'views/restricted/_side-menu.html'
+                    },
+                    'top-menu': {
+                        templateUrl: 'views/restricted/_top-menu.html'
+                    },
                     '': {
-                        templateUrl: 'views/header.html',
-                        controller: 'HeaderCtrl',
+                        template: '<ui-view/>',
                         resolve: {
                             isConfigured: AppConfigProvider.$get().isConfigured
+                        },
+                        controller: function($scope) {
+                            $scope.header.navBarColorClass = 'navbar-black'; // TODO Pretty dirty…
                         }
                     }
                 }

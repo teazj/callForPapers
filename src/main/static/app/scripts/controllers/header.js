@@ -1,28 +1,25 @@
 'use strict';
 
-angular.module('CallForPaper')
-    .controller('HeaderCtrl', ['$scope', '$rootScope', '$translate', '$auth', 'Application', function($scope, $rootScope, $translate, $auth, Application) {
-        $scope.language = $translate.use();
+angular.module('CallForPaper').controller('HeaderCtrl', function($scope, $rootScope, $translate, $auth, config) {
+    this.language = $translate.use();
 
-        $scope.changeLanguage = function(key) {
-            $translate.use(key);
-        };
+    this.title = config.eventName;
+    this.releaseDate = config.releaseDate;
+    this.decisionDate = config.decisionDate;
 
-        $rootScope.$on('$translateChangeEnd', function(event, args) {
-            $scope.language = args.language;
-        });
+    this.changeLanguage = function(key) {
+        $translate.use(key);
+    };
 
-        $scope.isAuthenticated = $auth.isAuthenticated();
-        $scope.$on('authenticate', function() {
-            $scope.isAuthenticated = $auth.isAuthenticated();
-        });
+    this.navBarColorClass = 'navbar-black'; // TODO Pretty dirty…
 
-        /**
-         * Get eventName and closing date
-         */
-        Application.get(function(config) {
-            $scope.title = config.eventName;
-            $scope.releaseDate = config.releaseDate;
-            $scope.decisionDate = config.decisionDate;
-        });
-    }]);
+    $rootScope.$on('$translateChangeEnd', function(event, args) {
+        this.language = args.language;
+    }.bind(this));
+
+    this.isAuthenticated = $auth.isAuthenticated();
+    $scope.$on('authenticate', function() {
+        this.isAuthenticated = $auth.isAuthenticated();
+    }.bind(this));
+
+});

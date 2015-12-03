@@ -8,12 +8,13 @@
 		margin-left: 15px;
 		">Call For Paper</span>
 		<ul>
-        	<li ui-sref-active="active" ng-show="isAuthenticated === true"><a ui-sref="app.dashboard">{{'header.dashboard' | translate}}</a></li>
-        	<li ui-sref-active="active" ng-show="isAuthenticated === true"><a ui-sref="app.profil">{{'header.profil' | translate}}</a></li>
-            <li ng-show="isAuthenticated === true"><a ui-sref="app.logout">{{'header.logout' | translate}}</a></li>
-			<li ui-sref-active="active" ng-show="isAuthenticated === false"><a ui-sref="app.login">{{'header.login' | translate}}</a></li>
+            <div ui-view="side-menu"></div>
+            <li ng-switch="header.isAuthenticated" ui-sref-active="active">
+                <a ng-switch-when="true" ui-sref="app.logout">{{'header.logout' | translate}}</a>
+                <a ng-switch-when="false" ui-sref="app.login">{{'header.login' | translate}}</a>
+            </li>
 			<li>
-				<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
+				<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="header.changeLanguage(lang)">{{ ('lang.'+header.language) | translate}}</lang-picker>
 			</li>
         </ul>
 	</nav>
@@ -22,7 +23,7 @@
 	<div class="st-pusher">
 		<div class="st-content"><!-- this is the wrapper for the content -->
 			<div class="st-content-inner"><!-- extra div for emulating position:fixed of the menu -->
-				<nav class="navbar navbar-black">
+				<nav class="navbar {{header.navBarColorClass}}">
 					<div class="container-fluid">
 						<!-- Brand and toggle get grouped for better mobile display -->
 						<div class="navbar-header">
@@ -35,22 +36,21 @@
 							<div class="navbar-brand">
 								<a ui-sref="app.dashboard">
 									<img src="/images/logo.png" alt="" style="width: 20px;margin-top: -6px;">
-									<span>Call for paper - {{::title}}</span>
+									<span>Call for paper - {{::header.title}}</span>
 								</a>
 							</div>
 						</div>
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<ul class="nav navbar-nav">
-								<li ui-sref-active="active" ng-show="isAuthenticated === true"><a ui-sref="app.dashboard">{{'header.dashboard' | translate}}</a></li>
-								<li ui-sref-active="active" ng-show="isAuthenticated === true"><a ui-sref="app.profil">{{'header.profil' | translate}}</a></li>
-							</ul>
+                            <div ui-view="top-menu"></div>
 							<ul class="nav navbar-nav navbar-right">
-								<li ng-if="releaseDate !== undefined" class="hidden-sm"><a>{{'header.openUntil' | translate}}{{::releaseDate}} - {{'header.decision' | translate}}{{::decisionDate}}</a></li>
-								<li ng-show="isAuthenticated === true"><a ui-sref="app.logout">{{'header.logout' | translate}}</a></li>
-								<li ui-sref-active="active" ng-show="isAuthenticated === false"><a ui-sref="app.login">{{'header.login' | translate}}</a></li>
+								<li ng-if="header.releaseDate !== undefined" class="hidden-sm"><a>{{'header.openUntil' | translate}}{{::header.releaseDate}} - {{'header.decision' | translate}}{{::header.decisionDate}}</a></li>
+                                <li ng-switch="header.isAuthenticated" ui-sref-active="active">
+                                    <a ng-switch-when="true" ui-sref="app.logout">{{'header.logout' | translate}}</a>
+                                    <a ng-switch-when="false" ui-sref="app.login">{{'header.login' | translate}}</a>
+                                </li>
 								<li>
-									<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="changeLanguage(lang)">{{ ('lang.'+language) | translate}}</lang-picker>
+									<lang-picker class="lang-picker" supported-languages="['fr-FR', 'en-US']" on-language-change="header.changeLanguage(lang)">{{ ('lang.'+header.language) | translate}}</lang-picker>
 								</li>
 							</ul>
 						</div><!-- /.navbar-collapse -->
