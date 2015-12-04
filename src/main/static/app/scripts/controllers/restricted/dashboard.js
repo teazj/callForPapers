@@ -47,7 +47,6 @@ angular.module('CallForPaper')
                     session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];
                     return session;
                 });
-                window.console.log($scope.coTalks);
 
                 $scope.coTalksLoaded = true;
             });

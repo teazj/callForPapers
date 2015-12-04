@@ -17,6 +17,7 @@ import fr.sii.config.global.GlobalSettings;
 import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.NotVerifiedException;
+import fr.sii.domain.exception.CospeakerNotFoundException;
 import fr.sii.dto.TalkUser;
 import fr.sii.dto.TrackDto;
 import fr.sii.entity.Talk;
@@ -47,7 +48,7 @@ public class SessionController extends RestrictedController {
      * Add a session
      */
     @RequestMapping(value="/sessions", method=RequestMethod.POST)
-    public TalkUser submitTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws Exception {
+    public TalkUser submitTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws Exception, CospeakerNotFoundException  {
         User user = userRepo.findOne(retrieveUserId(req));
         TalkUser saved = talkService.submitTalk(user, talkUser);
 
@@ -87,7 +88,7 @@ public class SessionController extends RestrictedController {
      * Change a draft to a session
      */
     @RequestMapping(value= "/sessions/{talkId}", method=RequestMethod.PUT)
-    public TalkUser submitDraftToTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws Exception {
+    public TalkUser submitDraftToTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws Exception, CospeakerNotFoundException {
         int userId = retrieveUserId(req);
         User user = userRepo.findOne(userId);
 
@@ -109,7 +110,7 @@ public class SessionController extends RestrictedController {
      * Add a new draft
      */
     @RequestMapping(value="/drafts", method=RequestMethod.POST)
-    public TalkUser addDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws NotVerifiedException {
+    public TalkUser addDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws NotVerifiedException, CospeakerNotFoundException {
         int userId = retrieveUserId(req);
         return talkService.addDraft(userId, talkUser);
     }
@@ -148,7 +149,7 @@ public class SessionController extends RestrictedController {
      * Edit a draft
      */
     @RequestMapping(value= "/drafts/{talkId}", method=RequestMethod.PUT)
-    public TalkUser editDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws NotVerifiedException {
+    public TalkUser editDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws NotVerifiedException, CospeakerNotFoundException {
         int userId = retrieveUserId(req);
 
         talkUser.setId(talkId);

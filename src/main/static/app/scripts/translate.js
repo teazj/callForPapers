@@ -128,7 +128,7 @@ angular.module('CallForPaper')
                 'difficulty': 'Difficulté * (Débutant, Confirmé, Expert) :',
                 'track': 'Catégorie * :',
                 'cospeaker': 'Co-conférenciers :',
-                'hintCospeaker': 'Si vous n\'êtes pas seul lors de la présentation, donnez les nom / email / bio / liens sociaux des autres conférenciers.',
+                'hintCospeaker': 'Si vous n\'êtes pas seul lors de la présentation, donnez l\'email des autres conférenciers. ATTENTION, ceux-ci doivent être préalablement inscrit sur le CFP.',
                 'beginner': 'Débutant',
                 'confirmed': 'Confirmé',
                 'expert': 'Expert',

@@ -124,7 +124,7 @@ public class UserProfil {
         this.cospeakerTalks = cospeakerTalks;
     }
 
-    @JsonIgnore
+
     public Set<TalkUser> getCospeakerTalks() {
         return cospeakerTalks;
     }

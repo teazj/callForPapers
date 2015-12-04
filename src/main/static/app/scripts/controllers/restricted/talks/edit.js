@@ -6,9 +6,25 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
     $scope.tracks = tracks;
     $scope.talkFormats = talkformats;
     //TalkService.formats.findAll().$promise.then(function(data) {$scope.talkFormats = data});
-
-
+    $scope.cospeakers = talk.cospeakers.map(function(speaker) {
+                    window.console.log(speaker)
+                    return speaker.email;
+                });
+            
+    window.console.log($scope.cospeakers)
     $scope.sending = false;
+    // $scope.$watch(function() {
+    //         if ($scope.cospeakers !== undefined) {
+    //             return $scope.cospeakers.length;
+    //         }
+    //     }, function() {
+    //         if ($scope.cospeakers !== undefined) {
+    //             $scope.cospeakers = talk.cospeakers.map(function(speaker) {
+    //                 window.console.log(speaker)
+    //                 return speaker.email;
+    //             });
+    //         }
+    //     });
 
     function validate(talk) {
         // Validation is only about some required fields
@@ -30,6 +46,10 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
         var talkService = isDraft ? Drafts : Sessions;
         if (validate(talk)) {
             $scope.sending = true;
+            talk.cospeakers = $scope.cospeakers.map(function(email) {
+                    return { email: email.text }
+                });
+            window.console.log(talk)
             return talkService.save(talk).then(function(savedTalk) {
                 $scope.talk = savedTalk;
                 $scope.sending = false;

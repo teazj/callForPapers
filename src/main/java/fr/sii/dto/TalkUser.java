@@ -1,8 +1,10 @@
 package fr.sii.dto;
 
 import java.util.Date;
+import java.util.Set;
 
 import fr.sii.dto.user.UserProfil;
+import fr.sii.dto.user.CospeakerProfil;
 import fr.sii.entity.Talk;
 
 /**
@@ -21,6 +23,7 @@ public class TalkUser {
     private Integer difficulty;
     private Date added;
     private UserProfil speaker;
+    private Set<CospeakerProfil> cospeakers;
 
 
     public int getId() {
@@ -109,6 +112,14 @@ public class TalkUser {
 
     public void setTrackLabel(String trackLabel) {
         this.trackLabel = trackLabel;
+    }
+    
+    public void setCospeaker(Set<CospeakerProfil> cospeakers) {
+        this.cospeakers = cospeakers;
+    }
+    
+    public Set<CospeakerProfil> getCospeakers() {
+        return cospeakers;
     }
 
 }
