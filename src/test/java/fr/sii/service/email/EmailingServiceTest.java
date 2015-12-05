@@ -24,7 +24,6 @@ import fr.sii.entity.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@Ignore
 public class EmailingServiceTest {
 
     @Autowired
