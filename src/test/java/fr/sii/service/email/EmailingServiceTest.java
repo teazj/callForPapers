@@ -2,6 +2,7 @@ package fr.sii.service.email;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -23,6 +24,7 @@ import fr.sii.entity.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
+@Ignore
 public class EmailingServiceTest {
 
     @Autowired
