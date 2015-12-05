@@ -1,0 +1,4 @@
+node_modules/
+src/main/static/app/bower_components/
+target/
+dist/

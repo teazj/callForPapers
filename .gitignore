@@ -1,6 +1,7 @@
 .idea
 *.iml
 target
+dist
 target-grunt
 
 **/node_modules

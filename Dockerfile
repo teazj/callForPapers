@@ -1,5 +1,14 @@
-FROM jetty:9
+FROM java:8-jdk
 
-MAINTAINER team@breizhcamp.org
+ENV HOME /home/cfp
+RUN useradd -c "CFP user" -d $HOME -m cfp
 
-ADD target/call-for-paper-1.0-SNAPSHOT /var/lib/jetty
+EXPOSE 8080
+EXPOSE 8443
+
+WORKDIR $HOME
+ENTRYPOINT java -jar call-for-paper.jar
+
+USER cfp
+ADD call-for-paper.jar $HOME
+ADD application.properties $HOME
