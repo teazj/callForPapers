@@ -1,9 +1,26 @@
 package fr.sii.controller.oauth;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.nimbusds.jose.JOSEException;
+
 import fr.sii.config.auth.AuthSettings;
-import fr.sii.config.global.GlobalSettings;
-import fr.sii.domain.email.Email;
 import fr.sii.domain.exception.BadRequestException;
 import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
 import fr.sii.domain.token.Token;
@@ -16,18 +33,6 @@ import fr.sii.service.auth.PasswordService;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.user.UserService;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/auth", produces = "application/json; charset=utf-8")
@@ -36,23 +41,17 @@ public class AuthController {
     private static Logger logger = Logger.getLogger(AuthController.class.getName());
 
     public static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email",
-        ALREADY_VERIFIED = "This account is already verified",
-        BAD_TOKEN = "Bad token",
-        NOT_FOUND_MSG = "User not found", LOGING_ERROR_MSG = "Wrong email and/or password",
-        UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
+            ALREADY_VERIFIED = "This account is already verified", BAD_TOKEN = "Bad token", NOT_FOUND_MSG = "User not found",
+            LOGING_ERROR_MSG = "Wrong email and/or password", UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private GlobalSettings globalSettings;
 
     @Autowired
     private EmailingService emailingService;
 
     @Autowired
     private AuthSettings authSettings;
-
 
     /**
      * Log user in
@@ -67,8 +66,7 @@ public class AuthController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Token login(HttpServletResponse res, HttpServletRequest req, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
         User foundUser = userService.findByemail(user.getEmail());
-        if (foundUser != null
-            && PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
+        if (foundUser != null && PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
             return AuthUtils.createToken(req.getRemoteHost(), String.valueOf(foundUser.getId()), foundUser.isVerified());
         }
         res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -116,18 +114,11 @@ public class AuthController {
         String gravatarURL = GravatarUtils.getImageURL(signupUser.getEmail());
         user.setImageProfilURL(gravatarURL);
 
-
         // Save user
         User savedUser = userService.save(user);
-
-        // Send validation email
-        HashMap<String, String> map = new HashMap<>();
-        map.put("link", globalSettings.getHostname() + "/#/verify?id=" + String.valueOf(savedUser.getId()) + "&token=" + savedUser.getVerifyToken());
-        map.put("hostname", globalSettings.getHostname());
-        logger.info(globalSettings.getHostname() + "/#/verify?id=" + String.valueOf(savedUser.getId()) + "&token=" + savedUser.getVerifyToken());
-
-        Email email = new Email(savedUser.getEmail(), "Confirmation de votre adresse e-mail", "verify.html", map);
-        emailingService.send(email);
+        if (savedUser != null) {
+            emailingService.sendEmailValidation(savedUser);
+        }
 
         // Return JWT
         return AuthUtils.createToken(req.getRemoteHost(), String.valueOf(savedUser.getId()), savedUser.isVerified());
@@ -145,7 +136,8 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
-    public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken) throws JOSEException, IOException {
+    public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken)
+            throws JOSEException, IOException {
         Token token = null;
 
         // Search user
@@ -196,7 +188,8 @@ public class AuthController {
      * @throws IllegalAccessException
      */
     @RequestMapping(value = "/unlink/{provider}", method = RequestMethod.GET)
-    public void unlink(HttpServletResponse res, HttpServletRequest req, @PathVariable("provider") String provider) throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
+    public void unlink(HttpServletResponse res, HttpServletRequest req, @PathVariable("provider") String provider)
+            throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
         if (StringUtils.isBlank(authHeader)) {
