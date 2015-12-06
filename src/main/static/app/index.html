@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="styles/app.css">
     <!-- endbuild -->
 </head>
-<body ng-app="CallForPaper">
+<body>
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -43,6 +43,7 @@
     <!-- endbuild -->
     <!-- build:modules_js scripts/modules.js -->
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-deferred-bootstrap/angular-deferred-bootstrap.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -139,6 +140,9 @@
     <script src="scripts/factory/authService.js"></script>
     <script src="scripts/factory/appConfigService.js"></script>
     <script src="scripts/factory/nextPreviousSessionService.js"></script>
+
+    <!-- Application bootstrap -->
+    <script src="scripts/bootstrapper.js"></script>
     <!-- endbuild -->
     <script>
       (function(i, s, o, g, r, a, m) {
