@@ -28,7 +28,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 
-import fr.sii.Application;
+import fr.sii.ApplicationJUnit;
 import fr.sii.config.email.EmailingSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.dto.TalkAdmin;
@@ -38,7 +38,7 @@ import fr.sii.service.admin.config.ApplicationConfigService;
 import fr.sii.service.admin.user.AdminUserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = ApplicationJUnit.class)
 @WebAppConfiguration
 public class EmailingServiceTest {
 
