@@ -296,4 +296,14 @@
             <column name="description" value="Keynote"></column>
         </insert>
     </changeSet>
+
+    <changeSet id="14" author="lhuet">
+        <insert tableName="talkformat">
+            <column name="id" value="5"></column>
+            <column name="libelle" value="Université"></column>
+            <column name="duree_minutes" value="120"></column>
+            <column name="description" value="Conférence pour traiter un sujet en profondeur."></column>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
