@@ -1,6 +1,7 @@
 package fr.sii.controller.restricted.session;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -40,12 +41,13 @@ public class SessionController extends RestrictedController {
      * Add a session
      */
     @RequestMapping(value = "/sessions", method = RequestMethod.POST)
-    public TalkUser submitTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws Exception {
-        User user = userRepo.findOne(retrieveUserId(req));
+    public TalkUser submitTalk(HttpServletRequest httpServletRequest, @Valid @RequestBody TalkUser talkUser) throws Exception {
+        User user = userRepo.findOne(retrieveUserId(httpServletRequest));
         TalkUser savedTalk = talkService.submitTalk(user, talkUser);
 
         if (user != null && savedTalk != null) {
-            emailingService.sendSessionConfirmation(user, savedTalk);
+            Locale userPreferredLocale = httpServletRequest.getLocale();
+            emailingService.sendConfirmed(user, savedTalk, userPreferredLocale);
         }
 
         return savedTalk;
@@ -75,15 +77,16 @@ public class SessionController extends RestrictedController {
      * Change a draft to a session
      */
     @RequestMapping(value = "/sessions/{talkId}", method = RequestMethod.PUT)
-    public TalkUser submitDraftToTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws Exception {
-        int userId = retrieveUserId(req);
+    public TalkUser submitDraftToTalk(HttpServletRequest httpServletRequest, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws Exception {
+        int userId = retrieveUserId(httpServletRequest);
         User user = userRepo.findOne(userId);
 
         talkUser.setId(talkId);
         TalkUser savedTalk = talkService.submitDraftToTalk(userId, talkUser);
 
         if (user != null && savedTalk != null) {
-            emailingService.sendSessionConfirmation(user, savedTalk);
+            Locale userPreferredLocale = httpServletRequest.getLocale();
+            emailingService.sendConfirmed(user, savedTalk, userPreferredLocale);
         }
 
         return savedTalk;

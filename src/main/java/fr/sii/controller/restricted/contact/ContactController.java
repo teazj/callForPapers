@@ -1,6 +1,7 @@
 package fr.sii.controller.restricted.contact;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -53,9 +54,9 @@ public class ContactController extends RestrictedController {
      * Add a contact message for the given session
      */
     @RequestMapping(method = RequestMethod.POST)
-    public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req)
+    public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest httpServletRequest)
             throws NotVerifiedException, NotFoundException {
-        User user = userService.findById(retrieveUserId(req));
+        User user = userService.findById(retrieveUserId(httpServletRequest));
         if (user == null) {
             throw new NotFoundException("User not found");
         }
@@ -64,9 +65,10 @@ public class ContactController extends RestrictedController {
         CommentUser saved = null;
         if (talk != null) {
             saved = commentService.addComment(user.getId(), talkId, commentUser);
-        }
 
-        emailingService.sendNewMessageAdmin(user, talk);
+            Locale userPreferredLocale = httpServletRequest.getLocale();
+            emailingService.sendNewMessageAdmin(user, talk, userPreferredLocale);
+        }
 
         return saved;
     }

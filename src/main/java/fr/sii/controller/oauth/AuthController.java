@@ -2,6 +2,7 @@ package fr.sii.controller.oauth;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,14 +80,14 @@ public class AuthController {
     /**
      * Register new user
      *
-     * @param res
-     * @param req
+     * @param httpServletResponse
+     * @param httpServletRequest
      * @param signupUser
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public Token signup(HttpServletResponse res, HttpServletRequest req, @RequestBody @Valid SignupUser signupUser) throws Exception {
+    public Token signup(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid SignupUser signupUser) throws Exception {
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
@@ -96,10 +97,10 @@ public class AuthController {
         User foundUser = userService.findByemail(signupUser.getEmail());
         // Verify if user already exists
         if (foundUser != null) {
-            res.setStatus(HttpServletResponse.SC_CONFLICT);
-            res.getWriter().write(CONFLICT_MSG_EMAIL);
-            res.getWriter().flush();
-            res.getWriter().close();
+            httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+            httpServletResponse.getWriter().write(CONFLICT_MSG_EMAIL);
+            httpServletResponse.getWriter().flush();
+            httpServletResponse.getWriter().close();
             return null;
         }
 
@@ -117,11 +118,12 @@ public class AuthController {
         // Save user
         User savedUser = userService.save(user);
         if (savedUser != null) {
-            emailingService.sendEmailValidation(savedUser);
+            Locale userPreferredLocale = httpServletRequest.getLocale();
+            emailingService.sendEmailValidation(savedUser, userPreferredLocale);
         }
 
         // Return JWT
-        return AuthUtils.createToken(req.getRemoteHost(), String.valueOf(savedUser.getId()), savedUser.isVerified());
+        return AuthUtils.createToken(httpServletRequest.getRemoteHost(), String.valueOf(savedUser.getId()), savedUser.isVerified());
     }
 
     /**

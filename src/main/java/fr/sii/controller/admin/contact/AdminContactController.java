@@ -2,7 +2,9 @@ package fr.sii.controller.admin.contact;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class AdminContactController {
      * Add new contact message to a session
      */
     @RequestMapping(method = RequestMethod.POST)
-    public CommentUser postContact(@Valid @RequestBody CommentUser comment, @PathVariable int talkId) throws NotFoundException, IOException {
+    public CommentUser postContact(@Valid @RequestBody CommentUser comment, @PathVariable int talkId, HttpServletRequest httpServletRequest) throws NotFoundException, IOException {
 
         AdminUser admin = adminUserServiceCustom.getCurrentUser();
         TalkAdmin talk = talkService.getOne(talkId);
@@ -65,7 +67,8 @@ public class AdminContactController {
 
         // Send new message email
         if (user != null && talk != null) {
-            emailingService.sendNewMessage(user, talk, comment);
+            Locale userPreferredLocale = httpServletRequest.getLocale();
+            emailingService.sendNewMessage(user, talk, userPreferredLocale);
         }
 
         return saved;
