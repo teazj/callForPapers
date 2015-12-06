@@ -11,10 +11,11 @@
             <div class="form-group"
                  ng-class="{'has-success': talkForm.formatInput.$valid && talkForm.formatInput.$dirty, 'has-error': talkForm.formatInput.$invalid && (talkForm.formatInput.$dirty || talkInvalid)}">
                 <label class="control-label">{{'step2.type' | translate}}</label>
-                <div>{{talkFormats[talk.format].description}}</div>
+                <div>{{talkFormats[talk.format-1].description}}</div>
                 <div>
-                    <select ng-model="talk.format" name="formatInput" required class="form-control">
-                        <option ng-repeat="format in talkFormats" value="{{format.id}}">{{format.libelle}} ({{format.dureeMinutes}} mn)</option>
+                    <select ng-model="talk.format" name="formatInput" required class="form-control"
+                            ng-options="format.id as (format.libelle +' ('+format.dureeMinutes+' mn)') for format in talkFormats">
+
                     </select>
                 </div>
             </div>
