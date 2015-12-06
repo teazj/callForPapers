@@ -306,4 +306,8 @@
         </insert>
     </changeSet>
 
+    <changeSet id="15" author="lhuet">
+        <dropColumn columnName="type" tableName="talks"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -17,7 +17,6 @@ public class Talk {
     private int id;
     private State state;
     private String name;
-    private String type;
     private Track track;
     private String description;
     private String references;
@@ -46,10 +45,6 @@ public class Talk {
     @NotNull(message = "Session name field is required")
     public String getName() {
         return name;
-    }
-
-    public String getType() {
-        return type;
     }
 
     @ManyToOne
@@ -94,10 +89,6 @@ public class Talk {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public void setTrack(Track track) {
