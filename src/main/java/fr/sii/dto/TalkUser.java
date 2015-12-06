@@ -16,7 +16,7 @@ public class TalkUser {
     private Talk.State state;
     private String name;
     private String type;
-    private int track;
+    private Integer trackId;
     private String trackLabel;
     private String description;
     private String references;
@@ -58,12 +58,12 @@ public class TalkUser {
         this.type = type;
     }
 
-    public int getTrack() {
-        return track;
+    public Integer getTrackId() {
+        return trackId;
     }
 
-    public void setTrack(int track) {
-        this.track = track;
+    public void setTrackId(Integer trackId) {
+        this.trackId = trackId;
     }
 
     public String getDescription() {
@@ -113,11 +113,11 @@ public class TalkUser {
     public void setTrackLabel(String trackLabel) {
         this.trackLabel = trackLabel;
     }
-    
+
     public void setCospeaker(Set<CospeakerProfil> cospeakers) {
         this.cospeakers = cospeakers;
     }
-    
+
     public Set<CospeakerProfil> getCospeakers() {
         return cospeakers;
     }

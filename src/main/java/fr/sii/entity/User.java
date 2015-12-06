@@ -54,9 +54,6 @@ public class User {
 	private String imageProfilURL;
 
 
-	private Set<Talk> cospeakerTalks;
-
-
 	/**
 	 * Count sign in provider the user has
 	 * @return Number of sign in provider
@@ -156,11 +153,6 @@ public class User {
 		return imageProfilURL;
 	}
 
-    @ManyToMany(mappedBy = "cospeakers", fetch = FetchType.LAZY)
-    public Set<Talk> getCospeakerTalks() {
-        return cospeakerTalks;
-    }
-
 
 	public void setId(int id) {
 		this.id = id;
@@ -230,7 +222,4 @@ public class User {
 		this.imageProfilURL = imageProfilURL;
 	}
 
-    public void setCospeakerTalks(Set<Talk> cospeakerTalks) {
-        this.cospeakerTalks = cospeakerTalks;
-    }
 }

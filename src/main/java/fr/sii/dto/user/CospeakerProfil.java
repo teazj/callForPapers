@@ -9,6 +9,12 @@ public class CospeakerProfil {
     private int id;
     private String email;
 
+    public CospeakerProfil() {
+    }
+
+    public CospeakerProfil(String email) {
+        this.email = email;
+    }
 
     public int getId() {
         return id;

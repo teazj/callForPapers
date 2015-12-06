@@ -21,7 +21,6 @@ public class UserProfil {
     private String github;
     private String imageProfilURL;
     private String email;
-    private Set<TalkUser> cospeakerTalks;
 
     public String getLastname() {
         return lastname;
@@ -120,12 +119,4 @@ public class UserProfil {
         this.email = email;
     }
 
-    public void setcospeakerTalks(Set<TalkUser> cospeakerTalks) {
-        this.cospeakerTalks = cospeakerTalks;
-    }
-
-
-    public Set<TalkUser> getCospeakerTalks() {
-        return cospeakerTalks;
-    }
 }
