@@ -8,6 +8,6 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
 
 	<!--beans-->
-	<context:property-placeholder location="classpath:application-test.properties" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
 
 </beans>

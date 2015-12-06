@@ -7,6 +7,6 @@
 
 
 	<!-- Static Resource Config -->
-    <context:property-placeholder location="classpath:application-test.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
 
 </beans>

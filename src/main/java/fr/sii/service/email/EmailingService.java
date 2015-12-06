@@ -1,13 +1,16 @@
 package fr.sii.service.email;
 
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import fr.sii.dto.ApplicationSettings;
-import fr.sii.service.admin.config.ApplicationConfigService;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -15,19 +18,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fr.sii.config.email.EmailingSettings.EmailType;
 import fr.sii.config.email.EmailingSettings;
-
+import fr.sii.config.email.EmailingSettings.EmailType;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
 import fr.sii.entity.AdminUser;
 import fr.sii.entity.User;
+import fr.sii.service.admin.config.ApplicationConfigService;
 import fr.sii.service.admin.user.AdminUserService;
 
 @Service
@@ -48,7 +51,7 @@ public class EmailingService {
     private AdminUserService adminUserServiceCustom;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private JavaMailSenderImpl javaMailSender;
 
     /**
      * EmailingService constructor.
@@ -92,7 +95,8 @@ public class EmailingService {
     public void sendNewMessage(User user, TalkAdmin talk, Locale locale) {
         log.debug("Sending new message e-mail to '{}'", user.getEmail());
 
-        // List<String> bcc = adminUserServiceCustom.findAll().stream().map(a -> a.getEmail()).collect(Collectors.toList());
+        // List<String> bcc = adminUserServiceCustom.findAll().stream().map(a ->
+        // a.getEmail()).collect(Collectors.toList());
         List<String> bcc = new ArrayList<>();
         for (AdminUser adminUser : adminUserServiceCustom.findAll()) {
             bcc.add(adminUser.getEmail());
@@ -111,7 +115,6 @@ public class EmailingService {
 
         sendEmail(user.getEmail(), subject, content, bcc);
     }
-
 
     /**
      * Send new speaker message to admin.
@@ -207,6 +210,7 @@ public class EmailingService {
 
         sendEmail(user.getEmail(), subject, content, null);
     }
+
     /**
      * Send email validation.
      *
@@ -232,13 +236,11 @@ public class EmailingService {
         sendEmail(user.getEmail(), subject, content, null);
     }
 
-
-
     public void sendEmail(String to, String subject, String content, List<String> bcc) {
         if (!emailingSettings.isSend())
             return;
 
-        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         try {
@@ -250,7 +252,7 @@ public class EmailingService {
             helper.setSubject(subject);
             helper.setText(content, true);
 
-            mailSender.send(message);
+            javaMailSender.send(message);
             log.debug("Sent e-mail to User '{}'", to);
         } catch (MailSendException | MessagingException e) {
             log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());

@@ -1,8 +1,17 @@
 package fr.sii.service.email;
 
-import fr.sii.config.email.EmailingSettings;
-import fr.sii.config.global.GlobalSettings;
-import fr.sii.service.admin.user.AdminUserService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.verify;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,24 +23,19 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetupTest;
 
 import fr.sii.Application;
+import fr.sii.config.email.EmailingSettings;
+import fr.sii.config.global.GlobalSettings;
 import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
 import fr.sii.entity.User;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.verify;
-
+import fr.sii.service.admin.config.ApplicationConfigService;
+import fr.sii.service.admin.user.AdminUserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -46,7 +50,10 @@ public class EmailingServiceTest {
     private GreenMail testSmtp;
 
     @Autowired
-    private JavaMailSenderImpl mailSender;
+    ApplicationConfigService applicationConfigService;
+
+    @Autowired
+    private JavaMailSenderImpl javaMailSender;
 
     @Autowired
     private GlobalSettings globalSettings;
@@ -84,16 +91,16 @@ public class EmailingServiceTest {
         ReflectionTestUtils.setField(emailingService, "globalSettings", globalSettings);
         ReflectionTestUtils.setField(emailingService, "emailingSettings", emailingSettings);
         ReflectionTestUtils.setField(emailingService, "adminUserServiceCustom", adminUserServiceCustom);
-        ReflectionTestUtils.setField(emailingService, "mailSender", mailSender);
+        ReflectionTestUtils.setField(emailingService, "javaMailSender", javaMailSender);
+        ReflectionTestUtils.setField(emailingService, "applicationConfigService", applicationConfigService);
 
         testSmtp = new GreenMail(ServerSetupTest.SMTP);
         testSmtp.start();
 
         // Don't forget to set the test port!
-        mailSender.setPort(3025);
-        mailSender.setHost("localhost");
+        javaMailSender.setPort(3025);
+        javaMailSender.setHost("localhost");
     }
-
 
     @Test
     public void sendSessionConfirmation() {
@@ -106,7 +113,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(user.getEmail()), eq(subject), anyString(), isNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
     }
 
     @Test
@@ -116,10 +123,10 @@ public class EmailingServiceTest {
         String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NEW_MESSAGE, Locale.FRENCH, talkUser.getName(), talkUser.getName());
 
         // When
-        verify(emailingService).processContent(eq(templatePath), anyMap());
         emailingService.sendNewMessage(user, talkAdmin, Locale.FRENCH);
 
         // Then
+        verify(emailingService).processContent(eq(templatePath), anyMap());
         verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), notNull(List.class));
     }
 
@@ -148,7 +155,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(emailingSettings.getEmailSender()), eq(subject), anyString(), notNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
     }
 
     @Test
@@ -162,7 +169,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(emailingSettings.getEmailSender()), eq(subject), anyString(), notNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
     }
 
     @Test
@@ -176,7 +183,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(emailingSettings.getEmailSender()), eq(subject), anyString(), notNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
     }
 
     @Test
@@ -202,10 +209,10 @@ public class EmailingServiceTest {
         String subject = emailingSettings.getSubject(EmailingSettings.EmailType.VERIFY, Locale.FRENCH);
 
         // When
-        verify(emailingService).processContent(eq(templatePath), anyMap());
         emailingService.sendEmailValidation(user, Locale.FRENCH);
 
         // Then
+        verify(emailingService).processContent(eq(templatePath), anyMap());
         verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
     }
 
