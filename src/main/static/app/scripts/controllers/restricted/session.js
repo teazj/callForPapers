@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('RestrictedSessionCtrl', ['$scope', '$stateParams', '$filter', 'RestrictedSession', 'CommonProfilImage', 'RestrictedContact', '$modal', 'Config', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal, Config) {
+    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal, Config, talkformats) {
         $scope.tab = $stateParams.tab;
 
         $scope.session = null;
 
+        $scope.talkformats=talkformats;
 
         /**
          * Get talk
@@ -125,4 +126,4 @@ angular.module('CallForPaper')
             });
         };
 
-    }]);
+    });

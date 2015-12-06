@@ -92,7 +92,8 @@
 								<div class="form-group">
 									<label class="control-label" for="type">{{'step2.type' | translate}}</label>
 									<div class="">
-										<input readonly type="text" name="type" class="form-control" ng-value="'step2.types.' + session.type | translate" id="type">
+										<input readonly type="text" name="type" class="form-control"
+											   ng-value="talkformats[session.format -1].libelle + ' ('+talkformats[session.format -1].dureeMinutes+' mn)'" id="type">
 									</div>
 								</div>
 								<div class="form-group">

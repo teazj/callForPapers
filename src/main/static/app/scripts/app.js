@@ -304,7 +304,10 @@ angular.module('CallForPaper', [
                 templateUrl: 'views/restricted/session.html',
                 controller: 'RestrictedSessionCtrl',
                 resolve: {
-                    verified: AuthServiceProvider.$get().verified
+                    verified: AuthServiceProvider.$get().verified,
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    }
                 }
             })
 

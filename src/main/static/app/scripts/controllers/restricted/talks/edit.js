@@ -3,7 +3,6 @@
 angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, talkformats, $scope, talk, Sessions, Drafts, $state, $q, dialogs, translateFilter, Notification) {
 
     $scope.talk = talk;
-    console.log(talk);
     $scope.tracks = tracks;
     $scope.talkFormats = talkformats;
 
