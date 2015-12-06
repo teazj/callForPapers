@@ -58,7 +58,7 @@ angular.module('CallForPaper')
         updateContacts();
 
         $scope.captchaShow = true;
-        $scope.recaptchaId = Config.recaptcha;
+        $scope.recaptchaId = Config.recaptchaPublicKey;
         $scope.captcha = null;
         $scope.setResponse = function(response) {
             // send the `response` to your server for verification.

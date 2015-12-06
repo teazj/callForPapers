@@ -2,7 +2,7 @@
 
 angular.module('CallForPaper')
     .controller('SignupCtrl', ['$scope', '$auth', 'Config', function($scope, $auth, Config) {
-        $scope.recaptchaId = Config.recaptcha;
+        $scope.recaptchaId = Config.recaptchaPublicKey;
         $scope.alreadyExists = false;
         $scope.loading = false;
         $scope.captcha = null;

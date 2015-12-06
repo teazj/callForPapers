@@ -35,11 +35,6 @@ angular.module('CallForPaper', [
         'restangular',
         'dialogs.main'
     ])
-    .constant('Config', {
-        'recaptcha': '6LdxgxATAAAAAFUCo5RuwxxCGF20b-UWaawAM0nM',
-        'googleClientId': '980998530813-um48to1pf2be7tn9d9ar29d7si41a5kd.apps.googleusercontent.com',
-        'githubClientId': '5fb632a6027ffe32338b'
-    })
     .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = false;
     }])
