@@ -9,10 +9,9 @@ RUN curl -SL "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x
 WORKDIR /work
 ADD / /work
 
-RUN npm install -g bower gulp
 RUN npm install
-RUN bower --allow-root install
-RUN gulp build
+RUN node_modules/.bin/bower --allow-root install
+RUN node_modules/.bin/gulp build
 RUN mvn -q -Prelease package
 
 VOLUME /dist
