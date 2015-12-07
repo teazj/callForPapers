@@ -10,7 +10,7 @@ WORKDIR /work
 ADD / /work
 
 RUN npm install -g bower gulp
-RUN npm install gulp && npm install
+RUN npm install
 RUN bower --allow-root install
 RUN gulp build
 RUN mvn -q -Prelease package
