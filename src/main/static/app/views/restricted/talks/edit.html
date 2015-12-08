@@ -57,8 +57,9 @@
                 <label class="control-label">{{'step2.track' | translate}}</label>
                 <div>{{'step2.hintTrack' | translate}}</div>
                 <div>
-                    <select ng-model="talk.track" name="trackInput"
-                            ng-options="track.id as track.libelle for track in tracks" required class="form-control">
+                    <select ng-model="selectedTrack" name="trackInput"
+                            ng-change="updateTrack()"
+                            ng-options="track as track.libelle for track in tracks" required class="form-control">
                     </select>
                 </div>
             </div>

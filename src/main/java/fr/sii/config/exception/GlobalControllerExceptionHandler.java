@@ -96,12 +96,12 @@ public class GlobalControllerExceptionHandler {
         logger.log(Level.FINE, e.toString(), e);
         
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("statusCode", HttpStatus.NOT_FOUND);
+        map.put("statusCode", HttpStatus.BAD_REQUEST);
         map.put("errorCode", 1);
         map.put("errorCodeDescription", "CospeakerNotFoundException");
         map.put("errorCodeBody", e.getCospeaker());
 
-        return new ResponseEntity<Map<String, Object>>(map, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Map<String, Object>>(map, HttpStatus.BAD_REQUEST);
     }
     
 }

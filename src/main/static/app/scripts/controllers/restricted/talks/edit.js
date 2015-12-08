@@ -5,30 +5,33 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
     $scope.talk = talk;
     $scope.tracks = tracks;
     $scope.talkFormats = talkformats;
-    //TalkService.formats.findAll().$promise.then(function(data) {$scope.talkFormats = data});
-    $scope.cospeakers = talk.cospeakers.map(function(speaker) {
-                    window.console.log(speaker)
+    $scope.cospeakers = [];
+    $scope.selectedTrack;
+    if (talk) {
+        $scope.cospeakers = talk.cospeakers.map(function(speaker) {
                     return speaker.email;
                 });
+        var length = tracks.length;
+        for	(var i = 0; i < length; i++) {
+            if (tracks[i].id == talk.trackId) {
+                $scope.selectedTrack = tracks[i];
+                break;
+            }    
+        }
+    } 
+    
             
-    window.console.log($scope.cospeakers)
+
     $scope.sending = false;
-    // $scope.$watch(function() {
-    //         if ($scope.cospeakers !== undefined) {
-    //             return $scope.cospeakers.length;
-    //         }
-    //     }, function() {
-    //         if ($scope.cospeakers !== undefined) {
-    //             $scope.cospeakers = talk.cospeakers.map(function(speaker) {
-    //                 window.console.log(speaker)
-    //                 return speaker.email;
-    //             });
-    //         }
-    //     });
+
+    $scope.updateTrack = function(){
+        $scope.talk.trackId = $scope.selectedTrack.id;
+        $scope.talk.trackLabel = $scope.selectedTrack.libelle;
+    }
 
     function validate(talk) {
         // Validation is only about some required fields
-        return _.every(['type', 'name', 'description', 'difficulty', 'track'], function(field) {
+        return _.every(['type', 'name', 'description', 'difficulty', 'trackId'], function(field) {
             return Boolean(talk[field]);
         });
     }
@@ -36,7 +39,16 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
     function processError(error) {
         $scope.sending = false;
         if (error.status === 400) {
-            $scope.sendErrorClose = true;
+            window.console.log(error);
+            if(error.data.errorCode == 1)
+            {
+                Notification.error(translateFilter('step2.cospeakerNotFound', { value: error.data.errorCodeBody.email }));
+            }
+            else 
+            {
+                Notification.error(translateFilter('verify.notVerified'));
+            }
+           
             return;
         }
         $scope.sendError = true;
@@ -49,7 +61,6 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
             talk.cospeakers = $scope.cospeakers.map(function(email) {
                     return { email: email.text }
                 });
-            window.console.log(talk)
             return talkService.save(talk).then(function(savedTalk) {
                 $scope.talk = savedTalk;
                 $scope.sending = false;

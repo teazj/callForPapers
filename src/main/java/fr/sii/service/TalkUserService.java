@@ -170,7 +170,7 @@ public class TalkUserService {
         talk.setAdded(new Date());
         talk.setUser(user);
         talk.setState(state);
-        setCoSpeakerId(talk.getCospeakers());
+        setCoSpeakerId(talkUser.getCospeakers());
 
         Talk save = talkRepo.save(talk);
         talkRepo.flush();
@@ -190,7 +190,6 @@ public class TalkUserService {
         if (talk.getState() != Talk.State.DRAFT) return null;
         talkUser.setState(newState);
         talk.setTrack(trackRepo.getOne(talkUser.getTrackId()));
-        setCoSpeakerId(talk.getCospeakers());
 
         mapper.map(talkUser, talk);
         talkRepo.flush();
@@ -204,10 +203,10 @@ public class TalkUserService {
      * @param cospeakers CoSpeakers to check and set id
      * @throws CospeakerNotFoundException If a cospeaker is not found
      */
-    private void setCoSpeakerId(Set<User> cospeakers) throws CospeakerNotFoundException {
+    private void setCoSpeakerId(Set<CospeakerProfil> cospeakers) throws CospeakerNotFoundException {
         if (cospeakers == null || cospeakers.isEmpty()) return;
 
-        for (User cospeaker : cospeakers) {
+        for (CospeakerProfil cospeaker : cospeakers) {
             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
             if (existingUser.isEmpty()) {
                 throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));

@@ -29,6 +29,12 @@ public class TalkMapping implements Mapping {
                         talkUser.setCospeaker(mapperFactory.getMapperFacade().mapAsSet(talk.getCospeakers(), CospeakerProfil.class));
                     }
                 }
+                @Override
+                public void mapBtoA(TalkUser talkUser,Talk talk, MappingContext context) {
+                    if (talkUser.getCospeakers() != null) {
+                        talk.setCospeakers(mapperFactory.getMapperFacade().mapAsSet(talkUser.getCospeakers(), User.class));
+                    }
+                }
             })
             .byDefault()
             .register();
