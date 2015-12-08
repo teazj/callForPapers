@@ -17,3 +17,15 @@ angular.module('CallForPaper').factory('Sessions', function(Restangular) {
 
     return Sessions;
 });
+
+
+angular.module('CallForPaper').factory('CoSessions', function(Restangular) {
+    var coSessions = Restangular.service('restricted/cosessions');
+
+    coSessions.get = function get(id) {
+        return coSessions.one(id).get();
+    };
+
+
+    return coSessions;
+});

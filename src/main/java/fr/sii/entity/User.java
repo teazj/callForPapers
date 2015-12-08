@@ -1,10 +1,19 @@
 package fr.sii.entity;
 
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
-
-import javax.persistence.*;
-
 /**
  * Speaker account
  */
@@ -43,6 +52,7 @@ public class User {
 
 	/** local stored image for user */
 	private String imageProfilURL;
+
 
 	/**
 	 * Count sign in provider the user has
@@ -211,4 +221,5 @@ public class User {
 	public void setImageProfilURL(String imageProfilURL) {
 		this.imageProfilURL = imageProfilURL;
 	}
+
 }

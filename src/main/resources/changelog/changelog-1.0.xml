@@ -310,4 +310,21 @@
         <dropColumn columnName="type" tableName="talks"/>
     </changeSet>
 
+
+    <changeSet id="16" author="maudefroy">
+                <comment>Creation of table cospeakers</comment>
+                <createTable tableName="cospeakers">
+                        <column name="user_id" type="int">
+                                <constraints primaryKey="true" nullable="false" />
+                        </column>
+                        <column name="talk_id" type="int">
+                                <constraints primaryKey="true" nullable="false" />
+                        </column>
+                </createTable>
+    </changeSet>
+    <changeSet id="17" author="maudefroy">
+                <addForeignKeyConstraint constraintName="fk_cospeakers_1" referencedTableName="users" baseColumnNames="user_id" baseTableName="cospeakers" referencedColumnNames="id"/>
+                <addForeignKeyConstraint constraintName="fk_cospeakers_2" referencedTableName="talks" baseColumnNames="talk_id" baseTableName="cospeakers" referencedColumnNames="id"/>
+    </changeSet>
+
 </databaseChangeLog>
