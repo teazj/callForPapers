@@ -65,7 +65,7 @@ public class EmailingSettings {
 
     public String getSubject(EmailType emailType, Locale locale, String... strings) {
         Map<EmailType, String> subjects = selectDictionary(locale);
-        return String.format(subjects.get(emailType), strings);
+        return String.format(subjects.get(emailType), (Object[])strings);
     }
 
     public String getTemplatePath(EmailType emailType, Locale locale) {

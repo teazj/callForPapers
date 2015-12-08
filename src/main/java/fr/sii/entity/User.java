@@ -14,212 +14,232 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
+
 /**
  * Speaker account
  */
 @Entity
 @Table(name = "users")
 public class User {
-	public enum Provider { GOOGLE, GITHUB }
+    public enum Provider {GOOGLE, GITHUB}
 
-	private int id;
-	private String email;
+    private int id;
+    private String email;
 
-	/** github oauth id if user connect with his account */
-	private String githubId;
-	/** google oauth id if user connect with his account */
-	private String googleId;
+    /**
+     * github oauth id if user connect with his account
+     */
+    private String githubId;
+    /**
+     * google oauth id if user connect with his account
+     */
+    private String googleId;
 
-	/** password if user have a local account */
-	private String password;
-	/** for local account, true if user validate his e-mail address */
-	private boolean verified;
-	/** token to verify local e-mail address, empty when e-mail verified */
-	private String verifyToken;
-
-
-	/* ****  USER PROFILE  **** */
-	private String lastname;
-	private String firstname;
-	private String company;
-	private String phone;
-	private String bio;
-	private String twitter;
-	private String googleplus;
-	private String github;
-	/** other url (blog, linkedin...) */
-	private String social;
-
-	/** local stored image for user */
-	private String imageProfilURL;
+    /**
+     * password if user have a local account
+     */
+    private String password;
+    /**
+     * for local account, true if user validate his e-mail address
+     */
+    private boolean verified;
+    /**
+     * token to verify local e-mail address, empty when e-mail verified
+     */
+    private String verifyToken;
 
 
-	/**
-	 * Count sign in provider the user has
-	 * @return Number of sign in provider
-	 */
-	@Transient
-	public int getSignInMethodCount() {
-		int count = 0;
-		if (password != null) count++;
-		if (githubId != null) count++;
-		if (googleId != null) count++;
-		return count;
-	}
+    /* ****  USER PROFILE  **** */
+    private String lastname;
+    private String firstname;
+    private String company;
+    private String phone;
+    private String bio;
+    private String twitter;
+    private String googleplus;
+    private String github;
+    /**
+     * other url (blog, linkedin...)
+     */
+    private String social;
 
-	@Transient
-	public void setProviderId(Provider provider, String providerId) {
-		switch (provider) {
-			case GOOGLE: this.setGoogleId(providerId); break;
-			case GITHUB: this.setGithubId(providerId); break;
-			default: throw new IllegalArgumentException();
-		}
-	}
+    /**
+     * local stored image for user
+     */
+    private String imageProfilURL;
+
+    /**
+     * Count sign in provider the user has
+     *
+     * @return Number of sign in provider
+     */
+    @Transient
+    public int getSignInMethodCount() {
+        int count = 0;
+        if (password != null) count++;
+        if (githubId != null) count++;
+        if (googleId != null) count++;
+        return count;
+    }
+
+    @Transient
+    public void setProviderId(Provider provider, String providerId) {
+        switch (provider) {
+            case GOOGLE:
+                this.setGoogleId(providerId);
+                break;
+            case GITHUB:
+                this.setGithubId(providerId);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
 
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
+    }
 
-	@Email
-	public String getEmail() {
-		return email;
-	}
+    @Email
+    public String getEmail() {
+        return email;
+    }
 
-	@Column(name = "github_id")
-	public String getGithubId() {
-		return githubId;
-	}
+    @Column(name = "github_id")
+    public String getGithubId() {
+        return githubId;
+    }
 
     @Column(name = "google_id")
-	public String getGoogleId() {
-		return googleId;
-	}
+    public String getGoogleId() {
+        return googleId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public boolean isVerified() {
-		return verified;
-	}
+    public boolean isVerified() {
+        return verified;
+    }
 
     @Column(name = "verify_token")
-	public String getVerifyToken() {
-		return verifyToken;
-	}
+    public String getVerifyToken() {
+        return verifyToken;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public String getCompany() {
-		return company;
-	}
+    public String getCompany() {
+        return company;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-    @Type(type="text")
-	public String getBio() {
-		return bio;
-	}
+    @Type(type = "text")
+    public String getBio() {
+        return bio;
+    }
 
-	public String getTwitter() {
-		return twitter;
-	}
+    public String getTwitter() {
+        return twitter;
+    }
 
-	public String getGoogleplus() {
-		return googleplus;
-	}
+    public String getGoogleplus() {
+        return googleplus;
+    }
 
-	public String getGithub() {
-		return github;
-	}
+    public String getGithub() {
+        return github;
+    }
 
-	public String getSocial() {
-		return social;
-	}
+    public String getSocial() {
+        return social;
+    }
 
     @Column(name = "image_profil_url")
-	public String getImageProfilURL() {
-		return imageProfilURL;
-	}
+    public String getImageProfilURL() {
+        return imageProfilURL;
+    }
 
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setGithubId(String githubId) {
-		this.githubId = githubId;
-	}
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
+    }
 
-	public void setGoogleId(String googleId) {
-		this.googleId = googleId;
-	}
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setVerified(boolean verified) {
-		this.verified = verified;
-	}
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
 
-	public void setVerifyToken(String verifyToken) {
-		this.verifyToken = verifyToken;
-	}
+    public void setVerifyToken(String verifyToken) {
+        this.verifyToken = verifyToken;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
-	public void setTwitter(String twitter) {
-		this.twitter = twitter;
-	}
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
 
-	public void setGoogleplus(String googleplus) {
-		this.googleplus = googleplus;
-	}
+    public void setGoogleplus(String googleplus) {
+        this.googleplus = googleplus;
+    }
 
-	public void setGithub(String github) {
-		this.github = github;
-	}
+    public void setGithub(String github) {
+        this.github = github;
+    }
 
-	public void setSocial(String social) {
-		this.social = social;
-	}
+    public void setSocial(String social) {
+        this.social = social;
+    }
 
-	public void setImageProfilURL(String imageProfilURL) {
-		this.imageProfilURL = imageProfilURL;
-	}
+    public void setImageProfilURL(String imageProfilURL) {
+        this.imageProfilURL = imageProfilURL;
+    }
 
 }

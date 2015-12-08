@@ -23,7 +23,9 @@ import java.util.logging.Logger;
  */
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
+
     private static Logger logger = Logger.getLogger(GlobalControllerExceptionHandler.class.getName());
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
         logger.log(Level.WARNING, e.toString(), e);
@@ -89,12 +91,12 @@ public class GlobalControllerExceptionHandler {
         resp.setMessage(errorMessage);
         return new ResponseEntity<Object>(resp, HttpStatus.BAD_REQUEST);
     }
-    
+
 
     @ExceptionHandler(CospeakerNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(CospeakerNotFoundException e) {
         logger.log(Level.FINE, e.toString(), e);
-        
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("statusCode", HttpStatus.BAD_REQUEST);
         map.put("errorCode", 1);
@@ -103,5 +105,5 @@ public class GlobalControllerExceptionHandler {
 
         return new ResponseEntity<Map<String, Object>>(map, HttpStatus.BAD_REQUEST);
     }
-    
+
 }
