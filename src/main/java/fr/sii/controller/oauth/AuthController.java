@@ -3,7 +3,6 @@ package fr.sii.controller.oauth;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +10,8 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,7 @@ import fr.sii.service.user.UserService;
 @RequestMapping(value = "/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
 
-    private static Logger logger = Logger.getLogger(AuthController.class.getName());
+    private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     private static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email";
 
@@ -73,7 +74,8 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Token login(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
+    public Token login(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid LoginUser user)
+            throws JOSEException, IOException {
         User foundUser = userService.findByemail(user.getEmail());
 
         if (foundUser != null) {
@@ -103,8 +105,8 @@ public class AuthController {
      * @throws Exception
      */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public Token signup(HttpServletResponse httpServletResponse, HttpServletRequest
-        httpServletRequest, @RequestBody @Valid SignupUser signupUser) throws Exception {
+    public Token signup(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid SignupUser signupUser)
+            throws Exception {
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
@@ -155,9 +157,8 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
-    public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer
-        id, @RequestParam("token") String verifyToken)
-        throws JOSEException, IOException {
+    public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken)
+            throws JOSEException, IOException {
         Token token = null;
 
         // Search user
@@ -209,7 +210,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/unlink/{provider}", method = RequestMethod.GET)
     public void unlink(HttpServletResponse res, HttpServletRequest req, @PathVariable("provider") String provider)
-        throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
+            throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
         if (StringUtils.isBlank(authHeader)) {

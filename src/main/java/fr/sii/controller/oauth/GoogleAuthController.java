@@ -40,9 +40,9 @@ public class GoogleAuthController {
 
     private final Logger log = LoggerFactory.getLogger(GoogleAuthController.class);
 
-    private static final String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+    private static final String ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token";
 
-    private static final String peopleApiUrl = "https://www.googleapis.com/plus/v1/people/me/openIdConnect";
+    // private static final String peopleApiUrl = "https://www.googleapis.com/plus/v1/people/me/openIdConnect";
 
     @Autowired
     GoogleSettings googleSettings;
@@ -71,7 +71,7 @@ public class GoogleAuthController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public Token loginGoogle(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody Map<String, String> info)
-        throws IOException, JOSEException, ParseException {
+            throws IOException, JOSEException, ParseException {
 
         Token token = null;
 
@@ -79,35 +79,22 @@ public class GoogleAuthController {
         String client_secret = googleSettings.getClientSecret();
 
         try {
-            TokenResponse response =
-                new AuthorizationCodeTokenRequest(
-                    new NetHttpTransport(),
-                    new JacksonFactory(),
-                    new GenericUrl(accessTokenUrl), info.get("code"))
-                    .setRedirectUri(info.get("redirectUri"))
-                    .setCode(info.get("code"))
-                    .setGrantType("authorization_code")
-                    .setClientAuthentication(
-                        new BasicAuthentication(client_id, client_secret))
-                    .execute();
+            TokenResponse response = new AuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(), new GenericUrl(ACCESS_TOKEN_URL),
+                    info.get("code")).setRedirectUri(info.get("redirectUri")).setCode(info.get("code")).setGrantType("authorization_code")
+                            .setClientAuthentication(new BasicAuthentication(client_id, client_secret)).execute();
 
             HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = new JacksonFactory();
-            GoogleCredential credential = new GoogleCredential.Builder()
-                .setJsonFactory(jsonFactory)
-                .setTransport(httpTransport)
-                .setClientSecrets(client_id, client_secret).build()
-                .setFromTokenResponse(response);
+            GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(jsonFactory).setTransport(httpTransport)
+                    .setClientSecrets(client_id, client_secret).build().setFromTokenResponse(response);
 
-            Plus service = new Plus.Builder(httpTransport, jsonFactory, credential)
-                .setApplicationName("Call For Paper")
-                .build();
+            Plus service = new Plus.Builder(httpTransport, jsonFactory, credential).setApplicationName("Call For Paper").build();
 
-            Person profile = service.people().get("me").execute();
+            Person person = service.people().get("me").execute();
 
-            String email = profile.getEmails().get(0).getValue();
-            String socialProfilImageUrl = profile.getImage().getUrl().replace("z=50", "z=360");
-            String userId = profile.getId();
+            String email = person.getEmails().get(0).getValue();
+            String socialProfilImageUrl = person.getImage().getUrl().replace("z=50", "z=360");
+            String userId = person.getId();
             token = authService.processUser(httpServletResponse, httpServletRequest, User.Provider.GOOGLE, userId, email, socialProfilImageUrl);
         } catch (TokenResponseException e) {
             if (e.getDetails() != null) {

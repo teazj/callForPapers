@@ -19,6 +19,7 @@ public class GithubService {
 
     /**
      * Get account email using access token and Github API
+     *
      * @param access_token
      * @return Email
      * @throws IOException
@@ -26,34 +27,12 @@ public class GithubService {
      */
     public String getEmail(String access_token) throws IOException, CustomException {
         String url = "https://api.github.com/user/emails";
-        URLConnection connection = new URL(url).openConnection();
-        connection.setRequestProperty("Authorization", "Bearer " + access_token);
-        connection.setRequestProperty("User-Agent", "Call For Paper");
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                connection.getInputStream()));
-        String jsonString = "";
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-        {
-            jsonString+=inputLine;
-        }
-        in.close();
-        jsonString = jsonString.replaceAll("\r", "").replaceAll("\n", "");
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode responseObject = mapper.readTree(jsonString);
+        JsonNode responseObject = getJsonNode(access_token, url);
 
         String email = "";
-        if(responseObject.get("message") != null)
-        {
-            throw new CustomException(responseObject.get("message").asText());
-        }
-        if(responseObject.get("message") == null)
-        {
-            for(JsonNode node : responseObject)
-            {
-                if(node.get("primary").asBoolean())
-                {
+        if (responseObject.get("message") == null) {
+            for (JsonNode node : responseObject) {
+                if (node.get("primary").asBoolean()) {
                     email = node.get("email").asText();
                     break;
                 }
@@ -64,6 +43,7 @@ public class GithubService {
 
     /**
      * Get account id using access token and Github API
+     *
      * @param access_token
      * @return
      * @throws IOException
@@ -71,70 +51,54 @@ public class GithubService {
      */
     public String getUserId(String access_token) throws IOException, CustomException {
         String url = "https://api.github.com/user";
-        URLConnection connection = new URL(url).openConnection();
-        connection.setRequestProperty("Authorization", "Bearer " + access_token);
-        connection.setRequestProperty("User-Agent", "Call For Paper");
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                connection.getInputStream()));
-        String jsonString = "";
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-        {
-            jsonString+=inputLine;
-        }
-        in.close();
-        jsonString = jsonString.replaceAll("\r", "").replaceAll("\n", "");
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode responseObject = mapper.readTree(jsonString);
+        JsonNode responseObject = getJsonNode(access_token, url);
 
         String id = "";
-        if(responseObject.get("message") != null)
-        {
-            throw new CustomException(responseObject.get("message").asText());
-        }
-        if(responseObject.get("message") == null)
-        {
+        if (null == responseObject.get("message")) {
             id = responseObject.get("id").asText();
         }
         return id;
     }
 
+
     /**
      * Get account avatar url using access token and Github API
+     *
      * @param access_token
      * @return
      * @throws IOException
      * @throws CustomException
      */
     public String getAvatarUrl(String access_token) throws IOException, CustomException {
-        String url = "https://api.github.com/user";
-        URLConnection connection = new URL(url).openConnection();
-        connection.setRequestProperty("Authorization", "Bearer " + access_token);
-        connection.setRequestProperty("User-Agent", "Call For Paper");
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                connection.getInputStream()));
-        String jsonString = "";
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-        {
-            jsonString+=inputLine;
-        }
-        in.close();
-        jsonString = jsonString.replaceAll("\r", "").replaceAll("\n", "");
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode responseObject = mapper.readTree(jsonString);
+        String githubUser = "https://api.github.com/user";
+        JsonNode responseObject = getJsonNode(access_token, githubUser);
 
         String avatar_url = "";
-        if(responseObject.get("message") != null)
-        {
-            throw new CustomException(responseObject.get("message").asText());
-        }
-        if(responseObject.get("message") == null)
-        {
+        if (null == responseObject.get("message")) {
             avatar_url = responseObject.get("avatar_url").asText();
         }
         return avatar_url;
+    }
+
+    private JsonNode getJsonNode(String access_token, String url) throws IOException, CustomException {
+        URLConnection connection = new URL(url).openConnection();
+        connection.setRequestProperty("Authorization", "Bearer " + access_token);
+        connection.setRequestProperty("User-Agent", "Call For Paper");
+
+        String jsonString = "";
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                jsonString += inputLine;
+            }
+        }
+        jsonString = jsonString.replaceAll("\r", "").replaceAll("\n", "");
+
+        final ObjectMapper mapper = new ObjectMapper();
+        JsonNode responseObject = mapper.readTree(jsonString);
+        if (null != responseObject.get("message")) {
+            throw new CustomException(responseObject.get("message").asText());
+        }
+        return responseObject;
     }
 }
