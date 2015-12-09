@@ -39,7 +39,6 @@ import fr.sii.service.user.UserService;
 @RequestMapping(value = "/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
 
-
     private static Logger logger = Logger.getLogger(AuthController.class.getName());
 
     private static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email";

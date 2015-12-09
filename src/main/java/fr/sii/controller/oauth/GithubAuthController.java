@@ -17,6 +17,8 @@ import fr.sii.domain.token.Token;
 import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
 import fr.sii.service.github.GithubService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,10 @@ import java.text.ParseException;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value="/auth/github", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "/auth/github", produces = "application/json; charset=utf-8")
 public class GithubAuthController {
+
+    private final Logger log = LoggerFactory.getLogger(GoogleAuthController.class);
 
     @Autowired
     GithubService githubService;
@@ -41,6 +45,7 @@ public class GithubAuthController {
 
     /**
      * Log in with Github
+     *
      * @param res
      * @param req
      * @param info
@@ -50,9 +55,9 @@ public class GithubAuthController {
      * @throws JOSEException
      * @throws ParseException
      */
-    @RequestMapping(method= RequestMethod.POST)
-    public Token doGet(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)
-            throws IOException, CustomException, JOSEException, ParseException {
+    @RequestMapping(method = RequestMethod.POST)
+    public Token doGet(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String, String> info)
+        throws IOException, CustomException, JOSEException, ParseException {
         String accessTokenUrl = "https://github.com/login/oauth/access_token";
         String peopleApiUrl = "https://api.github.com/user";
         String client_id = githubSettings.getClientId();
@@ -62,21 +67,21 @@ public class GithubAuthController {
 
         try {
             TokenResponse response =
-                    new AuthorizationCodeTokenRequest(
-                            new NetHttpTransport(),
-                            new JacksonFactory(),
-                            new GenericUrl(accessTokenUrl),
-                            info.get("code"))
-                            .setRequestInitializer(
-                                    new HttpRequestInitializer() {
-                                        public void initialize(HttpRequest request) {
-                                            request.setHeaders(new HttpHeaders().setAccept("application/json"));
-                                        }
-                                    }
-                            )
-                            .setClientAuthentication(
-                                    new ClientParametersAuthentication(client_id, client_secret))
-                            .execute();
+                new AuthorizationCodeTokenRequest(
+                    new NetHttpTransport(),
+                    new JacksonFactory(),
+                    new GenericUrl(accessTokenUrl),
+                    info.get("code"))
+                    .setRequestInitializer(
+                        new HttpRequestInitializer() {
+                            public void initialize(HttpRequest request) {
+                                request.setHeaders(new HttpHeaders().setAccept("application/json"));
+                            }
+                        }
+                    )
+                    .setClientAuthentication(
+                        new ClientParametersAuthentication(client_id, client_secret))
+                    .execute();
 
             String email = githubService.getEmail(response.getAccessToken());
             String userId = githubService.getUserId(response.getAccessToken());
@@ -84,17 +89,16 @@ public class GithubAuthController {
             token = authService.processUser(res, req, User.Provider.GITHUB, userId, email, socialProfilImageUrl);
 
         } catch (TokenResponseException e) {
-            e.printStackTrace();
             if (e.getDetails() != null) {
-                System.err.println("Error: " + e.getDetails().getError());
+                log.warn("Error: " + e.getDetails().getError());
                 if (e.getDetails().getErrorDescription() != null) {
-                    System.err.println(e.getDetails().getErrorDescription());
+                    log.warn(e.getDetails().getErrorDescription());
                 }
                 if (e.getDetails().getErrorUri() != null) {
-                    System.err.println(e.getDetails().getErrorUri());
+                    log.warn(e.getDetails().getErrorUri());
                 }
             } else {
-                System.err.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         return token;

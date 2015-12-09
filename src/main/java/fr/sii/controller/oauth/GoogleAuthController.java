@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +35,14 @@ import fr.sii.entity.User;
 import fr.sii.service.auth.AuthService;
 
 @RestController
-@RequestMapping(value="/auth/google", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "/auth/google", produces = "application/json; charset=utf-8")
 public class GoogleAuthController {
+
+    private final Logger log = LoggerFactory.getLogger(GoogleAuthController.class);
+
+    private static final String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+
+    private static final String peopleApiUrl = "https://www.googleapis.com/plus/v1/people/me/openIdConnect";
 
     @Autowired
     GoogleSettings googleSettings;
@@ -52,67 +60,66 @@ public class GoogleAuthController {
 
     /**
      * Log in with Google
-     * @param res
-     * @param req
+     *
+     * @param httpServletResponse
+     * @param httpServletRequest
      * @param info
      * @return
      * @throws IOException
      * @throws JOSEException
      * @throws ParseException
      */
-    @RequestMapping(method= RequestMethod.POST)
-    public Token loginGoogle(HttpServletResponse res, HttpServletRequest req, @RequestBody Map<String,String> info)
-            throws IOException, JOSEException, ParseException {
+    @RequestMapping(method = RequestMethod.POST)
+    public Token loginGoogle(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody Map<String, String> info)
+        throws IOException, JOSEException, ParseException {
 
         Token token = null;
 
-        String accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
-        String peopleApiUrl = "https://www.googleapis.com/plus/v1/people/me/openIdConnect";
         String client_id = googleSettings.getClientId();
         String client_secret = googleSettings.getClientSecret();
 
         try {
             TokenResponse response =
-                    new AuthorizationCodeTokenRequest(
-                            new NetHttpTransport(),
-                            new JacksonFactory(),
-                            new GenericUrl(accessTokenUrl), info.get("code"))
-                            .setRedirectUri(info.get("redirectUri"))
-                            .setCode(info.get("code"))
-                            .setGrantType("authorization_code")
-                            .setClientAuthentication(
-                                    new BasicAuthentication(client_id, client_secret))
-                            .execute();
+                new AuthorizationCodeTokenRequest(
+                    new NetHttpTransport(),
+                    new JacksonFactory(),
+                    new GenericUrl(accessTokenUrl), info.get("code"))
+                    .setRedirectUri(info.get("redirectUri"))
+                    .setCode(info.get("code"))
+                    .setGrantType("authorization_code")
+                    .setClientAuthentication(
+                        new BasicAuthentication(client_id, client_secret))
+                    .execute();
 
             HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = new JacksonFactory();
             GoogleCredential credential = new GoogleCredential.Builder()
-                    .setJsonFactory(jsonFactory)
-                    .setTransport(httpTransport)
-                    .setClientSecrets(client_id, client_secret).build()
-                    .setFromTokenResponse(response);
+                .setJsonFactory(jsonFactory)
+                .setTransport(httpTransport)
+                .setClientSecrets(client_id, client_secret).build()
+                .setFromTokenResponse(response);
 
             Plus service = new Plus.Builder(httpTransport, jsonFactory, credential)
-                    .setApplicationName("Call For Paper")
-                    .build();
+                .setApplicationName("Call For Paper")
+                .build();
 
             Person profile = service.people().get("me").execute();
 
             String email = profile.getEmails().get(0).getValue();
             String socialProfilImageUrl = profile.getImage().getUrl().replace("z=50", "z=360");
             String userId = profile.getId();
-            token = authService.processUser(res, req, User.Provider.GOOGLE, userId, email, socialProfilImageUrl);
+            token = authService.processUser(httpServletResponse, httpServletRequest, User.Provider.GOOGLE, userId, email, socialProfilImageUrl);
         } catch (TokenResponseException e) {
             if (e.getDetails() != null) {
-                System.err.println("Error: " + e.getDetails().getError());
+                log.warn("Error: " + e.getDetails().getError());
                 if (e.getDetails().getErrorDescription() != null) {
-                    System.err.println(e.getDetails().getErrorDescription());
+                    log.warn(e.getDetails().getErrorDescription());
                 }
                 if (e.getDetails().getErrorUri() != null) {
-                    System.err.println(e.getDetails().getErrorUri());
+                    log.warn(e.getDetails().getErrorUri());
                 }
             } else {
-                System.err.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         return token;
