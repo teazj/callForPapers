@@ -1,9 +1,11 @@
 package fr.sii.dto;
 
-import fr.sii.dto.user.UserProfil;
-import fr.sii.entity.Talk;
-
 import java.util.Date;
+import java.util.Set;
+
+import fr.sii.dto.user.UserProfil;
+import fr.sii.dto.user.CospeakerProfil;
+import fr.sii.entity.Talk;
 
 /**
  * Talk DTO for user view
@@ -14,13 +16,14 @@ public class TalkUser {
     private Talk.State state;
     private String name;
     private int format;
-    private int track;
+    private Integer trackId;
     private String trackLabel;
     private String description;
     private String references;
     private Integer difficulty;
     private Date added;
     private UserProfil speaker;
+    private Set<CospeakerProfil> cospeakers;
 
 
     public int getId() {
@@ -55,12 +58,12 @@ public class TalkUser {
         this.format = format;
     }
 
-    public int getTrack() {
-        return track;
+    public Integer getTrackId() {
+        return trackId;
     }
 
-    public void setTrack(int track) {
-        this.track = track;
+    public void setTrackId(Integer trackId) {
+        this.trackId = trackId;
     }
 
     public String getDescription() {
@@ -111,5 +114,12 @@ public class TalkUser {
         this.trackLabel = trackLabel;
     }
 
+    public void setCospeaker(Set<CospeakerProfil> cospeakers) {
+        this.cospeakers = cospeakers;
+    }
+
+    public Set<CospeakerProfil> getCospeakers() {
+        return cospeakers;
+    }
 
 }

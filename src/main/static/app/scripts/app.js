@@ -228,7 +228,8 @@ angular.module('CallForPaper', [
                             description: null,
                             references: null,
                             difficulty: null,
-                            track: null
+                            trackId: null,
+                            cospeakers: []
                         };
                     }
                 },

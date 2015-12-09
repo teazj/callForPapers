@@ -1,5 +1,9 @@
 package fr.sii.dto.user;
 
+import java.util.Set;
+import fr.sii.dto.TalkUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by tmaugin on 05/06/2015.
  * SII
@@ -114,4 +118,5 @@ public class UserProfil {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

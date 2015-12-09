@@ -58,8 +58,9 @@
                 <label class="control-label">{{'step2.track' | translate}}</label>
                 <div>{{'step2.hintTrack' | translate}}</div>
                 <div>
-                    <select ng-model="talk.track" name="trackInput"
-                            ng-options="track.id as track.libelle for track in tracks" required class="form-control">
+                    <select ng-model="selectedTrack" name="trackInput"
+                            ng-change="updateTrack()"
+                            ng-options="track as track.libelle for track in tracks" required class="form-control">
                     </select>
                 </div>
             </div>
@@ -68,8 +69,9 @@
                 <label class="control-label">{{'step2.cospeaker' | translate}}</label>
                 <div>{{'step2.hintCospeaker' | translate}}</div>
                 <div>
-                    <div md-preview="talk.coSpeaker"></div>
-                    <textarea class="form-control" name="coSpeakerInput" ng-model="talk.coSpeaker" rows="3"></textarea>
+                    <div>
+                       <tags-input id="social" name="social" ng-model="cospeakers"></tags-input>
+                    </div>
                 </div>
             </div>
             <p ng-show="sendError" class="col-sm-12 bg-danger alert">{{'step3.sendError' | translate}}</p>

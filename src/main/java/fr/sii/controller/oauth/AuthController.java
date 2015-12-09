@@ -39,11 +39,20 @@ import fr.sii.service.user.UserService;
 @RequestMapping(value = "/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
 
+
     private static Logger logger = Logger.getLogger(AuthController.class.getName());
 
-    public static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email",
-            ALREADY_VERIFIED = "This account is already verified", BAD_TOKEN = "Bad token", NOT_FOUND_MSG = "User not found",
-            LOGING_ERROR_MSG = "Wrong email and/or password", UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
+    private static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email";
+
+    private static final String ALREADY_VERIFIED = "This account is already verified";
+
+    private static final String BAD_TOKEN = "Bad token";
+
+    private static final String NOT_FOUND_MSG = "User not found";
+
+    private static final String LOGING_ERROR_MSG = "Wrong email and/or password";
+
+    private static final String UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
     @Autowired
     private UserService userService;
@@ -57,23 +66,31 @@ public class AuthController {
     /**
      * Log user in
      *
-     * @param res
-     * @param req
+     * @param httpServletResponse
+     * @param httpServletRequest
      * @param user
      * @return
      * @throws JOSEException
      * @throws IOException
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Token login(HttpServletResponse res, HttpServletRequest req, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
+    public Token login(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid LoginUser user) throws JOSEException, IOException {
         User foundUser = userService.findByemail(user.getEmail());
-        if (foundUser != null && PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
-            return AuthUtils.createToken(req.getRemoteHost(), String.valueOf(foundUser.getId()), foundUser.isVerified());
+
+        if (foundUser != null) {
+            if (foundUser.getPassword() != null) {
+                if (PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
+                    return AuthUtils.createToken(httpServletRequest.getRemoteHost(), String.valueOf(foundUser.getId()), foundUser.isVerified());
+                }
+            }
         }
-        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        res.getWriter().write(LOGING_ERROR_MSG);
-        res.getWriter().flush();
-        res.getWriter().close();
+
+        httpServletResponse.getWriter().write(LOGING_ERROR_MSG);
+        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        httpServletResponse.getWriter().flush();
+        httpServletResponse.getWriter().close();
+
         return null;
     }
 
@@ -87,7 +104,8 @@ public class AuthController {
      * @throws Exception
      */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public Token signup(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid SignupUser signupUser) throws Exception {
+    public Token signup(HttpServletResponse httpServletResponse, HttpServletRequest
+        httpServletRequest, @RequestBody @Valid SignupUser signupUser) throws Exception {
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
@@ -138,8 +156,9 @@ public class AuthController {
      * @throws IOException
      */
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
-    public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken)
-            throws JOSEException, IOException {
+    public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer
+        id, @RequestParam("token") String verifyToken)
+        throws JOSEException, IOException {
         Token token = null;
 
         // Search user
@@ -191,7 +210,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/unlink/{provider}", method = RequestMethod.GET)
     public void unlink(HttpServletResponse res, HttpServletRequest req, @PathVariable("provider") String provider)
-            throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
+        throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
         if (StringUtils.isBlank(authHeader)) {
