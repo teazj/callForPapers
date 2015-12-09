@@ -13,4 +13,3 @@ VOLUME ["$HOME/config"]
 
 USER cfp
 ADD call-for-paper.jar $HOME
-ADD application.properties $HOME
