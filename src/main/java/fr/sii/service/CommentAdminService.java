@@ -57,12 +57,13 @@ public class CommentAdminService {
     public CommentUser addComment(AdminUser admin, int talkId, CommentUser commentUser, boolean internal) {
         Talk talk = talkRepo.findOne(talkId);
         if (talk == null) return null;
-        User user = userRepo.findOne(admin.getId());
+        List<User> users = userRepo.findByEmail(admin.getEmail());
+        if (users.isEmpty()) throw new IllegalStateException("Admin with email [" + admin.getEmail() + "] doesn't exists in user table");
 
         Comment comment = mapper.map(commentUser, Comment.class);
         comment.setAdded(new Date());
         comment.setTalk(talk);
-        comment.setUser(user);
+        comment.setUser(users.get(0));
         comment.setInternal(internal);
 
         Comment saved = commentRepo.save(comment);

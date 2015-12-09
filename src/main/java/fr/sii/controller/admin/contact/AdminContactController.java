@@ -66,7 +66,7 @@ public class AdminContactController {
         CommentUser saved = commentService.addComment(admin, talkId, comment, false);
 
         // Send new message email
-        if (user != null && talk != null) {
+        if (user != null) {
             Locale userPreferredLocale = httpServletRequest.getLocale();
             emailingService.sendNewMessage(user, talk, userPreferredLocale);
         }

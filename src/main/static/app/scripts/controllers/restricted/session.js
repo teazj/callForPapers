@@ -75,7 +75,6 @@ angular.module('CallForPaper')
             $scope.contactButtonDisabled = true;
             RestrictedContact.save({rowId: $stateParams.id}, {
                 'comment': $scope.contactMsg,
-                'id': $stateParams.id,
                 'captcha': $scope.captcha
             }, function() {
                 $scope.captchaShow = !$scope.captchaShow;
