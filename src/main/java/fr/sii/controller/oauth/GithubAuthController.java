@@ -92,7 +92,7 @@ public class GithubAuthController extends OAuthController {
                 .setClientAuthentication(new ClientParametersAuthentication(client_id, client_secret))
                 .execute();
 
-            GitHubUser gitHubUser = getGithubUser(tokenResponse.getAccessToken());
+            GithubUser gitHubUser = getGithubUser(tokenResponse.getAccessToken());
             User userFromGitHub = new User();
             userFromGitHub.setFirstname(StringUtils.split(gitHubUser.getName(), " ")[0]);
             userFromGitHub.setLastname(StringUtils.split(gitHubUser.getName(), " ")[1]);
@@ -130,9 +130,9 @@ public class GithubAuthController extends OAuthController {
      * @throws IOException
      * @throws CustomException
      */
-    public GitHubUser getGithubUser(String access_token) throws IOException, CustomException {
+    public GithubUser getGithubUser(String access_token) throws IOException, CustomException {
         String jsonString = getJson(access_token, GITHUB_USER_URL);
-        GitHubUser gitHubUser = mapper.readValue(jsonString, GitHubUser.class);
+        GithubUser gitHubUser = mapper.readValue(jsonString, GithubUser.class);
 
         // set primary email
         gitHubUser.setEmail(getEmail(access_token));
