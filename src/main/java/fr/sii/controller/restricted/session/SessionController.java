@@ -160,13 +160,43 @@ public class SessionController extends RestrictedController {
         return talkService.getTracks();
     }
 
+
+
+    /**
+     * Get all co-draft for the current user
+     */
+    @RequestMapping(value="/codrafts", method= RequestMethod.GET)
+    public List<TalkUser> getCoDrafts(HttpServletRequest req) throws NotVerifiedException {
+        int userId = retrieveUserId(req);
+        return talkService.findAllCospeakerTalks(userId, Talk.State.DRAFT);
+    }
+    /**
+     * Get a co-draft for the current user
+     */
+    @RequestMapping(value="/codrafts/{talkId}", method= RequestMethod.GET)
+    public TalkUser getCoDraft(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
+        int userId = retrieveUserId(req);
+        TalkUser talk = talkService.getOneCospeakerTalk(userId, talkId);
+        return talk;
+    }
+    
     /**
      * Get all co-session for the current user
      */
     @RequestMapping(value="/cosessions", method= RequestMethod.GET)
     public List<TalkUser> getCoSessions(HttpServletRequest req) throws NotVerifiedException {
         int userId = retrieveUserId(req);
-        return talkService.getCospeakerTalks(userId);
+        return talkService.findAllCospeakerTalks(userId, Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
     }
+    
+    /**
+     * Get a co-session for the current user
+     */
+    @RequestMapping(value = "/cosessions/{talkId}", method = RequestMethod.GET)
+    public TalkUser getCoSession(HttpServletRequest  req, @PathVariable Integer talkId) throws NotVerifiedException {
+        int userId = retrieveUserId(req);
+        TalkUser talk = talkService.getOneCospeakerTalk(userId, talkId);
 
+        return talk;
+    }
 }
