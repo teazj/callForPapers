@@ -1,5 +1,5 @@
 <ul class="nav navbar-nav">
-    <li ui-sref-active="active">
+    <li ui-sref-active="active" ng-class="{disabled: !topMenu.isProfileComplete}">
         <a ui-sref="app.dashboard">{{'header.dashboard' | translate}}</a>
     </li>
     <li ui-sref-active="active">

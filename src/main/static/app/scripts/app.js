@@ -43,7 +43,7 @@ angular.module('CallForPaper', [
         $httpProvider.interceptors.push('authHttpResponseInterceptor');
         $httpProvider.interceptors.push('csrfInterceptor');
     }])
-    .config(['$stateProvider', '$urlRouterProvider', 'AuthServiceProvider', 'AppConfigProvider', 'RestangularProvider', function($stateProvider, $urlRouterProvider, AuthServiceProvider, AppConfigProvider, RestangularProvider) {
+    .config(function($stateProvider, $urlRouterProvider, AuthServiceProvider, AppConfigProvider, RestangularProvider, ProfileValidatorProvider) {
 
         RestangularProvider.setBaseUrl('/api');
 
@@ -138,18 +138,28 @@ angular.module('CallForPaper', [
             .state('app', {
                 parent: 'main',
                 abstract: true,
+                resolve: {
+                    authenticated: AuthServiceProvider.$get().authenticated,
+                    user: function(RestrictedUser) {
+                        return RestrictedUser.get().$promise;
+                    },
+                    isProfileComplete: function(user, ProfileValidator) {
+                        return ProfileValidator.isValid(user);
+                    }
+                },
                 views: {
                     'side-menu': {
-                        templateUrl: 'views/restricted/_side-menu.html'
+                        templateUrl: 'views/restricted/_side-menu.html',
+                        controller: 'UserMenuCtrl',
+                        controllerAs: 'sideMenu'
                     },
                     'top-menu': {
-                        templateUrl: 'views/restricted/_top-menu.html'
+                        templateUrl: 'views/restricted/_top-menu.html',
+                        controller: 'UserMenuCtrl',
+                        controllerAs: 'topMenu'
                     },
                     '': {
                         template: '<ui-view/>',
-                        resolve: {
-                            isConfigured: AppConfigProvider.$get().isConfigured
-                        },
                         controller: function($scope) {
                             $scope.header.navBarColorClass = 'navbar-black'; // TODO Pretty dirty…
                         }
@@ -158,38 +168,39 @@ angular.module('CallForPaper', [
             })
             .state('app.dashboard', {
                 url: '/dashboard',
-                templateUrl: 'views/restricted/dashboard.html',
-                controller: 'DashboardCtrl',
                 resolve: {
-                    authenticated: AuthServiceProvider.$get().authenticated
-                }
+                    isProfileComplete: ProfileValidatorProvider.isValid()
+                },
+                templateUrl: 'views/restricted/dashboard.html',
+                controller: 'DashboardCtrl'
             })
             .state('app.profil', {
                 url: '/profil',
                 templateUrl: 'views/restricted/profil.html',
-                controller: 'ProfilCtrl',
-                resolve: {
-                    authenticated: AuthServiceProvider.$get().authenticated
-                }
+                controller: 'ProfilCtrl'
             })
 
             // Auth
             .state('app.login', {
+                parent: 'main',
                 url: '/login',
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
             })
             .state('app.verify', {
+                parent: 'main',
                 url: '/verify?token&id',
                 templateUrl: 'views/verify.html',
                 controller: 'VerifyCtrl'
             })
             .state('app.logout', {
+                parent: 'main',
                 url: '/logout',
                 template: null,
                 controller: 'LogoutCtrl'
             })
             .state('app.signup', {
+                parent: 'main',
                 url: '/signup',
                 templateUrl: 'views/signup.html',
                 controller: 'SignupCtrl'
@@ -203,7 +214,8 @@ angular.module('CallForPaper', [
                     },
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
-                    }
+                    },
+                    isProfileComplete: ProfileValidatorProvider.isValid()
                 }
             })
 
@@ -321,7 +333,7 @@ angular.module('CallForPaper', [
                 url: '/404',
                 templateUrl: '404.html'
             });
-    }])
+    })
     .config(['tagsInputConfigProvider', function(tagsInputConfigProvider) {
         tagsInputConfigProvider
             .setDefaults('tagsInput', {
@@ -379,9 +391,25 @@ angular.module('CallForPaper', [
             positionY: 'top'
         });
     })
-    .run(['AuthService', '$http', function(AuthService, $http) {
+    .run(function(AuthService, $http, $rootScope, $state) {
         AuthService.init();
         $http.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
         $http.defaults.xsrfCookieName = 'CSRF-TOKEN';
         $.material.init();
-    }]);
+
+        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+
+            var rules = {
+                'profile.incomplete': function() {
+                    $state.transitionTo('app.profil');
+                }
+            };
+
+            var rule = rules[error];
+
+            if (_.isFunction(rule)) {
+                event.preventDefault();
+                rule();
+            }
+        });
+    });
