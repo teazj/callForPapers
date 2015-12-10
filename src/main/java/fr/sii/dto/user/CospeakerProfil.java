@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CospeakerProfil {
     private int id;
     private String email;
+    private String lastname;
+    private String firstname;
 
     public CospeakerProfil() {
     }
@@ -31,4 +33,20 @@ public class CospeakerProfil {
     public void setEmail(String email) {
         this.email = email;
 	}
+    
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 }

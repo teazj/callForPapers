@@ -95,8 +95,34 @@
                 </tr>
               </thead>
               <tbody>
+                <tr ng-repeat="coDraft in coDrafts">
+                  <td ui-sref='app.cosession({id: coDraft.id})'>
+                    {{coDraft.name}}, {{'dashboard.postedAt' | translate}} {{coDraft.added | date:"dd/MM/yyyy, HH:mm:ss"}}
+                  </td>
+                </tr>
+                <tr ng-show="coDraft.length === 0 && coDraftsLoaded">
+                  <td>
+                    <span>{{'dashboard.noEditionTalks' | translate}}</span>
+                  </td>
+                </tr>
+                <tr ng-show="!coDraftsLoaded">
+                  <td>
+                    <span class="loading mdi-navigation-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>{{'dashboard.sendedCoTalks' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
                 <tr ng-repeat="coTalk in coTalks">
-                  <td ui-sref='app.session({id: coTalk.id})'>
+                  <td ui-sref='app.cosession({id: coTalk.id})'>
                     {{coTalk.name}}, {{'dashboard.postedAt' | translate}} {{coTalk.added | date:"dd/MM/yyyy, HH:mm:ss"}}
                   </td>
                 </tr>
@@ -113,6 +139,7 @@
               </tbody>
             </table>
           </div>
+          
       </div>
       </div>
       

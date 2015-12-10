@@ -54,16 +54,28 @@ public class TalkUserService {
         List<Talk> talks = talkRepo.findByUserIdAndStateIn(userId, Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
     }
-
+    
     /**
-     * Retrieve the talk list whom the user is cospeaker
+     * Retrieve all talks for a User
      * @param userId Id of the user to retrieve cospeaker talks
+     * @param states List of states the talk must be
      * @return List of talks
      */
-    public List<TalkUser> getCospeakerTalks(int userId) {
-        List<Talk> talks = talkRepo.findByCospeakers(userId);
+    public List<TalkUser> findAllCospeakerTalks(int userId, Talk.State... states) {
+        List<Talk> talks = talkRepo.findByCospeakerIdAndStateIn(userId, Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
     }
+
+
+    // /**
+    //  * Retrieve the talk list whom the user is cospeaker
+    //  * @param userId Id of the user to retrieve cospeaker talks
+    //  * @return List of talks
+    //  */
+    // public List<TalkUser> getCospeakerTalks(int userId) {
+    //     List<Talk> talks = talkRepo.findByCospeakers(userId);
+    //     return mapper.mapAsList(talks, TalkUser.class);
+    // }
 
     /**
      * Count number of talks the users has submitted (drafts included)
@@ -84,6 +96,12 @@ public class TalkUserService {
         Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
         return mapper.map(talk, TalkUser.class);
     }
+    
+    public TalkUser getOneCospeakerTalk(int userId, int talkId) {
+        Talk talk = talkRepo.findByIdAndCospeakers(talkId, userId);
+        return mapper.map(talk, TalkUser.class);
+    }
+    
 
     /**
      * Add a submitted talk
