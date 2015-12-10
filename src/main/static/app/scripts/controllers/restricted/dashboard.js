@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedCoSession', 'RestrictedDraft', 'AuthService', 'Application', 'RestrictedStats', function($scope, $filter, RestrictedSession,RestrictedCoSession, RestrictedDraft, AuthService, Application, RestrictedStats) {
+    .controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedCoSession', 'RestrictedDraft','RestrictedCoDraft', 'AuthService', 'Application', 'RestrictedStats', function($scope, $filter, RestrictedSession,RestrictedCoSession, RestrictedDraft,RestrictedCoDraft, AuthService, Application, RestrictedStats) {
         $scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
 
         /**
@@ -34,6 +34,24 @@ angular.module('CallForPaper')
             });
         }
 
+        /**
+         * Get current user cosession
+         * @return {[RestrictedCoDraft]}
+         */
+        $scope.coDrafts = [];
+        $scope.coDraftsLoaded = false;
+        function queryCoDrafts() {
+            RestrictedCoDraft.query(function(sessionsTmp) {
+                $scope.coDrafts = sessionsTmp.map(function(session) {
+                    session.fullname =  session.firstname;
+                    session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[session.difficulty - 1];
+                    return session;
+                });
+
+                $scope.coDraftsLoaded = true;
+            });
+        }
+        
         /**
          * Get current user cosession
          * @return {[RestrictedDraft]}
@@ -74,6 +92,7 @@ angular.module('CallForPaper')
         $scope.isVerified = AuthService.isVerified();
         if ($scope.isVerified) {
             queryDraft();
+            queryCoDrafts();
             querySession();
             queryMeter();
             queryCoTalks();

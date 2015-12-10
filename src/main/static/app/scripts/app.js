@@ -206,6 +206,8 @@ angular.module('CallForPaper', [
                     }
                 }
             })
+            
+            
 
             .state('app.talks', {
                 url: '/talks',
@@ -308,7 +310,20 @@ angular.module('CallForPaper', [
                     verified: AuthServiceProvider.$get().verified,
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
-                    }
+                    },
+                    isCoSession: function(){ return false }
+                }
+            })
+            .state('app.cosession', {
+                url: '/cosessions/:id?tab',
+                templateUrl: 'views/restricted/session.html',
+                controller: 'RestrictedSessionCtrl',
+                resolve: {
+                    verified: AuthServiceProvider.$get().verified,
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    },
+                    isCoSession: function(){ return true }
                 }
             })
 
