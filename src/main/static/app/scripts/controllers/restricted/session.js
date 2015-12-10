@@ -7,7 +7,12 @@ angular.module('CallForPaper')
         $scope.session = null;
 
         $scope.talkformats=talkformats;
+        
+        $scope.cospeakers = [];
 
+
+        
+        
         /**
          * Get talk
          * @return {RestrictedSession}
@@ -40,8 +45,13 @@ angular.module('CallForPaper')
     
     
                 $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUrl;
-    
+                
+                $scope.cospeakers = $scope.session.cospeakers.map(function(speaker) {
+                    return speaker.email;
                 });
+          });
+                
+                
         }
         else {
             RestrictedSession.get({
@@ -70,8 +80,13 @@ angular.module('CallForPaper')
     
     
                 $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUrl;
-    
+                
+                $scope.cospeakers = $scope.session.cospeakers.map(function(speaker) {
+                    return speaker.email;
                 });
+            });
+                
+               
         }
         
 
