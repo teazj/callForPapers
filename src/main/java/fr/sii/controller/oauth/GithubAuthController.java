@@ -1,15 +1,22 @@
 package fr.sii.controller.oauth;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,18 +36,21 @@ import fr.sii.config.github.GithubSettings;
 import fr.sii.domain.exception.CustomException;
 import fr.sii.domain.token.Token;
 import fr.sii.entity.User;
-import fr.sii.service.auth.AuthService;
 import fr.sii.service.github.GithubService;
 
 @RestController
 @RequestMapping(value = "/auth/github", produces = "application/json; charset=utf-8")
-public class GithubAuthController {
+public class GithubAuthController extends OAuthController {
 
     private final Logger log = LoggerFactory.getLogger(GoogleAuthController.class);
 
     private static final String ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
 
-    // private static final String peopleApiUrl = "https://api.github.com/user";
+    private static final String GITHUB_USER_URL = "https://api.github.com/user";
+
+    private static final String GITHUB_USER_EMAILS_URL = "https://api.github.com/user/emails";
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     GithubService githubService;
@@ -49,7 +59,7 @@ public class GithubAuthController {
     GithubSettings githubSettings;
 
     @Autowired
-    AuthService authService;
+    OAuthController OAuthController;
 
     /**
      * Log in with Github
@@ -65,7 +75,7 @@ public class GithubAuthController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public Token loginGithub(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody Map<String, String> info)
-            throws IOException, CustomException, JOSEException, ParseException {
+            throws IOException, CustomException, JOSEException {
 
         String client_id = githubSettings.getClientId();
         String client_secret = githubSettings.getClientSecret();
@@ -73,16 +83,29 @@ public class GithubAuthController {
         Token token = null;
 
         try {
-            TokenResponse tokenResponse = new AuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(), new GenericUrl(ACCESS_TOKEN_URL),
-                    info.get("code")).setRequestInitializer(request -> request.setHeaders(new HttpHeaders().setAccept("application/json")))
-                            .setClientAuthentication(new ClientParametersAuthentication(client_id, client_secret)).execute();
+            TokenResponse tokenResponse = new AuthorizationCodeTokenRequest(
+                new NetHttpTransport(),
+                new JacksonFactory(),
+                new GenericUrl(ACCESS_TOKEN_URL),
+                info.get("code"))
+                .setRequestInitializer(request -> request.setHeaders(new HttpHeaders().setAccept("application/json")))
+                .setClientAuthentication(new ClientParametersAuthentication(client_id, client_secret))
+                .execute();
 
-            String email = githubService.getEmail(tokenResponse.getAccessToken());
-            String userId = githubService.getUserId(tokenResponse.getAccessToken());
+            GitHubUser gitHubUser = getGithubUser(tokenResponse.getAccessToken());
+            User userFromGitHub = new User();
+            userFromGitHub.setFirstname(StringUtils.split(gitHubUser.getName(), " ")[0]);
+            userFromGitHub.setLastname(StringUtils.split(gitHubUser.getName(), " ")[1]);
+            userFromGitHub.setEmail(gitHubUser.getEmail());
+            userFromGitHub.setProviderId( User.Provider.GITHUB, ""+gitHubUser.getId());
+            userFromGitHub.setGithub(gitHubUser.getUrl());
+            userFromGitHub.setBio(gitHubUser.getBio());
+            userFromGitHub.setCompany(gitHubUser.getCompany());
+            userFromGitHub.setImageProfilURL(gitHubUser.getAvatarUrl());
 
-            String socialProfilImageUrl = githubService.getAvatarUrl(tokenResponse.getAccessToken());
+            String userId = "" + gitHubUser.getId();
 
-            token = authService.processUser(httpServletResponse, httpServletRequest, User.Provider.GITHUB, userId, email, socialProfilImageUrl);
+            token = OAuthController.processUser(httpServletResponse, httpServletRequest, User.Provider.GITHUB, userId, userFromGitHub);
         } catch (TokenResponseException e) {
             if (e.getDetails() != null) {
                 log.warn("Error: " + e.getDetails().getError());
@@ -96,6 +119,76 @@ public class GithubAuthController {
                 log.warn(e.getMessage());
             }
         }
+
         return token;
     }
+
+    /**
+     * Get GitHub user profile
+     * @param access_token
+     * @return
+     * @throws IOException
+     * @throws CustomException
+     */
+    public GitHubUser getGithubUser(String access_token) throws IOException, CustomException {
+        String jsonString = getJson(access_token, GITHUB_USER_URL);
+        GitHubUser gitHubUser = mapper.readValue(jsonString, GitHubUser.class);
+
+        // set primary email
+        gitHubUser.setEmail(getEmail(access_token));
+
+        return gitHubUser;
+    }
+
+    /**
+     * Get account email using access token and Github API
+     *
+     * @param access_token
+     * @return Email
+     * @throws IOException
+     * @throws CustomException
+     */
+    private String getEmail(String access_token) throws IOException, CustomException {
+        String jsonString = getJson(access_token, GITHUB_USER_EMAILS_URL);
+        JsonNode responseObject = mapper.readTree(jsonString);
+
+        if (null != responseObject.get("message")) {
+            throw new CustomException(responseObject.get("message").asText());
+        }
+        String email = "";
+        if (responseObject.get("message") == null) {
+            for (JsonNode node : responseObject) {
+                if (node.get("primary").asBoolean()) {
+                    email = node.get("email").asText();
+                    break;
+                }
+            }
+        }
+        return email;
+    }
+
+    /**
+     * Get Github JSON
+     * @param access_token
+     * @param url
+     * @return
+     * @throws IOException
+     * @throws CustomException
+     */
+    private String getJson(String access_token, String url) throws IOException, CustomException {
+        URLConnection connection = new URL(url).openConnection();
+        connection.setRequestProperty("Authorization", "Bearer " + access_token);
+        connection.setRequestProperty("User-Agent", "Call For Paper");
+
+        String jsonString = "";
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                jsonString += inputLine;
+            }
+        }
+
+        return jsonString.replaceAll("\r", "").replaceAll("\n", "");
+    }
+
 }

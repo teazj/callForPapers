@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.util.StringUtils;
 
 /**
  * Speaker account
@@ -95,7 +96,6 @@ public class User {
                 throw new IllegalArgumentException();
         }
     }
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -242,4 +242,39 @@ public class User {
         this.imageProfilURL = imageProfilURL;
     }
 
+    public void mergeData(User userToMerge) {
+        if (this.getFirstname() == null) {
+            this.setFirstname(userToMerge.getFirstname());
+        }
+
+        if (this.getLastname() == null) {
+            this.setLastname(userToMerge.getLastname());
+        }
+
+        if (this.getEmail() == null) {
+            this.setEmail(userToMerge.getEmail());
+        }
+
+        if (this.getGithub() == null) {
+            this.setGithub(userToMerge.getGithub());
+        }
+
+        if (this.getGoogleplus() == null) {
+            this.setGoogleplus(userToMerge.getGoogleplus());
+        }
+
+        if (this.getBio() == null) {
+            this.setBio(userToMerge.getBio());
+        }
+
+        if (this.getCompany() == null) {
+            this.setCompany(userToMerge.getCompany());
+        }
+
+        if (this.getImageProfilURL() == null) {
+            if (userToMerge.getImageProfilURL() != null && !userToMerge.getImageProfilURL().equals("")) {
+                this.setImageProfilURL(userToMerge.getImageProfilURL());
+            }
+        }
+    }
 }

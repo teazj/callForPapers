@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,11 +33,10 @@ import com.nimbusds.jose.JOSEException;
 import fr.sii.config.google.GoogleSettings;
 import fr.sii.domain.token.Token;
 import fr.sii.entity.User;
-import fr.sii.service.auth.AuthService;
 
 @RestController
 @RequestMapping(value = "/auth/google", produces = "application/json; charset=utf-8")
-public class GoogleAuthController {
+public class GoogleAuthController extends OAuthController {
 
     private final Logger log = LoggerFactory.getLogger(GoogleAuthController.class);
 
@@ -48,15 +48,7 @@ public class GoogleAuthController {
     GoogleSettings googleSettings;
 
     @Autowired
-    AuthService authService;
-
-    public void setGoogleSettings(GoogleSettings googleSettings) {
-        this.googleSettings = googleSettings;
-    }
-
-    public void setAuthService(AuthService authService) {
-        this.authService = authService;
-    }
+    OAuthController OAuthController;
 
     /**
      * Log in with Google
@@ -70,45 +62,63 @@ public class GoogleAuthController {
      * @throws ParseException
      */
     @RequestMapping(method = RequestMethod.POST)
-    public Token loginGoogle(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody Map<String, String> info)
-            throws IOException, JOSEException, ParseException {
+    public Token loginGoogle(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody Map<String, String> info) throws ParseException, JOSEException, IOException {
+        Person person = getPerson(info.get("code"), info.get("redirectUri"));
 
-        Token token = null;
+        User userFromGoogle = new User();
+        userFromGoogle.setFirstname(person.getName().getGivenName());
+        userFromGoogle.setLastname(person.getName().getFamilyName());
+        userFromGoogle.setEmail(person.getEmails().get(0).getValue());
+        userFromGoogle.setProviderId( User.Provider.GOOGLE, ""+person.getId());
+        userFromGoogle.setGoogleplus(person.getUrl());
+        userFromGoogle.setImageProfilURL(person.getImage().getUrl().replace("z=50", "z=360"));
+
+        String userId = person.getId();
+
+        return OAuthController.processUser(httpServletResponse, httpServletRequest, User.Provider.GOOGLE, userId, userFromGoogle);
+    }
+
+    private Person getPerson(String code, String redirectUri) {
+        HttpTransport httpTransport = new NetHttpTransport();
+        JsonFactory jsonFactory = new JacksonFactory();
 
         String client_id = googleSettings.getClientId();
         String client_secret = googleSettings.getClientSecret();
 
+        Person person = null;
         try {
-            TokenResponse response = new AuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(), new GenericUrl(ACCESS_TOKEN_URL),
-                    info.get("code")).setRedirectUri(info.get("redirectUri")).setCode(info.get("code")).setGrantType("authorization_code")
-                            .setClientAuthentication(new BasicAuthentication(client_id, client_secret)).execute();
+            TokenResponse response = new AuthorizationCodeTokenRequest(httpTransport, jsonFactory, new GenericUrl(ACCESS_TOKEN_URL), code)
+                .setRedirectUri(redirectUri)
+                .setCode(code)
+                .setGrantType("authorization_code")
+                .setClientAuthentication(new BasicAuthentication(client_id, client_secret))
+                .execute();
 
-            HttpTransport httpTransport = new NetHttpTransport();
-            JsonFactory jsonFactory = new JacksonFactory();
-            GoogleCredential credential = new GoogleCredential.Builder().setJsonFactory(jsonFactory).setTransport(httpTransport)
-                    .setClientSecrets(client_id, client_secret).build().setFromTokenResponse(response);
+            GoogleCredential credential = new GoogleCredential.Builder()
+                .setJsonFactory(jsonFactory)
+                .setTransport(httpTransport)
+                .setClientSecrets(client_id, client_secret)
+                .build()
+                .setFromTokenResponse(response);
 
-            Plus service = new Plus.Builder(httpTransport, jsonFactory, credential).setApplicationName("Call For Paper").build();
-
-            Person person = service.people().get("me").execute();
-
-            String email = person.getEmails().get(0).getValue();
-            String socialProfilImageUrl = person.getImage().getUrl().replace("z=50", "z=360");
-            String userId = person.getId();
-            token = authService.processUser(httpServletResponse, httpServletRequest, User.Provider.GOOGLE, userId, email, socialProfilImageUrl);
-        } catch (TokenResponseException e) {
-            if (e.getDetails() != null) {
-                log.warn("Error: " + e.getDetails().getError());
-                if (e.getDetails().getErrorDescription() != null) {
-                    log.warn(e.getDetails().getErrorDescription());
+            Plus plus = new Plus.Builder(httpTransport, jsonFactory, credential).setApplicationName("Call For Paper").build();
+            person = plus.people().get("me").execute();
+        } catch (TokenResponseException tre) {
+            if (tre.getDetails() != null) {
+                log.warn("Error: " + tre.getDetails().getError());
+                if (tre.getDetails().getErrorDescription() != null) {
+                    log.warn(tre.getDetails().getErrorDescription());
                 }
-                if (e.getDetails().getErrorUri() != null) {
-                    log.warn(e.getDetails().getErrorUri());
+                if (tre.getDetails().getErrorUri() != null) {
+                    log.warn(tre.getDetails().getErrorUri());
                 }
             } else {
-                log.warn(e.getMessage());
+                log.warn(tre.getMessage());
             }
+        } catch (IOException ioe) {
+            log.warn("General I/O exception: " + ioe.getMessage());
         }
-        return token;
+
+        return person;
     }
 }
