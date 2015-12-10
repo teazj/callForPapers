@@ -10,12 +10,12 @@ angular.module('CallForPaper').provider('ProfileValidator', function() {
         '$get': function() {
             return {
                 isValid: isValid
-            }
+            };
         },
         isValid: function() {
             return /*@ngInject*/ function(user, $q) {
                 return isValid(user) ? $q.when(true) : $q.reject('profile.incomplete');
-            }
+            };
         }
     };
 });
