@@ -1,45 +1,94 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession, CommonProfilImage, RestrictedContact, $modal, Config, talkformats) {
+    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession,RestrictedCoSession, CommonProfilImage, RestrictedContact, $modal, Config, talkformats, isCoSession) {
         $scope.tab = $stateParams.tab;
 
         $scope.session = null;
 
         $scope.talkformats=talkformats;
+        
+        $scope.cospeakers = [];
 
+
+        
+        
         /**
          * Get talk
          * @return {RestrictedSession}
          */
-        RestrictedSession.get({
-            id: $stateParams.id
-        }).$promise.then(function(sessionTmp) {
-            $scope.session = sessionTmp;
-
-            // Add link to social
-            $scope.session.socialLinks = [];
-            if (sessionTmp.speaker.social !== null) {
-                var links = sessionTmp.speaker.social.split(',').map(function(value) {
-                    return $filter('createLinks')(value);
+        if(isCoSession)
+        {
+           RestrictedCoSession.get({
+                id: $stateParams.id
+            }).$promise.then(function(sessionTmp) {
+                $scope.session = sessionTmp;
+    
+                // Add link to social
+                $scope.session.socialLinks = [];
+                if (sessionTmp.speaker.social !== null) {
+                    var links = sessionTmp.speaker.social.split(',').map(function(value) {
+                        return $filter('createLinks')(value);
+                    });
+                    $scope.session.socialLinks = links;
+                }
+                if (sessionTmp.speaker.twitter !== null) {
+                    $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
+                }
+                if (sessionTmp.speaker.googleplus !== null) {
+                    $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
+                }
+                if (sessionTmp.speaker.github !== null) {
+                    $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
+                }
+                $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
+    
+    
+                $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUrl;
+                
+                $scope.cospeakers = $scope.session.cospeakers.map(function(speaker) {
+                    return speaker.email;
                 });
-                $scope.session.socialLinks = links;
-            }
-            if (sessionTmp.speaker.twitter !== null) {
-                $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
-            }
-            if (sessionTmp.speaker.googleplus !== null) {
-                $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
-            }
-            if (sessionTmp.speaker.github !== null) {
-                $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
-            }
-            $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
-
-
-            $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUrl;
-
-        });
+          });
+                
+                
+        }
+        else {
+            RestrictedSession.get({
+                id: $stateParams.id
+            }).$promise.then(function(sessionTmp) {
+                $scope.session = sessionTmp;
+    
+                // Add link to social
+                $scope.session.socialLinks = [];
+                if (sessionTmp.speaker.social !== null) {
+                    var links = sessionTmp.speaker.social.split(',').map(function(value) {
+                        return $filter('createLinks')(value);
+                    });
+                    $scope.session.socialLinks = links;
+                }
+                if (sessionTmp.speaker.twitter !== null) {
+                    $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
+                }
+                if (sessionTmp.speaker.googleplus !== null) {
+                    $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
+                }
+                if (sessionTmp.speaker.github !== null) {
+                    $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
+                }
+                $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
+    
+    
+                $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUrl;
+                
+                $scope.cospeakers = $scope.session.cospeakers.map(function(speaker) {
+                    return speaker.email;
+                });
+            });
+                
+               
+        }
+        
 
         /**
          * CONTACT

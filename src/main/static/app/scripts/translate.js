@@ -50,7 +50,8 @@ angular.module('CallForPaper')
                 'noSendedTalks': 'Vous n\'avez pas encore proposé de talk',
                 'verification': 'Vérification',
                 'verificationNeeded': 'Un e-mail a été envoyé à votre adresse, cliquez sur le lien présent dans celui-ci pour valider votre compte.',
-                'submittedTalks': 'Nombre de talks soumis : '
+                'submittedTalks': 'Nombre de talks soumis : ',
+                'sendedCoTalks' :  'Talks (en tant que cospeaker) envoyés'
             },
             'profil': {
                 'save': 'Sauvegarder',
@@ -344,6 +345,7 @@ angular.module('CallForPaper')
                 'createNewSession': 'Create a new talk',
                 'submissionDisabled': 'Submitting new talks is disabled.',
                 'editionTalks': 'Talks available for editing',
+                'editionCoTalks': 'Cospeaker Talks available for editing',
                 'noEditionTalks': 'You don\'t have any draft',
                 'sendedTalks': 'Submitted talks',
                 'draftModifiedAt': 'Draft modified the ',
@@ -352,7 +354,8 @@ angular.module('CallForPaper')
                 'noSendedTalks': 'You don\'t have submitted any talk yet',
                 'verification': 'Verification',
                 'verificationNeeded': 'An email has been sent to your address, click the link in it to confirm your account.',
-                'submittedTalks': 'Submitted talks count: '
+                'submittedTalks': 'Submitted talks count: ',
+                'sendedCoTalks' : 'Submitted cospeaker talks'
             },
             'profil': {
                 'save': 'Save',

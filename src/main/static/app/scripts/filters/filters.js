@@ -60,6 +60,11 @@ angular.module('customFilters', [])
             return source;
         };
     })
+    .filter('capitalize', function() {
+        return function(input) {
+        return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+        }
+    })
     /**
      * Remove markdown
      * @param  {string}
@@ -73,3 +78,4 @@ angular.module('customFilters', [])
             return String(marked(text)).replace(/<[^>]+>/gm, '');
         };
     }]);
+    
