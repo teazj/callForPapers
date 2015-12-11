@@ -86,14 +86,16 @@ public class EmailingService {
     }
 
     /**
-     * Send new message about talk.
+     * Send an email to a speaker to notify him that an administrator wrote a
+     * new comment about his talk.
      *
-     * @param talk
+     * @param speaker the speaker to write to
+     * @param talk talk under review
      * @param locale
      */
     @Async
-    public void sendNewMessage(User user, TalkAdmin talk, Locale locale) {
-        log.debug("Sending new message e-mail to '{}'", user.getEmail());
+    public void sendNewCommentToSpeaker(User speaker, TalkAdmin talk, Locale locale) {
+        log.debug("Sending new comment email to speaker '{}' for talk '{}'", speaker.getEmail(), talk.getName());
 
         // List<String> bcc = adminUserServiceCustom.findAll().stream().map(a ->
         // a.getEmail()).collect(Collectors.toList());
@@ -103,44 +105,46 @@ public class EmailingService {
         }
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getFirstname());
+        map.put("name", speaker.getFirstname());
         map.put("talk", talk.getName());
         map.put("hostname", globalSettings.getHostname());
         map.put("id", String.valueOf(talk.getId()));
 
-        String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_MESSAGE, locale);
+        String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_COMMENT_TO_SPEAKER, locale);
 
         String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.NEW_MESSAGE, locale, talk.getName());
+        String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_SPEAKER, locale, talk.getName());
 
-        sendEmail(user.getEmail(), subject, content, bcc);
+        sendEmail(speaker.getEmail(), subject, content, bcc);
     }
 
     /**
-     * Send new speaker message to admin.
+     * Send an email to administrators to notify them that a speaker wrote a
+     * new comment on his talk.
      *
-     * @param user
-     * @param talk
+     * @param speaker the speaker writing this message
+     * @param talk talk under review
      * @param locale
      */
     @Async
-    public void sendNewMessageAdmin(User user, TalkUser talk, Locale locale) {
-        log.debug("Sending new message admin e-mail to '{}'", user.getEmail());
+    public void sendNewCommentToAdmins(User speaker, TalkUser talk, Locale locale) {
+        log.debug("Sending new comment email to admins for talk '{}'", talk.getName());
 
         List<String> bcc = new ArrayList<>();
         for (AdminUser adminUser : adminUserServiceCustom.findAll()) {
             bcc.add(adminUser.getEmail());
         }
         HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getFirstname());
+        map.put("name", speaker.getFirstname());
         map.put("talk", talk.getName());
         map.put("hostname", globalSettings.getHostname());
         map.put("id", String.valueOf(talk.getId()));
 
-        String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_MESSAGE_ADMIN, locale);
+        String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_COMMENT_TO_ADMIN, locale);
 
         String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.NEW_MESSAGE_ADMIN, locale, talk.getName());
+        String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_ADMIN, locale,
+            speaker.getFirstname() + " " + speaker.getLastname(), talk.getName());
 
         // To address must not be null => from = to
         sendEmail(emailingSettings.getEmailSender(), subject, content, bcc);

@@ -11,34 +11,34 @@ import fr.sii.config.email.EmailingSettings.EmailType;
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class EmailingSettingsTest {
-  private final static String TALK = "My talk";
+  private final static String TALK = "Talk12345";
 
-  private final static String SPEAKER = "Speaker";
+  private final static String SPEAKER = "Speaker12345";
 
   EmailingSettings emailingSettings = new EmailingSettings();
 
   @Test
-  public void getNewMessageSubject() {
+  public void whenPostingNewCommentToSpeakerSubjectIsValid() {
     // Given
-    final EmailType emailType = EmailType.NEW_MESSAGE;
-
-    // When
-    final String subject = emailingSettings.getSubject(emailType, Locale.FRENCH, TALK, SPEAKER);
-
-    // Then
-    Assert.isTrue(subject.contains(TALK));
-    Assert.isTrue(subject.contains(SPEAKER));
-  }
-
-  @Test
-  public void getNewMessageAdminSubject() {
-    // Given
-    final EmailType emailType = EmailType.NEW_MESSAGE_ADMIN;
+    final EmailType emailType = EmailType.NEW_COMMENT_TO_SPEAKER;
 
     // When
     final String subject = emailingSettings.getSubject(emailType, Locale.FRENCH, TALK);
 
     // Then
     Assert.isTrue(subject.contains(TALK));
+  }
+
+  @Test
+  public void whenPostingNewCommentToAdminsSubjectIsValid() {
+    // Given
+    final EmailType emailType = EmailType.NEW_COMMENT_TO_ADMIN;
+
+    // When
+    final String subject = emailingSettings.getSubject(emailType, Locale.FRENCH, SPEAKER, TALK);
+
+    // Then
+    Assert.isTrue(subject.contains(TALK));
+    Assert.isTrue(subject.contains(SPEAKER));
   }
 }

@@ -67,7 +67,7 @@ public class ContactController extends RestrictedController {
             saved = commentService.addComment(user.getId(), talkId, commentUser);
 
             Locale userPreferredLocale = httpServletRequest.getLocale();
-            emailingService.sendNewMessageAdmin(user, talk, userPreferredLocale);
+            emailingService.sendNewCommentToAdmins(user, talk, userPreferredLocale);
         }
 
         return saved;

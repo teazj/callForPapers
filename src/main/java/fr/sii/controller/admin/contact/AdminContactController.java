@@ -26,6 +26,9 @@ import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.user.UserService;
 
+/**
+ * Manages comments sent by administrators to speakers about a talk
+ */
 @RestController
 @RequestMapping(value = "api/admin/sessions/{talkId}/contacts", produces = "application/json; charset=utf-8")
 public class AdminContactController {
@@ -68,7 +71,7 @@ public class AdminContactController {
         // Send new message email
         if (user != null) {
             Locale userPreferredLocale = httpServletRequest.getLocale();
-            emailingService.sendNewMessage(user, talk, userPreferredLocale);
+            emailingService.sendNewCommentToSpeaker(user, talk, userPreferredLocale);
         }
 
         return saved;

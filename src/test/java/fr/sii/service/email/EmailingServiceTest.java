@@ -117,13 +117,13 @@ public class EmailingServiceTest {
     }
 
     @Test
-    public void sendNewMessage() {
+    public void sendNewCommentToSpeaker() {
         // Given
-        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_MESSAGE, Locale.FRENCH);
-        String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NEW_MESSAGE, Locale.FRENCH, talkUser.getName(), talkUser.getName());
+        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_COMMENT_TO_SPEAKER, Locale.FRENCH);
+        String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NEW_COMMENT_TO_SPEAKER, Locale.FRENCH, talkAdmin.getName());
 
         // When
-        emailingService.sendNewMessage(user, talkAdmin, Locale.FRENCH);
+        emailingService.sendNewCommentToSpeaker(user, talkAdmin, Locale.FRENCH);
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
@@ -131,13 +131,14 @@ public class EmailingServiceTest {
     }
 
     @Test
-    public void sendNewMessageAdmin() {
+    public void sendNewMessageToAdmins() {
         // Given
-        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_MESSAGE_ADMIN, Locale.FRENCH);
-        String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NEW_MESSAGE_ADMIN, Locale.FRENCH, talkUser.getName());
+        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_COMMENT_TO_ADMIN, Locale.FRENCH);
+        String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NEW_COMMENT_TO_ADMIN, Locale.FRENCH,
+            user.getFirstname() + " " + user.getLastname(), talkUser.getName());
 
         // When
-        emailingService.sendNewMessageAdmin(user, talkUser, Locale.FRENCH);
+        emailingService.sendNewCommentToAdmins(user, talkUser, Locale.FRENCH);
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
@@ -311,7 +312,7 @@ public class EmailingServiceTest {
     @Test
     public void processContentNewMessage() {
         // Given
-        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_MESSAGE, Locale.FRENCH);
+        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_COMMENT_TO_SPEAKER, Locale.FRENCH);
 
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
@@ -329,7 +330,7 @@ public class EmailingServiceTest {
     @Test
     public void processContentNewMessageAdmin() {
         // Given
-        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_MESSAGE_ADMIN, Locale.FRENCH);
+        String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_COMMENT_TO_ADMIN, Locale.FRENCH);
 
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("name", "Thomas");
