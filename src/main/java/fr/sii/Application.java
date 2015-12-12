@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.jdbc.EmbeddedDataSourceConfigurati
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableCaching
 @ServletComponentScan(basePackages = "fr.sii.config.filter")
 @EnableJpaRepositories(basePackages = "fr.sii.repository")
 @EnableAutoConfiguration(exclude = { EmbeddedDataSourceConfiguration.class })
