@@ -23,7 +23,7 @@ import fr.sii.service.auth.AuthUtils;
 import fr.sii.service.user.UserService;
 
 @RestController
-@RequestMapping(value="/api/restricted", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "/api/restricted", produces = "application/json; charset=utf-8")
 public class UserController extends RestrictedController {
 
     @Autowired
@@ -31,17 +31,17 @@ public class UserController extends RestrictedController {
 
     /**
      * Get current user profil
+     *
      * @param req
      * @return
      * @throws NotVerifiedException
      * @throws NotFoundException
      * @throws IOException
      */
-    @RequestMapping(value="/user", method= RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
         User u = userService.findById(retrieveUserId(req));
-        if(u == null)
-        {
+        if (u == null) {
             throw new NotFoundException("User not found");
         }
 
@@ -63,6 +63,7 @@ public class UserController extends RestrictedController {
 
     /**
      * Edit current user profil
+     *
      * @param req
      * @param profil
      * @return
@@ -70,15 +71,14 @@ public class UserController extends RestrictedController {
      * @throws NotFoundException
      * @throws IOException
      */
-    @RequestMapping(value="/user", method= RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException {
         User u = userService.findById(retrieveUserId(req));
-        if(u == null)
-        {
+        if (u == null) {
             throw new NotFoundException("User not found");
         }
         profil.setEmail(u.getEmail());
-        userService.update(u.getId(),profil);
+        userService.update(u.getId(), profil);
 
         return profil;
 

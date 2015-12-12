@@ -218,8 +218,8 @@ angular.module('CallForPaper', [
                     isProfileComplete: ProfileValidatorProvider.isValid()
                 }
             })
-            
-            
+
+
 
             .state('app.talks', {
                 url: '/talks',
@@ -323,7 +323,7 @@ angular.module('CallForPaper', [
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     },
-                    isCoSession: function(){ return false }
+                    isCoSession: function(){ return false; }
                 }
             })
             .state('app.cosession', {
@@ -335,7 +335,7 @@ angular.module('CallForPaper', [
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     },
-                    isCoSession: function(){ return true }
+                    isCoSession: function(){ return true; }
                 }
             })
 
