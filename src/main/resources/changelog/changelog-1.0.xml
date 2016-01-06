@@ -327,4 +327,12 @@
                 <addForeignKeyConstraint constraintName="fk_cospeakers_2" referencedTableName="talks" baseColumnNames="talk_id" baseTableName="cospeakers" referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="6" author="alex">
+        <insert tableName="tracks">
+            <column name="id" value="9"/>
+            <column name="libelle" value="Web"/>
+            <column name="description" value="Web"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
