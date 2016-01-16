@@ -50,15 +50,15 @@
 											<td class="pointer" filter="{'difficulty': 'select'}" filter-data="difficulties()" sortable="'difficulty'" data-title="'admin.difficulty' | translate">{{ 'step2.' + session.keyDifficulty | translate}}</td>
 											<td class="pointer" filter="{'track': 'select'}" filter-data="tracks()" data-title="'admin.track' | translate">{{::session.trackLabel}}</td>
 											<td class="col-xs-12 noPadding pointer" filter="{'description': 'text'}" data-title="'admin.description' | translate" ng-bind-html="::session.description | mdToPlaintext | truncate"></td>
-											<td class="pointer" sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
 											<td class="pointer" sortable="'added'" data-title="'admin.date' | translate">{{::session.added | date}}</td>
-											<td class="pointer" sortable="'lastModification'" data-title="'admin.lastModification' | translate">
+											<td class="pointer" sortable="'mean'" data-title="'admin.mean' | translate">{{::session.mean | number:2}}</td>
+											<!-- <td class="pointer" sortable="'lastModification'" data-title="'admin.lastModification' | translate">
 												<span ng-if="session.lastModification !== 0">{{::session.lastModification | date}}</span>
 												<span ng-if="session.lastModification === 0">{{'admin.never' | translate}}</span>
-											</td>
-											<td class="pointer" sortable="'notViewedCount'" data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td>
+											</td> -->
+											<!-- <td class="pointer" sortable="'notViewedCount'" data-title="'admin.newMessages' | translate">{{::session.notViewedCount}}</td> -->
 											<td class="pointer" sortable="'voteCount'" data-title="'admin.votes' | translate">
-												<img tooltip="{{user.name}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user.email" gravatar-size="20">
+												<img tooltip="{{user}}" ng-repeat="user in session.voteUsersEmail" class="pull-left mini-avatar" gravatar-src="user" gravatar-size="20">
 											</td>
 										</tr>
 									</table>

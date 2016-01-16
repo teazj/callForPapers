@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Service for managing talks by the admins
@@ -44,15 +45,26 @@ public class TalkAdminService {
      */
     public List<TalkAdmin> findAll(Talk.State... states) {
         List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
-        List<Rate> rates = rateRepo.findAll();
+        List<Rate> rates = rateRepo.findAllFetchAdmin();
 
         AdminUser admin = adminUserService.getCurrentUser();
-        Map<Integer, List<Rate>> reviewed = rates.stream().filter(r -> admin.getId() == r.getAdminUser().getId())
-            .collect(Collectors.groupingBy(r -> r.getTalk().getId()));
+        Map<Integer, List<Rate>> reviewed = rates.stream()
+            .filter(r -> admin.getId() == r.getAdminUser().getId())
+            .collect(groupingBy(r -> r.getTalk().getId()));
+
+        Map<Integer, Double> averages = rates.stream()
+            .collect(groupingBy(r -> r.getTalk().getId(), averagingInt(Rate::getRate)));
+
+        Map<Integer, List<String>> voters = rates.stream()
+            .collect(groupingBy(r -> r.getTalk().getId(), mapping(r -> r.getAdminUser().getEmail(), toList())));
 
         List<TalkAdmin> talkList = mapper.mapAsList(talks, TalkAdmin.class);
         for (TalkAdmin talk : talkList) {
-            talk.setReviewed(reviewed.get(talk.getId()) != null);
+            int talkId = talk.getId();
+
+            talk.setReviewed(reviewed.get(talkId) != null);
+            talk.setMean(averages.get(talkId));
+            talk.setVoteUsersEmail(voters.get(talkId));
         }
         return talkList;
     }
