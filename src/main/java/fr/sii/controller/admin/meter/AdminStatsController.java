@@ -9,20 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import fr.sii.domain.admin.meter.AdminMeter;
 import fr.sii.service.admin.stats.AdminStatsService;
 
-/**
- * Created by tmaugin on 16/07/2015.
- * SII
- */
 @Controller
 @RequestMapping(value="api/admin/stats", produces = "application/json; charset=utf-8")
 public class AdminStatsController {
 
     @Autowired
     private AdminStatsService adminStatsService;
-
-    public void setAdminStatsService(AdminStatsService adminStatsService) {
-        this.adminStatsService = adminStatsService;
-    }
 
     /**
      * Get meter stats (talks count, draft count, ...)

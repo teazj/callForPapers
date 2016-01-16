@@ -11,7 +11,7 @@ import java.util.List;
 public interface TalkRepo extends JpaRepository<Talk, Integer> {
     List<Talk> findByUserIdAndStateIn(int userId, Collection<Talk.State> states);
 
-    List<Talk> findByStateIn(Collection<Talk.State> states);
+    long countByStateIn(Collection<Talk.State> states);
 
     int countByUserId(int userId);
 
