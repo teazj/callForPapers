@@ -1,10 +1,13 @@
 package fr.sii.service;
 
 import fr.sii.dto.TalkAdmin;
-import fr.sii.dto.TalkUser;
 import fr.sii.dto.user.UserProfil;
+import fr.sii.entity.AdminUser;
+import fr.sii.entity.Rate;
 import fr.sii.entity.Talk;
+import fr.sii.repository.RateRepo;
 import fr.sii.repository.TalkRepo;
+import fr.sii.service.admin.user.AdminUserService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service for managing talks by the admins
@@ -24,6 +29,12 @@ public class TalkAdminService {
     private TalkRepo talkRepo;
 
     @Autowired
+    private RateRepo rateRepo;
+
+    @Autowired
+    private AdminUserService adminUserService;
+
+    @Autowired
     private MapperFacade mapper;
 
     /**
@@ -32,8 +43,18 @@ public class TalkAdminService {
      * @return List of talks
      */
     public List<TalkAdmin> findAll(Talk.State... states) {
-        List<Talk> talks = talkRepo.findByStateIn(Arrays.asList(states));
-        return mapper.mapAsList(talks, TalkAdmin.class);
+        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
+        List<Rate> rates = rateRepo.findAll();
+
+        AdminUser admin = adminUserService.getCurrentUser();
+        Map<Integer, List<Rate>> reviewed = rates.stream().filter(r -> admin.getId() == r.getAdminUser().getId())
+            .collect(Collectors.groupingBy(r -> r.getTalk().getId()));
+
+        List<TalkAdmin> talkList = mapper.mapAsList(talks, TalkAdmin.class);
+        for (TalkAdmin talk : talkList) {
+            talk.setReviewed(reviewed.get(talk.getId()) != null);
+        }
+        return talkList;
     }
 
     /**

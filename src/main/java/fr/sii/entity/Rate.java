@@ -48,13 +48,13 @@ public class Rate {
         return hate;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talk")
     public Talk getTalk() {
         return talk;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin")
     public AdminUser getAdminUser() {
         return adminUser;
