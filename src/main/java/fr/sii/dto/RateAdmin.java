@@ -1,5 +1,7 @@
 package fr.sii.dto;
 
+import fr.sii.dto.user.AdminUserDTO;
+
 import java.util.Date;
 
 /**
@@ -14,7 +16,7 @@ public class RateAdmin {
     private boolean hate;
 
     private int talkId;
-    private int adminId;
+    private AdminUserDTO user;
 
     public int getId() {
         return id;
@@ -64,11 +66,11 @@ public class RateAdmin {
         this.talkId = talkId;
     }
 
-    public int getAdminId() {
-        return adminId;
+    public AdminUserDTO getUser() {
+        return user;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setUser(AdminUserDTO user) {
+        this.user = user;
     }
 }
