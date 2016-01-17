@@ -16,7 +16,7 @@
     "angular-translate": "~2.6.1",
     "angular-language-picker": "k88hudson/angular-language-picker#~0.0.1",
     "iframe-resizer": "~2.8.5",
-    "ng-table": "~0.5.4",
+    "ng-table": "0.8.3",
     "angular-ui-notification": "~0.0.5",
     "angular-translate-storage-cookie": "~2.6.1",
     "angular-gravatar": "~0.3.1",

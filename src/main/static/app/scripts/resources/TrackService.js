@@ -8,7 +8,7 @@ angular.module('CallForPaper').service('TalkService', ['resourceRetries', functi
                 url: '/api/settings/talk/tracks',
                 method: 'GET',
                 isArray: true
-            },
+            }
         });
 
     var formats = resourceRetries('/api/settings/talk/formats', null,
@@ -17,7 +17,7 @@ angular.module('CallForPaper').service('TalkService', ['resourceRetries', functi
                 url: '/api/settings/talk/formats',
                 method: 'GET',
                 isArray: true
-            },
+            }
         });
 
     return {

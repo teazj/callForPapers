@@ -108,6 +108,11 @@ angular.module('CallForPaper')
                     },
                     saveDraft: 'Brouillon enregistré.',
                     saveSession: 'Session soumise. Un mail de confirmation vous a été envoyé.'
+                },
+                difficulty: {
+                    '1': 'Débutant',
+                    '2': 'Confirmé',
+                    '3': 'Expert'
                 }
             },
             'step1': {
@@ -418,6 +423,11 @@ angular.module('CallForPaper')
                     },
                     saveDraft: 'Draft saved.',
                     saveSession: 'Session submitted. A confirmation email has been sent to you.'
+                },
+                difficulty: {
+                    '1': 'Beginner',
+                    '2': 'Confirmed',
+                    '3': 'Expert'
                 }
             },
             'step1': {

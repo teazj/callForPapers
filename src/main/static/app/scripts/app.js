@@ -100,8 +100,43 @@ angular.module('CallForPaper', [
                 controller: 'AdminConfigCtrl'
             })
             // Session
+            .state('admin.loading', {
+                abstract: true,
+                template: '<ui-view/>',
+                resolve: {
+                    sessionsAll: function(AdminSession) {
+                        return AdminSession.query().$promise.then(function(data) {
+                            return _.map(data, function(session) {
+                                return _.assign(session, { // ugly workaround to be able to filter on speaker fullname
+                                    speakerName: [session.speaker.firstname, session.speaker.lastname].join(' ')
+                                });
+                            });
+                        });
+                    }
+                }
+            })
             .state('admin.sessions', {
-                url: '/sessions',
+                url: '/sessions?{format:\d?}',
+                parent: 'admin.loading',
+                resolve: {
+                    tracks: function(TalkService) {
+                        return TalkService.tracks.findAll().$promise;
+                    },
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    },
+                    format: function($stateParams, talkformats) {
+                        var format = $stateParams.format;
+                        format = format ? parseInt(format, 10) : null;
+                        return format && _.find(talkformats, {id: format}) ? format : null;
+                    },
+                    sessions: function(sessionsAll, format) {
+                        return format ? _.filter(sessionsAll, {format: format}) : sessionsAll;
+                    },
+                    stats: function(AdminStats) {
+                        return AdminStats.meter().$promise;
+                    }
+                },
                 templateUrl: 'views/admin/sessions.html',
                 controller: 'AdminSessionsCtrl'
             })
