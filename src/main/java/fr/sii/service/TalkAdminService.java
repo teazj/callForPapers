@@ -7,6 +7,15 @@ import fr.sii.entity.Rate;
 import fr.sii.entity.Talk;
 import fr.sii.repository.RateRepo;
 import fr.sii.repository.TalkRepo;
+import fr.sii.repository.TrackRepo;
+import fr.sii.repository.UserRepo;
+import fr.sii.entity.User;
+
+import fr.sii.entity.TalkFormat;
+import fr.sii.dto.user.CospeakerProfil;
+import fr.sii.domain.exception.CospeakerNotFoundException;
+
+import fr.sii.repository.TalkFormatRepo;
 import fr.sii.service.admin.user.AdminUserService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+
 
 import static java.util.stream.Collectors.*;
 
@@ -31,6 +43,15 @@ public class TalkAdminService {
 
     @Autowired
     private RateRepo rateRepo;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private TalkFormatRepo talkFormatRepo;
+
+    @Autowired
+    private TrackRepo trackRepo;
 
     @Autowired
     private AdminUserService adminUserService;
@@ -89,10 +110,33 @@ public class TalkAdminService {
      * @param talkAdmin Talk to edit
      * @return Edited talk
      */
-    public TalkAdmin edit(TalkAdmin talkAdmin) {
-        Talk talk = talkRepo.findOne(talkAdmin.getId());
-        mapper.map(talkAdmin, talk);
-        return mapper.map(talk, TalkAdmin.class);
+    public TalkAdmin edit(TalkAdmin talkAdmin)  throws CospeakerNotFoundException {
+      Talk talk = talkRepo.findOne(talkAdmin.getId());
+      if (talk == null) return null;
+      talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
+      talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
+      setCoSpeakerId(talkAdmin.getCospeakers());
+      mapper.map(talkAdmin, talk);
+      talkRepo.flush();
+      return mapper.map(talk, TalkAdmin.class);
+    }
+
+    /**
+     * For each cospeaker, check if the user is in the CFP database and set the id on the user object
+     * @param cospeakers CoSpeakers to check and set id
+     * @throws CospeakerNotFoundException If a cospeaker is not found
+     */
+    private void setCoSpeakerId(Set<CospeakerProfil> cospeakers) throws CospeakerNotFoundException {
+        if (cospeakers == null || cospeakers.isEmpty()) return;
+
+        for (CospeakerProfil cospeaker : cospeakers) {
+            List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
+            if (existingUser.isEmpty()) {
+                throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
+            }
+
+            cospeaker.setId(existingUser.get(0).getId());
+        }
     }
 
     /**

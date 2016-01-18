@@ -1,46 +1,81 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('AdminSessionCtrl', ['$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', 'AdminContact', 'Notification', function($scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys, AdminContact, Notification) {
+    .controller('AdminSessionCtrl', ['tracks', 'talkformats', 'talk',  '$scope', '$stateParams', '$filter', '$translate', 'AdminSession', 'AdminComment', 'AdminRate', '$modal', '$state', 'CommonProfilImage', 'AuthService', 'NextPreviousSessionService', 'hotkeys', 'AdminContact', 'Notification', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys, AdminContact, Notification) {
         $scope.tab = $stateParams.tab;
+        $scope.saveDraftButtonHidden = true;
 
-        $scope.session = null;
+        /*
+          SESSION
+        */
+        //$scope.session = talk;
         $scope.adminEmail = null;
 
-        /**
-         * Get session
-         * @return {AdminSession}
-         */
-        AdminSession.get({
-            id: $stateParams.id
-        }).$promise.then(function(sessionTmp) {
-            $scope.session = sessionTmp;
+        $scope.talk = talk;
+        $scope.tracks = tracks;
+        $scope.talkFormats = talkformats;
+        $scope.cospeakers = [];
 
-            // Add links to socials
-            $scope.session.socialLinks = [];
-            if (sessionTmp.speaker.social !== undefined) {
-                var links = sessionTmp.speaker.social.split(',').map(function(value) {
-                    return $filter('createLinks')(value);
+        if (talk) {
+            $scope.cospeakers = talk.cospeakers.map(function(speaker) {
+                return speaker.email;
+            });
+            var length = tracks.length;
+
+            for (var i = 0; i < length; i++) {
+                if (tracks[i].id === talk.trackId) {
+                    $scope.selectedTrack = tracks[i];
+                    break;
+                }
+            }
+        }
+
+        $scope.updateTrack = function() {
+          $scope.talk.trackId = this.selectedTrack.id;
+          $scope.talk.trackLabel = this.selectedTrack.libelle;
+        };
+
+        function validate(talk) {
+            // Validation is only about some required fields
+            return _.every(['format', 'name', 'description', 'difficulty', 'trackId'], function(field) {
+                return Boolean(talk[field]);
+            });
+        }
+
+        function processError(error) {
+            $scope.sending = false;
+            if (error.status === 400) {
+                window.console.log(error);
+                if (error.data.errorCode === 1) {
+                    Notification.error(translateFilter('step2.cospeakerNotFound', {value: error.data.errorCodeBody.email}));
+                } else {
+                    Notification.error(translateFilter('verify.notVerified'));
+                }
+
+                return;
+            }
+            $scope.sendError = true;
+        }
+
+        function save(talk, isDraft) {
+          console.log(talk)
+            if (validate(talk)) {
+                $scope.sending = true;
+                talk.cospeakers = $scope.cospeakers.map(function(email) {
+                    return {email: email.text};
                 });
-                $scope.session.socialLinks = links;
+                updateTalk(talk)
+            } else {
+                $scope.talkInvalid = true;
+                return $q.reject();
             }
-            if (sessionTmp.speaker.twitter !== null) {
-                $scope.session.speaker.twitter = $filter('createLinks')(sessionTmp.speaker.twitter);
-            }
+        }
 
-            if (sessionTmp.speaker.googleplus !== null) {
-                $scope.session.speaker.googleplus = $filter('createLinks')(sessionTmp.speaker.googleplus);
-            }
+        $scope.submit = function submit(talk) {
+            save(talk);
+        };
 
-            if (sessionTmp.speaker.github !== null) {
-                $scope.session.speaker.github = $filter('createLinks')(sessionTmp.speaker.github);
-            }
 
-            // Set difficulty key
-            $scope.session.keyDifficulty = (['beginner', 'confirmed', 'expert'])[sessionTmp.difficulty - 1];
-
-            $scope.session.speaker.profilImageUrl = $scope.session.speaker.socialProfilImageUr;
-        });
 
         // For gravatar
         $scope.adminEmail = AuthService.user.email;
@@ -136,29 +171,7 @@ angular.module('CallForPaper')
             });
         };
 
-        /**
-         * Open modal for editing
-         * @param  {AdminComment} comment to edit
-         * @return {AdminComment} edited comment text
-         */
-        $scope.editComment = function(localComment) {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: 'views/admin/editModal.html',
-                controller: 'EditModalInstanceCtrl',
-                resolve: {
-                    comment: function() {
-                        return localComment.comment;
-                    }
-                }
-            });
-            modalInstance.result.then(function(comment) {
-                localComment.comment = comment;
-                putComment(localComment);
-            }, function() {
-                // cancel
-            });
-        };
+
 
         /**
          * Delete comment
@@ -475,63 +488,12 @@ angular.module('CallForPaper')
             });
         };
 
-        $scope.updateTalk = function() {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: 'views/admin/changeTrackModal.html',
-                controller: 'ChangeTrackModalInstanceCtrl',
-                resolve: {
-                    session: function() {
-                        return $scope.session;
-                    }
-                }
-            });
-            modalInstance.result.then(function(session) {
-                updateTalk(session);
-            }, function() {
-                // cancel
-            });
-        };
-
-        $scope.changeTrack = function() {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: 'views/admin/changeTrackModal.html',
-                controller: 'ChangeTrackModalInstanceCtrl',
-                resolve: {
-                    session: function() {
-                        return $scope.session;
-                    }
-                }
-            });
-            modalInstance.result.then(function(track) {
-                putTrack(track);
-            }, function() {
-                // cancel
-            });
-        };
-
-        $scope.changeTrackButtonAnimationDisabled = true;
-        var putTrack = function(track) {
-            $scope.changeTrackButtonAnimationDisabled = false;
-            AdminSession.changeTrack({id: $stateParams.id}, {track: track}).$promise.then(function(sessionTmp) {
-                updateComments();
-                $scope.session.track = sessionTmp.track;
-                Notification.success({
-                    message: $filter('translate')('admin.trackModified'),
-                    delay: 3000
-                });
-                $scope.changeTrackButtonAnimationDisabled = true;
-            }, function() {
-                $scope.changeTrackButtonAnimationDisabled = true;
-            });
-        };
 
         var updateTalk = function(session) {
             $scope.changeTrackButtonAnimationDisabled = false;
             AdminSession.update({id: $stateParams.id}, session).$promise.then(function(sessionTmp) {
                 updateComments();
-                $scope.session.track = sessionTmp.track;
+                $scope.talk.track = sessionTmp.track;
                 Notification.success({
                     message: $filter('translate')('admin.trackModified'),
                     delay: 3000
@@ -540,26 +502,5 @@ angular.module('CallForPaper')
             }, function() {
                 $scope.changeTrackButtonAnimationDisabled = true;
             });
-        };
-    }])
-    .controller('EditModalInstanceCtrl', ['$scope', '$modalInstance', 'comment', function($scope, $modalInstance, comment) {
-        $scope.commentMsg = comment;
-        $scope.ok = function() {
-            $modalInstance.close($scope.commentMsg);
-        };
-
-        $scope.cancel = function() {
-            $modalInstance.dismiss();
-        };
-    }])
-    .controller('ChangeTrackModalInstanceCtrl', ['$scope', '$modalInstance', 'session', function($scope, $modalInstance, session) {
-        $scope.session = session;
-        //$scope.track = session.track;
-        $scope.ok = function() {
-            $modalInstance.close($scope.session);
-        };
-
-        $scope.cancel = function() {
-            $modalInstance.dismiss();
         };
     }]);

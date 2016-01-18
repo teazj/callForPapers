@@ -6,6 +6,8 @@ import fr.sii.service.TalkAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import fr.sii.domain.exception.CospeakerNotFoundException;
+
 
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class AdminSessionController {
      */
     @RequestMapping(value= "/sessions/{talkId}", method= RequestMethod.PUT)
     @ResponseBody
-    public TalkAdmin editTalk(@PathVariable int talkId, @RequestBody TalkAdmin talkAdmin) {
+    public TalkAdmin editTalk(@PathVariable int talkId, @RequestBody TalkAdmin talkAdmin) throws CospeakerNotFoundException{
         talkAdmin.setId(talkId);
         return talkService.edit(talkAdmin);
     }

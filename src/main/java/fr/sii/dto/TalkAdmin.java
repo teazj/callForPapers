@@ -46,9 +46,7 @@ public class TalkAdmin extends TalkUser {
         return mean;
     }
 
-    public void setMean(BigDecimal mean) {
-        this.mean = mean;
-    }
+
 
     public List<String> getVoteUsersEmail() {
         return voteUsersEmail;

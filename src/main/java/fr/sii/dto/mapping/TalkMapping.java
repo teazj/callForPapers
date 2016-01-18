@@ -7,6 +7,8 @@ import fr.sii.dto.TalkUser;
 import fr.sii.dto.user.UserProfil;
 import fr.sii.dto.user.CospeakerProfil;
 import fr.sii.entity.Talk;
+import fr.sii.dto.TalkAdmin;
+
 import fr.sii.entity.User;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
@@ -47,6 +49,29 @@ public class TalkMapping implements Mapping {
         mapperFactory.classMap(User.class, UserProfil.class)
             .byDefault()
             .register();
+
+        mapperFactory.classMap(Talk.class, TalkAdmin.class)
+                .field("user", "speaker")
+                .field("track.id", "trackId")
+                .field("track.libelle", "trackLabel")
+    			.field("talkFormat.id", "format")
+                .exclude("cospeakers")
+                .customize(new CustomMapper<Talk, TalkAdmin>() {
+                    @Override
+                    public void mapAtoB(Talk talk, TalkAdmin talkUser, MappingContext context) {
+                        if (talk.getCospeakers() != null) {
+                            talkUser.setCospeaker(mapperFactory.getMapperFacade().mapAsSet(talk.getCospeakers(), CospeakerProfil.class));
+                        }
+                    }
+                    @Override
+                    public void mapBtoA(TalkAdmin talkUser,Talk talk, MappingContext context) {
+                        if (talkUser.getCospeakers() != null) {
+                            talk.setCospeakers(mapperFactory.getMapperFacade().mapAsSet(talkUser.getCospeakers(), User.class));
+                        }
+                    }
+                })
+                .byDefault()
+                .register();
 
     }
 }

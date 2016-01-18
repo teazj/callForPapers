@@ -118,7 +118,29 @@ angular.module('CallForPaper', [
             .state('admin.session', {
                 url: '/sessions/:id?tab',
                 templateUrl: 'views/admin/session.html',
-                controller: 'AdminSessionCtrl'
+                controller: 'AdminSessionCtrl',
+                resolve: {
+                    tracks: function(TalkService) {
+                        return TalkService.tracks.findAll().$promise;
+                    },
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    },
+                    talk: function(AdminSession, $stateParams) {
+
+
+                        var id = $stateParams.id;
+                        if (id) {
+                          return AdminSession.get({
+                              id: $stateParams.id
+                          }).$promise.then(function(sessionTmp){
+                            return sessionTmp
+                          });
+                        } else {
+                            return null;
+                        }
+                    }
+                }
             })
 
             // Login Admin

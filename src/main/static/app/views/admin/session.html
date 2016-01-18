@@ -102,58 +102,9 @@
 					</div>
 					<div role="tabpanel" ng-class="{active : tab == 'session', in : tab == 'session'}" class="tab-pane fade" id="session" aria-labelledby="session-tab">
 						<div class="row">
-							<div class="col-xs-12 col-md-6">
-								<div class="form-group">
-									<label class="control-label" for="type">{{'step2.type' | translate}}</label>
-									<div class="">
-										<input readonly type="text" name="type" class="form-control" ng-value="'step2.types.' + session.type | translate" id="type">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label" for="sessionName">{{'step2.name' | translate}}</label>
-									<div class="">
-										<input readonly type="text" name="sessionName" class="form-control" ng-model="session.name" id="sessionName">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label" for="description">{{'step2.description' | translate}}</label>
-									<div class="">
-										<div marked="session.description">
-        								</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label" for="references">{{'step2.references' | translate}}</label>
-									<div class="">
-										<div marked="session.references">
-        								</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-md-6">
-								<div class="form-group">
-									<label class="control-label" for="difficulty">{{'step2.difficulty' | translate}}</label>
-									<div class="">
-										<input readonly type="text" name="difficulty" class="form-control" ng-value="'step2.' + session.keyDifficulty | translate" id="difficulty">
-									</div>
-								</div>
-								<div class="col-xs-12 noPadding">
-									<div class="form-group">
-										<label class="control-label" for="track">{{'step2.track' | translate}}</label>
-										<div class="">
-											<input readonly type="text" name="track" class="form-control" ng-model="session.trackLabel" id="track">
-										</div>
-										<button ng-click="updateTalk()" type="button" ng-disabled="!changeTrackButtonAnimationDisabled" class="btn btn-success pull-right ng-binding" tabindex="0"><span ng-hide="changeTrackButtonAnimationDisabled" class="mdi-navigation-refresh glyphicon-refresh-animate pull-right"></span>{{'admin.modify' | translate}}&nbsp;
-										</button>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label" for="coSpeaker">{{'step2.cospeaker' | translate}}</label>
-									<div class="">
-										<div marked="session.coSpeaker">
-        								</div>
-									</div>
-								</div>
+							<div class="col-md-12">
+
+								<div ng-include src="'views/restricted/talks/edit.html'"></div>
 							</div>
 						</div>
 					</div>
