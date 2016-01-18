@@ -10,7 +10,7 @@ angular.module('CallForPaper')
         */
         //$scope.session = talk;
         $scope.adminEmail = null;
-
+        $scope.session = talk;
         $scope.talk = talk;
         $scope.tracks = tracks;
         $scope.talkFormats = talkformats;
