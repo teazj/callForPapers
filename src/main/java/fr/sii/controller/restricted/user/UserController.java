@@ -1,26 +1,21 @@
 package fr.sii.controller.restricted.user;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import fr.sii.controller.restricted.RestrictedController;
+import fr.sii.domain.exception.NotFoundException;
+import fr.sii.domain.exception.NotVerifiedException;
+import fr.sii.dto.user.UserProfil;
+import fr.sii.entity.User;
+import fr.sii.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-
-import fr.sii.controller.restricted.RestrictedController;
-import fr.sii.domain.exception.NotFoundException;
-import fr.sii.domain.exception.NotVerifiedException;
-import fr.sii.dto.user.UserProfil;
-import fr.sii.entity.User;
-import fr.sii.service.auth.AuthUtils;
-import fr.sii.service.user.UserService;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/restricted", produces = "application/json; charset=utf-8")
@@ -40,9 +35,11 @@ public class UserController extends RestrictedController {
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
-        User u = userService.findById(retrieveUserId(req));
+        int userId = retrieveUserId(req);
+
+        User u = userService.findById(userId);
         if (u == null) {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User id [" + userId + "] not found");
         }
 
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -73,9 +70,11 @@ public class UserController extends RestrictedController {
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException {
-        User u = userService.findById(retrieveUserId(req));
+        int userId = retrieveUserId(req);
+
+        User u = userService.findById(userId);
         if (u == null) {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User id [" + userId + "] not found");
         }
         profil.setEmail(u.getEmail());
         userService.update(u.getId(), profil);

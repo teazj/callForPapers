@@ -54,7 +54,7 @@ public class TalkUserService {
         List<Talk> talks = talkRepo.findByUserIdAndStateIn(userId, Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
     }
-    
+
     /**
      * Retrieve all talks for a User
      * @param userId Id of the user to retrieve cospeaker talks
@@ -96,21 +96,21 @@ public class TalkUserService {
         Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
         return mapper.map(talk, TalkUser.class);
     }
-    
+
     public TalkUser getOneCospeakerTalk(int userId, int talkId) {
         Talk talk = talkRepo.findByIdAndCospeakers(talkId, userId);
         return mapper.map(talk, TalkUser.class);
     }
-    
+
 
     /**
      * Add a submitted talk
-     * @param user user who submitted the talk
+     * @param userId user who submitted the talk
      * @param talkUser Talk to add
      * @return Talk added
      */
-    public TalkUser submitTalk(User user, TalkUser talkUser)throws CospeakerNotFoundException {
-        return newTalk(user, talkUser, Talk.State.CONFIRMED);
+    public TalkUser submitTalk(int userId, TalkUser talkUser)throws CospeakerNotFoundException {
+        return newTalk(userId, talkUser, Talk.State.CONFIRMED);
     }
 
     /**
@@ -130,7 +130,7 @@ public class TalkUserService {
      * @return talk saved
      */
     public TalkUser addDraft(int userId, TalkUser talkUser) throws CospeakerNotFoundException {
-        return newTalk(userRepo.getOne(userId), talkUser, Talk.State.DRAFT);
+        return newTalk(userId, talkUser, Talk.State.DRAFT);
     }
 
     /**
@@ -177,16 +177,16 @@ public class TalkUserService {
 
     /**
      * Add a new talk into the database
-     * @param user User who submit the talk
+     * @param userId User who submit the talk
      * @param talkUser Talk to add
      * @param state New state of the talk
      * @return Talk added
      */
-    private TalkUser newTalk(User user, TalkUser talkUser, Talk.State state) throws CospeakerNotFoundException {
+    private TalkUser newTalk(int userId, TalkUser talkUser, Talk.State state) throws CospeakerNotFoundException {
         Talk talk = mapper.map(talkUser, Talk.class);
 
         talk.setAdded(new Date());
-        talk.setUser(user);
+        talk.setUser(userRepo.getOne(userId));
         talk.setState(state);
         setCoSpeakerId(talkUser.getCospeakers());
 
