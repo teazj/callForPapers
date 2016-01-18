@@ -44,9 +44,10 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value="/sessions", method=RequestMethod.POST)
     public TalkUser submitTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws Exception, CospeakerNotFoundException  {
-        User user = userRepo.findOne(retrieveUserId(req));
-        TalkUser savedTalk = talkService.submitTalk(user, talkUser);
+        int userId = retrieveUserId(req);
+        TalkUser savedTalk = talkService.submitTalk(userId, talkUser);
 
+        User user = userRepo.findOne(userId);
         if (user != null && savedTalk != null) {
             Locale userPreferredLocale = req.getLocale();
             emailingService.sendConfirmed(user, savedTalk, userPreferredLocale);
@@ -179,7 +180,7 @@ public class SessionController extends RestrictedController {
         TalkUser talk = talkService.getOneCospeakerTalk(userId, talkId);
         return talk;
     }
-    
+
     /**
      * Get all co-session for the current user
      */
@@ -188,7 +189,7 @@ public class SessionController extends RestrictedController {
         int userId = retrieveUserId(req);
         return talkService.findAllCospeakerTalks(userId, Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
     }
-    
+
     /**
      * Get a co-session for the current user
      */

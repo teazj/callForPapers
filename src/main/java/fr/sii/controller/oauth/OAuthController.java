@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ import java.text.ParseException;
 
 abstract class OAuthController {
 
-    private final Logger log = LoggerFactory.getLogger(OAuthController.class);
+    private static final Logger logger = LoggerFactory.getLogger(OAuthController.class);
 
     private final String CONFLICT_MSG = "There is already a %s account that belongs to you";
 
@@ -50,9 +49,9 @@ abstract class OAuthController {
             try {
                 subject = Integer.valueOf(AuthUtils.getSubject(authHeader));
             } catch (ParseException e) {
-                log.warn(e.getMessage());
+                logger.warn(e.getMessage());
                 httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                log.warn("Pb with Auth Header : {}", authHeader);
+                logger.warn("Pb with Auth Header : {}", authHeader);
                 return null;
             }
 
@@ -61,7 +60,7 @@ abstract class OAuthController {
                 httpServletResponse.getWriter().write(String.format(CONFLICT_MSG, provider));
                 httpServletResponse.getWriter().flush();
                 httpServletResponse.getWriter().close();
-                log.warn("Account conflict {} - {}", provider, providerId);
+                logger.warn("Account conflict {} - {}", provider, providerId);
                 return null;
             }
 
@@ -71,7 +70,7 @@ abstract class OAuthController {
                 httpServletResponse.getWriter().write(NOT_FOUND_MSG);
                 httpServletResponse.getWriter().flush();
                 httpServletResponse.getWriter().close();
-                log.warn("User id {} not found during authentication", subject);
+                logger.warn("User id {} not found during authentication", subject);
                 return null;
             }
 
@@ -105,6 +104,7 @@ abstract class OAuthController {
             }
         }
 
+        logger.info("User [{}] logged in with [{}]", userToSave.getEmail(), provider);
         return AuthUtils.createToken(httpServletRequest.getRemoteHost(), "" + userToSave.getId(), true);
     }
 }

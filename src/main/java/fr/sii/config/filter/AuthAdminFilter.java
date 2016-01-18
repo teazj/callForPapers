@@ -4,6 +4,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.entity.AdminUser;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.auth.AuthUtils;
+import org.slf4j.MDC;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -41,11 +42,15 @@ public class AuthAdminFilter extends AuthFilter {
             AdminUser admin = adminUserService.findFromUserId(userId);
             if (admin == null) throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, AUTH_ERROR_MSG);
 
+            MDC.put(USER_ID, String.valueOf(userId));
             adminUserService.setCurrentAdmin(admin);
             chain.doFilter(request, response);
 
         } catch (InvalidTokenException e) {
             httpResponse.sendError(e.getResponseCode(), e.getMessage());
+
+        } finally {
+            MDC.remove(USER_ID);
         }
     }
 }

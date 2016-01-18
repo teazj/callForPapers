@@ -1,27 +1,6 @@
 package fr.sii.controller.oauth;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.nimbusds.jose.JOSEException;
-
 import fr.sii.config.auth.AuthSettings;
 import fr.sii.domain.exception.BadRequestException;
 import fr.sii.domain.recaptcha.ReCaptchaCheckerReponse;
@@ -35,12 +14,25 @@ import fr.sii.service.auth.PasswordService;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.recaptcha.ReCaptchaChecker;
 import fr.sii.service.user.UserService;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(value = "/auth", produces = "application/json; charset=utf-8")
 public class AuthController {
 
-    private final Logger log = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private static final String CONFLICT_MSG_EMAIL = "There is already account associated with this email";
 
@@ -81,7 +73,11 @@ public class AuthController {
         if (foundUser != null) {
             if (foundUser.getPassword() != null) {
                 if (PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
+                    logger.info("User [{}] logged in with [password]", user.getEmail());
                     return AuthUtils.createToken(httpServletRequest.getRemoteHost(), String.valueOf(foundUser.getId()), foundUser.isVerified());
+
+                } else {
+                    logger.warn("User [{}] password mismatch", user.getEmail());
                 }
             }
         }
