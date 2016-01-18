@@ -1,15 +1,11 @@
 package fr.sii.controller.restricted;
 
 import com.nimbusds.jwt.JWTClaimsSet;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.service.auth.AuthUtils;
 
-/**
- * Created by SGUERNIO on 22/11/2015.
- */
+import javax.servlet.http.HttpServletRequest;
+
 public abstract class RestrictedController {
 
     /**
@@ -20,8 +16,12 @@ public abstract class RestrictedController {
      */
     protected int retrieveUserId(HttpServletRequest req) throws NotVerifiedException {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
-        if(claimsSet == null || claimsSet.getClaim("verified") == null || !(boolean)claimsSet.getClaim("verified")) {
-            throw new NotVerifiedException("User must be verified");
+        if (claimsSet == null) {
+            throw new NotVerifiedException("Claims Set is null");
+        }
+
+        if(claimsSet.getClaim("verified") == null || !(boolean) claimsSet.getClaim("verified")) {
+            throw new NotVerifiedException("User [" + claimsSet.getSubject() + "] must be verified");
         }
         return Integer.parseInt(claimsSet.getSubject());
     }

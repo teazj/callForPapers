@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{ISO8601} [%thread] [ip:%X{req.client}] [user:%X{user.id}] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="fr.sii" level="INFO"/>
+
+    <!-- root -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
 </configuration>

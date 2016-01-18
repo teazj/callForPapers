@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.service.auth.AuthUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jboss.logging.MDC;
 import org.joda.time.DateTime;
 
 import javax.servlet.*;
@@ -24,6 +25,9 @@ public class AuthFilter implements Filter {
             JWT_ERROR_MSG = "Unable to parse JWT",
             JWT_INVALID_MSG = "Invalid JWT token";
 
+    public static final String REQ_CLIENT = "req.client";
+    public static final String USER_ID = "user.id";
+
     /**
      * Do Auth filter according to JWT token
      */
@@ -36,11 +40,24 @@ public class AuthFilter implements Filter {
         String authHeader = httpRequest.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
         try {
-            readToken(authHeader);
+            MDC.put(REQ_CLIENT, httpRequest.getRemoteHost());
+            String forwarded = httpRequest.getHeader("X-Forwarded-For");
+            if (forwarded != null) MDC.put(REQ_CLIENT, forwarded);
+
+            JWTClaimsSet claimsSet = readToken(authHeader);
+
+            if (claimsSet != null) {
+                MDC.put(USER_ID, claimsSet.getSubject());
+            }
+
+
             chain.doFilter(request, response);
 
         } catch (InvalidTokenException e) {
             httpResponse.sendError(e.getResponseCode(), e.getMessage());
+        } finally {
+            MDC.remove(REQ_CLIENT);
+            MDC.remove(USER_ID);
         }
     }
 
