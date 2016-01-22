@@ -62,6 +62,7 @@ angular.module('CallForPaper')
                 'selectImage': 'Parcourir'
             },
             'login': {
+                'title': 'Bienvenue sur le Call For Paper du Breizhcamp.',
                 'email': 'Email',
                 'password': 'Mot de passe',
                 'login': 'Se connecter',
@@ -87,6 +88,11 @@ angular.module('CallForPaper')
                 'passwordMinLength': 'Le mot de passe doit contenir au moins 6 caractères',
                 'passwordMatch': 'Les mots de passe doivent être identiques',
                 'alreadyExists': 'Il existe déjà un utilisateur associé à cette adresse e-mail'
+            },
+            'talkInfo': {
+              'intro': 'Voici quelques informations sur les formats et catégories des talks :',
+              'formats': 'Formats',
+              'categories': 'Catégories'
             },
             'verify': {
                 'title': 'Verification de l\'email',
@@ -334,10 +340,10 @@ angular.module('CallForPaper')
                 'decision': 'Decision the '
             },
             'languageModal': {
-                'choose': 'Choose a language',
-                'search': 'Search languages...',
+                'choose': 'Choose a langage',
+                'search': 'Search langages...',
                 'count1': 'This application is offered in',
-                'count2': 'languages',
+                'count2': 'langages',
                 'more': 'more',
                 'close': 'Close'
             },
@@ -398,6 +404,11 @@ angular.module('CallForPaper')
                 'verified': 'Your email has been verified',
                 'alreadyVerified': 'This account is already verified',
                 'notVerified': 'Errror during verification'
+            },
+            'talkInfo': {
+              'intro': 'Here some information on talk\'s format and talk\'s categories :',
+              'formats': 'Formats',
+              'categories': 'Categories'
             },
             talk: {
                 edit: {

@@ -145,21 +145,21 @@ public class SessionController extends RestrictedController {
         return talkService.editDraft(userId, talkUser);
     }
 
-    /**
-     * Obtain list of talk formats
-     */
-    @RequestMapping(value = "talk/formats")
-    public List<TalkFormat> getTalkFormat() {
-        return talkService.getTalkFormat();
-    }
-
-    /**
-     * Get all session for the current user
-     */
-    @RequestMapping(value = "talk/tracks", method = RequestMethod.GET)
-    public List<TrackDto> getTrack() throws NotVerifiedException {
-        return talkService.getTracks();
-    }
+    // /**
+    //  * Obtain list of talk formats
+    //  */
+    // @RequestMapping(value = "talk/formats")
+    // public List<TalkFormat> getTalkFormat() {
+    //     return talkService.getTalkFormat();
+    // }
+    //
+    // /**
+    //  * Get all session for the current user
+    //  */
+    // @RequestMapping(value = "talk/tracks", method = RequestMethod.GET)
+    // public List<TrackDto> getTrack() throws NotVerifiedException {
+    //     return talkService.getTracks();
+    // }
 
 
 

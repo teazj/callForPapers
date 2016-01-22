@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedCoSession', 'RestrictedDraft','RestrictedCoDraft', 'AuthService', 'Application', 'RestrictedStats', function($scope, $filter, RestrictedSession,RestrictedCoSession, RestrictedDraft,RestrictedCoDraft, AuthService, Application, RestrictedStats) {
+    .controller('DashboardCtrl', ['$scope', '$filter', 'RestrictedSession', 'RestrictedCoSession', 'RestrictedDraft','RestrictedCoDraft', 'AuthService', 'Application', 'RestrictedStats', 'talkformats', 'tracks', function($scope, $filter, RestrictedSession,RestrictedCoSession, RestrictedDraft,RestrictedCoDraft, AuthService, Application, RestrictedStats, talkformats, tracks) {
         $scope.realDifficulty = [$filter('translate')('step2.beginner'), $filter('translate')('step2.confirmed'), $filter('translate')('step2.expert')];
-
+        $scope.tracks = tracks;
+        $scope.talkFormats = talkformats;
         /**
          * Get current user sessions
          * @return {[RestrictedSession]}
@@ -51,7 +52,7 @@ angular.module('CallForPaper')
                 $scope.coDraftsLoaded = true;
             });
         }
-        
+
         /**
          * Get current user cosession
          * @return {[RestrictedDraft]}

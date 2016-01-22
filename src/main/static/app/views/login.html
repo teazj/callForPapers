@@ -1,7 +1,8 @@
 <div class="row">
   <div class="center-form panel col-md-6 col-md-offset-3">
+
     <div class="panel-body">
-      <h2 class="text-center">{{'login.login' | translate}}</h2>
+      <h3 class="text-center">{{'login.login' | translate}}</h3>
       <form method="post" ng-submit="login()" name="loginForm">
         <div class="form-group has-feedback">
           <input class="form-control input-lg login-input" type="text" name="email" ng-model="email" placeholder="{{'login.email' | translate}}" required autofocus>
@@ -35,6 +36,29 @@
       <button class="btn btn-block btn-github" ng-disabled="loading" ng-click="authenticate('github')">
       <span class="ion-social-github"></span> {{'login.signGithub' | translate}}
       </button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class=" panel">
+    <div class="panel-body">
+      {{'talkInfo.intro' | translate }}
+      <div class="row talk_infos_row">
+      <div class="col-md-8">
+        <h4> {{'talkInfo.formats' | translate }} : Formats : </h4>
+        <ul ng-repeat="talkFormat in talkFormats">
+
+          <li> <strong>{{talkFormat.libelle}}</strong> ({{talkFormat.dureeMinutes}}min) : {{talkFormat.description}} </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h4> {{'talkInfo.categories' | translate }} :</h4>
+        <ul ng-repeat="track in tracks">
+
+          <li> {{track.libelle}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

@@ -1,8 +1,12 @@
 'use strict';
 
-angular.module('CallForPaper').controller('LoginCtrl', ['$scope', '$auth', function($scope, $auth) {
+angular.module('CallForPaper').controller('LoginCtrl', function($scope, $auth, tracks, talkformats) {
     $scope.loading = false;
     $scope.alreadyLinked = false;
+    $scope.tracks = tracks;
+    $scope.talkFormats = talkformats;
+
+
     $scope.authenticate = function(provider) {
         $scope.loading = true;
         $auth.authenticate(provider).then(function() {
@@ -36,4 +40,4 @@ angular.module('CallForPaper').controller('LoginCtrl', ['$scope', '$auth', funct
                 }
             });
     };
-}]);
+});

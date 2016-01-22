@@ -193,6 +193,15 @@ angular.module('CallForPaper', [
                 resolve: {
                     isProfileComplete: ProfileValidatorProvider.isValid()
                 },
+                resolve: {
+                    verified: AuthServiceProvider.$get().verified,
+                    tracks: function(TalkService) {
+                        return TalkService.tracks.findAll().$promise;
+                    },
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    }
+                },
                 templateUrl: 'views/restricted/dashboard.html',
                 controller: 'DashboardCtrl'
             })
@@ -207,7 +216,15 @@ angular.module('CallForPaper', [
                 parent: 'main',
                 url: '/login',
                 templateUrl: 'views/login.html',
-                controller: 'LoginCtrl'
+                controller: 'LoginCtrl',
+                resolve: {
+                    tracks: function(TalkService) {
+                        return TalkService.tracks.findAll().$promise;
+                    },
+                    talkformats: function(TalkService) {
+                        return TalkService.formats.findAll().$promise;
+                    }
+                  }
             })
             .state('app.verify', {
                 parent: 'main',
