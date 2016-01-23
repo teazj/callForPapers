@@ -131,11 +131,11 @@ angular.module('CallForPaper', [
 
                         var id = $stateParams.id;
                         if (id) {
-                          return AdminSession.get({
-                              id: $stateParams.id
-                          }).$promise.then(function(sessionTmp){
-                            return sessionTmp
-                          });
+                            return AdminSession.get({
+                                id: $stateParams.id
+                            }).$promise.then(function(sessionTmp) {
+                                return sessionTmp
+                            });
                         } else {
                             return null;
                         }
@@ -191,9 +191,7 @@ angular.module('CallForPaper', [
             .state('app.dashboard', {
                 url: '/dashboard',
                 resolve: {
-                    isProfileComplete: ProfileValidatorProvider.isValid()
-                },
-                resolve: {
+                    isProfileComplete: ProfileValidatorProvider.isValid(),
                     verified: AuthServiceProvider.$get().verified,
                     tracks: function(TalkService) {
                         return TalkService.tracks.findAll().$promise;
@@ -224,7 +222,7 @@ angular.module('CallForPaper', [
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     }
-                  }
+                }
             })
             .state('app.verify', {
                 parent: 'main',
@@ -257,7 +255,6 @@ angular.module('CallForPaper', [
                     isProfileComplete: ProfileValidatorProvider.isValid()
                 }
             })
-
 
 
             .state('app.talks', {
@@ -362,7 +359,9 @@ angular.module('CallForPaper', [
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     },
-                    isCoSession: function(){ return false; }
+                    isCoSession: function() {
+                        return false;
+                    }
                 }
             })
             .state('app.cosession', {
@@ -374,7 +373,9 @@ angular.module('CallForPaper', [
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     },
-                    isCoSession: function(){ return true; }
+                    isCoSession: function() {
+                        return true;
+                    }
                 }
             })
 
