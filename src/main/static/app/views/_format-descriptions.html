@@ -1,0 +1,23 @@
+<div class="row">
+    <div class=" panel">
+        <div class="panel-body">
+            {{'talkInfo.intro' | translate }}
+            <div class="row talk_infos_row">
+                <div class="col-md-8">
+                    <h4> {{'talkInfo.formats' | translate }} : </h4>
+                    <ul ng-repeat="talkFormat in talkFormats">
+
+                        <li> <strong>{{talkFormat.libelle}}</strong> ({{talkFormat.dureeMinutes}}min) : {{talkFormat.description}} </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4> {{'talkInfo.categories' | translate }} :</h4>
+                    <ul ng-repeat="track in tracks">
+
+                        <li> {{track.libelle}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
