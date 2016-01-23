@@ -134,7 +134,7 @@ angular.module('CallForPaper', [
                             return AdminSession.get({
                                 id: $stateParams.id
                             }).$promise.then(function(sessionTmp) {
-                                return sessionTmp
+                                return sessionTmp;
                             });
                         } else {
                             return null;

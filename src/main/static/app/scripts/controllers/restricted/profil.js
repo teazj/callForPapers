@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('CallForPaper').controller('ProfilCtrl', function($scope, RestrictedUser, translateFilter, Notification, $state, Upload, RestrictedProfilImage, $auth) {
+angular.module('CallForPaper').controller('ProfilCtrl', function($scope, RestrictedUser, translateFilter, Notification, $state) {
     $scope.formData = {};
     $scope.formData.phone = '';
     $scope.formData.imageProfilKey = null;
@@ -139,7 +139,7 @@ angular.module('CallForPaper').controller('ProfilCtrl', function($scope, Restric
     };
 
     $scope.verify = false;
-    $scope.doVerify = function(files) {
+    $scope.doVerify = function() {
         $scope.verify = true;
         if ($scope.formData.isValid) {
             $scope.sendError = false;
