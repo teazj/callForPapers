@@ -26,7 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.HashSet;
 
 
 import static java.util.stream.Collectors.*;
@@ -113,31 +114,39 @@ public class TalkAdminService {
     public TalkAdmin edit(TalkAdmin talkAdmin)  throws CospeakerNotFoundException {
       Talk talk = talkRepo.findOne(talkAdmin.getId());
       if (talk == null) return null;
+
+      mapper.map(talkAdmin, talk);
+
       talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
       talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
-      setCoSpeakerId(talkAdmin.getCospeakers());
-      mapper.map(talkAdmin, talk);
+      setCoSpeaker(talkAdmin, talk);
+
+      talkRepo.save(talk);
       talkRepo.flush();
+
       return mapper.map(talk, TalkAdmin.class);
     }
 
     /**
      * For each cospeaker, check if the user is in the CFP database and set the id on the user object
-     * @param cospeakers CoSpeakers to check and set id
+     * @param talkUser TalkUser
+     * @param talk Talk
      * @throws CospeakerNotFoundException If a cospeaker is not found
      */
-    private void setCoSpeakerId(Set<CospeakerProfil> cospeakers) throws CospeakerNotFoundException {
-        if (cospeakers == null || cospeakers.isEmpty()) return;
+     private void setCoSpeaker(TalkAdmin talkAdmin, Talk talk) throws CospeakerNotFoundException {
 
-        for (CospeakerProfil cospeaker : cospeakers) {
-            List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
-            if (existingUser.isEmpty()) {
-                throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
-            }
+         if (talkAdmin.getCospeakers() == null) return;
 
-            cospeaker.setId(existingUser.get(0).getId());
-        }
-    }
+         ArrayList<User> users = new ArrayList<User>();
+         for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
+             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
+             if (existingUser.isEmpty()) {
+                 throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
+             }
+             users.add(existingUser.get(0));
+         }
+         talk.setCospeakers(new HashSet(users));
+     }
 
     /**
      * Delete a talk

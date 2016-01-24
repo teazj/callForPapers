@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 
 import fr.sii.dto.TrackDto;
 import fr.sii.entity.TalkFormat;
@@ -188,11 +191,12 @@ public class TalkUserService {
         talk.setAdded(new Date());
         talk.setUser(userRepo.getOne(userId));
         talk.setState(state);
-        setCoSpeakerId(talkUser.getCospeakers());
+        setCoSpeaker(talkUser, talk);
 
         Talk save = talkRepo.save(talk);
         talkRepo.flush();
-        return mapper.map(save, TalkUser.class);
+        talkUser.setId(save.getId());
+        return talkUser;
     }
 
     /**
@@ -206,32 +210,34 @@ public class TalkUserService {
         Talk talk = talkRepo.findByIdAndUserId(talkUser.getId(), userId);
         if (talk == null) return null;
         if (talk.getState() != Talk.State.DRAFT) return null;
+
+
+        mapper.map(talkUser, talk);
+        setCoSpeaker(talkUser, talk);
+
         talkUser.setState(newState);
         talk.setTrack(trackRepo.findOne(talkUser.getTrackId()));
         talk.setTalkFormat(talkFormatRepo.findOne(talkUser.getFormat()));
-        setCoSpeakerId(talkUser.getCospeakers());
-        mapper.map(talkUser, talk);
+
+        talkRepo.save(talk);
         talkRepo.flush();
 
-        return mapper.map(talk, TalkUser.class);
+        return talkUser;
     }
 
 
-    /**
-     * For each cospeaker, check if the user is in the CFP database and set the id on the user object
-     * @param cospeakers CoSpeakers to check and set id
-     * @throws CospeakerNotFoundException If a cospeaker is not found
-     */
-    private void setCoSpeakerId(Set<CospeakerProfil> cospeakers) throws CospeakerNotFoundException {
-        if (cospeakers == null || cospeakers.isEmpty()) return;
+    private void setCoSpeaker(TalkUser talkUser, Talk talk) throws CospeakerNotFoundException {
 
-        for (CospeakerProfil cospeaker : cospeakers) {
+        if (talkUser.getCospeakers() == null) return;
+
+        ArrayList<User> users = new ArrayList<User>();
+        for (CospeakerProfil cospeaker : talkUser.getCospeakers()) {
             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
             if (existingUser.isEmpty()) {
                 throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
             }
-
-            cospeaker.setId(existingUser.get(0).getId());
+            users.add(existingUser.get(0));
         }
+        talk.setCospeakers(new HashSet(users));
     }
 }
