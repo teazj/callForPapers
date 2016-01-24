@@ -115,12 +115,12 @@ public class TalkAdminService {
       Talk talk = talkRepo.findOne(talkAdmin.getId());
       if (talk == null) return null;
 
-      mapper.map(talkAdmin, talk);
 
       talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
       talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
       setCoSpeaker(talkAdmin, talk);
-
+      
+      mapper.map(talkAdmin, talk);
       talkRepo.save(talk);
       talkRepo.flush();
 
@@ -137,7 +137,7 @@ public class TalkAdminService {
 
          if (talkAdmin.getCospeakers() == null) return;
 
-         ArrayList<User> users = new ArrayList<User>();
+         HashSet<User> users = new HashSet<User>();
          for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
              List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
              if (existingUser.isEmpty()) {
@@ -145,7 +145,7 @@ public class TalkAdminService {
              }
              users.add(existingUser.get(0));
          }
-         talk.setCospeakers(new HashSet(users));
+         talk.setCospeakers(users);
      }
 
     /**

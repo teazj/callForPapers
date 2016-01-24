@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, hotkeys, AdminContact, Notification, $q) {
+angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService,translateFilter, hotkeys, AdminContact, Notification, $q) {
     $scope.tab = $stateParams.tab;
     $scope.saveDraftButtonHidden = true;
 
@@ -55,17 +55,25 @@ angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, t
     };
 
     var updateTalk = function(session) {
+      $scope.sending = true;
+
         $scope.changeTrackButtonAnimationDisabled = false;
         AdminSession.update({id: $stateParams.id}, session).$promise.then(function(sessionTmp) {
             updateComments();
+            $scope.sending = false;
             $scope.talk.track = sessionTmp.track;
             Notification.success({
                 message: $filter('translate')('admin.trackModified'),
                 delay: 3000
             });
             $scope.changeTrackButtonAnimationDisabled = true;
-        }, function() {
+
+        }, function(error) {
+          $scope.sending = false;
+
             $scope.changeTrackButtonAnimationDisabled = true;
+            processError(error);
+
         });
     };
 
@@ -80,6 +88,21 @@ angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, t
             $scope.talkInvalid = true;
             return $q.reject();
         }
+    }
+
+
+    function processError(error) {
+        $scope.sending = false;
+        if (error.status === 400) {
+            if (error.data.errorCode === 1) {
+                Notification.error(translateFilter('step2.cospeakerNotFound', {value: error.data.errorCodeBody.email}));
+            } else {
+                Notification.error(translateFilter('verify.notVerified'));
+            }
+
+            return;
+        }
+        $scope.sendError = true;
     }
 
     $scope.submit = function submit(talk) {

@@ -38,7 +38,6 @@ angular.module('CallForPaper').controller('AppTalksEditCtrl', function(tracks, t
     function processError(error) {
         $scope.sending = false;
         if (error.status === 400) {
-            window.console.log(error);
             if (error.data.errorCode === 1) {
                 Notification.error(translateFilter('step2.cospeakerNotFound', {value: error.data.errorCodeBody.email}));
             } else {

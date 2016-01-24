@@ -212,12 +212,12 @@ public class TalkUserService {
         if (talk.getState() != Talk.State.DRAFT) return null;
 
 
-        mapper.map(talkUser, talk);
         setCoSpeaker(talkUser, talk);
 
         talkUser.setState(newState);
         talk.setTrack(trackRepo.findOne(talkUser.getTrackId()));
         talk.setTalkFormat(talkFormatRepo.findOne(talkUser.getFormat()));
+        mapper.map(talkUser, talk);
 
         talkRepo.save(talk);
         talkRepo.flush();
@@ -229,8 +229,7 @@ public class TalkUserService {
     private void setCoSpeaker(TalkUser talkUser, Talk talk) throws CospeakerNotFoundException {
 
         if (talkUser.getCospeakers() == null) return;
-
-        ArrayList<User> users = new ArrayList<User>();
+        HashSet<User> users = new HashSet<User>();
         for (CospeakerProfil cospeaker : talkUser.getCospeakers()) {
             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
             if (existingUser.isEmpty()) {
@@ -238,6 +237,6 @@ public class TalkUserService {
             }
             users.add(existingUser.get(0));
         }
-        talk.setCospeakers(new HashSet(users));
+        talk.setCospeakers(users);
     }
 }

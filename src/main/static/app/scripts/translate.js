@@ -235,7 +235,7 @@ angular.module('CallForPaper')
                 'title': 'Titre',
                 'difficulty': 'Difficulté',
                 'track': 'Catégorie',
-                'trackModified': 'Catégorie modifiée.',
+                'trackModified': 'Talk modifié.',
                 'modify': 'Modifier',
                 'description': 'Description',
                 'mean': 'Moyenne',
