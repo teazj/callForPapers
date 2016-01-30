@@ -10,6 +10,14 @@ public class AdminUserInfo {
     private String uri;
     private String email;
 
+    public AdminUserInfo(String uri, boolean connected, boolean admin, boolean config, String email) {
+        this.uri = uri;
+        this.connected = connected;
+        this.admin = admin;
+        this.config = config;
+        this.email = email;
+    }
+
     public boolean isConnected() {
         return connected;
     }
@@ -48,13 +56,5 @@ public class AdminUserInfo {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public AdminUserInfo(String uri, boolean connected, boolean admin, boolean config, String email) {
-        this.uri = uri;
-        this.connected = connected;
-        this.admin = admin;
-        this.config = config;
-        this.email= email;
     }
 }

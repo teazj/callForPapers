@@ -1,10 +1,8 @@
 package fr.sii.controller.restricted;
 
-import com.nimbusds.jwt.JWTClaimsSet;
 import fr.sii.domain.exception.NotVerifiedException;
 import fr.sii.dto.RestrictedMeter;
 import fr.sii.service.TalkUserService;
-import fr.sii.service.auth.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

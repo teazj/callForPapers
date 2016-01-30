@@ -1,19 +1,5 @@
 package fr.sii.controller.admin.contact;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.sii.domain.exception.ForbiddenException;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.dto.CommentUser;
@@ -25,6 +11,14 @@ import fr.sii.service.TalkAdminService;
 import fr.sii.service.admin.user.AdminUserService;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Manages comments sent by administrators to speakers about a talk

@@ -1,16 +1,14 @@
 package fr.sii.service.email;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
+import fr.sii.config.email.EmailingSettings;
+import fr.sii.config.email.EmailingSettings.EmailType;
+import fr.sii.config.global.GlobalSettings;
+import fr.sii.dto.TalkAdmin;
+import fr.sii.dto.TalkUser;
+import fr.sii.entity.AdminUser;
+import fr.sii.entity.User;
+import fr.sii.service.admin.config.ApplicationConfigService;
+import fr.sii.service.admin.user.AdminUserService;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -23,15 +21,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fr.sii.config.email.EmailingSettings;
-import fr.sii.config.email.EmailingSettings.EmailType;
-import fr.sii.config.global.GlobalSettings;
-import fr.sii.dto.TalkAdmin;
-import fr.sii.dto.TalkUser;
-import fr.sii.entity.AdminUser;
-import fr.sii.entity.User;
-import fr.sii.service.admin.config.ApplicationConfigService;
-import fr.sii.service.admin.user.AdminUserService;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.StringWriter;
+import java.util.*;
 
 @Service
 public class EmailingService {
@@ -90,7 +83,7 @@ public class EmailingService {
      * new comment about his talk.
      *
      * @param speaker the speaker to write to
-     * @param talk talk under review
+     * @param talk    talk under review
      * @param locale
      */
     @Async
@@ -123,7 +116,7 @@ public class EmailingService {
      * new comment on his talk.
      *
      * @param speaker the speaker writing this message
-     * @param talk talk under review
+     * @param talk    talk under review
      * @param locale
      */
     @Async

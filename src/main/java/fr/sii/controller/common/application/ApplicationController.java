@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by tmaugin on 07/05/2015.
  */
 @RestController
-@RequestMapping(value="/api", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "/api", produces = "application/json; charset=utf-8")
 public class ApplicationController {
 
     @Autowired
@@ -20,9 +20,10 @@ public class ApplicationController {
 
     /**
      * Obtain application settings, (name, dates, ...)
+     *
      * @return
      */
-    @RequestMapping(value="/application", method= RequestMethod.GET)
+    @RequestMapping(value = "/application", method = RequestMethod.GET)
     public ApplicationSettings getApplicationSettings() {
 
         return applicationConfigService.getAppConfig();
@@ -31,9 +32,10 @@ public class ApplicationController {
 
     /**
      * save application settings, (name, dates, ...)
+     *
      * @return
      */
-    @RequestMapping(value="/application", method= RequestMethod.POST)
+    @RequestMapping(value = "/application", method = RequestMethod.POST)
     public void getApplicationSettings(@RequestBody ApplicationSettings settings) {
         applicationConfigService.saveConfiguration(settings);
     }

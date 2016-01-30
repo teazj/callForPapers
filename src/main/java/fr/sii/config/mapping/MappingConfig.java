@@ -17,35 +17,35 @@ import java.util.List;
 @Configuration
 public class MappingConfig {
 
-	@Autowired(required = false)
-	private List<CustomConverter<?, ?>> converters;
+    @Autowired(required = false)
+    private List<CustomConverter<?, ?>> converters;
 
-	@Autowired(required = false)
-	private List<Mapping> mappings;
+    @Autowired(required = false)
+    private List<Mapping> mappings;
 
-	@Bean
-	public MapperFactory mapperFactory() {
-		DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    @Bean
+    public MapperFactory mapperFactory() {
+        DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
-		//register here custom converter and mapper
-		ConverterFactory converterFactory = mapperFactory.getConverterFactory();
-		if (converters != null && !converters.isEmpty()) {
-			for (CustomConverter<?, ?> converter : converters) {
-				converterFactory.registerConverter(converter);
-			}
-		}
+        //register here custom converter and mapper
+        ConverterFactory converterFactory = mapperFactory.getConverterFactory();
+        if (converters != null && !converters.isEmpty()) {
+            for (CustomConverter<?, ?> converter : converters) {
+                converterFactory.registerConverter(converter);
+            }
+        }
 
-		if (mappings != null && !mappings.isEmpty()) {
-			for (Mapping mapping : mappings) {
-				mapping.mapClasses(mapperFactory);
-			}
-		}
+        if (mappings != null && !mappings.isEmpty()) {
+            for (Mapping mapping : mappings) {
+                mapping.mapClasses(mapperFactory);
+            }
+        }
 
-		return mapperFactory;
-	}
+        return mapperFactory;
+    }
 
-	@Bean
-	public MapperFacade mapperFacade(MapperFactory mapperFactory) {
-		return mapperFactory.getMapperFacade();
-	}
+    @Bean
+    public MapperFacade mapperFacade(MapperFactory mapperFactory) {
+        return mapperFactory.getMapperFacade();
+    }
 }

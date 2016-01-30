@@ -14,15 +14,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableCaching
 @ServletComponentScan(basePackages = "fr.sii.config.filter")
 @EnableJpaRepositories(basePackages = "fr.sii.repository")
-@EnableAutoConfiguration(exclude = { EmbeddedDataSourceConfiguration.class })
+@EnableAutoConfiguration(exclude = {EmbeddedDataSourceConfiguration.class})
 public class Application extends SpringBootServletInitializer {
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);
-    }
-
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
     }
 }

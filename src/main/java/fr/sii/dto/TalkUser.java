@@ -1,11 +1,11 @@
 package fr.sii.dto;
 
+import fr.sii.dto.user.CospeakerProfil;
+import fr.sii.dto.user.UserProfil;
+import fr.sii.entity.Talk;
+
 import java.util.Date;
 import java.util.Set;
-
-import fr.sii.dto.user.UserProfil;
-import fr.sii.dto.user.CospeakerProfil;
-import fr.sii.entity.Talk;
 
 /**
  * Talk DTO for user view

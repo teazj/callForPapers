@@ -1,10 +1,9 @@
 package fr.sii.repository;
 
-import java.util.List;
-
+import fr.sii.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import fr.sii.entity.User;
+import java.util.List;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 

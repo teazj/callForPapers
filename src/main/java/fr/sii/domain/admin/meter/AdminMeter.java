@@ -12,12 +12,12 @@ public class AdminMeter implements Serializable {
 
     private Counts meter;
 
-    public Counts getMeter() {
-        return meter;
-    }
-
     public AdminMeter() {
         this.meter = new Counts();
+    }
+
+    public Counts getMeter() {
+        return meter;
     }
 
     @JsonIgnore
@@ -47,10 +47,13 @@ public class AdminMeter implements Serializable {
         this.meter.talks = talks;
     }
 
-    private class Counts  implements Serializable{
+    private class Counts implements Serializable {
         private Integer speakers;
         private Integer drafts;
         private Integer talks;
+
+        public Counts() {
+        }
 
         public Integer getSpeakers() {
             return speakers;
@@ -62,9 +65,6 @@ public class AdminMeter implements Serializable {
 
         public Integer getTalks() {
             return talks;
-        }
-
-        public Counts() {
         }
     }
 }

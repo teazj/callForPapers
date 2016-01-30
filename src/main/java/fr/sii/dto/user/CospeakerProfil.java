@@ -1,10 +1,5 @@
 package fr.sii.dto.user;
 
-import java.util.Set;
-import fr.sii.dto.TalkUser;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
 public class CospeakerProfil {
     private int id;
     private String email;
@@ -32,8 +27,8 @@ public class CospeakerProfil {
 
     public void setEmail(String email) {
         this.email = email;
-	}
-    
+    }
+
     public String getLastname() {
         return lastname;
     }

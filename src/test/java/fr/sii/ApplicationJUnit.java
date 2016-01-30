@@ -12,12 +12,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "fr.sii.repository")
 public class ApplicationJUnit extends SpringBootServletInitializer {
 
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);
-    }
-
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
     }
 }

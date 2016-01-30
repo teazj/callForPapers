@@ -2,11 +2,7 @@ package fr.sii.entity;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -39,7 +35,7 @@ public class Track {
         this.libelle = libelle;
     }
 
-    @Type(type="text")
+    @Type(type = "text")
     public String getDescription() {
         return description;
     }

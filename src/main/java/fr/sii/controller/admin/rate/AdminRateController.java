@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="api/admin/rates", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "api/admin/rates", produces = "application/json; charset=utf-8")
 public class AdminRateController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class AdminRateController {
     /**
      * Add a new rating
      */
-    @RequestMapping(method=RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public RateAdmin postRate(@Valid @RequestBody RateAdmin rate) throws NotFoundException {
         return rateService.add(rate, adminUserServiceCustom.getCurrentUser(), rate.getTalkId());
     }
@@ -47,7 +47,7 @@ public class AdminRateController {
     /**
      * Edit a rating
      */
-    @RequestMapping(value= "/{rateId}", method=RequestMethod.PUT)
+    @RequestMapping(value = "/{rateId}", method = RequestMethod.PUT)
     public RateAdmin putRate(@PathVariable int rateId, @Valid @RequestBody RateAdmin rate) {
         rate.setId(rateId);
         return rateService.edit(rate);
@@ -56,17 +56,18 @@ public class AdminRateController {
     /**
      * Get a specific rating
      */
-    @RequestMapping(value= "/{rateId}", method= RequestMethod.GET)
+    @RequestMapping(value = "/{rateId}", method = RequestMethod.GET)
     public RateAdmin getRate(@PathVariable int rateId) {
         return rateService.get(rateId);
     }
 
     /**
      * Get all rating for a given user
+     *
      * @param userId
      * @return
      */
-    @RequestMapping(value= "/user/{userId}", method= RequestMethod.GET)
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
     public List<RateAdmin> getRateByUserId(@PathVariable int userId) {
         return rateService.findForUser(userId);
     }
@@ -74,7 +75,7 @@ public class AdminRateController {
     /**
      * Get all ratings for a given session
      */
-    @RequestMapping(value= "/session/{talkId}", method= RequestMethod.GET)
+    @RequestMapping(value = "/session/{talkId}", method = RequestMethod.GET)
     public List<RateAdmin> getRatesByTalkId(@PathVariable int talkId) {
         return rateService.findForTalk(talkId);
     }
@@ -82,7 +83,7 @@ public class AdminRateController {
     /**
      * Get rating for current user and a session
      */
-    @RequestMapping(value= "/session/{talkId}/user/me", method = RequestMethod.GET)
+    @RequestMapping(value = "/session/{talkId}/user/me", method = RequestMethod.GET)
     public RateAdmin getRateByRowIdAndUserId(@PathVariable int talkId) throws NotFoundException {
         int adminId = adminUserServiceCustom.getCurrentUser().getId();
         return rateService.findForTalkAndAdmin(talkId, adminId);
@@ -91,7 +92,7 @@ public class AdminRateController {
     /**
      * Delete specific rating
      */
-    @RequestMapping(value= "/{rateId}", method= RequestMethod.DELETE)
+    @RequestMapping(value = "/{rateId}", method = RequestMethod.DELETE)
     public void deleteRate(@PathVariable int rateId) {
         rateService.delete(rateId);
     }

@@ -1,18 +1,16 @@
 package fr.sii.dto.mapping;
 
-import org.springframework.stereotype.Component;
-
 import fr.sii.config.mapping.Mapping;
-import fr.sii.dto.TalkUser;
-import fr.sii.dto.user.UserProfil;
-import fr.sii.dto.user.CospeakerProfil;
-import fr.sii.entity.Talk;
 import fr.sii.dto.TalkAdmin;
-
+import fr.sii.dto.TalkUser;
+import fr.sii.dto.user.CospeakerProfil;
+import fr.sii.dto.user.UserProfil;
+import fr.sii.entity.Talk;
 import fr.sii.entity.User;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TalkMapping implements Mapping {
@@ -23,7 +21,7 @@ public class TalkMapping implements Mapping {
             .field("user", "speaker")
             .field("track.id", "trackId")
             .field("track.libelle", "trackLabel")
-			.field("talkFormat.id", "format")
+            .field("talkFormat.id", "format")
             .exclude("cospeakers")
             .customize(new CustomMapper<Talk, TalkUser>() {
                 @Override
@@ -46,22 +44,22 @@ public class TalkMapping implements Mapping {
             .register();
 
         mapperFactory.classMap(Talk.class, TalkAdmin.class)
-                .field("user", "speaker")
-                .field("track.id", "trackId")
-                .field("track.libelle", "trackLabel")
-    			.field("talkFormat.id", "format")
-                .exclude("cospeakers")
-                .customize(new CustomMapper<Talk, TalkAdmin>() {
-                    @Override
-                    public void mapAtoB(Talk talk, TalkAdmin talkUser, MappingContext context) {
-                        if (talk.getCospeakers() != null) {
-                            talkUser.setCospeaker(mapperFactory.getMapperFacade().mapAsSet(talk.getCospeakers(), CospeakerProfil.class));
-                        }
+            .field("user", "speaker")
+            .field("track.id", "trackId")
+            .field("track.libelle", "trackLabel")
+            .field("talkFormat.id", "format")
+            .exclude("cospeakers")
+            .customize(new CustomMapper<Talk, TalkAdmin>() {
+                @Override
+                public void mapAtoB(Talk talk, TalkAdmin talkUser, MappingContext context) {
+                    if (talk.getCospeakers() != null) {
+                        talkUser.setCospeaker(mapperFactory.getMapperFacade().mapAsSet(talk.getCospeakers(), CospeakerProfil.class));
                     }
+                }
 
-                })
-                .byDefault()
-                .register();
+            })
+            .byDefault()
+            .register();
 
     }
 }

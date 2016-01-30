@@ -10,6 +10,7 @@ public abstract class RestrictedController {
 
     /**
      * Retrieve user id from request token
+     *
      * @param req Request
      * @return User id from token
      * @throws NotVerifiedException If token invalid and user id can't be read
@@ -20,7 +21,7 @@ public abstract class RestrictedController {
             throw new NotVerifiedException("Claims Set is null");
         }
 
-        if(claimsSet.getClaim("verified") == null || !(boolean) claimsSet.getClaim("verified")) {
+        if (claimsSet.getClaim("verified") == null || !(boolean) claimsSet.getClaim("verified")) {
             throw new NotVerifiedException("User [" + claimsSet.getSubject() + "] must be verified");
         }
         return Integer.parseInt(claimsSet.getSubject());

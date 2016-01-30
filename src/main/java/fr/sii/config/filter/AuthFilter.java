@@ -20,12 +20,11 @@ import java.text.ParseException;
 @WebFilter(urlPatterns = "/api/restricted/*")
 public class AuthFilter implements Filter {
 
-    protected static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",
-            EXPIRE_ERROR_MSG = "Token has expired",
-            JWT_ERROR_MSG = "Unable to parse JWT",
-            JWT_INVALID_MSG = "Invalid JWT token";
-
     public static final String USER_ID = "user.id";
+    protected static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",
+        EXPIRE_ERROR_MSG = "Token has expired",
+        JWT_ERROR_MSG = "Unable to parse JWT",
+        JWT_INVALID_MSG = "Invalid JWT token";
 
     /**
      * Do Auth filter according to JWT token
@@ -62,6 +61,7 @@ public class AuthFilter implements Filter {
 
     /**
      * Retrieve auth token from auth header
+     *
      * @param authHeader Auth header to read
      * @return Token
      * @throws InvalidTokenException If token is not valid
@@ -87,7 +87,9 @@ public class AuthFilter implements Filter {
         return claimSet;
     }
 
-    /** Thrown if token is invalid */
+    /**
+     * Thrown if token is invalid
+     */
     protected class InvalidTokenException extends Exception {
         private int responseCode;
         private String message;

@@ -15,8 +15,7 @@ public class ErrorResponse {
     private String exception;
     private String message;
 
-    public ErrorResponse(Exception e)
-    {
+    public ErrorResponse(Exception e) {
         this.exception = e.getClass().toString();
         this.message = e.toString();
         this.timestamp = new Date();
