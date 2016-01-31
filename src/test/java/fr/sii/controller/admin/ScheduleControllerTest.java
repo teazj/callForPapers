@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.when;
 
@@ -115,9 +114,7 @@ public class ScheduleControllerTest {
             .statusCode(200)
             .body("size()", equalTo(3))
             .body("[0].speakers", equalTo("John Doe"))
-            .body("[1].speakers", containsString("John Doe"))
-            .body("[1].speakers", containsString("Johnny Deep"))
-            .body("[1].speakers", containsString("Alain Connu"))
+            .body("[1].speakers", equalTo("John Doe, Johnny Deep, Alain Connu"))
             .body("[2].speakers", equalTo("John Doe"));
 
         System.out.println(mockMvcResponse.asString());
