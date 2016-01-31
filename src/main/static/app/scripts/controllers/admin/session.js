@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService,translateFilter, hotkeys, AdminContact, Notification, $q) {
+angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, translateFilter, hotkeys, AdminContact, Notification, $q, $sanitize) {
     $scope.tab = $stateParams.tab;
     $scope.saveDraftButtonHidden = true;
 
@@ -48,14 +48,17 @@ angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, t
     var updateComments = function() {
         AdminComment.getByRowId({
             rowId: $stateParams.id
-        }, function(commentsTmp) {
+        }, function(comments) {
             //TODO quel route ? setTimeout(setViewed, 1000);
-            $scope.comments = commentsTmp;
+            $scope.comments = _.map(comments, function(comment) {
+                comment.comment = $sanitize(comment.comment);
+                return comment;
+            });
         });
     };
 
     var updateTalk = function(session) {
-      $scope.sending = true;
+        $scope.sending = true;
 
         $scope.changeTrackButtonAnimationDisabled = false;
         AdminSession.update({id: $stateParams.id}, session).$promise.then(function(sessionTmp) {
@@ -69,7 +72,7 @@ angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, t
             $scope.changeTrackButtonAnimationDisabled = true;
 
         }, function(error) {
-          $scope.sending = false;
+            $scope.sending = false;
 
             $scope.changeTrackButtonAnimationDisabled = true;
             processError(error);
@@ -421,9 +424,12 @@ angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, t
     var updateContacts = function() {
         AdminContact.getByRowId({
             rowId: $stateParams.id
-        }, function(contactsTmp) {
+        }, function(contacts) {
             //TODO quel route ? setTimeout(setViewed, 1000);
-            $scope.contacts = contactsTmp;
+            $scope.contacts = _.map(contacts, function(contact) {
+                contact.comment = $sanitize(contact.comment);
+                return contact;
+            });
         });
     };
     updateContacts();

@@ -25,12 +25,12 @@ angular.module('mdPreview', [])
             }
         };
     }])
-    .controller('MdPreviewModalInstanceCtrl', ['$scope', '$modalInstance', 'content', function($scope, $modalInstance, content) {
-        $scope.content = content;
+    .controller('MdPreviewModalInstanceCtrl', function($scope, $modalInstance, content, $sanitize) {
+        $scope.content = $sanitize(content);
         $scope.ok = function() {
             $modalInstance.close();
         };
-    }])
+    })
     .run(['$templateCache', function($templateCache) {
         $templateCache.put('MdModalContent', '<div class="modal-header"><h3 class="modal-title">{{\'previewModal.title\' | translate}}<\/h3><\/div><div class="modal-body"><div marked="content"><\/div><div ng-if="content === \'\'">{{\'previewModal.nothingToPreview\' | translate}}<\/div><\/div><div class="modal-footer"><button class="btn btn-primary" ng-click="ok()">{{\'previewModal.confirm\' | translate}}<\/button><\/div>');
         $templateCache.put('ComponentContent', '<div class="pull-right">' +
