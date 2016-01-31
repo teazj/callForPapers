@@ -152,22 +152,26 @@ angular.module('CallForPaper', [
                 controller: 'AdminSessionsExportJsonCtrl'
             })
             .state('admin.session', {
-                url: '/sessions/:id?tab',
+                url: '/sessions/{id:int}?tab',
                 templateUrl: 'views/admin/session.html',
                 controller: 'AdminSessionCtrl',
                 resolve: {
+                    sessionsAll: function(AdminSession) { // TODO Dirty but hard to factorize in a parent state because of the difficulty to keep it up to date
+                        return AdminSession.query().$promise;
+                    },
                     tracks: function(TalkService) {
                         return TalkService.tracks.findAll().$promise;
                     },
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     },
-                    talk: function(AdminSession, $stateParams, $sanitize) {
-
-                        var id = $stateParams.id;
-                        if (id) {
+                    talkId: function($stateParams) {
+                        return $stateParams.id || null;
+                    },
+                    talk: function(AdminSession, talkId, $sanitize) {
+                        if (talkId) {
                             return AdminSession.get({
-                                id: $stateParams.id
+                                id: talkId
                             }).$promise.then(function(session) {
                                 session.speaker.bio = $sanitize(session.speaker.bio);
                                 return session;
@@ -175,6 +179,24 @@ angular.module('CallForPaper', [
                         } else {
                             return null;
                         }
+                    },
+                    nextToRate: function(sessionsAll, AuthService, talkId) {
+                        var email = AuthService.user.email;
+
+                        function isUnratedByConnectedUser(session) {
+                            return !_.contains(session.voteUsersEmail, email);
+                        }
+
+                        return _.find(sessionsAll, function(session) { // first look for the next not rated
+                                return session.id > talkId && isUnratedByConnectedUser(session);
+                            }) || _.find(sessionsAll, function(session) { // then start again from the beginning
+                                return session.id !== talkId && isUnratedByConnectedUser(session);
+                            });
+                    }
+                },
+                onEnter: function($state, talkId) {
+                    if (!talkId) {
+                        $state.go('admin.sessions');
                     }
                 }
             })
@@ -506,6 +528,6 @@ angular.module('CallForPaper', [
     })
     .run(function($templateCache) {
         $templateCache.put('ngTagsInput/tags-input.html',
-            "<div class=\"host\" tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append=\"\"><div class=\"tags\" ng-class=\"{focused: hasFocus}\"><ul class=\"tag-list\"><li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"{ selected: tag == tagList.selected }\"><ti-tag-item data=\"tag\"></ti-tag-item></li></ul><input class=\"input form-control\" autocomplete=\"off\" ng-model=\"newTag.text\" ng-change=\"eventHandlers.input.change(newTag.text)\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize=\"\"></div></div>"
+            '<div class="host" tabindex="-1" ng-click="eventHandlers.host.click()" ti-transclude-append=""><div class="tags" ng-class="{focused: hasFocus}"><ul class="tag-list"><li class="tag-item" ng-repeat="tag in tagList.items track by track(tag)" ng-class="{ selected: tag == tagList.selected }"><ti-tag-item data="tag"></ti-tag-item></li></ul><input class="input form-control" autocomplete="off" ng-model="newTag.text" ng-change="eventHandlers.input.change(newTag.text)" ng-keydown="eventHandlers.input.keydown($event)" ng-focus="eventHandlers.input.focus($event)" ng-blur="eventHandlers.input.blur($event)" ng-paste="eventHandlers.input.paste($event)" ng-trim="false" ng-class="{\'invalid-tag\': newTag.invalid}" ng-disabled="disabled" ti-bind-attrs="{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}" ti-autosize=""></div></div>'
         );
     });

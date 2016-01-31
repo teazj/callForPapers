@@ -264,6 +264,7 @@ angular.module('CallForPaper')
                 'delete': 'Supprimer',
                 'allType': 'Tous',
                 'newMessages': 'Nouveaux messages',
+                nextToRate: 'Prochain talk à noter',
                 'community': 'Nom de la communautée organisatrice',
                 'eventName': 'Nom de l\'événement',
                 'decisionDate': 'Date de fin des votes',
@@ -579,7 +580,8 @@ angular.module('CallForPaper')
                 'edit': 'Edit',
                 'delete': 'Delete',
                 'allType': 'All',
-                'newMessages': 'New messages'
+                'newMessages': 'New messages',
+                nextToRate: 'Next talk to rate'
             },
             'config': {
                 'login': 'Login',
