@@ -37,7 +37,7 @@ angular.module('CallForPaper')
                 $scope.config.date = $filter('date')($scope.config.start,'dd/MM/yyyy');
                 $scope.config.releaseDate = $filter('date')($scope.config.release,'dd/MM/yyyy');
                 $scope.config.decisionDate = $filter('date')($scope.config.decision,'dd/MM/yyyy');
-                $http.post('/api/application', $scope.config).then(function() {
+                $http.post('/api/admin/application', $scope.config).then(function() {
                 }, function() {
                 });
 
