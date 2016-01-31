@@ -1,12 +1,16 @@
 package fr.sii.dto.mapping;
 
+import org.springframework.stereotype.Component;
+
 import fr.sii.config.mapping.Mapping;
 import fr.sii.dto.CommentUser;
+import fr.sii.dto.TalkUser;
 import fr.sii.dto.user.UserProfil;
+import fr.sii.dto.user.CospeakerProfil;
 import fr.sii.entity.Comment;
+import fr.sii.entity.Talk;
 import fr.sii.entity.User;
 import ma.glasnost.orika.MapperFactory;
-import org.springframework.stereotype.Component;
 
 @Component
 public class CommentMapping implements Mapping {
@@ -20,7 +24,7 @@ public class CommentMapping implements Mapping {
         mapperFactory.classMap(User.class, UserProfil.class)
             .byDefault()
             .register();
-
+            
 
     }
 }

@@ -5,8 +5,12 @@ import fr.sii.service.auth.AuthUtils;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.text.ParseException;
 
@@ -51,7 +55,7 @@ public class AuthTest {
         request.addHeader("Authorization", "Bearer " + token.getToken());
         JWTClaimsSet body = AuthUtils.getTokenBody(request);
 
-        assertEquals("1", body.getSubject());
+        assertEquals("1",body.getSubject());
         assertEquals(true, body.getClaim("verified"));
     }
 

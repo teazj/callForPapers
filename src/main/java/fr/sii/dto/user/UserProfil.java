@@ -1,5 +1,9 @@
 package fr.sii.dto.user;
 
+import java.util.Set;
+import fr.sii.dto.TalkUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by tmaugin on 05/06/2015.
  * SII
@@ -17,16 +21,6 @@ public class UserProfil {
     private String github;
     private String imageProfilURL;
     private String email;
-
-    public UserProfil() {
-        super();
-    }
-
-    public UserProfil(String firstname, String lastname) {
-        super();
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
 
     public String getLastname() {
         return lastname;

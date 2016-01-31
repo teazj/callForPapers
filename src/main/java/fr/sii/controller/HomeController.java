@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     /**
      * Redirect to index.html
-     *
      * @return
      */
     @RequestMapping("/")

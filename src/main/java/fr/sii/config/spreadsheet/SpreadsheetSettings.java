@@ -28,8 +28,7 @@ public class SpreadsheetSettings {
     @NotNull
     private String worksheetName;
 
-    public SpreadsheetSettings() {
-    }
+    public SpreadsheetSettings() {}
 
     public String getLogin() {
         return login;
@@ -66,10 +65,10 @@ public class SpreadsheetSettings {
     @Override
     public String toString() {
         return "SpreadsheetSettings{" +
-            "login='" + login + '\'' +
-            ", password='" + password + '\'' +
-            ", spreadsheetName='" + spreadsheetName + '\'' +
-            ", worksheetName='" + worksheetName + '\'' +
-            '}';
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", spreadsheetName='" + spreadsheetName + '\'' +
+                ", worksheetName='" + worksheetName + '\'' +
+                '}';
     }
 }

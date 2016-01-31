@@ -85,7 +85,7 @@ public class GlobalControllerExceptionHandler {
         String errorMessage = "";
         String delim = "";
         for (FieldError fieldError : errors) {
-            errorMessage += delim + fieldError.getDefaultMessage();
+            errorMessage+= delim + fieldError.getDefaultMessage();
             delim = ", ";
         }
         resp.setMessage(errorMessage);

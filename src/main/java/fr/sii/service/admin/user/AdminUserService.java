@@ -1,14 +1,15 @@
 package fr.sii.service.admin.user;
 
-import fr.sii.entity.AdminUser;
-import fr.sii.entity.User;
-import fr.sii.repository.AdminUserRepo;
-import fr.sii.repository.UserRepo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import fr.sii.entity.AdminUser;
+import fr.sii.entity.User;
+import fr.sii.repository.AdminUserRepo;
+import fr.sii.repository.UserRepo;
 
 @Service
 @Transactional
@@ -20,19 +21,17 @@ public class AdminUserService {
     @Autowired
     private UserRepo userRepo;
 
-    /**
-     * Current loggued admin, scoped request object
-     */
+    /** Current loggued admin, scoped request object */
     @Autowired
     private AdminUser currentAdmin;
 
-    public List<AdminUser> findAll() {
+    public List<AdminUser> findAll()
+    {
         return adminUserRepo.findAll();
     }
 
     /**
      * Retrieve an admin if the user e-mail match an admin e-mail
-     *
      * @param userId Id of the connected user
      * @return AdminUser if existing, null otherwise
      */
@@ -44,7 +43,6 @@ public class AdminUserService {
 
     /**
      * Set connected admin for the current request
-     *
      * @param admin Admin to set
      */
     public void setCurrentAdmin(AdminUser admin) {

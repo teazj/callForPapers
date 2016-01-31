@@ -44,7 +44,7 @@ public class TalkFormat {
         this.dureeMinutes = dureeMinutes;
     }
 
-    @Type(type = "text")
+    @Type(type="text")
     public String getDescription() {
         return description;
     }

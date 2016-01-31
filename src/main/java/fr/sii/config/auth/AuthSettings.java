@@ -25,7 +25,8 @@ public class AuthSettings {
     String captchaPublic;
 
     @PostConstruct
-    public void setToken() {
+    public void setToken()
+    {
         AuthUtils.TOKEN_SECRET = secretToken;
     }
 

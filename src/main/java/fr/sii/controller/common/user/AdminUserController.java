@@ -1,19 +1,21 @@
 package fr.sii.controller.common.user;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-import fr.sii.dto.AdminUserInfo;
-import fr.sii.entity.AdminUser;
-import fr.sii.service.admin.user.AdminUserService;
-import fr.sii.service.auth.AuthUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import com.nimbusds.jwt.JWTClaimsSet;
+
+import fr.sii.dto.AdminUserInfo;
+import fr.sii.entity.AdminUser;
+import fr.sii.service.admin.user.AdminUserService;
+import fr.sii.service.auth.AuthUtils;
 
 @RestController
-@RequestMapping(value = "/api/adminUser")
+@RequestMapping(value="/api/adminUser")
 public class AdminUserController {
 
     @Autowired
@@ -23,7 +25,7 @@ public class AdminUserController {
     /**
      * Obtain current admin user information
      */
-    @RequestMapping(value = "/currentUser", method = RequestMethod.GET)
+    @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     public AdminUserInfo getCurrentUser(HttpServletRequest req) {
         JWTClaimsSet claimsSet = AuthUtils.getTokenBody(req);
 

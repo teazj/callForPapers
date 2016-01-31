@@ -22,7 +22,6 @@ public class CsrfFilter implements Filter {
 
     /**
      * Do filter for CSRF
-     *
      * @param servletRequest
      * @param servletResponse
      * @param filterChain
@@ -79,7 +78,7 @@ public class CsrfFilter implements Filter {
     public void destroy() {
     }
 
-    public static final class DefaultRequiresCsrfMatcher {
+    public static final class DefaultRequiresCsrfMatcher{
         private static final ArrayList<String> allowedMethods = new ArrayList<String>() {{
             add("GET");
             add("OPTIONS");

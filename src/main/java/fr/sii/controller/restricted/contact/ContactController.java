@@ -1,5 +1,18 @@
 package fr.sii.controller.restricted.contact;
 
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import fr.sii.controller.restricted.RestrictedController;
 import fr.sii.domain.exception.NotFoundException;
 import fr.sii.domain.exception.NotVerifiedException;
@@ -10,13 +23,6 @@ import fr.sii.service.CommentUserService;
 import fr.sii.service.TalkUserService;
 import fr.sii.service.email.EmailingService;
 import fr.sii.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping(value = "api/restricted/sessions/{talkId}/contacts", produces = "application/json; charset=utf-8")
@@ -49,7 +55,7 @@ public class ContactController extends RestrictedController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest httpServletRequest)
-        throws NotVerifiedException, NotFoundException {
+            throws NotVerifiedException, NotFoundException {
         User user = userService.findById(retrieveUserId(httpServletRequest));
         if (user == null) {
             throw new NotFoundException("User not found");
@@ -72,7 +78,7 @@ public class ContactController extends RestrictedController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public CommentUser putContact(@PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req)
-        throws NotVerifiedException {
+            throws NotVerifiedException {
         int userId = retrieveUserId(req);
 
         commentUser.setId(id);

@@ -6,7 +6,9 @@ import fr.sii.repository.CfpConfigRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ApplicationConfigService {
 
+    private final Logger log = LoggerFactory.getLogger(ApplicationConfigService.class);
+
     private static final String COMMUNITY = "community";
     private static final String EVENT_NAME = "eventName";
     private static final String DATE = "date";
     private static final String DECISION_DATE = "decisionDate";
     private static final String RELEASE_DATE = "releaseDate";
     private static final String OPEN = "open";
-    private final Logger log = LoggerFactory.getLogger(ApplicationConfigService.class);
+
     @Autowired
     private CfpConfigRepo cfpConfigRepo;
 

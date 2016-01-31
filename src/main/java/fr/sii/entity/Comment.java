@@ -27,18 +27,10 @@ public class Comment {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @NotNull
-    @Type(type = "text")
+    @Type(type="text")
     public String getComment() {
         return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @NotNull
@@ -46,16 +38,8 @@ public class Comment {
         return added;
     }
 
-    public void setAdded(Date added) {
-        this.added = added;
-    }
-
     public boolean isInternal() {
         return internal;
-    }
-
-    public void setInternal(boolean internal) {
-        this.internal = internal;
     }
 
     @ManyToOne
@@ -64,14 +48,31 @@ public class Comment {
         return talk;
     }
 
-    public void setTalk(Talk talk) {
-        this.talk = talk;
-    }
-
     @ManyToOne
     @JoinColumn(name = "user")
     public User getUser() {
         return user;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setAdded(Date added) {
+        this.added = added;
+    }
+
+    public void setInternal(boolean internal) {
+        this.internal = internal;
+    }
+
+    public void setTalk(Talk talk) {
+        this.talk = talk;
     }
 
     public void setUser(User user) {

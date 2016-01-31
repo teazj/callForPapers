@@ -24,7 +24,7 @@ public interface TalkRepo extends JpaRepository<Talk, Integer> {
     Talk findByIdAndCospeakers(@Param("talkId") int talkId, @Param("userId") int userId);
 
     @Query("SELECT t FROM Talk t JOIN FETCH t.cospeakers c WHERE c.id = :userId AND t.state IN (:states)")
-    List<Talk> findByCospeakerIdAndStateIn(@Param("userId") int userId, @Param("states") Collection<Talk.State> states);
+    List<Talk> findByCospeakerIdAndStateIn(@Param("userId") int userId,@Param("states") Collection<Talk.State> states);
 
     @Query("SELECT DISTINCT t FROM Talk t " +
         "JOIN FETCH t.user " +

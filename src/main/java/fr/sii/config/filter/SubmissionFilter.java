@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/api/restricted/sessions", "/api/restricted/sessions/*"})
+@WebFilter(urlPatterns = { "/api/restricted/sessions", "/api/restricted/sessions/*" })
 public class SubmissionFilter implements Filter {
 
     private final String SUBMISSION_DISABLED = "Submissions disabled";
@@ -19,7 +19,6 @@ public class SubmissionFilter implements Filter {
 
     /**
      * Reject request if submissions not allowed
-     *
      * @param request
      * @param response
      * @param chain
@@ -35,13 +34,13 @@ public class SubmissionFilter implements Filter {
 
         boolean submissionsAllowed = applicationConfigService.isCfpOpen();
 
-        if (!submissionsAllowed) {
-            switch (httpRequest.getMethod().toUpperCase()) {
-                case "POST":
-                case "PUT":
+        if(!submissionsAllowed) {
+            switch(httpRequest.getMethod().toUpperCase()) {
+                case "POST" :
+                case "PUT" :
                     httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, SUBMISSION_DISABLED);
                     return;
-                default:
+                default :
                     break;
             }
         }

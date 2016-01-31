@@ -1,14 +1,21 @@
 package fr.sii.service;
 
-import fr.sii.domain.exception.CospeakerNotFoundException;
 import fr.sii.dto.TalkAdmin;
-import fr.sii.dto.user.CospeakerProfil;
 import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.AdminUser;
 import fr.sii.entity.Rate;
 import fr.sii.entity.Talk;
+import fr.sii.repository.RateRepo;
+import fr.sii.repository.TalkRepo;
+import fr.sii.repository.TrackRepo;
+import fr.sii.repository.UserRepo;
 import fr.sii.entity.User;
-import fr.sii.repository.*;
+
+import fr.sii.entity.TalkFormat;
+import fr.sii.dto.user.CospeakerProfil;
+import fr.sii.domain.exception.CospeakerNotFoundException;
+
+import fr.sii.repository.TalkFormatRepo;
 import fr.sii.service.admin.user.AdminUserService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 
 import static java.util.stream.Collectors.*;
 
@@ -52,7 +62,6 @@ public class TalkAdminService {
 
     /**
      * Retrieve all talks
-     *
      * @param states List of states the talk must be
      * @return List of talks
      */
@@ -84,14 +93,13 @@ public class TalkAdminService {
 
     /**
      * Retrieve a talk
-     *
      * @param talkId Id of the talk to retrieve
      * @return Talk or null if not found
      */
     public TalkAdmin getOne(int talkId) {
         Talk talk = talkRepo.findOne(talkId);
         TalkAdmin talkAdmin = mapper.map(talk, TalkAdmin.class);
-        UserProfil user = mapper.map(talk.getUser(), UserProfil.class);
+        UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
         user.setImageProfilURL(talk.getUser().getImageProfilURL());
         talkAdmin.setSpeaker(user);
         talkAdmin.setUserId(user.getId());
@@ -100,51 +108,48 @@ public class TalkAdminService {
 
     /**
      * Edit a talk
-     *
      * @param talkAdmin Talk to edit
      * @return Edited talk
      */
-    public TalkAdmin edit(TalkAdmin talkAdmin) throws CospeakerNotFoundException {
-        Talk talk = talkRepo.findOne(talkAdmin.getId());
-        if (talk == null) return null;
+    public TalkAdmin edit(TalkAdmin talkAdmin)  throws CospeakerNotFoundException {
+      Talk talk = talkRepo.findOne(talkAdmin.getId());
+      if (talk == null) return null;
 
 
-        talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
-        talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
-        setCoSpeaker(talkAdmin, talk);
+      talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
+      talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
+      setCoSpeaker(talkAdmin, talk);
+      
+      mapper.map(talkAdmin, talk);
+      talkRepo.save(talk);
+      talkRepo.flush();
 
-        mapper.map(talkAdmin, talk);
-        talkRepo.save(talk);
-        talkRepo.flush();
-
-        return mapper.map(talk, TalkAdmin.class);
+      return mapper.map(talk, TalkAdmin.class);
     }
 
     /**
      * For each cospeaker, check if the user is in the CFP database and set the id on the user object
-     *
      * @param talkUser TalkUser
-     * @param talk     Talk
+     * @param talk Talk
      * @throws CospeakerNotFoundException If a cospeaker is not found
      */
-    private void setCoSpeaker(TalkAdmin talkAdmin, Talk talk) throws CospeakerNotFoundException {
+     private void setCoSpeaker(TalkAdmin talkAdmin, Talk talk) throws CospeakerNotFoundException {
 
-        if (talkAdmin.getCospeakers() == null) return;
+         if (talkAdmin.getCospeakers() == null) return;
 
-        HashSet<User> users = new HashSet<User>();
-        for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
-            List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
-            if (existingUser.isEmpty()) {
-                throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
-            }
-            users.add(existingUser.get(0));
-        }
-        talk.setCospeakers(users);
-    }
+         HashSet<User> users = new HashSet<User>();
+         for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
+             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
+             if (existingUser.isEmpty()) {
+                 throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
+             }
+             users.add(existingUser.get(0));
+         }
+         talk.setCospeakers(users);
+     }
 
     /**
      * Delete a talk
-     *
      * @param talkId Id of the talk to delete
      * @return Deleted talk
      */

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/admin/sessions/{talkId}/comments", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/admin/sessions/{talkId}/comments", produces = "application/json; charset=utf-8")
 public class AdminCommentController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class AdminCommentController {
     /**
      * Add new comment message to a session
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     public CommentUser postComment(@Valid @RequestBody CommentUser comment, @PathVariable int talkId) throws NotFoundException, IOException {
         AdminUser admin = adminUserServiceCustom.getCurrentUser();
         return commentService.addComment(admin, talkId, comment, true);
@@ -43,7 +43,7 @@ public class AdminCommentController {
     /**
      * Edit comment message
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     public CommentUser putComment(@PathVariable int id, @Valid @RequestBody CommentUser comment) throws NotFoundException, ForbiddenException {
         comment.setId(id);
         return commentService.editComment(comment);
@@ -52,7 +52,7 @@ public class AdminCommentController {
     /**
      * Delete comment message
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public void deleteComment(@PathVariable int id) throws NotFoundException, ForbiddenException {
         commentService.delete(id);
     }

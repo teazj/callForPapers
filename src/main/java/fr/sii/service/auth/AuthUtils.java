@@ -21,13 +21,13 @@ import java.text.ParseException;
  */
 public final class AuthUtils {
 
-    public static final String AUTH_HEADER_KEY = "Authorization";
     private static final JWSHeader JWT_HEADER = new JWSHeader(JWSAlgorithm.HS256);
+    public static final String AUTH_HEADER_KEY = "Authorization";
+
     public static String TOKEN_SECRET;
 
     /**
      * Get sub from JWT header
-     *
      * @param authHeader
      * @return JWT sub param
      * @throws ParseException
@@ -39,11 +39,11 @@ public final class AuthUtils {
 
     /**
      * Return get JWT claims set from http request
-     *
      * @param httpRequest
      * @return JWT claims set
      */
-    public static JWTClaimsSet getTokenBody(HttpServletRequest httpRequest) {
+    public static JWTClaimsSet getTokenBody(HttpServletRequest httpRequest)
+    {
         String authHeader = httpRequest.getHeader(AuthUtils.AUTH_HEADER_KEY);
         if (StringUtils.isBlank(authHeader) || authHeader.split(" ").length != 2) {
         } else {
@@ -62,7 +62,6 @@ public final class AuthUtils {
 
     /**
      * Return get JWT claims set from jwt header
-     *
      * @param authHeader
      * @return
      * @throws ParseException
@@ -79,7 +78,6 @@ public final class AuthUtils {
 
     /**
      * Create JWT token
-     *
      * @param host
      * @param sub
      * @param verified
@@ -103,7 +101,6 @@ public final class AuthUtils {
 
     /**
      * get serialized part of JWT header
-     *
      * @param authHeader
      * @return Serialized part of JWT header
      */

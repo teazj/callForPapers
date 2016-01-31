@@ -20,7 +20,7 @@ public class Track {
 
     @JsonIgnore
     @AssertTrue(message = "Track field must be one of \"cloud\", \"mobile\", \"discovery\" or \"web\".")
-    public boolean getValidValues() {
+    public boolean getValidValues(){
         return validValues.contains(this.getTrack());
     }
 

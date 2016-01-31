@@ -1,7 +1,6 @@
 /**
  * Created by tmaugin on 22/05/2015.
  */
-
 import fr.sii.config.filter.CsrfFilter;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -25,17 +24,19 @@ public class CsrfFilterTest {
     private MockHttpServletResponse rep;
 
     @Before
-    public void setUp() {
+    public void setUp()
+    {
         chain = new MockFilterChain();
         req = new MockHttpServletRequest();
         rep = new MockHttpServletResponse();
     }
 
     @Test
-    public void test1_csrfFilterPass() {
+    public void test1_csrfFilterPass()
+    {
         boolean hadError = false;
         CsrfFilter csrfFilter = new CsrfFilter();
-        req.addHeader("X-CSRF-TOKEN", "sf927dfsg84665fdg45df");
+        req.addHeader("X-CSRF-TOKEN","sf927dfsg84665fdg45df");
         req.setCookies(new Cookie("CSRF-TOKEN", "sf927dfsg84665fdg45df"));
         try {
             csrfFilter.doFilter(req, rep, chain);
@@ -52,10 +53,11 @@ public class CsrfFilterTest {
     }
 
     @Test
-    public void test2_csrfFilterMissMatch() {
+    public void test2_csrfFilterMissMatch()
+    {
         boolean hadError = false;
         CsrfFilter csrfFilter = new CsrfFilter();
-        req.addHeader("X-CSRF-TOKEN", "65fdg45df");
+        req.addHeader("X-CSRF-TOKEN","65fdg45df");
         req.setCookies(new Cookie("CSRF-TOKEN", "sf927dfsg84665fdg45df"));
         try {
             csrfFilter.doFilter(req, rep, chain);
@@ -72,10 +74,11 @@ public class CsrfFilterTest {
     }
 
     @Test
-    public void test3_csrfFilterMissMatch2() {
+    public void test3_csrfFilterMissMatch2()
+    {
         boolean hadError = false;
         CsrfFilter csrfFilter = new CsrfFilter();
-        req.addHeader("X-CSRF-TOKEN", "sf927dfsg84665fdg45df");
+        req.addHeader("X-CSRF-TOKEN","sf927dfsg84665fdg45df");
         req.setCookies(new Cookie("CSRF-TOKEN", "84665fdg45df"));
         try {
             csrfFilter.doFilter(req, rep, chain);
@@ -92,7 +95,8 @@ public class CsrfFilterTest {
     }
 
     @Test
-    public void test4_csrfFilterNoHeader() {
+    public void test4_csrfFilterNoHeader()
+    {
         boolean hadError = false;
         CsrfFilter csrfFilter = new CsrfFilter();
         req.setCookies(new Cookie("CSRF-TOKEN", "sf927dfsg84665fdg45df"));
@@ -111,7 +115,8 @@ public class CsrfFilterTest {
     }
 
     @Test
-    public void test5_csrfFilterNoCookie() {
+    public void test5_csrfFilterNoCookie()
+    {
         boolean hadError = false;
         CsrfFilter csrfFilter = new CsrfFilter();
         req.addHeader("X-CSRF-TOKEN", "sf927dfsg84665fdg45df");

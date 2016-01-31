@@ -31,7 +31,6 @@ public class CommentUserService {
 
     /**
      * Retrieve all comments for the talk which belong to the user
-     *
      * @param userId User of the talk
      * @param talkId Talk to retrieve comments from
      * @return List of comments
@@ -43,9 +42,8 @@ public class CommentUserService {
 
     /**
      * Add a comment to a talk
-     *
-     * @param userId      User of the talk
-     * @param talkId      Talk to associated with the comment
+     * @param userId User of the talk
+     * @param talkId Talk to associated with the comment
      * @param commentUser Comment to add
      * @return Added comment or null if talk doesn't exists for this user
      */
@@ -67,17 +65,15 @@ public class CommentUserService {
 
     /**
      * Edit a comment associated to a talk
-     *
-     * @param userId      User of the talk
-     * @param talkId      Talk to associated with the comment
+     * @param userId User of the talk
+     * @param talkId Talk to associated with the comment
      * @param commentUser Comment to edit
      * @return Edited comment or null if talk doesn't exists for this user
      */
     public CommentUser editComment(int userId, int talkId, CommentUser commentUser) {
         Comment comment = commentRepo.findByIdForTalkAndUser(commentUser.getId(), talkId, userId);
         if (comment == null) return null;
-        if (comment.getUser() != null && comment.getUser().getId() != userId)
-            return null; //cannot edit a comment posted by an other user
+        if (comment.getUser() != null && comment.getUser().getId() !=  userId) return null; //cannot edit a comment posted by an other user
 
         mapper.map(commentUser, comment);
         commentRepo.flush();

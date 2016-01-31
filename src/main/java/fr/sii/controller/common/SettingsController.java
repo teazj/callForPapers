@@ -1,19 +1,21 @@
 package fr.sii.controller.common;
 
 import fr.sii.config.global.ServiceProviderSettings;
-import fr.sii.domain.exception.NotVerifiedException;
-import fr.sii.dto.TrackDto;
-import fr.sii.entity.TalkFormat;
-import fr.sii.service.TalkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.sii.entity.Talk;
+import fr.sii.entity.TalkFormat;
 import java.util.List;
+import fr.sii.domain.exception.NotVerifiedException;
+
+import fr.sii.service.TalkUserService;
+import fr.sii.dto.TrackDto;
 
 @RestController
-@RequestMapping(value = "/api/settings", produces = "application/json; charset=utf-8")
+@RequestMapping(value="/api/settings", produces = "application/json; charset=utf-8")
 public class SettingsController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class SettingsController {
     @Autowired
     private TalkUserService talkService;
 
-    @RequestMapping(value = "/serviceproviders", method = RequestMethod.GET)
+    @RequestMapping(value="/serviceproviders", method= RequestMethod.GET)
     public ServiceProviderSettings getServiceProviderSettings() {
         return serviceProviderSettings;
     }

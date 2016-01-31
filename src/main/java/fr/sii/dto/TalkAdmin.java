@@ -14,8 +14,17 @@ public class TalkAdmin extends TalkUser {
     private boolean reviewed;
 
     private BigDecimal mean;
-
     private List<String> voteUsersEmail;
+
+    public void setMean(Double mean) {
+        if (mean == null) return;
+
+        if (mean == 0) {
+            this.mean = BigDecimal.ZERO;
+        } else {
+            this.mean = new BigDecimal(mean).setScale(2, RoundingMode.HALF_EVEN);
+        }
+    }
 
     public int getUserId() {
         return userId;
@@ -37,15 +46,7 @@ public class TalkAdmin extends TalkUser {
         return mean;
     }
 
-    public void setMean(Double mean) {
-        if (mean == null) return;
 
-        if (mean == 0) {
-            this.mean = BigDecimal.ZERO;
-        } else {
-            this.mean = new BigDecimal(mean).setScale(2, RoundingMode.HALF_EVEN);
-        }
-    }
 
     public List<String> getVoteUsersEmail() {
         return voteUsersEmail;

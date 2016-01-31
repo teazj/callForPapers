@@ -1,21 +1,18 @@
 package fr.sii.controller.oauth;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.ParseException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
-import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
-import com.google.api.client.auth.oauth2.TokenResponse;
-import com.google.api.client.auth.oauth2.TokenResponseException;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpHeaders;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.nimbusds.jose.JOSEException;
-import fr.sii.config.github.GithubSettings;
-import fr.sii.domain.exception.CustomException;
-import fr.sii.domain.token.Token;
-import fr.sii.entity.User;
-import fr.sii.service.github.GithubService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,24 +22,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.ParseException;
-import java.util.Map;
+import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
+import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.auth.oauth2.TokenResponseException;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpHeaders;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson.JacksonFactory;
+import com.nimbusds.jose.JOSEException;
+
+import fr.sii.config.github.GithubSettings;
+import fr.sii.domain.exception.CustomException;
+import fr.sii.domain.token.Token;
+import fr.sii.entity.User;
+import fr.sii.service.github.GithubService;
 
 @RestController
 @RequestMapping(value = "/auth/github", produces = "application/json; charset=utf-8")
 public class GithubAuthController extends OAuthController {
 
-    private static final String ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
-    private static final String GITHUB_USER_URL = "https://api.github.com/user";
-    private static final String GITHUB_USER_EMAILS_URL = "https://api.github.com/user/emails";
     private final Logger log = LoggerFactory.getLogger(GoogleAuthController.class);
+
+    private static final String ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
+
+    private static final String GITHUB_USER_URL = "https://api.github.com/user";
+
+    private static final String GITHUB_USER_EMAILS_URL = "https://api.github.com/user/emails";
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
@@ -68,7 +75,7 @@ public class GithubAuthController extends OAuthController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public Token loginGithub(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody Map<String, String> info)
-        throws IOException, CustomException, JOSEException {
+            throws IOException, CustomException, JOSEException {
 
         String client_id = githubSettings.getClientId();
         String client_secret = githubSettings.getClientSecret();
@@ -76,16 +83,21 @@ public class GithubAuthController extends OAuthController {
         Token token = null;
 
         try {
-            TokenResponse tokenResponse = new AuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(), new GenericUrl(ACCESS_TOKEN_URL),
-                info.get("code")).setRequestInitializer(request -> request.setHeaders(new HttpHeaders().setAccept("application/json")))
-                .setClientAuthentication(new ClientParametersAuthentication(client_id, client_secret)).execute();
+            TokenResponse tokenResponse = new AuthorizationCodeTokenRequest(
+                new NetHttpTransport(),
+                new JacksonFactory(),
+                new GenericUrl(ACCESS_TOKEN_URL),
+                info.get("code"))
+                .setRequestInitializer(request -> request.setHeaders(new HttpHeaders().setAccept("application/json")))
+                .setClientAuthentication(new ClientParametersAuthentication(client_id, client_secret))
+                .execute();
 
             GithubUser gitHubUser = getGithubUser(tokenResponse.getAccessToken());
             User userFromGitHub = new User();
             userFromGitHub.setFirstname(StringUtils.split(gitHubUser.getName(), " ")[0]);
             userFromGitHub.setLastname(StringUtils.split(gitHubUser.getName(), " ")[1]);
             userFromGitHub.setEmail(gitHubUser.getEmail());
-            userFromGitHub.setProviderId(User.Provider.GITHUB, "" + gitHubUser.getId());
+            userFromGitHub.setProviderId( User.Provider.GITHUB, ""+gitHubUser.getId());
             userFromGitHub.setGithub(gitHubUser.getUrl());
             userFromGitHub.setBio(gitHubUser.getBio());
             userFromGitHub.setCompany(gitHubUser.getCompany());
@@ -113,7 +125,6 @@ public class GithubAuthController extends OAuthController {
 
     /**
      * Get GitHub user profile
-     *
      * @param access_token
      * @return
      * @throws IOException
@@ -158,7 +169,6 @@ public class GithubAuthController extends OAuthController {
 
     /**
      * Get Github JSON
-     *
      * @param access_token
      * @param url
      * @return

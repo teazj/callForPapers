@@ -2,10 +2,7 @@ package fr.sii.controller.admin.config;
 
 import fr.sii.service.admin.config.ApplicationConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -15,7 +12,7 @@ import javax.validation.Valid;
  * SII
  */
 @RestController
-@RequestMapping(value = "api/admin/config", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/admin/config", produces = "application/json; charset=utf-8")
 public class ConfigController {
 
     @Autowired
@@ -23,11 +20,10 @@ public class ConfigController {
 
     /**
      * Disable or enable submission of new talks
-     *
      * @param key enable submission if true, else disable
      * @return key
      */
-    @RequestMapping(value = "/enableSubmissions", method = RequestMethod.POST)
+    @RequestMapping(value="/enableSubmissions", method= RequestMethod.POST)
     public fr.sii.domain.common.Key postEnableSubmissions(@Valid @RequestBody fr.sii.domain.common.Key key) {
 
         if (key.getKey().equals("true"))

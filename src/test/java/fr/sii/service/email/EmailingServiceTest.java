@@ -1,15 +1,17 @@
 package fr.sii.service.email;
 
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetupTest;
-import fr.sii.ApplicationJUnit;
-import fr.sii.config.email.EmailingSettings;
-import fr.sii.config.global.GlobalSettings;
-import fr.sii.dto.TalkAdmin;
-import fr.sii.dto.TalkUser;
-import fr.sii.entity.User;
-import fr.sii.service.admin.config.ApplicationConfigService;
-import fr.sii.service.admin.user.AdminUserService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.verify;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +25,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.verify;
+import fr.sii.ApplicationJUnit;
+import fr.sii.config.email.EmailingSettings;
+import fr.sii.config.global.GlobalSettings;
+import fr.sii.dto.TalkAdmin;
+import fr.sii.dto.TalkUser;
+import fr.sii.entity.User;
+import fr.sii.service.admin.config.ApplicationConfigService;
+import fr.sii.service.admin.user.AdminUserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationJUnit.class)
@@ -37,11 +43,15 @@ import static org.mockito.Mockito.verify;
 public class EmailingServiceTest {
 
     public static final String JOHN_DOE_EMAIL = "john.doe@gmail.com";
-    @Autowired
-    ApplicationConfigService applicationConfigService;
+
     @Spy
     private EmailingService emailingService;
+
     private GreenMail testSmtp;
+
+    @Autowired
+    ApplicationConfigService applicationConfigService;
+
     @Autowired
     private JavaMailSenderImpl javaMailSender;
 

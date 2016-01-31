@@ -31,7 +31,6 @@ public class RateAdminService {
 
     /**
      * Retrieve all rates
-     *
      * @return All rates
      */
     public List<RateAdmin> getAll() {
@@ -41,7 +40,6 @@ public class RateAdminService {
 
     /**
      * Retrieve all rate for all talks for a user
-     *
      * @param userId Id of the user
      * @return Rates
      */
@@ -52,7 +50,6 @@ public class RateAdminService {
 
     /**
      * Retrieve all rate for a talk
-     *
      * @param talkId Id of the talk
      * @return Rates
      */
@@ -63,8 +60,7 @@ public class RateAdminService {
 
     /**
      * Retrieve rate for a talk and an admin
-     *
-     * @param talkId  Id of the talk
+     * @param talkId Id of the talk
      * @param adminId Id of the admin to get
      * @return Rate or null if not talk rated by this admin
      */
@@ -75,7 +71,6 @@ public class RateAdminService {
 
     /**
      * Retrieve a rate
-     *
      * @param rateId Id of the rate to retrieve
      * @return Rate or null if not found
      */
@@ -86,9 +81,8 @@ public class RateAdminService {
 
     /**
      * Add a new rate
-     *
-     * @param rate   Rate to add
-     * @param admin  Admin adding the rate
+     * @param rate Rate to add
+     * @param admin Admin adding the rate
      * @param talkId Talk attached to the rate
      * @return Added rate
      */
@@ -104,7 +98,6 @@ public class RateAdminService {
 
     /**
      * Edit a rate
-     *
      * @param rate rate to edit
      * @return Edited rate
      */
@@ -118,7 +111,6 @@ public class RateAdminService {
 
     /**
      * Delete a rate
-     *
      * @param rateId Id of the rate to delete
      * @return Deleted rate
      */

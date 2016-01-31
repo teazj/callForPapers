@@ -37,8 +37,7 @@ public class CommentAdminService {
 
     /**
      * Retrieve all comments for the talk
-     *
-     * @param talkId   Talk to retrieve comments from
+     * @param talkId Talk to retrieve comments from
      * @param internal Is the comment is internal to admins or visible to the user
      * @return List of comments
      */
@@ -49,19 +48,17 @@ public class CommentAdminService {
 
     /**
      * Add a comment to a talk
-     *
-     * @param admin       Admin which add the comment
-     * @param talkId      Talk to associated with the comment
+     * @param admin Admin which add the comment
+     * @param talkId Talk to associated with the comment
      * @param commentUser Comment to add
-     * @param internal    Is the comment is internal to admins or visible to the user
+     * @param internal Is the comment is internal to admins or visible to the user
      * @return Added comment or null if talk doesn't exists
      */
     public CommentUser addComment(AdminUser admin, int talkId, CommentUser commentUser, boolean internal) {
         Talk talk = talkRepo.findOne(talkId);
         if (talk == null) return null;
         List<User> users = userRepo.findByEmail(admin.getEmail());
-        if (users.isEmpty())
-            throw new IllegalStateException("Admin with email [" + admin.getEmail() + "] doesn't exists in user table");
+        if (users.isEmpty()) throw new IllegalStateException("Admin with email [" + admin.getEmail() + "] doesn't exists in user table");
 
         Comment comment = mapper.map(commentUser, Comment.class);
         comment.setAdded(new Date());
@@ -77,7 +74,6 @@ public class CommentAdminService {
 
     /**
      * Edit a comment associated to a talk
-     *
      * @param commentUser Comment to edit
      * @return Edited comment or null if talk doesn't
      */
@@ -93,7 +89,6 @@ public class CommentAdminService {
 
     /**
      * Delete a comment
-     *
      * @param comment Comment to delete
      * @return Deleted comment
      */

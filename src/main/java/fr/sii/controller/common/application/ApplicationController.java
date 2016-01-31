@@ -20,7 +20,6 @@ public class ApplicationController {
 
     /**
      * Obtain application settings, (name, dates, ...)
-     *
      * @return
      */
     @RequestMapping(method=RequestMethod.GET, value="/application")
@@ -32,7 +31,6 @@ public class ApplicationController {
 
     /**
      * save application settings, (name, dates, ...)
-     *
      * @return
      */
     @RequestMapping(method=RequestMethod.POST, value="/admin/application")

@@ -9,7 +9,8 @@ public class NotVerifiedException extends CustomException {
     }
 
     //Constructor that accepts a message
-    public NotVerifiedException(String message) {
+    public NotVerifiedException(String message)
+    {
         super(message);
     }
 }

@@ -67,7 +67,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Token login(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid LoginUser user)
-        throws JOSEException, IOException {
+            throws JOSEException, IOException {
         User foundUser = userService.findByemail(user.getEmail());
 
         if (foundUser != null) {
@@ -102,7 +102,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public Token signup(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestBody @Valid SignupUser signupUser)
-        throws Exception {
+            throws Exception {
 
         ReCaptchaCheckerReponse rep = ReCaptchaChecker.checkReCaptcha(authSettings.getCaptchaSecret(), signupUser.getCaptcha());
         if (!rep.getSuccess()) {
@@ -154,7 +154,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
     public Token verify(HttpServletResponse res, HttpServletRequest req, @RequestParam("id") Integer id, @RequestParam("token") String verifyToken)
-        throws JOSEException, IOException {
+            throws JOSEException, IOException {
         Token token = null;
 
         // Search user
@@ -206,7 +206,7 @@ public class AuthController {
      */
     @RequestMapping(value = "/unlink/{provider}", method = RequestMethod.GET)
     public void unlink(HttpServletResponse res, HttpServletRequest req, @PathVariable("provider") String provider)
-        throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
+            throws JOSEException, IOException, ParseException, NoSuchFieldException, IllegalAccessException {
         String authHeader = req.getHeader(AuthUtils.AUTH_HEADER_KEY);
 
         if (StringUtils.isBlank(authHeader)) {

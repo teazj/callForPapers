@@ -1,6 +1,7 @@
 import com.jayway.restassured.response.Header;
 import com.nimbusds.jose.JOSEException;
 import fr.sii.config.filter.AuthFilter;
+import fr.sii.config.filter.CsrfFilter;
 import fr.sii.domain.token.Token;
 import fr.sii.service.auth.AuthUtils;
 import org.joda.time.DateTime;
@@ -14,6 +15,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -38,10 +40,11 @@ public class AuthFilterTest {
         rep = new MockHttpServletResponse();
     }
 
-    public Header getHeader() {
+    public Header getHeader()
+    {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost", "1", true);
+            token = AuthUtils.createToken("testHost","1",true);
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
@@ -49,10 +52,11 @@ public class AuthFilterTest {
         return new Header("Authorization", "Bearer " + token.getToken());
     }
 
-    public Header getHeaderNotVerified() {
+    public Header getHeaderNotVerified()
+    {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost", "1", false);
+            token = AuthUtils.createToken("testHost","1",false);
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
@@ -61,7 +65,8 @@ public class AuthFilterTest {
     }
 
     @Test
-    public void test1_authFilterPass() {
+    public void test1_authFilterPass()
+    {
         boolean hadError = false;
         AuthFilter authFilter = new AuthFilter();
         req.addHeader(getHeader().getName(), getHeader().getValue());
@@ -81,7 +86,8 @@ public class AuthFilterTest {
     }
 
     @Test
-    public void test2_authFilterNoHeader() {
+    public void test2_authFilterNoHeader()
+    {
         boolean hadError = false;
         AuthFilter authFilter = new AuthFilter();
         try {
@@ -100,7 +106,8 @@ public class AuthFilterTest {
 
 
     @Test
-    public void test3_authFilterExpired() {
+    public void test3_authFilterExpired()
+    {
         boolean hadError = false;
         AuthFilter authFilter = new AuthFilter();
         req.addHeader(getHeader().getName(), getHeader().getValue());
@@ -122,7 +129,8 @@ public class AuthFilterTest {
 
 
     @Test
-    public void test4_authFilterBadToken() {
+    public void test4_authFilterBadToken()
+    {
         boolean hadError = false;
         AuthFilter authFilter = new AuthFilter();
         req.addHeader(getHeader().getName(), "odfvjiodfv");

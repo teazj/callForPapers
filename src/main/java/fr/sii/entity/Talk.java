@@ -1,18 +1,33 @@
 package fr.sii.entity;
 
-import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
 /**
  * Talk
  */
 @Entity
 @Table(name = "talks")
 public class Talk {
+    public enum State { DRAFT, CONFIRMED, ACCEPTED, REFUSED }
+
     private int id;
     private State state;
     private String name;
@@ -26,6 +41,7 @@ public class Talk {
     //schedule data
     private Date date;
     private String heure;
+
     private Set<User> cospeakers;
 
     @Transient
@@ -33,14 +49,12 @@ public class Talk {
         return talkFormat.getDureeMinutes();
     }
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @NotNull
@@ -49,17 +63,9 @@ public class Talk {
         return state;
     }
 
-    public void setState(State state) {
-        this.state = state;
-    }
-
     @NotNull(message = "Session name field is required")
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @ManyToOne
@@ -68,43 +74,23 @@ public class Talk {
         return track;
     }
 
-    public void setTrack(Track track) {
-        this.track = track;
-    }
-
-    @Type(type = "text")
+    @Type(type="text")
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Type(type = "text")
+    @Type(type="text")
     @Column(name = "refs")
     public String getReferences() {
         return references;
-    }
-
-    public void setReferences(String references) {
-        this.references = references;
     }
 
     public Integer getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Integer difficulty) {
-        this.difficulty = difficulty;
-    }
-
     public Date getAdded() {
         return added;
-    }
-
-    public void setAdded(Date added) {
-        this.added = added;
     }
 
     @ManyToOne
@@ -113,36 +99,20 @@ public class Talk {
         return talkFormat;
     }
 
-    public void setTalkFormat(TalkFormat talkFormat) {
-        this.talkFormat = talkFormat;
-    }
-
     @ManyToOne
     @JoinColumn(name = "user")
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Column(name = "schedule_date")
+    @Column(name="schedule_date")
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @Column(name = "schedule_heure")
+    @Column(name="schedule_heure")
     public String getHeure() {
         return heure;
-    }
-
-    public void setHeure(String heure) {
-        this.heure = heure;
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -151,9 +121,56 @@ public class Talk {
         return cospeakers;
     }
 
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTrack(Track track) {
+        this.track = track;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setReferences(String references) {
+        this.references = references;
+    }
+
+    public void setDifficulty(Integer difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setAdded(Date added) {
+        this.added = added;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setTalkFormat(TalkFormat talkFormat) {
+        this.talkFormat = talkFormat;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setHeure(String heure) {
+        this.heure = heure;
+    }
+
     public void setCospeakers(Set<User> cospeakers) {
         this.cospeakers = cospeakers;
     }
-
-    public enum State {DRAFT, CONFIRMED, ACCEPTED, REFUSED}
 }

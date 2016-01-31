@@ -1,8 +1,8 @@
 package fr.sii.dto;
 
-import fr.sii.dto.user.UserProfil;
-
 import java.util.Date;
+
+import fr.sii.dto.user.UserProfil;
 
 /**
  * Comment DTO sent to the speaker

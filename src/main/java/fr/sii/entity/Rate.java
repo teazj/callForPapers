@@ -28,10 +28,6 @@ public class Rate {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Max(5)
     @Min(0)
     @NotNull
@@ -39,33 +35,17 @@ public class Rate {
         return rate;
     }
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
     @NotNull
     public Date getAdded() {
         return added;
-    }
-
-    public void setAdded(Date added) {
-        this.added = added;
     }
 
     public boolean isLove() {
         return love;
     }
 
-    public void setLove(boolean love) {
-        this.love = love;
-    }
-
     public boolean isHate() {
         return hate;
-    }
-
-    public void setHate(boolean hate) {
-        this.hate = hate;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -74,14 +54,35 @@ public class Rate {
         return talk;
     }
 
-    public void setTalk(Talk talk) {
-        this.talk = talk;
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin")
     public AdminUser getAdminUser() {
         return adminUser;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public void setAdded(Date added) {
+        this.added = added;
+    }
+
+    public void setLove(boolean love) {
+        this.love = love;
+    }
+
+    public void setHate(boolean hate) {
+        this.hate = hate;
+    }
+
+    public void setTalk(Talk talk) {
+        this.talk = talk;
     }
 
     public void setAdminUser(AdminUser adminUser) {
