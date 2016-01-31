@@ -36,12 +36,8 @@ public class ScheduleController {
 
     @RequestMapping(value = "/scheduledtalks", method = RequestMethod.GET)
     public List<Schedule> getScheduleList() {
-        List<TalkFormat> talkFormatList = talkUserService.getTalkFormat();
-        Map<Integer, TalkFormat> talkFormatMap = talkFormatList.stream().collect(Collectors.toMap(TalkFormat::getId, Function.identity()));
+        List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.ACCEPTED);
 
-        List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.CONFIRMED);
-
-        // List<TalkAdmin> talkList = talkAdminService.findAll(Talk.State.CONFIRMED);
         List<Schedule> scheduleList = talkUserList.stream().map(t -> {
             Schedule schedule = new Schedule(t.getId(), t.getName(), t.getDescription());
 
