@@ -152,22 +152,26 @@ angular.module('CallForPaper', [
                 controller: 'AdminSessionsExportJsonCtrl'
             })
             .state('admin.session', {
-                url: '/sessions/:id?tab',
+                url: '/sessions/{id:int}?tab',
                 templateUrl: 'views/admin/session.html',
                 controller: 'AdminSessionCtrl',
                 resolve: {
+                    sessionsAll: function(AdminSession) { // TODO Dirty but hard to factorize in a parent state because of the difficulty to keep it up to date
+                        return AdminSession.query().$promise;
+                    },
                     tracks: function(TalkService) {
                         return TalkService.tracks.findAll().$promise;
                     },
                     talkformats: function(TalkService) {
                         return TalkService.formats.findAll().$promise;
                     },
-                    talk: function(AdminSession, $stateParams, $sanitize) {
-
-                        var id = $stateParams.id;
-                        if (id) {
+                    talkId: function($stateParams) {
+                        return $stateParams.id || null;
+                    },
+                    talk: function(AdminSession, talkId, $sanitize) {
+                        if (talkId) {
                             return AdminSession.get({
-                                id: $stateParams.id
+                                id: talkId
                             }).$promise.then(function(session) {
                                 session.speaker.bio = $sanitize(session.speaker.bio);
                                 return session;
@@ -175,6 +179,24 @@ angular.module('CallForPaper', [
                         } else {
                             return null;
                         }
+                    },
+                    nextToRate: function(sessionsAll, AuthService, talkId) {
+                        var email = AuthService.user.email;
+
+                        function isUnratedByConnectedUser(session) {
+                            return !_.contains(session.voteUsersEmail, email);
+                        }
+
+                        return _.find(sessionsAll, function(session) { // first look for the next not rated
+                                return session.id > talkId && isUnratedByConnectedUser(session);
+                            }) || _.find(sessionsAll, function(session) { // then start again from the beginning
+                                return session.id !== talkId && isUnratedByConnectedUser(session);
+                            });
+                    }
+                },
+                onEnter: function($state, talkId) {
+                    if (!talkId) {
+                        $state.go('admin.sessions');
                     }
                 }
             })
