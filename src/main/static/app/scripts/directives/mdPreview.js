@@ -26,7 +26,7 @@ angular.module('mdPreview', [])
         };
     }])
     .controller('MdPreviewModalInstanceCtrl', function($scope, $modalInstance, content, $sanitize) {
-        $scope.content = $sanitize(content);
+        $scope.content = $sanitize(content).replace(/&#10;/g, '\n'); // workaround to keep line returns
         $scope.ok = function() {
             $modalInstance.close();
         };
