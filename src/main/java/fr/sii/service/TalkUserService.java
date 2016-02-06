@@ -49,6 +49,18 @@ public class TalkUserService {
 
     /**
      * Retrieve all talks for a User
+     *
+     * @param states List of states the talk must be
+     * @return List of talks
+     */
+    public List<TalkUser> findAll(Talk.State... states) {
+        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
+        return mapper.mapAsList(talks, TalkUser.class);
+    }
+
+    /**
+     * Retrieve all talks for a User
+     *
      * @param userId Id of the user
      * @param states List of states the talk must be
      * @return List of talks
@@ -60,6 +72,7 @@ public class TalkUserService {
 
     /**
      * Retrieve all talks for a User
+     *
      * @param userId Id of the user to retrieve cospeaker talks
      * @param states List of states the talk must be
      * @return List of talks
@@ -82,6 +95,7 @@ public class TalkUserService {
 
     /**
      * Count number of talks the users has submitted (drafts included)
+     *
      * @param userId Id of the user
      * @return Number of talks
      */
@@ -91,6 +105,7 @@ public class TalkUserService {
 
     /**
      * Retrieve a talk which belong to the user
+     *
      * @param userId Id of the user to retrieve
      * @param talkId Id of the talk to retrieve
      * @return Talk or null if not found
@@ -108,6 +123,7 @@ public class TalkUserService {
 
     /**
      * Add a submitted talk
+     *
      * @param userId user who submitted the talk
      * @param talkUser Talk to add
      * @return Talk added
@@ -118,6 +134,7 @@ public class TalkUserService {
 
     /**
      * Convert a draft into a submitted talk
+     *
      * @param userId Id of user who submitted the talk
      * @param talkUser Talk to submit
      * @return Talk submitted or null if not exists
@@ -128,6 +145,7 @@ public class TalkUserService {
 
     /**
      * Add a new draft talk
+     *
      * @param userId User who submitted the talk
      * @param talkUser Talk to save
      * @return talk saved
@@ -138,6 +156,7 @@ public class TalkUserService {
 
     /**
      * Save an update draft
+     *
      * @param userId User who submitted the talk
      * @param talkUser Draft to update
      * @return Draft updated or null if doesn't exists
@@ -148,6 +167,7 @@ public class TalkUserService {
 
     /**
      * Delete a draft talk
+     *
      * @param userId Id of the user who submit the talk
      * @param talkId Id of the draft to delete
      * @return Talk deleted or null if inexistant
@@ -163,6 +183,7 @@ public class TalkUserService {
 
     /**
      * Get all talk formats
+     *
      * @return List of talk formats
      */
     public List<TalkFormat> getTalkFormat() {
@@ -171,6 +192,7 @@ public class TalkUserService {
 
     /**
      * Get all tracks
+     *
      * @return List of talk tracks
      */
     public List<TrackDto> getTracks() {
@@ -180,6 +202,7 @@ public class TalkUserService {
 
     /**
      * Add a new talk into the database
+     *
      * @param userId User who submit the talk
      * @param talkUser Talk to add
      * @param state New state of the talk
@@ -201,6 +224,7 @@ public class TalkUserService {
 
     /**
      * Update an existing draft talk
+     *
      * @param userId Id of the user who submit the talk
      * @param talkUser Talk to update
      * @param newState New state of the talk
