@@ -75,6 +75,7 @@ public class TalkAdminService {
             .collect(groupingBy(r -> r.getTalk().getId()));
 
         Map<Integer, Double> averages = rates.stream()
+            .filter(r -> r.getRate() > 0)
             .collect(groupingBy(r -> r.getTalk().getId(), averagingInt(Rate::getRate)));
 
         Map<Integer, List<String>> voters = rates.stream()
@@ -119,7 +120,7 @@ public class TalkAdminService {
       talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
       talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
       setCoSpeaker(talkAdmin, talk);
-      
+
       mapper.map(talkAdmin, talk);
       talkRepo.save(talk);
       talkRepo.flush();
