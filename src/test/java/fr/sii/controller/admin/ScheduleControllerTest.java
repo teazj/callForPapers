@@ -27,7 +27,6 @@ import java.util.Set;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.when;
 
@@ -104,7 +103,7 @@ public class ScheduleControllerTest {
         talkList.add(talkUser2);
         talkList.add(talkUser3);
 
-        when(talkUserService.findAll(Talk.State.ACCEPTED)).thenReturn(talkList);
+        when(talkUserService.findAll(Talk.State.CONFIRMED)).thenReturn(talkList);
 
         MockMvcResponse mockMvcResponse =
             given()
