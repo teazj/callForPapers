@@ -3,7 +3,6 @@ package fr.sii.controller.admin;
 import fr.sii.dto.TalkUser;
 import fr.sii.dto.user.Schedule;
 import fr.sii.entity.Talk;
-import fr.sii.entity.TalkFormat;
 import fr.sii.service.TalkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -36,7 +33,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/scheduledtalks", method = RequestMethod.GET)
     public List<Schedule> getScheduleList() {
-        List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.ACCEPTED);
+        List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.CONFIRMED);
 
         List<Schedule> scheduleList = talkUserList.stream().map(t -> {
             Schedule schedule = new Schedule(t.getId(), t.getName(), t.getDescription());
