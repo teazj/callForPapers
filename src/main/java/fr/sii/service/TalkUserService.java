@@ -1,25 +1,26 @@
 package fr.sii.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
-
-import fr.sii.dto.TrackDto;
-import fr.sii.entity.TalkFormat;
-import fr.sii.entity.Track;
-import fr.sii.repository.TalkFormatRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import fr.sii.domain.exception.CospeakerNotFoundException;
 import fr.sii.dto.TalkUser;
+import fr.sii.dto.TrackDto;
 import fr.sii.dto.user.CospeakerProfil;
 import fr.sii.entity.Talk;
+import fr.sii.entity.TalkFormat;
+import fr.sii.entity.Track;
 import fr.sii.entity.User;
+import fr.sii.repository.TalkFormatRepo;
 import fr.sii.repository.TalkRepo;
 import fr.sii.repository.TrackRepo;
 import fr.sii.repository.UserRepo;
@@ -50,7 +51,8 @@ public class TalkUserService {
     /**
      * Retrieve all talks for a User
      *
-     * @param states List of states the talk must be
+     * @param states
+     *            List of states the talk must be
      * @return List of talks
      */
     public List<TalkUser> findAll(Talk.State... states) {
@@ -61,8 +63,10 @@ public class TalkUserService {
     /**
      * Retrieve all talks for a User
      *
-     * @param userId Id of the user
-     * @param states List of states the talk must be
+     * @param userId
+     *            Id of the user
+     * @param states
+     *            List of states the talk must be
      * @return List of talks
      */
     public List<TalkUser> findAll(int userId, Talk.State... states) {
@@ -73,8 +77,10 @@ public class TalkUserService {
     /**
      * Retrieve all talks for a User
      *
-     * @param userId Id of the user to retrieve cospeaker talks
-     * @param states List of states the talk must be
+     * @param userId
+     *            Id of the user to retrieve cospeaker talks
+     * @param states
+     *            List of states the talk must be
      * @return List of talks
      */
     public List<TalkUser> findAllCospeakerTalks(int userId, Talk.State... states) {
@@ -82,21 +88,21 @@ public class TalkUserService {
         return mapper.mapAsList(talks, TalkUser.class);
     }
 
-
     // /**
-    //  * Retrieve the talk list whom the user is cospeaker
-    //  * @param userId Id of the user to retrieve cospeaker talks
-    //  * @return List of talks
-    //  */
+    // * Retrieve the talk list whom the user is cospeaker
+    // * @param userId Id of the user to retrieve cospeaker talks
+    // * @return List of talks
+    // */
     // public List<TalkUser> getCospeakerTalks(int userId) {
-    //     List<Talk> talks = talkRepo.findByCospeakers(userId);
-    //     return mapper.mapAsList(talks, TalkUser.class);
+    // List<Talk> talks = talkRepo.findByCospeakers(userId);
+    // return mapper.mapAsList(talks, TalkUser.class);
     // }
 
     /**
      * Count number of talks the users has submitted (drafts included)
      *
-     * @param userId Id of the user
+     * @param userId
+     *            Id of the user
      * @return Number of talks
      */
     public int count(int userId) {
@@ -106,8 +112,10 @@ public class TalkUserService {
     /**
      * Retrieve a talk which belong to the user
      *
-     * @param userId Id of the user to retrieve
-     * @param talkId Id of the talk to retrieve
+     * @param userId
+     *            Id of the user to retrieve
+     * @param talkId
+     *            Id of the talk to retrieve
      * @return Talk or null if not found
      */
     public TalkUser getOne(int userId, int talkId) {
@@ -120,23 +128,45 @@ public class TalkUserService {
         return mapper.map(talk, TalkUser.class);
     }
 
-
     /**
      * Add a submitted talk
      *
-     * @param userId user who submitted the talk
-     * @param talkUser Talk to add
+     * @param userId
+     *            user who submitted the talk
+     * @param talkUser
+     *            Talk to add
      * @return Talk added
      */
-    public TalkUser submitTalk(int userId, TalkUser talkUser)throws CospeakerNotFoundException {
+    public TalkUser submitTalk(int userId, TalkUser talkUser) throws CospeakerNotFoundException {
         return newTalk(userId, talkUser, Talk.State.CONFIRMED);
+    }
+
+    /**
+     * @param talkId
+     * @param eventStart
+     * @return updated talk
+     */
+    public TalkUser updateConfirmedTalk(int talkId, LocalDateTime eventStart) {
+
+        Date eventDate = Date.from(eventStart.atZone(ZoneId.systemDefault()).toInstant());
+        String hour = eventStart.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+        Talk talk = talkRepo.findOne(talkId);
+        talk.setState(Talk.State.CONFIRMED);
+        talk.setDate(eventDate);
+        talk.setHeure(hour);
+        talk = talkRepo.saveAndFlush(talk);
+
+        return mapper.map(talk, TalkUser.class);
     }
 
     /**
      * Convert a draft into a submitted talk
      *
-     * @param userId Id of user who submitted the talk
-     * @param talkUser Talk to submit
+     * @param userId
+     *            Id of user who submitted the talk
+     * @param talkUser
+     *            Talk to submit
      * @return Talk submitted or null if not exists
      */
     public TalkUser submitDraftToTalk(int userId, TalkUser talkUser) throws CospeakerNotFoundException {
@@ -146,8 +176,10 @@ public class TalkUserService {
     /**
      * Add a new draft talk
      *
-     * @param userId User who submitted the talk
-     * @param talkUser Talk to save
+     * @param userId
+     *            User who submitted the talk
+     * @param talkUser
+     *            Talk to save
      * @return talk saved
      */
     public TalkUser addDraft(int userId, TalkUser talkUser) throws CospeakerNotFoundException {
@@ -157,8 +189,10 @@ public class TalkUserService {
     /**
      * Save an update draft
      *
-     * @param userId User who submitted the talk
-     * @param talkUser Draft to update
+     * @param userId
+     *            User who submitted the talk
+     * @param talkUser
+     *            Draft to update
      * @return Draft updated or null if doesn't exists
      */
     public TalkUser editDraft(int userId, TalkUser talkUser) throws CospeakerNotFoundException {
@@ -168,14 +202,17 @@ public class TalkUserService {
     /**
      * Delete a draft talk
      *
-     * @param userId Id of the user who submit the talk
-     * @param talkId Id of the draft to delete
+     * @param userId
+     *            Id of the user who submit the talk
+     * @param talkId
+     *            Id of the draft to delete
      * @return Talk deleted or null if inexistant
      */
     public TalkUser deleteDraft(int userId, int talkId) {
         Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
 
-        if (talk.getState() != Talk.State.DRAFT) return null;
+        if (talk.getState() != Talk.State.DRAFT)
+            return null;
         TalkUser deleted = mapper.map(talk, TalkUser.class);
         talkRepo.delete(talk);
         return deleted;
@@ -196,16 +233,19 @@ public class TalkUserService {
      * @return List of talk tracks
      */
     public List<TrackDto> getTracks() {
-        List<Track> tracks =  trackRepo.findAll();
+        List<Track> tracks = trackRepo.findAll();
         return mapper.mapAsList(tracks, TrackDto.class);
     }
 
     /**
      * Add a new talk into the database
      *
-     * @param userId User who submit the talk
-     * @param talkUser Talk to add
-     * @param state New state of the talk
+     * @param userId
+     *            User who submit the talk
+     * @param talkUser
+     *            Talk to add
+     * @param state
+     *            New state of the talk
      * @return Talk added
      */
     private TalkUser newTalk(int userId, TalkUser talkUser, Talk.State state) throws CospeakerNotFoundException {
@@ -225,16 +265,20 @@ public class TalkUserService {
     /**
      * Update an existing draft talk
      *
-     * @param userId Id of the user who submit the talk
-     * @param talkUser Talk to update
-     * @param newState New state of the talk
+     * @param userId
+     *            Id of the user who submit the talk
+     * @param talkUser
+     *            Talk to update
+     * @param newState
+     *            New state of the talk
      * @return Talk updated or null if not existing
      */
     private TalkUser editTalk(int userId, TalkUser talkUser, Talk.State newState) throws CospeakerNotFoundException {
         Talk talk = talkRepo.findByIdAndUserId(talkUser.getId(), userId);
-        if (talk == null) return null;
-        if (talk.getState() != Talk.State.DRAFT) return null;
-
+        if (talk == null)
+            return null;
+        if (talk.getState() != Talk.State.DRAFT)
+            return null;
 
         setCoSpeaker(talkUser, talk);
 
@@ -249,10 +293,10 @@ public class TalkUserService {
         return talkUser;
     }
 
-
     private void setCoSpeaker(TalkUser talkUser, Talk talk) throws CospeakerNotFoundException {
 
-        if (talkUser.getCospeakers() == null) return;
+        if (talkUser.getCospeakers() == null)
+            return;
         HashSet<User> users = new HashSet<User>();
         for (CospeakerProfil cospeaker : talkUser.getCospeakers()) {
             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());

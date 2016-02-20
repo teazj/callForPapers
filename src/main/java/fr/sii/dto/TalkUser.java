@@ -122,4 +122,20 @@ public class TalkUser {
         return cospeakers;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TalkUser talkUser = (TalkUser) o;
+
+        return id == talkUser.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

@@ -33,6 +33,7 @@ import fr.sii.config.email.EmailingSettings;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.User;
 import fr.sii.service.admin.config.ApplicationConfigService;
 import fr.sii.service.admin.user.AdminUserService;
@@ -82,6 +83,10 @@ public class EmailingServiceTest {
         talkUser.setId(1);
         talkUser.setName("My amazing user talk 1");
 
+        UserProfil speaker = new UserProfil("john", "Doe");
+        speaker.setEmail(JOHN_DOE_EMAIL);
+        talkUser.setSpeaker(speaker);
+
         talkAdmin = new TalkAdmin();
         talkAdmin.setId(2);
         talkAdmin.setName("My amazing user talk 2");
@@ -113,7 +118,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -127,7 +132,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), notNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -135,14 +140,14 @@ public class EmailingServiceTest {
         // Given
         String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NEW_COMMENT_TO_ADMIN, Locale.FRENCH);
         String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NEW_COMMENT_TO_ADMIN, Locale.FRENCH,
-            user.getFirstname() + " " + user.getLastname(), talkUser.getName());
+                user.getFirstname() + " " + user.getLastname(), talkUser.getName());
 
         // When
         emailingService.sendNewCommentToAdmins(user, talkUser, Locale.FRENCH);
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(emailingSettings.getEmailSender()), eq(subject), anyString(), notNull(List.class));
+        verify(emailingService).sendEmail(eq(emailingSettings.getEmailSender()), eq(subject), anyString(), isNull(List.class), notNull(List.class));
     }
 
     @Test
@@ -152,11 +157,11 @@ public class EmailingServiceTest {
         String subject = emailingSettings.getSubject(EmailingSettings.EmailType.NOT_SELECTIONNED, Locale.FRENCH);
 
         // When
-        emailingService.sendNotSelectionned(user, talkUser, Locale.FRENCH);
+        emailingService.sendNotSelectionned(talkUser, Locale.FRENCH);
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -166,11 +171,11 @@ public class EmailingServiceTest {
         String subject = emailingSettings.getSubject(EmailingSettings.EmailType.PENDING, Locale.FRENCH);
 
         // When
-        emailingService.sendPending(user, talkUser, Locale.FRENCH);
+        emailingService.sendPending(talkUser, Locale.FRENCH);
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -180,11 +185,11 @@ public class EmailingServiceTest {
         String subject = emailingSettings.getSubject(EmailingSettings.EmailType.SELECTIONNED, Locale.FRENCH);
 
         // When
-        emailingService.sendSelectionned(user, talkUser, Locale.FRENCH);
+        emailingService.sendSelectionned(talkUser, Locale.FRENCH);
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -214,7 +219,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processContent(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class));
+        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), eq(subject), anyString(), isNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -222,7 +227,7 @@ public class EmailingServiceTest {
         // Given
         String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.CONFIRMED, Locale.FRENCH);
 
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
         map.put("hostname", "http://yourappid.appspot.com/");
@@ -240,7 +245,7 @@ public class EmailingServiceTest {
         // Given
         String templatePath = emailingSettings.getTemplatePath(EmailingSettings.EmailType.NOT_SELECTIONNED, Locale.FRENCH);
 
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
         map.put("community", "GDG Nantes");
