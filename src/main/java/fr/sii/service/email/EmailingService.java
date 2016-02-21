@@ -28,6 +28,8 @@ import fr.sii.config.email.EmailingSettings.EmailType;
 import fr.sii.config.global.GlobalSettings;
 import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
+import fr.sii.dto.user.CospeakerProfil;
+import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.AdminUser;
 import fr.sii.entity.User;
 import fr.sii.service.admin.config.ApplicationConfigService;
@@ -82,23 +84,23 @@ public class EmailingService {
         String content = processContent(templatePath, map);
         String subject = emailingSettings.getSubject(EmailType.CONFIRMED, locale);
 
-        sendEmail(user.getEmail(), subject, content, null);
+        sendEmail(user.getEmail(), subject, content, null, null);
     }
 
     /**
      * Send an email to a speaker to notify him that an administrator wrote a
      * new comment about his talk.
      *
-     * @param speaker the speaker to write to
-     * @param talk talk under review
+     * @param speaker
+     *            the speaker to write to
+     * @param talk
+     *            talk under review
      * @param locale
      */
     @Async
     public void sendNewCommentToSpeaker(User speaker, TalkAdmin talk, Locale locale) {
         log.debug("Sending new comment email to speaker '{}' for talk '{}'", speaker.getEmail(), talk.getName());
 
-        // List<String> bcc = adminUserServiceCustom.findAll().stream().map(a ->
-        // a.getEmail()).collect(Collectors.toList());
         List<String> bcc = new ArrayList<>();
         for (AdminUser adminUser : adminUserServiceCustom.findAll()) {
             bcc.add(adminUser.getEmail());
@@ -115,15 +117,17 @@ public class EmailingService {
         String content = processContent(templatePath, map);
         String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_SPEAKER, locale, talk.getName());
 
-        sendEmail(speaker.getEmail(), subject, content, bcc);
+        sendEmail(speaker.getEmail(), subject, content, bcc, null);
     }
 
     /**
      * Send an email to administrators to notify them that a speaker wrote a
      * new comment on his talk.
      *
-     * @param speaker the speaker writing this message
-     * @param talk talk under review
+     * @param speaker
+     *            the speaker writing this message
+     * @param talk
+     *            talk under review
      * @param locale
      */
     @Async
@@ -143,24 +147,31 @@ public class EmailingService {
         String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_COMMENT_TO_ADMIN, locale);
 
         String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_ADMIN, locale,
-            speaker.getFirstname() + " " + speaker.getLastname(), talk.getName());
+        String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_ADMIN, locale, speaker.getFirstname() + " " + speaker.getLastname(),
+                talk.getName());
 
         // To address must not be null => from = to
-        sendEmail(emailingSettings.getEmailSender(), subject, content, bcc);
+        sendEmail(emailingSettings.getEmailSender(), subject, content, null, bcc);
     }
 
     /**
-     * Send Confirmation of your session.
+     * Send Confirmation of selection.
      *
-     * @param user
      * @param talk
      * @param locale
      */
     @Async
-    public void sendNotSelectionned(User user, TalkUser talk, Locale locale) {
-        log.debug("Sending not sectioned e-mail to '{}'", user.getEmail());
+    public void sendNotSelectionned(TalkUser talk, Locale locale) {
+        UserProfil user = talk.getSpeaker();
 
+        log.debug("Sending not selectionned e-mail to '{}'", user.getEmail());
+
+        List<String> cc = new ArrayList<>();
+        if (talk.getCospeakers() != null) {
+            for (CospeakerProfil cospeakerProfil : talk.getCospeakers()) {
+                cc.add(cospeakerProfil.getEmail());
+            }
+        }
         HashMap<String, String> map = new HashMap<>();
         map.put("name", user.getFirstname());
         map.put("talk", talk.getName());
@@ -173,13 +184,21 @@ public class EmailingService {
         String content = processContent(templatePath, map);
         String subject = emailingSettings.getSubject(EmailType.NOT_SELECTIONNED, locale);
 
-        sendEmail(user.getEmail(), subject, content, null);
+        sendEmail(user.getEmail(), subject, content, cc, null);
     }
 
     @Async
-    public void sendPending(User user, TalkUser talk, Locale locale) {
-        log.debug("Sending not sectioned e-mail to '{}'", user.getEmail());
+    public void sendPending(TalkUser talk, Locale locale) {
+        UserProfil user = talk.getSpeaker();
 
+        log.debug("Sending pending e-mail to '{}'", user.getEmail());
+
+        List<String> cc = new ArrayList<>();
+        if (talk.getCospeakers() != null) {
+            for (CospeakerProfil cospeakerProfil : talk.getCospeakers()) {
+                cc.add(cospeakerProfil.getEmail());
+            }
+        }
         HashMap<String, String> map = new HashMap<>();
         map.put("name", user.getFirstname());
         map.put("talk", talk.getName());
@@ -192,13 +211,21 @@ public class EmailingService {
         String content = processContent(templatePath, map);
         String subject = emailingSettings.getSubject(EmailType.PENDING, locale);
 
-        sendEmail(user.getEmail(), subject, content, null);
+        sendEmail(user.getEmail(), subject, content, cc, null);
     }
 
     @Async
-    public void sendSelectionned(User user, TalkUser talk, Locale locale) {
-        log.debug("Sending not sectioned e-mail to '{}'", user.getEmail());
+    public void sendSelectionned(TalkUser talk, Locale locale) {
+        UserProfil user = talk.getSpeaker();
 
+        log.debug("Sending selectionned e-mail to '{}'", user.getEmail());
+
+        List<String> cc = new ArrayList<>();
+        if (talk.getCospeakers() != null) {
+            for (CospeakerProfil cospeakerProfil : talk.getCospeakers()) {
+                cc.add(cospeakerProfil.getEmail());
+            }
+        }
         HashMap<String, String> map = new HashMap<>();
         map.put("name", user.getFirstname());
         map.put("talk", talk.getName());
@@ -212,7 +239,7 @@ public class EmailingService {
         String content = processContent(templatePath, map);
         String subject = emailingSettings.getSubject(EmailType.SELECTIONNED, locale);
 
-        sendEmail(user.getEmail(), subject, content, null);
+        sendEmail(user.getEmail(), subject, content, cc, null);
     }
 
     /**
@@ -237,10 +264,10 @@ public class EmailingService {
         String content = processContent(templatePath, map);
         String subject = emailingSettings.getSubject(EmailType.VERIFY, locale);
 
-        sendEmail(user.getEmail(), subject, content, null);
+        sendEmail(user.getEmail(), subject, content, null, null);
     }
 
-    public void sendEmail(String to, String subject, String content, List<String> bcc) {
+    public void sendEmail(String to, String subject, String content, List<String> cc, List<String> bcc) {
         if (!emailingSettings.isSend())
             return;
 
@@ -252,6 +279,9 @@ public class EmailingService {
             helper.setTo(to);
             if (bcc != null) {
                 helper.setBcc(bcc.toArray(new String[bcc.size()]));
+            }
+            if (cc != null) {
+                helper.setCc(cc.toArray(new String[cc.size()]));
             }
             helper.setSubject(subject);
             helper.setText(content, true);

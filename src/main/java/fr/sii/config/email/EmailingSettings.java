@@ -38,9 +38,9 @@ public class EmailingSettings {
   private final static Map<EmailType, String> SUBJECTS_EN = new HashMap<>();
 
   static {
-    SUBJECTS_FR.put(EmailType.SELECTIONNED, "Confirmation de votre session");
+    SUBJECTS_FR.put(EmailType.SELECTIONNED, "Votre proposition a été acceptée");
     SUBJECTS_FR.put(EmailType.PENDING, "Confirmation de votre session");
-    SUBJECTS_FR.put(EmailType.NOT_SELECTIONNED, "Confirmation de votre session");
+    SUBJECTS_FR.put(EmailType.NOT_SELECTIONNED, "Votre proposition a été refusée");
     SUBJECTS_FR.put(EmailType.CONFIRMED, "Confirmation de votre session");
     SUBJECTS_FR.put(EmailType.NEW_COMMENT_TO_SPEAKER, "Nouveau commentaire sur le talk %s");
     SUBJECTS_FR.put(EmailType.NEW_COMMENT_TO_ADMIN, "Speaker %s a posté un commentaire pour le talk %s");
@@ -48,9 +48,9 @@ public class EmailingSettings {
   }
 
   static {
-    SUBJECTS_EN.put(EmailType.SELECTIONNED, "Confirmation of your session");
+    SUBJECTS_EN.put(EmailType.SELECTIONNED, "Your proposal has been accepted");
     SUBJECTS_EN.put(EmailType.PENDING, "Confirmation of your session");
-    SUBJECTS_EN.put(EmailType.NOT_SELECTIONNED, "Confirmation of your session");
+    SUBJECTS_EN.put(EmailType.NOT_SELECTIONNED, "Your proposal has been refused");
     SUBJECTS_EN.put(EmailType.CONFIRMED, "Confirmation of your session");
     SUBJECTS_EN.put(EmailType.NEW_COMMENT_TO_SPEAKER, "New comment about talk %s");
     SUBJECTS_EN.put(EmailType.NEW_COMMENT_TO_ADMIN, "Speaker %s posted a new comment on talk %s");
