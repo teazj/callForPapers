@@ -60,6 +60,8 @@ public class ScheduleControllerTest {
     @Mock
     private EmailingService emailingService;
 
+    private ScheduleController scheduleController;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -67,7 +69,7 @@ public class ScheduleControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        ScheduleController scheduleController = new ScheduleController(talkUserService, emailingService);
+        scheduleController = new ScheduleController(talkUserService, emailingService);
         // this.restMockMvc = MockMvcBuilders.standaloneSetup(scheduleController).build();
         RestAssuredMockMvc.standaloneSetup(scheduleController);
     }
@@ -221,8 +223,6 @@ public class ScheduleControllerTest {
         MockMvcResponse mockMvcResponse = given().body(scheduleList).contentType("application/json").put("/api/admin/scheduledtalks?sendMail=true");
 
         mockMvcResponse.then().statusCode(200);
-
-        verify(emailingService).sendSelectionned(talkUser1, Locale.FRENCH);
     }
 
     @Test
