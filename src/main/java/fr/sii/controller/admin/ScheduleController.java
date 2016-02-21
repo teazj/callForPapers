@@ -108,25 +108,27 @@ public class ScheduleController {
     @RequestMapping(value = "/scheduledtalks", method = RequestMethod.PUT)
     public Map<String, List<TalkUser>> putScheduleList(@RequestBody List<Schedule> scheduleList, @RequestParam(defaultValue = "false", required = false) boolean sendMail) {
         LOG.info("PUT /scheduledtalks");
-        List<TalkUser> refused = talkUserService.findAll(Talk.State.ACCEPTED, Talk.State.CONFIRMED, Talk.State.REFUSED);
-        List<TalkUser> accepted = new ArrayList<>();
 
         scheduleList.forEach(s -> {
             LocalDateTime dateEventStart = LocalDateTime.parse(s.getEventStart(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             // update database
             TalkUser talkUser = talkUserService.updateConfirmedTalk(s.getId(), dateEventStart);
-            // add to confirmed list
-            accepted.add(talkUser);
-            // update refused list
-            refused.remove(talkUser);
         });
 
-        if (sendMail) {
-            sendMailsWithTempo(refused, accepted);
-        }
         Map<String, List<TalkUser>> result = new HashMap<>();
+
+        List<TalkUser> refused = talkUserService.findAll(Talk.State.REFUSED);
+        List<TalkUser> accepted = talkUserService.findAll(Talk.State.ACCEPTED);
+
+        result.put("confirmed", talkUserService.findAll(Talk.State.CONFIRMED));
+        result.put("draft", talkUserService.findAll(Talk.State.DRAFT));
         result.put("accepted", accepted);
         result.put("refused", refused);
+        result.put("backup", talkUserService.findAll(Talk.State.BACKUP));
+
+        if (sendMail) {
+            sendMailsWithTempo(accepted, refused);
+        }
 
         return result;
     }
@@ -138,25 +140,28 @@ public class ScheduleController {
     @RequestMapping(value = "/scheduledtalks/notification", method = RequestMethod.POST)
     public Map<String, List<TalkUser>> notifyScheduling() {
         LOG.info("POST /scheduledtalks/notification");
+
+
+        Map<String, List<TalkUser>> result = new HashMap<>();
+
         List<TalkUser> refused = talkUserService.findAll(Talk.State.REFUSED);
         List<TalkUser> accepted = talkUserService.findAll(Talk.State.ACCEPTED);
 
-        sendMailsWithTempo(refused, accepted);
-
-        Map<String, List<TalkUser>> result = new HashMap<>();
-        result.put("confirmed", accepted);
+        result.put("confirmed", talkUserService.findAll(Talk.State.CONFIRMED));
+        result.put("draft", talkUserService.findAll(Talk.State.DRAFT));
+        result.put("accepted", accepted);
         result.put("refused", refused);
+        result.put("backup", talkUserService.findAll(Talk.State.BACKUP));
+
+        sendMailsWithTempo(accepted, refused);
 
         return result;
     }
 
     /**
      * To help Google Compute Engine we wait 2 s between 2 mails.
-     *
-     * @param refused
-     * @param accepted
      */
-    private void sendMailsWithTempo(List<TalkUser> refused, List<TalkUser> accepted) {
+    private void sendMailsWithTempo(List<TalkUser> accepted, List<TalkUser> refused) {
         accepted.forEach(t -> {
                     try {
                         Thread.sleep(2000);

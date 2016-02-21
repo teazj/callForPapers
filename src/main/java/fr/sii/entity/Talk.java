@@ -26,7 +26,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "talks")
 public class Talk {
-    public enum State { DRAFT, CONFIRMED, ACCEPTED, REFUSED }
+    public enum State { DRAFT, CONFIRMED, ACCEPTED, REFUSED, BACKUP }
 
     private int id;
     private State state;
