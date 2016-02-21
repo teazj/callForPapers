@@ -152,7 +152,7 @@ public class TalkUserService {
         String hour = eventStart.format(DateTimeFormatter.ofPattern("HH:mm"));
 
         Talk talk = talkRepo.findOne(talkId);
-        talk.setState(Talk.State.CONFIRMED);
+        talk.setState(Talk.State.ACCEPTED);
         talk.setDate(eventDate);
         talk.setHeure(hour);
         talk = talkRepo.saveAndFlush(talk);
