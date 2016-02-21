@@ -122,8 +122,7 @@ public class ScheduleController {
         });
 
         if (sendMail) {
-            accepted.forEach(t -> emailingService.sendSelectionned(t, Locale.FRENCH));
-            refused.forEach(t -> emailingService.sendNotSelectionned(t, Locale.FRENCH));
+            sendMailsWithTempo(refused, accepted);
         }
         Map<String, List<TalkUser>> result = new HashMap<>();
         result.put("accepted", accepted);
@@ -131,6 +130,7 @@ public class ScheduleController {
 
         return result;
     }
+
 
     /**
      * Notify by mails scheduling result.
@@ -141,8 +141,7 @@ public class ScheduleController {
         List<TalkUser> refused = talkUserService.findAll(Talk.State.REFUSED);
         List<TalkUser> accepted = talkUserService.findAll(Talk.State.ACCEPTED);
 
-        accepted.forEach(t -> emailingService.sendSelectionned(t, Locale.FRENCH));
-        refused.forEach(t -> emailingService.sendNotSelectionned(t, Locale.FRENCH));
+        sendMailsWithTempo(refused, accepted);
 
         Map<String, List<TalkUser>> result = new HashMap<>();
         result.put("confirmed", accepted);
@@ -150,5 +149,32 @@ public class ScheduleController {
 
         return result;
     }
+
+    /**
+     * To help Google Compute Engine we wait 2 s between 2 mails.
+     *
+     * @param refused
+     * @param accepted
+     */
+    private void sendMailsWithTempo(List<TalkUser> refused, List<TalkUser> accepted) {
+        accepted.forEach(t -> {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        LOG.warn("Thread Interrupted Exception", e);
+                    }
+                    emailingService.sendSelectionned(t, Locale.FRENCH);
+                }
+        );
+        refused.forEach(t -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                LOG.warn("Thread Interrupted Exception", e);
+            }
+            emailingService.sendNotSelectionned(t, Locale.FRENCH);
+        });
+    }
+
 
 }
