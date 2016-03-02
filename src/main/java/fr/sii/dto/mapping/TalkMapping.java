@@ -3,6 +3,7 @@ package fr.sii.dto.mapping;
 import org.springframework.stereotype.Component;
 
 import fr.sii.config.mapping.Mapping;
+import fr.sii.dto.Speaker;
 import fr.sii.dto.TalkUser;
 import fr.sii.dto.user.UserProfil;
 import fr.sii.dto.user.CospeakerProfil;
@@ -62,6 +63,12 @@ public class TalkMapping implements Mapping {
                 })
                 .byDefault()
                 .register();
+
+
+        mapperFactory.classMap(User.class, Speaker.class)
+            .byDefault()
+            .register();
+
 
     }
 }

@@ -3,6 +3,7 @@ package fr.sii.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.sii.domain.exception.CospeakerNotFoundException;
+import fr.sii.dto.Speaker;
+import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
 import fr.sii.dto.TrackDto;
 import fr.sii.dto.user.CospeakerProfil;
@@ -58,6 +61,30 @@ public class TalkUserService {
     public List<TalkUser> findAll(Talk.State... states) {
         List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
+    }
+
+    public  List<Speaker> findAllSpeaker(Talk.State... states) {
+        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
+        List<Speaker> speakers = new ArrayList<>();
+        //TODO gestion des doublons
+        for(Talk talk : talks){
+            if(talk.getUser() != null){
+                Speaker  speaker =  mapper.convert(talk.getUser() , Speaker.class,null);
+                if(speaker != null){
+                    speakers.add(speaker);
+                }
+            }
+
+            if(talk.getCospeakers() != null){
+                Speaker  speaker =  mapper.convert(talk.getCospeakers(), Speaker.class,null);
+                if(speaker != null){
+                    speakers.add(speaker);
+                }
+            }
+
+        }
+
+        return speakers;
     }
 
     /**
@@ -307,4 +334,6 @@ public class TalkUserService {
         }
         talk.setCospeakers(users);
     }
+
+
 }
