@@ -5,6 +5,7 @@ package fr.sii.dto;
  */
 public class Speaker {
 
+    private int id;
     private String lastname;
     private String firstname;
     private String company;
@@ -85,5 +86,21 @@ public class Speaker {
 
     public void setImageProfilURL(String imageProfilURL) {
         this.imageProfilURL = imageProfilURL;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Speaker speaker = (Speaker) o;
+
+        return id == speaker.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

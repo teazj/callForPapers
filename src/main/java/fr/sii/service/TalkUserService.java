@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,26 +66,24 @@ public class TalkUserService {
 
     public  List<Speaker> findAllSpeaker(Talk.State... states) {
         List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
-        List<Speaker> speakers = new ArrayList<>();
-        //TODO gestion des doublons
+        Set<Speaker> speakers = new HashSet<>();
         for(Talk talk : talks){
-            if(talk.getUser() != null){
-                Speaker  speaker =  mapper.convert(talk.getUser() , Speaker.class,null);
-                if(speaker != null){
+            if(talk.getUser() != null) {
+                Speaker speaker = mapper.map(talk.getUser(), Speaker.class);
+                if (speaker != null && !speakers.contains(speaker)) {
                     speakers.add(speaker);
                 }
             }
 
-            if(talk.getCospeakers() != null){
-                Speaker  speaker =  mapper.convert(talk.getCospeakers(), Speaker.class,null);
-                if(speaker != null){
-                    speakers.add(speaker);
+            if(talk.getCospeakers() != null && !talk.getCospeakers().isEmpty()) {
+                List<Speaker> coSpeaker = mapper.mapAsList(talk.getCospeakers(), Speaker.class);
+                if (coSpeaker != null ) {
+                    speakers.addAll(coSpeaker);
                 }
             }
-
         }
 
-        return speakers;
+        return new ArrayList<Speaker>(speakers);
     }
 
     /**

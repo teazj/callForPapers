@@ -69,6 +69,10 @@ public class TalkMapping implements Mapping {
             .byDefault()
             .register();
 
+        mapperFactory.classMap(User.class, Speaker.class)
+                .byDefault()
+                .register();
+
 
     }
 }
