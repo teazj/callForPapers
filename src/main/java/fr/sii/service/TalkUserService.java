@@ -3,16 +3,20 @@ package fr.sii.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.sii.domain.exception.CospeakerNotFoundException;
+import fr.sii.dto.Speaker;
+import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
 import fr.sii.dto.TrackDto;
 import fr.sii.dto.user.CospeakerProfil;
@@ -58,6 +62,28 @@ public class TalkUserService {
     public List<TalkUser> findAll(Talk.State... states) {
         List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
+    }
+
+    public  List<Speaker> findAllSpeaker(Talk.State... states) {
+        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
+        Set<Speaker> speakers = new HashSet<>();
+        for(Talk talk : talks){
+            if(talk.getUser() != null) {
+                Speaker speaker = mapper.map(talk.getUser(), Speaker.class);
+                if (speaker != null && !speakers.contains(speaker)) {
+                    speakers.add(speaker);
+                }
+            }
+
+            if(talk.getCospeakers() != null && !talk.getCospeakers().isEmpty()) {
+                List<Speaker> coSpeaker = mapper.mapAsList(talk.getCospeakers(), Speaker.class);
+                if (coSpeaker != null ) {
+                    speakers.addAll(coSpeaker);
+                }
+            }
+        }
+
+        return new ArrayList<Speaker>(speakers);
     }
 
     /**
@@ -307,4 +333,6 @@ public class TalkUserService {
         }
         talk.setCospeakers(users);
     }
+
+
 }
