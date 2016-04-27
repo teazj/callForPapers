@@ -10,13 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fr.sii.entity.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.sii.domain.exception.CospeakerNotFoundException;
 import fr.sii.dto.Speaker;
-import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.TalkUser;
 import fr.sii.dto.TrackDto;
 import fr.sii.dto.user.CospeakerProfil;
@@ -60,12 +60,12 @@ public class TalkUserService {
      * @return List of talks
      */
     public List<TalkUser> findAll(Talk.State... states) {
-        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
+        List<Talk> talks = talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
     }
 
     public  List<Speaker> findAllSpeaker(Talk.State... states) {
-        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
+        List<Talk> talks = talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states));
         Set<Speaker> speakers = new HashSet<>();
         for(Talk talk : talks){
             if(talk.getUser() != null) {
@@ -96,7 +96,7 @@ public class TalkUserService {
      * @return List of talks
      */
     public List<TalkUser> findAll(int userId, Talk.State... states) {
-        List<Talk> talks = talkRepo.findByUserIdAndStateIn(userId, Arrays.asList(states));
+        List<Talk> talks = talkRepo.findByEventIdAndUserIdAndStateIn(Event.current(), userId, Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
     }
 
@@ -110,7 +110,7 @@ public class TalkUserService {
      * @return List of talks
      */
     public List<TalkUser> findAllCospeakerTalks(int userId, Talk.State... states) {
-        List<Talk> talks = talkRepo.findByCospeakerIdAndStateIn(userId, Arrays.asList(states));
+        List<Talk> talks = talkRepo.findByEventIdAndCospeakerIdAndStateIn(Event.current(), userId, Arrays.asList(states));
         return mapper.mapAsList(talks, TalkUser.class);
     }
 
@@ -132,7 +132,7 @@ public class TalkUserService {
      * @return Number of talks
      */
     public int count(int userId) {
-        return talkRepo.countByUserId(userId);
+        return talkRepo.countByEventIdAndUserId(Event.current(), userId);
     }
 
     /**
@@ -145,12 +145,12 @@ public class TalkUserService {
      * @return Talk or null if not found
      */
     public TalkUser getOne(int userId, int talkId) {
-        Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
+        Talk talk = talkRepo.findByIdAndEventIdAndUserId(talkId, Event.current(), userId);
         return mapper.map(talk, TalkUser.class);
     }
 
     public TalkUser getOneCospeakerTalk(int userId, int talkId) {
-        Talk talk = talkRepo.findByIdAndCospeakers(talkId, userId);
+        Talk talk = talkRepo.findByIdAndEventIdAndCospeakers(talkId, Event.current(), userId);
         return mapper.map(talk, TalkUser.class);
     }
 
@@ -177,7 +177,7 @@ public class TalkUserService {
         Date eventDate = Date.from(eventStart.atZone(ZoneId.systemDefault()).toInstant());
         String hour = eventStart.format(DateTimeFormatter.ofPattern("HH:mm"));
 
-        Talk talk = talkRepo.findOne(talkId);
+        Talk talk = talkRepo.findByIdAndEventId(talkId, Event.current());
         talk.setState(Talk.State.ACCEPTED);
         talk.setDate(eventDate);
         talk.setHeure(hour);
@@ -235,7 +235,7 @@ public class TalkUserService {
      * @return Talk deleted or null if inexistant
      */
     public TalkUser deleteDraft(int userId, int talkId) {
-        Talk talk = talkRepo.findByIdAndUserId(talkId, userId);
+        Talk talk = talkRepo.findByIdAndEventIdAndUserId(talkId, Event.current(), userId);
 
         if (talk.getState() != Talk.State.DRAFT)
             return null;
@@ -250,7 +250,7 @@ public class TalkUserService {
      * @return List of talk formats
      */
     public List<TalkFormat> getTalkFormat() {
-        return talkFormatRepo.findAll();
+        return talkFormatRepo.findByEventId(Event.current());
     }
 
     /**
@@ -259,7 +259,7 @@ public class TalkUserService {
      * @return List of talk tracks
      */
     public List<TrackDto> getTracks() {
-        List<Track> tracks = trackRepo.findAll();
+        List<Track> tracks = trackRepo.findByEventId(Event.current());
         return mapper.mapAsList(tracks, TrackDto.class);
     }
 
@@ -300,7 +300,7 @@ public class TalkUserService {
      * @return Talk updated or null if not existing
      */
     private TalkUser editTalk(int userId, TalkUser talkUser, Talk.State newState) throws CospeakerNotFoundException {
-        Talk talk = talkRepo.findByIdAndUserId(talkUser.getId(), userId);
+        Talk talk = talkRepo.findByIdAndEventIdAndUserId(talkUser.getId(), Event.current(), userId);
         if (talk == null)
             return null;
         if (talk.getState() != Talk.State.DRAFT)
@@ -309,8 +309,8 @@ public class TalkUserService {
         setCoSpeaker(talkUser, talk);
 
         talkUser.setState(newState);
-        talk.setTrack(trackRepo.findOne(talkUser.getTrackId()));
-        talk.setTalkFormat(talkFormatRepo.findOne(talkUser.getFormat()));
+        talk.setTrack(trackRepo.findByIdAndEventId(talkUser.getTrackId(), Event.current()));
+        talk.setTalkFormat(talkFormatRepo.findByIdAndEventId(talkUser.getFormat(), Event.current()));
         mapper.map(talkUser, talk);
 
         talkRepo.save(talk);

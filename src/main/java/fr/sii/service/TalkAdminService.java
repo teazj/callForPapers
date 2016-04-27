@@ -3,6 +3,7 @@ package fr.sii.service;
 import fr.sii.dto.TalkAdmin;
 import fr.sii.dto.user.UserProfil;
 import fr.sii.entity.AdminUser;
+import fr.sii.entity.Event;
 import fr.sii.entity.Rate;
 import fr.sii.entity.Talk;
 import fr.sii.repository.RateRepo;
@@ -11,7 +12,6 @@ import fr.sii.repository.TrackRepo;
 import fr.sii.repository.UserRepo;
 import fr.sii.entity.User;
 
-import fr.sii.entity.TalkFormat;
 import fr.sii.dto.user.CospeakerProfil;
 import fr.sii.domain.exception.CospeakerNotFoundException;
 
@@ -25,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 
@@ -66,8 +64,8 @@ public class TalkAdminService {
      * @return List of talks
      */
     public List<TalkAdmin> findAll(Talk.State... states) {
-        List<Talk> talks = talkRepo.findByStatesFetch(Arrays.asList(states));
-        List<Rate> rates = rateRepo.findAllFetchAdmin();
+        List<Talk> talks = talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states));
+        List<Rate> rates = rateRepo.findAllFetchAdmin(Event.current());
 
         AdminUser admin = adminUserService.getCurrentUser();
         Map<Integer, List<Rate>> reviewed = rates.stream()
@@ -98,7 +96,7 @@ public class TalkAdminService {
      * @return Talk or null if not found
      */
     public TalkAdmin getOne(int talkId) {
-        Talk talk = talkRepo.findOne(talkId);
+        Talk talk = talkRepo.findByIdAndEventId(talkId, Event.current());
         TalkAdmin talkAdmin = mapper.map(talk, TalkAdmin.class);
         UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
         user.setImageProfilURL(talk.getUser().getImageProfilURL());
@@ -113,12 +111,12 @@ public class TalkAdminService {
      * @return Edited talk
      */
     public TalkAdmin edit(TalkAdmin talkAdmin)  throws CospeakerNotFoundException {
-      Talk talk = talkRepo.findOne(talkAdmin.getId());
+      Talk talk = talkRepo.findByIdAndEventId(talkAdmin.getId(), Event.current());
       if (talk == null) return null;
 
 
-      talk.setTrack(trackRepo.findOne(talkAdmin.getTrackId()));
-      talk.setTalkFormat(talkFormatRepo.findOne(talkAdmin.getFormat()));
+      talk.setTrack(trackRepo.findByIdAndEventId(talkAdmin.getTrackId(), Event.current()));
+      talk.setTalkFormat(talkFormatRepo.findByIdAndEventId(talkAdmin.getFormat(), Event.current()));
       setCoSpeaker(talkAdmin, talk);
 
       mapper.map(talkAdmin, talk);
@@ -155,7 +153,7 @@ public class TalkAdminService {
      * @return Deleted talk
      */
     public TalkAdmin delete(int talkId) {
-        Talk talk = talkRepo.findOne(talkId);
+        Talk talk = talkRepo.findByIdAndEventId(talkId, Event.current());
         TalkAdmin deleted = mapper.map(talk, TalkAdmin.class);
         talkRepo.delete(talk);
         return deleted;
