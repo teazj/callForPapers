@@ -46,9 +46,6 @@ public abstract class RestrictedController {
             throw new NotVerifiedException("Claims Set is null");
         }
 
-        if (claimsSet.getClaim("verified") == null || !(boolean) claimsSet.getClaim("verified")) {
-            throw new NotVerifiedException("User [" + claimsSet.getSubject() + "] must be verified");
-        }
         return users.findByEmail(claimsSet.getSubject());
     }
 }

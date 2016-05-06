@@ -25,12 +25,8 @@ import io.cfp.service.auth.AuthUtils;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.text.ParseException;
 
@@ -54,7 +50,7 @@ public class AuthTest {
     public void test1_createToken() {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost", "1", true);
+            token = AuthUtils.createToken("testHost", "1");
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
@@ -66,7 +62,7 @@ public class AuthTest {
     public void test2_decodeToken() {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost", "1", true);
+            token = AuthUtils.createToken("testHost", "1");
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
@@ -83,7 +79,7 @@ public class AuthTest {
     public void test3_verifyToken() {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost", "1", true);
+            token = AuthUtils.createToken("testHost", "1");
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
@@ -107,7 +103,7 @@ public class AuthTest {
     public void test4_verifyTokenFail() {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost", "1", true);
+            token = AuthUtils.createToken("testHost", "1");
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();

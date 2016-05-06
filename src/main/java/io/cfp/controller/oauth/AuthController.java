@@ -94,7 +94,7 @@ public class AuthController {
             if (foundUser.getPassword() != null) {
                 if (PasswordService.checkPassword(user.getPassword(), foundUser.getPassword())) {
                     logger.info("User [{}] logged in with [password]", user.getEmail());
-                    return AuthUtils.createToken(httpServletRequest.getRemoteHost(), foundUser.getEmail(), foundUser.isVerified());
+                    return AuthUtils.createToken(httpServletRequest.getRemoteHost(), foundUser.getEmail());
 
                 } else {
                     logger.warn("User [{}] password mismatch", user.getEmail());
@@ -158,7 +158,7 @@ public class AuthController {
         }
 
         // Return JWT
-        return AuthUtils.createToken(httpServletRequest.getRemoteHost(), savedUser.getEmail(), savedUser.isVerified());
+        return AuthUtils.createToken(httpServletRequest.getRemoteHost(), savedUser.getEmail());
     }
 
     /**
@@ -200,7 +200,7 @@ public class AuthController {
                 foundUser.setVerified(true);
                 foundUser.setVerifyToken(null);
                 User savedUser = userService.save(foundUser);
-                token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEmail(), savedUser.isVerified());
+                token = AuthUtils.createToken(req.getRemoteHost(), savedUser.getEmail());
                 return token;
             } else {
                 res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);

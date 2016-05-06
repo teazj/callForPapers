@@ -21,7 +21,6 @@
 import com.jayway.restassured.response.Header;
 import com.nimbusds.jose.JOSEException;
 import io.cfp.config.filter.AuthFilter;
-import io.cfp.config.filter.CsrfFilter;
 import io.cfp.domain.token.Token;
 import io.cfp.service.auth.AuthUtils;
 import org.joda.time.DateTime;
@@ -35,7 +34,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -64,7 +62,7 @@ public class AuthFilterTest {
     {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost","1",true);
+            token = AuthUtils.createToken("testHost","1");
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
@@ -76,7 +74,7 @@ public class AuthFilterTest {
     {
         Token token = null;
         try {
-            token = AuthUtils.createToken("testHost","1",false);
+            token = AuthUtils.createToken("testHost","1");
             token.getToken();
         } catch (JOSEException e) {
             e.printStackTrace();
