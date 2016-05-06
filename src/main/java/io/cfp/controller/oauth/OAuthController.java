@@ -125,6 +125,6 @@ abstract class OAuthController {
         }
 
         logger.info("User [{}] logged in with [{}]", userToSave.getEmail(), provider);
-        return AuthUtils.createToken(httpServletRequest.getRemoteHost(), "" + userToSave.getId(), true);
+        return AuthUtils.createToken(httpServletRequest.getRemoteHost(), userToSave.getEmail());
     }
 }

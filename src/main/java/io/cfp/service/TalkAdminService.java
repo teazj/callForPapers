@@ -158,11 +158,11 @@ public class TalkAdminService {
 
          HashSet<User> users = new HashSet<User>();
          for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
-             List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
-             if (existingUser.isEmpty()) {
+             User u = userRepo.findByEmail(cospeaker.getEmail());
+             if (u == null) {
                  throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
              }
-             users.add(existingUser.get(0));
+             users.add(u);
          }
          talk.setCospeakers(users);
      }

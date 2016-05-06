@@ -41,7 +41,7 @@ import java.text.ParseException;
  */
 public final class AuthUtils {
 
-    private static final JWSHeader JWT_HEADER = new JWSHeader(JWSAlgorithm.HS256);
+    private static final JWSHeader JWT_HEADER = new JWSHeader(JWSAlgorithm.HS512);
     public static final String AUTH_HEADER_KEY = "Authorization";
 
     public static String TOKEN_SECRET;
@@ -100,15 +100,13 @@ public final class AuthUtils {
      * Create JWT token
      * @param host
      * @param sub
-     * @param verified
      * @return
      * @throws JOSEException
      */
-    public static Token createToken(String host, String sub, boolean verified) throws JOSEException {
+    public static Token createToken(String host, String sub) throws JOSEException {
         JWTClaimsSet claim = new JWTClaimsSet();
         claim.setSubject(sub);
         claim.setIssuer(host);
-        claim.setCustomClaim("verified", verified);
         claim.setIssueTime(DateTime.now().toDate());
         claim.setExpirationTime(DateTime.now().plusDays(14).toDate());
 

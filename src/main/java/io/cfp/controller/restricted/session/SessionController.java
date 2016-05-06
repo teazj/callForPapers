@@ -33,14 +33,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.cfp.config.global.GlobalSettings;
 import io.cfp.controller.restricted.RestrictedController;
 import io.cfp.domain.exception.NotVerifiedException;
 import io.cfp.domain.exception.CospeakerNotFoundException;
 import io.cfp.dto.TalkUser;
-import io.cfp.dto.TrackDto;
 import io.cfp.entity.Talk;
-import io.cfp.entity.TalkFormat;
 import io.cfp.entity.User;
 import io.cfp.repository.UserRepo;
 import io.cfp.service.TalkUserService;
@@ -64,10 +61,9 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value="/sessions", method=RequestMethod.POST)
     public TalkUser submitTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws Exception, CospeakerNotFoundException  {
-        int userId = retrieveUserId(req);
-        TalkUser savedTalk = talkService.submitTalk(userId, talkUser);
+        User user = retrieveUser(req);
+        TalkUser savedTalk = talkService.submitTalk(user.getId(), talkUser);
 
-        User user = userRepo.findOne(userId);
         if (user != null && savedTalk != null) {
             Locale userPreferredLocale = req.getLocale();
             emailingService.sendConfirmed(user, savedTalk, userPreferredLocale);
@@ -81,9 +77,9 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value = "/sessions", method = RequestMethod.GET)
     public List<TalkUser> listTalks(HttpServletRequest req) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
-        return talkService.findAll(userId, Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
+        return talkService.findAll(user.getId(), Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
     }
 
     /**
@@ -91,9 +87,9 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value = "/sessions/{talkId}", method = RequestMethod.GET)
     public TalkUser getGoogleSpreadsheet(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
-        return talkService.getOne(userId, talkId);
+        return talkService.getOne(user.getId(), talkId);
     }
 
     /**
@@ -101,11 +97,10 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value= "/sessions/{talkId}", method=RequestMethod.PUT)
     public TalkUser submitDraftToTalk(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws Exception, CospeakerNotFoundException {
-        int userId = retrieveUserId(req);
-        User user = userRepo.findOne(userId);
+        User user = retrieveUser(req);
 
         talkUser.setId(talkId);
-        TalkUser savedTalk = talkService.submitDraftToTalk(userId, talkUser);
+        TalkUser savedTalk = talkService.submitDraftToTalk(user.getId(), talkUser);
 
         if (user != null && savedTalk != null) {
             Locale userPreferredLocale = req.getLocale();
@@ -120,8 +115,8 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value="/drafts", method=RequestMethod.POST)
     public TalkUser addDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser) throws NotVerifiedException, CospeakerNotFoundException {
-        int userId = retrieveUserId(req);
-        return talkService.addDraft(userId, talkUser);
+        User user = retrieveUser(req);
+        return talkService.addDraft(user.getId(), talkUser);
     }
 
     /**
@@ -129,9 +124,9 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value = "/drafts", method = RequestMethod.GET)
     public List<TalkUser> listDrafts(HttpServletRequest req) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
-        return talkService.findAll(userId, Talk.State.DRAFT);
+        return talkService.findAll(user.getId(), Talk.State.DRAFT);
     }
 
     /**
@@ -139,9 +134,9 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value = "/drafts/{talkId}", method = RequestMethod.GET)
     public TalkUser getDraft(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
-        return talkService.getOne(userId, talkId);
+        return talkService.getOne(user.getId(), talkId);
     }
 
     /**
@@ -149,9 +144,9 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value = "/drafts/{talkId}", method = RequestMethod.DELETE)
     public TalkUser deleteDraft(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
-        return talkService.deleteDraft(userId, talkId);
+        return talkService.deleteDraft(user.getId(), talkId);
     }
 
     /**
@@ -159,10 +154,10 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value= "/drafts/{talkId}", method=RequestMethod.PUT)
     public TalkUser editDraft(HttpServletRequest req, @Valid @RequestBody TalkUser talkUser, @PathVariable Integer talkId) throws NotVerifiedException, CospeakerNotFoundException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
         talkUser.setId(talkId);
-        return talkService.editDraft(userId, talkUser);
+        return talkService.editDraft(user.getId(), talkUser);
     }
 
     // /**
@@ -188,16 +183,16 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value="/codrafts", method= RequestMethod.GET)
     public List<TalkUser> getCoDrafts(HttpServletRequest req) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
-        return talkService.findAllCospeakerTalks(userId, Talk.State.DRAFT);
+        User user = retrieveUser(req);
+        return talkService.findAllCospeakerTalks(user.getId(), Talk.State.DRAFT);
     }
     /**
      * Get a co-draft for the current user
      */
     @RequestMapping(value="/codrafts/{talkId}", method= RequestMethod.GET)
     public TalkUser getCoDraft(HttpServletRequest req, @PathVariable Integer talkId) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
-        TalkUser talk = talkService.getOneCospeakerTalk(userId, talkId);
+        User user = retrieveUser(req);
+        TalkUser talk = talkService.getOneCospeakerTalk(user.getId(), talkId);
         return talk;
     }
 
@@ -206,8 +201,8 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value="/cosessions", method= RequestMethod.GET)
     public List<TalkUser> getCoSessions(HttpServletRequest req) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
-        return talkService.findAllCospeakerTalks(userId, Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
+        User user = retrieveUser(req);
+        return talkService.findAllCospeakerTalks(user.getId(), Talk.State.CONFIRMED, Talk.State.ACCEPTED, Talk.State.REFUSED);
     }
 
     /**
@@ -215,8 +210,8 @@ public class SessionController extends RestrictedController {
      */
     @RequestMapping(value = "/cosessions/{talkId}", method = RequestMethod.GET)
     public TalkUser getCoSession(HttpServletRequest  req, @PathVariable Integer talkId) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
-        TalkUser talk = talkService.getOneCospeakerTalk(userId, talkId);
+        User user = retrieveUser(req);
+        TalkUser talk = talkService.getOneCospeakerTalk(user.getId(), talkId);
 
         return talk;
     }

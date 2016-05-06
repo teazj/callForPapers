@@ -55,12 +55,7 @@ public class UserController extends RestrictedController {
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
-        int userId = retrieveUserId(req);
-
-        User u = userService.findById(userId);
-        if (u == null) {
-            throw new NotFoundException("User id [" + userId + "] not found");
-        }
+        User u = retrieveUser(req);
 
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("email", u.getEmail());
@@ -90,12 +85,7 @@ public class UserController extends RestrictedController {
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException {
-        int userId = retrieveUserId(req);
-
-        User u = userService.findById(userId);
-        if (u == null) {
-            throw new NotFoundException("User id [" + userId + "] not found");
-        }
+        User u = retrieveUser(req);
         profil.setEmail(u.getEmail());
         userService.update(u.getId(), profil);
 

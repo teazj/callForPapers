@@ -53,7 +53,7 @@ public class AdminUserController {
             return new AdminUserInfo("./", false, false, false, "");
         }
 
-        AdminUser adminUser = adminUserService.findFromUserId(Integer.parseInt(claimsSet.getSubject()));
+        AdminUser adminUser = adminUserService.findFromEmail(claimsSet.getSubject());
 
         if (adminUser == null) {
             return new AdminUserInfo("./", false, false, false, "");

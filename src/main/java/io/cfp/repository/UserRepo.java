@@ -32,7 +32,7 @@ import io.cfp.entity.User;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-    List<User> findByEmail(String email);
+    User findByEmail(String email);
 
     List<User> findByGoogleId(String providerId);
 

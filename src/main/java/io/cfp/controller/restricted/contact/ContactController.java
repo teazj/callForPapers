@@ -49,9 +49,6 @@ import io.cfp.service.user.UserService;
 public class ContactController extends RestrictedController {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private EmailingService emailingService;
 
     @Autowired
@@ -65,9 +62,9 @@ public class ContactController extends RestrictedController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<CommentUser> getAll(@PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
-        return commentService.findAll(userId, talkId);
+        return commentService.findAll(user.getId(), talkId);
     }
 
     /**
@@ -76,7 +73,7 @@ public class ContactController extends RestrictedController {
     @RequestMapping(method = RequestMethod.POST)
     public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest httpServletRequest)
             throws NotVerifiedException, NotFoundException {
-        User user = userService.findById(retrieveUserId(httpServletRequest));
+        User user = retrieveUser(httpServletRequest);
         if (user == null) {
             throw new NotFoundException("User not found");
         }
@@ -99,10 +96,10 @@ public class ContactController extends RestrictedController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public CommentUser putContact(@PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req)
             throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
         commentUser.setId(id);
-        return commentService.editComment(userId, talkId, commentUser);
+        return commentService.editComment(user.getId(), talkId, commentUser);
     }
 
 }

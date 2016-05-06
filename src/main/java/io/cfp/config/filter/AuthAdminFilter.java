@@ -57,12 +57,12 @@ public class AuthAdminFilter extends AuthFilter {
 
         try {
             JWTClaimsSet token = readToken(authHeader);
-            int userId = Integer.parseInt(token.getSubject());
+            String email = token.getSubject();
 
-            AdminUser admin = adminUserService.findFromUserId(userId);
+            AdminUser admin = adminUserService.findFromEmail(email);
             if (admin == null) throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, AUTH_ERROR_MSG);
 
-            MDC.put(USER_ID, String.valueOf(userId));
+            MDC.put(USER_ID, email);
             adminUserService.setCurrentAdmin(admin);
             chain.doFilter(request, response);
 
