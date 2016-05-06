@@ -20,11 +20,10 @@
 
 package io.cfp.controller.restricted;
 
-import com.nimbusds.jwt.JWTClaimsSet;
 import io.cfp.domain.exception.NotVerifiedException;
 import io.cfp.dto.RestrictedMeter;
+import io.cfp.entity.User;
 import io.cfp.service.TalkUserService;
-import io.cfp.service.auth.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,10 +39,10 @@ public class StatsController extends RestrictedController {
 
     @RequestMapping("/meter")
     public RestrictedMeter meter(HttpServletRequest req) throws NotVerifiedException {
-        int userId = retrieveUserId(req);
+        User user = retrieveUser(req);
 
         RestrictedMeter res = new RestrictedMeter();
-        res.setTalks(talkService.count(userId));
+        res.setTalks(talkService.count(user.getId()));
         return res;
     }
 

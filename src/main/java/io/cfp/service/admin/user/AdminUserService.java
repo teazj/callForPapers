@@ -53,11 +53,11 @@ public class AdminUserService {
 
     /**
      * Retrieve an admin if the user e-mail match an admin e-mail
-     * @param userId Id of the connected user
+     * @param email Email of the connected user
      * @return AdminUser if existing, null otherwise
      */
-    public AdminUser findFromUserId(int userId) {
-        User user = userRepo.findOne(userId);
+    public AdminUser findFromEmail(String email) {
+        User user = userRepo.findByEmail(email);
         if (user == null) return null;
         return adminUserRepo.findByEventIdAndEmail(Event.current(), user.getEmail());
     }

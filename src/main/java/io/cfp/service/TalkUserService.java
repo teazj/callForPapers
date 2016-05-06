@@ -345,11 +345,11 @@ public class TalkUserService {
             return;
         HashSet<User> users = new HashSet<User>();
         for (CospeakerProfil cospeaker : talkUser.getCospeakers()) {
-            List<User> existingUser = userRepo.findByEmail(cospeaker.getEmail());
-            if (existingUser.isEmpty()) {
+            User existingUser = userRepo.findByEmail(cospeaker.getEmail());
+            if (existingUser == null) {
                 throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
             }
-            users.add(existingUser.get(0));
+            users.add(existingUser);
         }
         talk.setCospeakers(users);
     }

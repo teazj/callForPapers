@@ -431,7 +431,11 @@
             <column name="email" value="info@cfp.io"/>
             <column name="event_id" value="default"/>
         </insert>
+    </changeSet>
 
+    <changeSet id="22" author="ndeloof">
+        <addNotNullConstraint tableName="users" columnDataType="varchar(255)" columnName="email"/>
+        <addUniqueConstraint tableName="users" columnNames="email"/>
     </changeSet>
 
 </databaseChangeLog>

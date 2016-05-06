@@ -59,12 +59,7 @@ public class UserService {
 	}
 
 	public User findByemail(String email) {
-		List<User> users = userRepo.findByEmail(email);
-		if (!users.isEmpty())
-
-			return users.get(0);
-		else
-			return null;
+		return userRepo.findByEmail(email);
 	}
 
 	public User findByVerifyToken(String verifyToken) {
