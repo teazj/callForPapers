@@ -72,7 +72,6 @@ public class AuthTest {
         JWTClaimsSet body = AuthUtils.getTokenBody(request);
 
         assertEquals("1",body.getSubject());
-        assertEquals(true, body.getClaim("verified"));
     }
 
     @Test
