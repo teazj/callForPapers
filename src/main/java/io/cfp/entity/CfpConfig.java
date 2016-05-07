@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
  * Created by lhuet on 21/11/15.
  */
 @Entity
-@Table(name = "cfpconfig", uniqueConstraints = @UniqueConstraint(columnNames = {"key"}) )
+@Table(name = "config", uniqueConstraints = @UniqueConstraint(columnNames = {"key"}) )
 public class CfpConfig {
     private int id;
     private String key;

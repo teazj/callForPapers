@@ -29,6 +29,7 @@ import io.cfp.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
@@ -38,4 +39,7 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     Collection<Role> findByUserEmail(String email);
 
     Role findByUserIdAndEventIdAndName(int userId, String eventId, String role);
+
+    List<Role> findByUserIdAndEventId(int userId, String eventId);
+
 }

@@ -44,4 +44,8 @@ public class Event {
     public static void setCurrent(String tenant) {
         current.set(tenant);
     }
+
+    public static void unsetCurrent() {
+        current.remove();
+    }
 }

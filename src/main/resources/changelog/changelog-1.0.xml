@@ -1,420 +1,196 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="nicolas" id="1">
 
-<!--
-  ~ Copyright (c) 2016 BreizhCamp
-  ~ [http://breizhcamp.org]
-  ~
-  ~ This file is part of CFP.io.
-  ~
-  ~ CFP.io is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
-  -->
-
-<databaseChangeLog
-		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-
-	<changeSet id="1" author="alex">
-		<createTable tableName="users">
-			<column name="id" type="int">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-
-			<column name="email" type="varchar(255)"/>
-			<column name="github_id" type="varchar(255)"/>
-			<column name="google_id" type="varchar(255)"/>
-			<column name="password" type="varchar(62)"/>
-			<column name="verified" type="boolean" defaultValueBoolean="false"/>
-
-			<column name="verify_token" type="varchar(255)"/>
-
-			<!-- user profile -->
-			<column name="lastname" type="varchar(255)"/>
-			<column name="firstname" type="varchar(255)"/>
-			<column name="company" type="varchar(255)"/>
-			<column name="phone" type="varchar(25)"/>
-			<column name="bio" type="text"/>
-			<column name="twitter" type="varchar(255)"/>
-			<column name="googleplus" type="varchar(255)"/>
-			<column name="github" type="varchar(255)"/>
-			<column name="social" type="varchar(255)"/>
-			<column name="image_social_url" type="varchar(255)"/>
-		</createTable>
-
-		<addAutoIncrement tableName="users" columnName="id" columnDataType="int"/>
-	</changeSet>
-
-
-	<changeSet id="2" author="alex">
-		<createTable tableName="admins">
-
-    		<column name="id" type="int">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-
-            <column name="name" type="varchar(255)"/>
-			<column name="email" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-		</createTable>
-
-		<addAutoIncrement tableName="admins" columnName="id" columnDataType="int"/>
-	</changeSet>
-
-    <changeSet id="3" author="alex">
-        <createTable tableName="talks">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-
-            <column name="state" type="varchar(10)"><constraints nullable="false"/></column>
-            <column name="name" type="varchar(255)"><constraints nullable="false"/></column>
-            <column name="type" type="varchar(50)"/>
-            <column name="track" type="varchar(50)"/>
-            <column name="description" type="text"/>
-            <column name="references" type="text"/>
-            <column name="difficulty" type="int"/>
-            <column name="added" type="datetime"/>
-
-            <column name="user" type="int">
-                <constraints foreignKeyName="talk_user" referencedTableName="users" referencedColumnNames="id"/>
-            </column>
-        </createTable>
-
-        <addAutoIncrement tableName="talks" columnName="id" columnDataType="int"/>
-    </changeSet>
-
-    <changeSet id="4" author="alex">
-        <createTable tableName="comments">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-
-            <column name="comment" type="text"><constraints nullable="false"/></column>
-            <column name="added" type="datetime"><constraints nullable="false"/></column>
-            <column name="internal" type="boolean" defaultValueBoolean="false"/>
-
-            <column name="talk" type="int">
-                <constraints foreignKeyName="comment_talk" referencedTableName="talks" referencedColumnNames="id"/>
-            </column>
-            <column name="admin" type="int">
-                <constraints foreignKeyName="comment_admin" referencedTableName="admins" referencedColumnNames="id"/>
-            </column>
-        </createTable>
-
-        <addAutoIncrement tableName="comments" columnName="id" columnDataType="int"/>
-    </changeSet>
-
-    <changeSet id="5" author="alex">
-        <createTable tableName="rates">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-
-            <column name="rate" type="int"><constraints nullable="false"/></column>
-            <column name="added" type="datetime"><constraints nullable="false"/></column>
-            <column name="love" type="boolean" defaultValueBoolean="false"/>
-            <column name="hate" type="boolean" defaultValueBoolean="true"/>
-
-            <column name="talk" type="int">
-                <constraints foreignKeyName="rate_talk" referencedTableName="talks" referencedColumnNames="id"/>
-            </column>
-            <column name="admin" type="int">
-                <constraints foreignKeyName="rate_admin" referencedTableName="admins" referencedColumnNames="id"/>
-            </column>
-        </createTable>
-
-        <addAutoIncrement tableName="rates" columnName="id" columnDataType="int"/>
-    </changeSet>
-
-    <changeSet id="6" author="lhuet">
-        <renameColumn newColumnName="refs"
-                      oldColumnName="references"
-                      columnDataType="text"
-                      tableName="talks"/>
-    </changeSet>
-
-    <changeSet id="7" author="lhuet">
-        <createTable tableName="cfpconfig">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="key" type="varchar(64)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="value" type="varchar(255)"></column>
-        </createTable>
-        <addAutoIncrement tableName="cfpconfig" columnName="id" columnDataType="int"/>
-    </changeSet>
-
-    <changeSet id="8" author="lhuet">
-        <insert tableName="cfpconfig">
-            <column name="key" value="eventName"></column>
-            <column name="value" value="BreizhCamp 2016"></column>
-        </insert>
-        <insert tableName="cfpconfig">
-            <column name="key" value="community"></column>
-            <column name="value" value="BreizhCamp"></column>
-        </insert>
-        <insert tableName="cfpconfig">
-            <column name="key" value="date"></column>
-            <column name="value" value="23/03/2016"></column>
-        </insert>
-        <insert tableName="cfpconfig">
-            <column name="key" value="releaseDate"></column>
-            <column name="value" value="13/01/2016"></column>
-        </insert>
-        <insert tableName="cfpconfig">
-            <column name="key" value="decisionDate"></column>
-            <column name="value" value="25/01/2016"></column>
-        </insert>
-        <insert tableName="cfpconfig">
-            <column name="key" value="open"></column>
-            <column name="value" value="true"></column>
-        </insert>
-    </changeSet>
-
-
-    <changeSet id="9" author="lhuet">
-        <createTable tableName="talkformat">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false"></constraints>
-            </column>
-            <column name="libelle" type="varchar(64)">
-                <constraints nullable="false"></constraints>
-            </column>
-            <column name="duree_minutes" type="int"></column>
-            <column name="description" type="text"></column>
-        </createTable>
-        <addColumn tableName="talks">
-            <column name="talkformat" type="int">
-                <constraints foreignKeyName="talk_format" referencedTableName="talkformat" referencedColumnNames="id"/>
-            </column>
-        </addColumn>
-        <insert tableName="talkformat">
-            <column name="id" value="1"></column>
-            <column name="libelle" value="Conférence"></column>
-            <column name="duree_minutes" value="55"></column>
-            <column name="description" value="Conférence classique pour traiter d'un sujet pendant presque une heure."></column>
-        </insert>
-        <insert tableName="talkformat">
-            <column name="id" value="2"></column>
-            <column name="libelle" value="Quickie"></column>
-            <column name="duree_minutes" value="15"></column>
-            <column name="description" value="Traiter un sujet spécifique ou un outil en 15 mn chrono !"></column>
-        </insert>
-        <insert tableName="talkformat">
-            <column name="id" value="3"></column>
-            <column name="libelle" value="Tools In Action"></column>
-            <column name="duree_minutes" value="30"></column>
-            <column name="description" value="Place aux démos plutôt qu'au bla bla ... Ou comment épater la galerie en 30 mn !"></column>
-        </insert>
-        <insert tableName="talkformat">
-            <column name="id" value="4"></column>
-            <column name="libelle" value="Lab"></column>
-            <column name="duree_minutes" value="55"></column>
-            <column name="description" value="Pas ou peu de slides ! Des exos, des exos, des exos ..."></column>
-        </insert>
-    </changeSet>
-
-
-
-    <changeSet id="10" author="sguernion">
-        <dropForeignKeyConstraint baseTableName="comments" constraintName="comment_admin" />
-        <dropColumn columnName="admin" tableName="comments"/>
-        <addColumn  tableName="comments">
-            <column name="user" type="int">
-                <constraints foreignKeyName="comment_user" referencedTableName="users" referencedColumnNames="id"/>
-            </column>
-        </addColumn >
-
-
-    </changeSet>
-
-    <changeSet id="6" author="maudefroy">
-        <dropColumn columnName="image_social_url" tableName="users"/>
-
-        <addColumn  tableName="users">
-            <column name="image_profil_url" type="varchar(255)">
-            </column>
-        </addColumn >
-    </changeSet>
-
-    <changeSet id="12" author="sguernion">
-        <addColumn  tableName="talks">
-            <column name="schedule_date" type="datetime" />
-            <column name="schedule_heure" type="varchar(5)"/>
-        </addColumn >
-    </changeSet>
-
-    <changeSet id="139" author="lhuet">
-        <createTable tableName="tracks">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false"></constraints>
-            </column>
-            <column name="libelle" type="varchar(64)">
-                <constraints nullable="false"></constraints>
-            </column>
-            <column name="description" type="text"></column>
-        </createTable>
-        <dropColumn columnName="track" tableName="talks"/>
-        <addColumn tableName="talks">
-            <column name="track" type="int">
-                <constraints foreignKeyName="talk_track" referencedTableName="tracks" referencedColumnNames="id"/>
-            </column>
-        </addColumn>
-        <insert tableName="tracks">
-            <column name="id" value="1"></column>
-            <column name="libelle" value="BigData et Analytics"></column>
-            <column name="description" value="BigData et Analytics"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="2"></column>
-            <column name="libelle" value="Java, JVM, Javas SE/EE"></column>
-            <column name="description" value="Java, JVM, Javas SE/EE"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="3"></column>
-            <column name="libelle" value="Cloud, DevOps, Outils"></column>
-            <column name="description" value="Cloud, DevOps, Outils"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="4"></column>
-            <column name="libelle" value="Agilité, Méthodologie et Tests"></column>
-            <column name="description" value="Agilité, Méthodologie et Tests"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="5"></column>
-            <column name="libelle" value=" Objects connectés, IoT, Robotique"></column>
-            <column name="description" value=" Objects connectés, IoT, Robotique"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="6"></column>
-            <column name="libelle" value="Architecture, Performance et Sécurité"></column>
-            <column name="description" value="Architecture, Performance et Sécurité"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="7"></column>
-            <column name="libelle" value="Languages"></column>
-            <column name="description" value="Languages"></column>
-        </insert>
-        <insert tableName="tracks">
-            <column name="id" value="8"></column>
-            <column name="libelle" value="Keynote"></column>
-            <column name="description" value="Keynote"></column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="14" author="lhuet">
-        <insert tableName="talkformat">
-            <column name="id" value="5"></column>
-            <column name="libelle" value="Université"></column>
-            <column name="duree_minutes" value="120"></column>
-            <column name="description" value="Conférence pour traiter un sujet en profondeur."></column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="15" author="lhuet">
-        <dropColumn columnName="type" tableName="talks"/>
-    </changeSet>
-
-
-    <changeSet id="16" author="maudefroy">
-                <comment>Creation of table cospeakers</comment>
-                <createTable tableName="cospeakers">
-                        <column name="user_id" type="int">
-                                <constraints primaryKey="true" nullable="false" />
-                        </column>
-                        <column name="talk_id" type="int">
-                                <constraints primaryKey="true" nullable="false" />
-                        </column>
-                </createTable>
-    </changeSet>
-    <changeSet id="17" author="maudefroy">
-                <addForeignKeyConstraint constraintName="fk_cospeakers_1" referencedTableName="users" baseColumnNames="user_id" baseTableName="cospeakers" referencedColumnNames="id"/>
-                <addForeignKeyConstraint constraintName="fk_cospeakers_2" referencedTableName="talks" baseColumnNames="talk_id" baseTableName="cospeakers" referencedColumnNames="id"/>
-    </changeSet>
-
-    <changeSet id="6" author="alex">
-        <insert tableName="tracks">
-            <column name="id" value="9"/>
-            <column name="libelle" value="Web"/>
-            <column name="description" value="Web"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="18" author="marc">
-		<update tableName="tracks">
-            <column name="description" value="Langages"/>
-            <column name="libelle" value="Langages"/>
-            <where>id = 7</where>
-        </update>
-    </changeSet>
-
-    <changeSet id="19" author="ndeloof">
-        <comment>Creation of tenant ID discriminator column</comment>
         <createTable tableName="events">
-            <column name="id" type="varchar(255)">
-                <constraints primaryKey="true" nullable="false" />
+            <column name="id" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
             </column>
         </createTable>
-        <addColumn tableName="admins">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_1" referencedTableName="events" baseColumnNames="event_id" baseTableName="admins" referencedColumnNames="id"/>
 
-        <addColumn tableName="cfpconfig">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_2" referencedTableName="events" baseColumnNames="event_id" baseTableName="cfpconfig" referencedColumnNames="id"/>
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="github_id" type="VARCHAR(255)"/>
+            <column name="google_id" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(62)"/>
+            <column name="verified" type="BIT(1)" defaultValueNumeric="0" />
+            <column name="verify_token" type="VARCHAR(255)"/>
+            <column name="lastname" type="VARCHAR(255)"/>
+            <column name="firstname" type="VARCHAR(255)"/>
+            <column name="company" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(25)"/>
+            <column name="bio" type="TEXT"/>
+            <column name="twitter" type="VARCHAR(255)"/>
+            <column name="googleplus" type="VARCHAR(255)"/>
+            <column name="github" type="VARCHAR(255)"/>
+            <column name="social" type="VARCHAR(255)"/>
+            <column name="image_profil_url" type="VARCHAR(255)"/>
+            <column name="language" type="VARCHAR(255)"/>
+        </createTable>
 
-        <addColumn tableName="talks">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_3" referencedTableName="events" baseColumnNames="event_id" baseTableName="talks" referencedColumnNames="id"/>
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT"/>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="role_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
 
-        <addColumn tableName="talkformat">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_4" referencedTableName="events" baseColumnNames="event_id" baseTableName="talkformat" referencedColumnNames="id"/>
+        <createTable tableName="config">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="key" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="config_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
 
-        <addColumn tableName="tracks">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_5" referencedTableName="events" baseColumnNames="event_id" baseTableName="tracks" referencedColumnNames="id"/>
+        <createTable tableName="tracks">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="libelle" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="track_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
 
-        <addColumn tableName="comments">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_6" referencedTableName="events" baseColumnNames="event_id" baseTableName="comments" referencedColumnNames="id"/>
+        <createTable tableName="formats">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="libelle" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duree_minutes" type="INT"/>
+            <column name="description" type="TEXT"/>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="format_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
 
-        <addColumn tableName="rates">
-            <column name="event_id" type="varchar(255)"/>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="fk_event_7" referencedTableName="events" baseColumnNames="event_id" baseTableName="rates" referencedColumnNames="id"/>
+
+        <createTable tableName="proposals">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="state" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="refs" type="TEXT"/>
+            <column name="difficulty" type="INT"/>
+            <column name="added" type="datetime(6)"/>
+            <column name="user" type="INT">
+                <constraints foreignKeyName="proposal_user_fk" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="format" type="INT">
+                <constraints foreignKeyName="proposal_format_fk" referencedTableName="formats" referencedColumnNames="id"/>
+            </column>
+            <column name="schedule_date" type="datetime(6)"/>
+            <column name="schedule_heure" type="VARCHAR(5)"/>
+            <column name="track" type="INT">
+                <constraints foreignKeyName="proposal_track_fk" referencedTableName="tracks" referencedColumnNames="id"/>
+            </column>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="proposal_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="cospeakers">
+            <column name="user_id" type="INT">
+                <constraints primaryKey="true"
+                             foreignKeyName="cospeaker_user_fk" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="proposal_id" type="INT">
+                <constraints primaryKey="true"
+                             foreignKeyName="cospeaker_proposal_fk" referencedTableName="proposals" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="comments">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="comment" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="internal" type="BIT(1)"/>
+            <column name="proposal" type="INT">
+                <constraints foreignKeyName="comment_proposal_fk" referencedTableName="proposals" referencedColumnNames="id"/>
+            </column>
+            <column name="user" type="INT">
+                <constraints foreignKeyName="comment_user_fk" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="comment_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+
+        <createTable tableName="rates">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="rate" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="love" type="BIT(1)"/>
+            <column defaultValueNumeric="1" name="hate" type="BIT(1)"/>
+            <column name="proposal" type="INT">
+                <constraints foreignKeyName="rate_proposal_fk" referencedTableName="proposals" referencedColumnNames="id"/>
+            </column>
+            <column name="admin" type="INT">
+                <constraints foreignKeyName="rate_user_fk" referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints foreignKeyName="rate_event_fk" referencedTableName="events" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="roles_email" tableName="roles">
+            <column name="user_id"/>
+            <column name="event_id"/>
+        </createIndex>
 
     </changeSet>
 
-    <changeSet id="20" author="ndeloof">
-        <addColumn tableName="users">
-            <column name="language" type="varchar(255)"/>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="21" author="ndeloof">
+    <changeSet author="ndeloof" id="2">
         <comment>Insert initial data to make contribution easier starting with a fresh new database. For sure, production instance has to get this removed :P</comment>
+        <insert tableName="events">
+            <column name="id" value="default"/>
+        </insert>
         <insert tableName="users">
             <column name="id" value="1"/>
             <column name="email" value="info@cfp.io"/>
@@ -422,79 +198,42 @@
             <column name="password" value="$2a$10$L/0Fhifp1PitGMmCqnAmg.KCFN./RYPAF7aCeuWS9KRC/JcwvOy8q"/>
             <column name="verified" valueBoolean="true"/>
         </insert>
-        <insert tableName="events">
-            <column name="id" value="default"></column>
-        </insert>
-        <insert tableName="admins">
-            <column name="id" value="1"/>
-            <column name="name" value="info@cfp.io"/>
-            <column name="email" value="info@cfp.io"/>
-            <column name="event_id" value="default"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="22" author="ndeloof">
-        <addNotNullConstraint tableName="users" columnDataType="varchar(255)" columnName="email"/>
-        <addUniqueConstraint tableName="users" columnNames="email"/>
-    </changeSet>
-
-    <changeSet id="23" author="ndeloof">
-        <createTable tableName="roles">
-            <column name="id" type="int">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="user_id" type="int"/>
-            <column name="event_id" type="varchar(255)"/>
-        </createTable>
-
-        <addAutoIncrement tableName="roles" columnName="id" columnDataType="int"/>
-        <addForeignKeyConstraint baseTableName="roles" baseColumnNames="user_id" constraintName="roles_users" referencedTableName="users" referencedColumnNames="id"/>
-        <createIndex tableName="roles" indexName="roles_email">
-            <column name="user_id"/>
-            <column name="event_id"/>
-        </createIndex>
-
         <insert tableName="roles">
             <column name="id" value="1"/>
             <column name="name" value="ADMIN"/>
             <column name="user_id" value="1"/>
             <column name="event_id" value="default"/>
         </insert>
-
-        <insert tableName="cfpconfig">
+        <insert tableName="config">
             <column name="key" value="community"/>
             <column name="value" value="default"/>
             <column name="event_id" value="default"/>
         </insert>
-        <insert tableName="cfpconfig">
-            <column name="key" value="default"/>
-            <column name="value" value="true"/>
+        <insert tableName="config">
+            <column name="key" value="eventName"/>
+            <column name="value" value="default"/>
             <column name="event_id" value="default"/>
         </insert>
-        <insert tableName="cfpconfig">
+        <insert tableName="config">
             <column name="key" value="date"/>
             <column name="value" value="31/12/2016"/>
             <column name="event_id" value="default"/>
         </insert>
-        <insert tableName="cfpconfig">
+        <insert tableName="config">
             <column name="key" value="decisionDate"/>
             <column name="value" value="31/12/2016"/>
             <column name="event_id" value="default"/>
         </insert>
-        <insert tableName="cfpconfig">
+        <insert tableName="config">
             <column name="key" value="releaseDate"/>
             <column name="value" value="31/12/2016"/>
             <column name="event_id" value="default"/>
         </insert>
-        <insert tableName="cfpconfig">
+        <insert tableName="config">
             <column name="key" value="open"/>
             <column name="value" value="true"/>
             <column name="event_id" value="default"/>
         </insert>
-
     </changeSet>
 
 </databaseChangeLog>

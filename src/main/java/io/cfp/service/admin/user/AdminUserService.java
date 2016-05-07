@@ -39,7 +39,7 @@ public class AdminUserService {
     @Autowired
     private UserRepo userRepo;
 
-    /** Current loggued admin, scoped request object */
+    /** Current logged admin, scoped request object */
     @Autowired
     private User currentAdmin;
 

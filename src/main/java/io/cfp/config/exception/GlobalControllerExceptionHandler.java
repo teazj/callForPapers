@@ -29,6 +29,7 @@ import io.cfp.domain.exception.NotVerifiedException;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -64,6 +65,15 @@ public class GlobalControllerExceptionHandler {
         resp.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
         resp.setMessage(e.getMessage());
         return new ResponseEntity<>(resp, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleException(AccessDeniedException e) {
+        ErrorResponse resp = new ErrorResponse(e);
+        resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+        resp.setError(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        resp.setMessage(e.getMessage());
+        return new ResponseEntity<>(resp, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -117,7 +127,6 @@ public class GlobalControllerExceptionHandler {
         return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(CospeakerNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleException(CospeakerNotFoundException e) {
         logger.warn("Can't find cospeaker [{}]", e.getCospeaker());
@@ -130,5 +139,4 @@ public class GlobalControllerExceptionHandler {
 
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
-
 }

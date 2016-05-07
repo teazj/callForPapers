@@ -38,6 +38,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <front-tools.install-directory>${project.build.directory}/front-tools</front-tools.install-directory>
+        <assertj-core.version>3.2.0</assertj-core.version>
     </properties>
 
     <prerequisites>
@@ -48,6 +49,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- Mail -->
@@ -230,6 +236,12 @@
             <version>2.11.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

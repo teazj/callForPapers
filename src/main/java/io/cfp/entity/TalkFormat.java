@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
  * Created by lhuet on 24/11/15.
  */
 @Entity
-@Table(name = "talkformat")
+@Table(name = "formats")
 public class TalkFormat {
 
     private int id;
