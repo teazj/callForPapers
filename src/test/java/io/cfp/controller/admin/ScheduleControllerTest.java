@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import io.cfp.controller.ScheduleController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
