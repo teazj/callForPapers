@@ -43,7 +43,7 @@ import java.util.Set;
  * Talk
  */
 @Entity
-@Table(name = "talks")
+@Table(name = "proposals")
 public class Talk {
     public enum State { DRAFT, CONFIRMED, ACCEPTED, REFUSED, BACKUP }
 
@@ -118,7 +118,7 @@ public class Talk {
     }
 
     @ManyToOne
-    @JoinColumn(name = "talkformat")
+    @JoinColumn(name = "format")
     public TalkFormat getTalkFormat() {
         return talkFormat;
     }
@@ -140,7 +140,7 @@ public class Talk {
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "cospeakers", joinColumns = @JoinColumn(name = "talk_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "cospeakers", joinColumns = @JoinColumn(name = "proposal_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     public Set<User> getCospeakers() {
         return cospeakers;
     }

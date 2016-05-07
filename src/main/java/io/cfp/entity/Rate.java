@@ -86,7 +86,7 @@ public class Rate {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "talk")
+    @JoinColumn(name = "proposal")
     public Talk getTalk() {
         return talk;
     }

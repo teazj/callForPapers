@@ -79,7 +79,7 @@ public class Comment {
     }
 
     @ManyToOne
-    @JoinColumn(name = "talk")
+    @JoinColumn(name = "proposal")
     public Talk getTalk() {
         return talk;
     }
