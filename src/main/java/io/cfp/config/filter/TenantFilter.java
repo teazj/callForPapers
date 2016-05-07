@@ -41,10 +41,16 @@ public class TenantFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String host = new URL(request.getRequestURL().toString()).getHost();
 
-        int i = host.indexOf('.');
-        String tenant = (i > 0 ? host.substring(0, i) : "default");
+        String tenant = "default";
+        if (host.endsWith(".cfp.io")) {
+            tenant = host.substring(0, host.indexOf('.'));
+        }
         Event.setCurrent(tenant);
+        try {
+            filterChain.doFilter(request, response);
+        } finally {
+            Event.unsetCurrent();
+        }
 
-        filterChain.doFilter(request, response);
     }
 }
