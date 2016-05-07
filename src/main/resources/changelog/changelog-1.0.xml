@@ -185,4 +185,55 @@
         </createIndex>
 
     </changeSet>
+
+    <changeSet author="ndeloof" id="2">
+        <comment>Insert initial data to make contribution easier starting with a fresh new database. For sure, production instance has to get this removed :P</comment>
+        <insert tableName="events">
+            <column name="id" value="default"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="email" value="info@cfp.io"/>
+            <!-- password is toto123 -->
+            <column name="password" value="$2a$10$L/0Fhifp1PitGMmCqnAmg.KCFN./RYPAF7aCeuWS9KRC/JcwvOy8q"/>
+            <column name="verified" valueBoolean="true"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" value="1"/>
+            <column name="name" value="ADMIN"/>
+            <column name="user_id" value="1"/>
+            <column name="event_id" value="default"/>
+        </insert>
+        <insert tableName="config">
+            <column name="key" value="community"/>
+            <column name="value" value="default"/>
+            <column name="event_id" value="default"/>
+        </insert>
+        <insert tableName="config">
+            <column name="key" value="eventName"/>
+            <column name="value" value="default"/>
+            <column name="event_id" value="default"/>
+        </insert>
+        <insert tableName="config">
+            <column name="key" value="date"/>
+            <column name="value" value="31/12/2016"/>
+            <column name="event_id" value="default"/>
+        </insert>
+        <insert tableName="config">
+            <column name="key" value="decisionDate"/>
+            <column name="value" value="31/12/2016"/>
+            <column name="event_id" value="default"/>
+        </insert>
+        <insert tableName="config">
+            <column name="key" value="releaseDate"/>
+            <column name="value" value="31/12/2016"/>
+            <column name="event_id" value="default"/>
+        </insert>
+        <insert tableName="config">
+            <column name="key" value="open"/>
+            <column name="value" value="true"/>
+            <column name="event_id" value="default"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
