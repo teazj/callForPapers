@@ -13,7 +13,7 @@ docker build -t callforpapers-${BUILD_NUMBER} -f Dockerfile.build .
 rm -rf dist
 mkdir dist
 container=$(docker create callforpapers-${BUILD_NUMBER})
-docker cp $container:/work/target/callforpapers-0.0.1-SNAPSHOT.jar dist/callforpapers.jar
+docker cp $container:/work/target/call-for-paper-0.0.1-SNAPSHOT.jar dist/call-for-paper.jar
 docker rm $container
 docker rmi callforpapers-${BUILD_NUMBER}
 cp src/main/docker/Dockerfile dist/Dockerfile
