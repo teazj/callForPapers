@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession,RestrictedCoSession, CommonProfilImage, RestrictedContact, $modal, Config, talkformats, isCoSession) {
+    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession,RestrictedCoSession, RestrictedContact, $modal, Config, talkformats, isCoSession) {
         $scope.tab = $stateParams.tab;
 
         $scope.session = null;

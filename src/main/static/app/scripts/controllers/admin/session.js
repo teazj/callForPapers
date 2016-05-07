@@ -20,7 +20,7 @@
 
 'use strict';
 
-angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, CommonProfilImage, AuthService, NextPreviousSessionService, translateFilter, hotkeys, AdminContact, Notification, $q, $sanitize, nextToRate) {
+angular.module('CallForPaper').controller('AdminSessionCtrl', function(tracks, talkformats, talk, $scope, $stateParams, $filter, $translate, AdminSession, AdminComment, AdminRate, $modal, $state, AuthService, NextPreviousSessionService, translateFilter, hotkeys, AdminContact, Notification, $q, $sanitize, nextToRate) {
     $scope.tab = $stateParams.tab;
     $scope.saveDraftButtonHidden = true;
 
