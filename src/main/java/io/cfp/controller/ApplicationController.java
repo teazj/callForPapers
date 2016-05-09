@@ -20,7 +20,10 @@
 
 package io.cfp.controller;
 
+import io.cfp.domain.exception.NotFoundException;
 import io.cfp.dto.ApplicationSettings;
+import io.cfp.entity.Event;
+import io.cfp.repository.EventRepository;
 import io.cfp.service.admin.config.ApplicationConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,14 +41,23 @@ public class ApplicationController {
     @Autowired
     private ApplicationConfigService applicationConfigService;
 
+    @Autowired
+    private EventRepository events;
+
     /**
      * Obtain application settings, (name, dates, ...)
      * @return
      */
     @RequestMapping(method=RequestMethod.GET, value="/application")
-    public ApplicationSettings getApplicationSettings() {
+    public ApplicationSettings getApplicationSettings() throws NotFoundException {
 
-        return applicationConfigService.getAppConfig();
+        final String name = Event.current();
+        Event event = events.findOne(name);
+        if (event == null) {
+            throw new NotFoundException("No event with ID: "+name);
+        }
+
+        return new ApplicationSettings(event);
     }
 
 

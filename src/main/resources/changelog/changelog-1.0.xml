@@ -9,6 +9,11 @@
             <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="short_description" type="VARCHAR(255)"/>
+            <column name="date" type="DATE"/>
+            <column name="release_date" type="DATE"/>
+            <column name="decision_date" type="DATE"/>
+            <column name="open" type="BOOLEAN"/>
         </createTable>
 
         <createTable tableName="users">
@@ -21,7 +26,7 @@
             <column name="github_id" type="VARCHAR(255)"/>
             <column name="google_id" type="VARCHAR(255)"/>
             <column name="password" type="VARCHAR(62)"/>
-            <column name="verified" type="BIT(1)" defaultValueNumeric="0" />
+            <column name="verified" type="BOOLEAN"/>
             <column name="verify_token" type="VARCHAR(255)"/>
             <column name="lastname" type="VARCHAR(255)"/>
             <column name="firstname" type="VARCHAR(255)"/>
@@ -155,7 +160,6 @@
             </column>
         </createTable>
 
-
         <createTable tableName="rates">
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
@@ -190,6 +194,11 @@
         <comment>Insert initial data to make contribution easier starting with a fresh new database. For sure, production instance has to get this removed :P</comment>
         <insert tableName="events">
             <column name="id" value="default"/>
+            <column name="short_description" value="Test"/>
+            <column name="date" valueDate="2016-12-31"/>
+            <column name="decision_date" valueDate="2016-12-30"/>
+            <column name="release_date" valueDate="2016-12-29"/>
+            <column name="open" valueBoolean="true"/>
         </insert>
         <insert tableName="users">
             <column name="id" value="1"/>
@@ -202,36 +211,6 @@
             <column name="id" value="1"/>
             <column name="name" value="ADMIN"/>
             <column name="user_id" value="1"/>
-            <column name="event_id" value="default"/>
-        </insert>
-        <insert tableName="config">
-            <column name="key" value="community"/>
-            <column name="value" value="default"/>
-            <column name="event_id" value="default"/>
-        </insert>
-        <insert tableName="config">
-            <column name="key" value="eventName"/>
-            <column name="value" value="default"/>
-            <column name="event_id" value="default"/>
-        </insert>
-        <insert tableName="config">
-            <column name="key" value="date"/>
-            <column name="value" value="31/12/2016"/>
-            <column name="event_id" value="default"/>
-        </insert>
-        <insert tableName="config">
-            <column name="key" value="decisionDate"/>
-            <column name="value" value="31/12/2016"/>
-            <column name="event_id" value="default"/>
-        </insert>
-        <insert tableName="config">
-            <column name="key" value="releaseDate"/>
-            <column name="value" value="31/12/2016"/>
-            <column name="event_id" value="default"/>
-        </insert>
-        <insert tableName="config">
-            <column name="key" value="open"/>
-            <column name="value" value="true"/>
             <column name="event_id" value="default"/>
         </insert>
     </changeSet>
