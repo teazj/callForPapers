@@ -35,11 +35,11 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "formats")
-public class TalkFormat {
+public class Format {
 
     private int id;
-    private String libelle;
-    private int dureeMinutes;
+    private String name;
+    private int duration;
     private String description;
     private Event event;
 
@@ -63,20 +63,20 @@ public class TalkFormat {
     }
 
     @NotNull
-    public String getLibelle() {
-        return libelle;
+    public String getName() {
+        return name;
     }
 
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getDureeMinutes() {
-        return dureeMinutes;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setDureeMinutes(int dureeMinutes) {
-        this.dureeMinutes = dureeMinutes;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Type(type="text")
@@ -86,5 +86,25 @@ public class TalkFormat {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Format withEvent(Event event) {
+        this.event = event;
+        return this;
+    }
+
+    public Format withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Format withDuration(int duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public Format withDescription(String description) {
+        this.description = description;
+        return this;
     }
 }

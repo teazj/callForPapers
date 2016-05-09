@@ -55,7 +55,7 @@ public class Talk {
     private String references;
     private Integer difficulty;
     private Date added;
-    private TalkFormat talkFormat;
+    private Format format;
     private User user;
     private Event event;
 
@@ -67,7 +67,7 @@ public class Talk {
 
     @Transient
     public int getDuree() {
-        return talkFormat.getDureeMinutes();
+        return format.getDuration();
     }
 
     @Id
@@ -119,8 +119,8 @@ public class Talk {
 
     @ManyToOne
     @JoinColumn(name = "format")
-    public TalkFormat getTalkFormat() {
-        return talkFormat;
+    public Format getFormat() {
+        return format;
     }
 
     @ManyToOne
@@ -186,8 +186,8 @@ public class Talk {
         this.user = user;
     }
 
-    public void setTalkFormat(TalkFormat talkFormat) {
-        this.talkFormat = talkFormat;
+    public void setFormat(Format format) {
+        this.format = format;
     }
 
     public void setDate(Date date) {

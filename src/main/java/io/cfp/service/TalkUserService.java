@@ -27,10 +27,10 @@ import io.cfp.dto.TrackDto;
 import io.cfp.dto.user.CospeakerProfil;
 import io.cfp.entity.Event;
 import io.cfp.entity.Talk;
-import io.cfp.entity.TalkFormat;
+import io.cfp.entity.Format;
 import io.cfp.entity.Track;
 import io.cfp.entity.User;
-import io.cfp.repository.TalkFormatRepo;
+import io.cfp.repository.FormatRepo;
 import io.cfp.repository.TalkRepo;
 import io.cfp.repository.TrackRepo;
 import io.cfp.repository.UserRepo;
@@ -63,7 +63,7 @@ public class TalkUserService {
     private UserRepo userRepo;
 
     @Autowired
-    private TalkFormatRepo talkFormatRepo;
+    private FormatRepo formatRepo;
 
     @Autowired
     private TrackRepo trackRepo;
@@ -268,8 +268,8 @@ public class TalkUserService {
      *
      * @return List of talk formats
      */
-    public List<TalkFormat> getTalkFormat() {
-        return talkFormatRepo.findByEventId(Event.current());
+    public List<Format> getTalkFormat() {
+        return formatRepo.findByEventId(Event.current());
     }
 
     /**
@@ -329,7 +329,7 @@ public class TalkUserService {
 
         talkUser.setState(newState);
         talk.setTrack(trackRepo.findByIdAndEventId(talkUser.getTrackId(), Event.current()));
-        talk.setTalkFormat(talkFormatRepo.findByIdAndEventId(talkUser.getFormat(), Event.current()));
+        talk.setFormat(formatRepo.findByIdAndEventId(talkUser.getFormat(), Event.current()));
         mapper.map(talkUser, talk);
 
         talkRepo.save(talk);

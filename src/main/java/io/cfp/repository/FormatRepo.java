@@ -20,7 +20,7 @@
 
 package io.cfp.repository;
 
-import io.cfp.entity.TalkFormat;
+import io.cfp.entity.Format;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -28,9 +28,9 @@ import java.util.List;
 /**
  * Created by lhuet on 24/11/15.
  */
-public interface TalkFormatRepo extends JpaRepository<TalkFormat, Integer> {
+public interface FormatRepo extends JpaRepository<Format, Integer> {
 
-    List<TalkFormat> findByEventId(String eventId);
+    List<Format> findByEventId(String eventId);
 
-    TalkFormat findByIdAndEventId(int integer, String eventId);
+    Format findByIdAndEventId(int integer, String eventId);
 }

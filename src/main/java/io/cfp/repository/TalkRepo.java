@@ -53,7 +53,7 @@ public interface TalkRepo extends JpaRepository<Talk, Integer> {
 
     @Query("SELECT DISTINCT t FROM Talk t " +
         "JOIN FETCH t.user " +
-        "JOIN FETCH t.talkFormat " +
+        "JOIN FETCH t.format " +
         "JOIN FETCH t.track " +
         "LEFT JOIN FETCH t.cospeakers " +
         "WHERE  t.event.id = :eventId " +

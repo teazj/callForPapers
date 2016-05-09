@@ -86,10 +86,10 @@
             <column autoIncrement="true" name="id" type="INT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="libelle" type="VARCHAR(64)">
+            <column name="name" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="duree_minutes" type="INT"/>
+            <column name="duration" type="INT"/>
             <column name="description" type="TEXT"/>
             <column name="event_id" type="VARCHAR(255)">
                 <constraints foreignKeyName="format_event_fk" referencedTableName="events" referencedColumnNames="id"/>

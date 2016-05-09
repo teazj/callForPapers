@@ -29,7 +29,7 @@ import io.cfp.entity.Rate;
 import io.cfp.entity.Talk;
 import io.cfp.entity.User;
 import io.cfp.repository.RateRepo;
-import io.cfp.repository.TalkFormatRepo;
+import io.cfp.repository.FormatRepo;
 import io.cfp.repository.TalkRepo;
 import io.cfp.repository.TrackRepo;
 import io.cfp.repository.UserRepo;
@@ -63,7 +63,7 @@ public class TalkAdminService {
     private UserRepo userRepo;
 
     @Autowired
-    private TalkFormatRepo talkFormatRepo;
+    private FormatRepo formatRepo;
 
     @Autowired
     private TrackRepo trackRepo;
@@ -132,7 +132,7 @@ public class TalkAdminService {
 
 
       talk.setTrack(trackRepo.findByIdAndEventId(talkAdmin.getTrackId(), Event.current()));
-      talk.setTalkFormat(talkFormatRepo.findByIdAndEventId(talkAdmin.getFormat(), Event.current()));
+      talk.setFormat(formatRepo.findByIdAndEventId(talkAdmin.getFormat(), Event.current()));
       setCoSpeaker(talkAdmin, talk);
 
       mapper.map(talkAdmin, talk);
