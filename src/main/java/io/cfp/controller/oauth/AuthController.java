@@ -71,17 +71,21 @@ public class AuthController {
 
     private static final String UNLINK_ERROR_MSG = "Could not unlink %s account because it is your only sign-in method";
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final EmailingService emailingService;
+    private final AuthSettings authSettings;
+    private final ReCaptchaChecker reCaptchaChecker;
 
     @Autowired
-    private EmailingService emailingService;
-
-    @Autowired
-    private AuthSettings authSettings;
-
-    @Autowired
-    private ReCaptchaChecker reCaptchaChecker;
+    public AuthController(UserService userService,
+                          EmailingService emailingService,
+                          AuthSettings authSettings,
+                          ReCaptchaChecker reCaptchaChecker) {
+        this.userService = userService;
+        this.emailingService = emailingService;
+        this.authSettings = authSettings;
+        this.reCaptchaChecker = reCaptchaChecker;
+    }
 
     /**
      * Log user in

@@ -104,6 +104,12 @@ public class EmailingServiceTest {
 
     @Before
     public void setup() {
+        emailingService = new EmailingService(applicationConfigService,
+                                                globalSettings,
+                                                emailingSettings,
+                                                users,
+                                                javaMailSender);
+
         user = new User();
         user.setId(1);
         user.setEmail(JOHN_DOE_EMAIL);
