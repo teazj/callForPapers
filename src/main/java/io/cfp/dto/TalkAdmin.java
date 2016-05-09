@@ -20,6 +20,8 @@
 
 package io.cfp.dto;
 
+import io.cfp.entity.Talk;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -35,6 +37,12 @@ public class TalkAdmin extends TalkUser {
 
     private BigDecimal mean;
     private List<String> voteUsersEmail;
+
+    public TalkAdmin() { }
+
+    public TalkAdmin(Talk t) {
+        super(t);
+    }
 
     public void setMean(Double mean) {
         if (mean == null) return;
