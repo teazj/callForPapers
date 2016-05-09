@@ -27,6 +27,7 @@ import io.cfp.repository.CfpConfigRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,9 @@ public class ApplicationConfigService {
 
     @Autowired
     private CfpConfigRepo cfpConfigRepo;
+    
+    @Value("${authServer}")
+    private String authServer;
 
     @Cacheable("applicationSettings")
     public ApplicationSettings getAppConfig() {
@@ -60,6 +64,7 @@ public class ApplicationConfigService {
         applicationSettings.setDecisionDate(cfpConfigRepo.findValueByKey(DECISION_DATE, Event.current()));
         applicationSettings.setReleaseDate(cfpConfigRepo.findValueByKey(RELEASE_DATE, Event.current()));
         applicationSettings.setOpen(Boolean.valueOf(cfpConfigRepo.findValueByKey(OPEN, Event.current())));
+        applicationSettings.setAuthServer(authServer);
         applicationSettings.setConfigured(true);
 
         return applicationSettings;

@@ -30,6 +30,7 @@ public class ApplicationSettings {
     private String date;
     private String releaseDate;
     private String decisionDate;
+    private String authServer;
     private boolean configured;
     private boolean open;
 
@@ -73,7 +74,15 @@ public class ApplicationSettings {
         this.decisionDate = decisionDate;
     }
 
-    public boolean isConfigured() {
+    public String getAuthServer() {
+		return authServer;
+	}
+
+	public void setAuthServer(String authServer) {
+		this.authServer = authServer;
+	}
+
+	public boolean isConfigured() {
         return configured;
     }
 
