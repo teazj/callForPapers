@@ -42,6 +42,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -98,7 +99,7 @@ public class EmailingService {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", user.getFirstname());
         map.put("talk", talk.getName());
-        map.put("hostname", globalSettings.getHostname());
+        map.put("hostname", StringUtils.replace(globalSettings.getHostname(), "{{event}}", Event.current()));
         map.put("id", String.valueOf(talk.getId()));
 
         String templatePath = emailingSettings.getTemplatePath(EmailType.CONFIRMED, locale);
