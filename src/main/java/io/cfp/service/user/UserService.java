@@ -34,11 +34,14 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-    @Autowired
-	private UserRepo userRepo;
+	private final UserRepo userRepo;
+	private final MapperFacade mapper;
 
-	@Autowired
-	private MapperFacade mapper;
+    @Autowired
+    public UserService(UserRepo userRepo, MapperFacade mapper) {
+        this.userRepo = userRepo;
+        this.mapper = mapper;
+    }
 
 	public User save(User user) {
 		return userRepo.save(user);
