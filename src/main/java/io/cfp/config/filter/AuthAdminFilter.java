@@ -67,6 +67,7 @@ public class AuthAdminFilter extends AuthFilter {
             User admin = adminUserService.findFromEmail(email);
             if (admin == null) {
                 httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Resource require Administrator role");
+                return;
             };
 
             MDC.put(USER_ID, email);
