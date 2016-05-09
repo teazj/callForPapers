@@ -13,9 +13,15 @@ RUN mvn dependency:go-offline
 ADD package.json /work/
 RUN npm install
 
+CMD mkdir src/main/static/app/bower_components
+ADD .bowerrc /work/
+ADD bower.json /work/
+RUN node_modules/.bin/bower --allow-root install
+
 ADD / /work
 
-RUN node_modules/.bin/bower --allow-root install
+RUN ls -al node_modules
+RUN ls -al src/main/static/app/bower_components
 RUN node_modules/.bin/gulp build
 RUN mvn -q -Prelease package
 
