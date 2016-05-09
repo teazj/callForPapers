@@ -30,6 +30,7 @@ import io.cfp.entity.Talk;
 import io.cfp.entity.Format;
 import io.cfp.entity.Track;
 import io.cfp.entity.User;
+import io.cfp.repository.EventRepository;
 import io.cfp.repository.FormatRepo;
 import io.cfp.repository.TalkRepo;
 import io.cfp.repository.TrackRepo;
@@ -48,6 +49,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service for managing talks by the user
@@ -69,6 +71,9 @@ public class TalkUserService {
     private TrackRepo trackRepo;
 
     @Autowired
+    private EventRepository events;
+
+    @Autowired
     private MapperFacade mapper;
 
     /**
@@ -79,8 +84,9 @@ public class TalkUserService {
      * @return List of talks
      */
     public List<TalkUser> findAll(Talk.State... states) {
-        List<Talk> talks = talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states));
-        return mapper.mapAsList(talks, TalkUser.class);
+        return talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states))
+            .stream().map(t -> new TalkUser(t))
+            .collect(Collectors.toList());
     }
 
     public  List<Speaker> findAllSpeaker(Talk.State... states) {
@@ -115,8 +121,9 @@ public class TalkUserService {
      * @return List of talks
      */
     public List<TalkUser> findAll(int userId, Talk.State... states) {
-        List<Talk> talks = talkRepo.findByEventIdAndUserIdAndStateIn(Event.current(), userId, Arrays.asList(states));
-        return mapper.mapAsList(talks, TalkUser.class);
+        return talkRepo.findByEventIdAndUserIdAndStateIn(Event.current(), userId, Arrays.asList(states))
+            .stream().map(t -> new TalkUser(t))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -129,8 +136,9 @@ public class TalkUserService {
      * @return List of talks
      */
     public List<TalkUser> findAllCospeakerTalks(int userId, Talk.State... states) {
-        List<Talk> talks = talkRepo.findByEventIdAndCospeakerIdAndStateIn(Event.current(), userId, Arrays.asList(states));
-        return mapper.mapAsList(talks, TalkUser.class);
+        return talkRepo.findByEventIdAndCospeakerIdAndStateIn(Event.current(), userId, Arrays.asList(states))
+            .stream().map(t -> new TalkUser(t))
+            .collect(Collectors.toList());
     }
 
     // /**
@@ -164,13 +172,15 @@ public class TalkUserService {
      * @return Talk or null if not found
      */
     public TalkUser getOne(int userId, int talkId) {
-        Talk talk = talkRepo.findByIdAndEventIdAndUserId(talkId, Event.current(), userId);
-        return mapper.map(talk, TalkUser.class);
+        return new TalkUser(
+            talkRepo.findByIdAndEventIdAndUserId(talkId, Event.current(), userId)
+        );
     }
 
     public TalkUser getOneCospeakerTalk(int userId, int talkId) {
-        Talk talk = talkRepo.findByIdAndEventIdAndCospeakers(talkId, Event.current(), userId);
-        return mapper.map(talk, TalkUser.class);
+        return new TalkUser(
+            talkRepo.findByIdAndEventIdAndCospeakers(talkId, Event.current(), userId)
+        );
     }
 
     /**
@@ -202,7 +212,7 @@ public class TalkUserService {
         talk.setHeure(hour);
         talk = talkRepo.saveAndFlush(talk);
 
-        return mapper.map(talk, TalkUser.class);
+        return new TalkUser(talk);
     }
 
     /**
@@ -294,11 +304,18 @@ public class TalkUserService {
      * @return Talk added
      */
     private TalkUser newTalk(int userId, TalkUser talkUser, Talk.State state) throws CospeakerNotFoundException {
-        Talk talk = mapper.map(talkUser, Talk.class);
+        Talk talk = new Talk()
+            .added(new Date())
+            .state(state)
+            .name(talkUser.getName())
+            .track(trackRepo.getOne(talkUser.getTrackId()))
+            .description(talkUser.getDescription())
+            .references(talkUser.getReferences())
+            .difficulty(talkUser.getDifficulty())
+            .format(formatRepo.getOne(talkUser.getFormat()))
+            .user(userRepo.getOne(userId))
+            .event(events.getOne(Event.current()));
 
-        talk.setAdded(new Date());
-        talk.setUser(userRepo.getOne(userId));
-        talk.setState(state);
         setCoSpeaker(talkUser, talk);
 
         Talk save = talkRepo.save(talk);

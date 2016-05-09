@@ -45,6 +45,7 @@ import java.util.Set;
 @Entity
 @Table(name = "proposals")
 public class Talk {
+
     public enum State { DRAFT, CONFIRMED, ACCEPTED, REFUSED, BACKUP }
 
     private int id;
@@ -200,5 +201,75 @@ public class Talk {
 
     public void setCospeakers(Set<User> cospeakers) {
         this.cospeakers = cospeakers;
+    }
+
+    public Talk id(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public Talk state(State state) {
+        this.state = state;
+        return this;
+    }
+
+    public Talk name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Talk track(Track track) {
+        this.track = track;
+        return this;
+    }
+
+    public Talk description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Talk references(String references) {
+        this.references = references;
+        return this;
+    }
+
+    public Talk difficulty(Integer difficulty) {
+        this.difficulty = difficulty;
+        return this;
+    }
+
+    public Talk added(Date added) {
+        this.added = added;
+        return this;
+    }
+
+    public Talk format(Format format) {
+        this.format = format;
+        return this;
+    }
+
+    public Talk user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public Talk event(Event event) {
+        this.event = event;
+        return this;
+    }
+
+    public Talk date(Date date) {
+        this.date = date;
+        return this;
+    }
+
+    public Talk heure(String heure) {
+        this.heure = heure;
+        return this;
+    }
+
+    public Talk cospeakers(Set<User> cospeakers) {
+        this.cospeakers = cospeakers;
+        return this;
     }
 }
