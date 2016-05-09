@@ -37,6 +37,7 @@ import java.util.Properties;
 
 import io.cfp.dto.ApplicationSettings;
 import io.cfp.repository.CfpConfigRepo;
+import io.cfp.repository.EventRepository;
 import io.cfp.repository.UserRepo;
 import org.junit.After;
 import org.junit.Before;
@@ -451,6 +452,10 @@ public class EmailingServiceTest {
             return mock(UserRepo.class);
         }
 
+        @Bean // field injection of ApplicationConfigService
+        public EventRepository eventRepo() {
+            return mock(EventRepository.class);
+        }
 
 
     }

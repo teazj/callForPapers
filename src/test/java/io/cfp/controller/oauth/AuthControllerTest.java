@@ -5,8 +5,10 @@ import io.cfp.config.email.EmailingSettings;
 import io.cfp.config.global.GlobalSettings;
 import io.cfp.controller.config.security.SecurityConfig;
 import io.cfp.domain.recaptcha.ReCaptchaCheckerReponse;
+import io.cfp.entity.Event;
 import io.cfp.entity.User;
 import io.cfp.repository.CfpConfigRepo;
+import io.cfp.repository.EventRepository;
 import io.cfp.service.admin.config.ApplicationConfigService;
 import io.cfp.service.auth.AuthUtils;
 import io.cfp.service.email.EmailingService;
@@ -115,6 +117,11 @@ public class AuthControllerTest {
         @Bean // field injection of ApplicationConfigService
         public CfpConfigRepo cfpConfigRepo() {
             return mock(CfpConfigRepo.class);
+        }
+
+        @Bean // field injection of ApplicationConfigService
+        public EventRepository eventRepository() {
+            return mock(EventRepository.class);
         }
 
         @Bean // field injection of EmailingService
