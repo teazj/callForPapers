@@ -24,6 +24,7 @@ import io.cfp.dto.ApplicationSettings;
 import io.cfp.entity.CfpConfig;
 import io.cfp.entity.Event;
 import io.cfp.repository.CfpConfigRepo;
+import io.cfp.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,9 @@ public class ApplicationConfigService {
     @Autowired
     private CfpConfigRepo cfpConfigRepo;
 
+    @Autowired
+    private EventRepository events;
+
     @Cacheable("applicationSettings")
     public ApplicationSettings getAppConfig() {
         ApplicationSettings applicationSettings = new ApplicationSettings();
@@ -67,20 +71,24 @@ public class ApplicationConfigService {
 
     @Cacheable("isCfpOpen")
     public boolean isCfpOpen() {
-        CfpConfig conf = cfpConfigRepo.findByKeyAndEventId(OPEN, Event.current());
-        return Boolean.valueOf(conf.getValue());
+        return events.findOne(Event.current()).isOpen();
     }
 
     @Transactional
     @CacheEvict("isCfpOpen")
     public void openCfp() {
-        saveConf(OPEN, "true");
+        Event event = events.findOne(Event.current());
+        event.setOpen(true);
+        events.save(event);
     }
 
     @Transactional
     @CacheEvict("isCfpOpen")
     public void closeCfp() {
-        saveConf(OPEN, "false");
+        Event event = events.findOne(Event.current());
+        event.setOpen(false);
+        events.save(event);
+
     }
 
     @CacheEvict("applicationSettings")
