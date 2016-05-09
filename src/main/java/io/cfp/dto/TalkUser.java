@@ -26,6 +26,7 @@ import io.cfp.entity.Talk;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Talk DTO for user view
@@ -44,6 +45,25 @@ public class TalkUser {
     private Date added;
     private UserProfil speaker;
     private Set<CospeakerProfil> cospeakers;
+
+
+    public TalkUser() {
+
+    }
+
+    public TalkUser(Talk t) {
+        this.id = t.getId();
+        this.state = t.getState();
+        this.name = t.getName();
+        this.format = t.getFormat().getId();
+        this.trackId = t.getTrack().getId();
+        this.description = t.getDescription();
+        this.references = t.getReferences();
+        this.difficulty = t.getDifficulty();
+        this.added = t.getAdded();
+        this.speaker = new UserProfil(t.getUser().getFirstname(), t.getUser().getLastname());
+        this.cospeakers = t.getCospeakers().stream().map( u -> new CospeakerProfil(u.getEmail()) ).collect(Collectors.toSet());
+    }
 
 
     public int getId() {

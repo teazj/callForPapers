@@ -22,6 +22,7 @@ package io.cfp.service;
 
 import io.cfp.domain.exception.CospeakerNotFoundException;
 import io.cfp.dto.TalkAdmin;
+import io.cfp.dto.TalkUser;
 import io.cfp.dto.user.CospeakerProfil;
 import io.cfp.dto.user.UserProfil;
 import io.cfp.entity.Event;
@@ -43,6 +44,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -80,7 +82,10 @@ public class TalkAdminService {
      * @return List of talks
      */
     public List<TalkAdmin> findAll(Talk.State... states) {
-        List<Talk> talks = talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states));
+        List<TalkAdmin> talks = talkRepo.findByEventIdAndStatesFetch(Event.current(), Arrays.asList(states))
+            .stream().map(t -> new TalkAdmin(t))
+            .collect(Collectors.toList());
+
         List<Rate> rates = rateRepo.findAllFetchAdmin(Event.current());
 
         User admin = adminUserService.getCurrentUser();
@@ -95,15 +100,14 @@ public class TalkAdminService {
         Map<Integer, List<String>> voters = rates.stream()
             .collect(groupingBy(r -> r.getTalk().getId(), mapping(r -> r.getAdminUser().getEmail(), toList())));
 
-        List<TalkAdmin> talkList = mapper.mapAsList(talks, TalkAdmin.class);
-        for (TalkAdmin talk : talkList) {
+        for (TalkAdmin talk : talks) {
             int talkId = talk.getId();
 
             talk.setReviewed(reviewed.get(talkId) != null);
             talk.setMean(averages.get(talkId));
             talk.setVoteUsersEmail(voters.get(talkId));
         }
-        return talkList;
+        return talks;
     }
 
     /**
