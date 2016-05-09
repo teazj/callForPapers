@@ -28,12 +28,9 @@ import io.cfp.dto.TalkUser;
 import io.cfp.dto.user.CospeakerProfil;
 import io.cfp.dto.user.UserProfil;
 import io.cfp.entity.Event;
-import io.cfp.entity.Role;
 import io.cfp.entity.User;
-import io.cfp.repository.RoleRepository;
 import io.cfp.repository.UserRepo;
 import io.cfp.service.admin.config.ApplicationConfigService;
-import io.cfp.service.admin.user.AdminUserService;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -61,26 +58,30 @@ public class EmailingService {
 
     private final Logger log = LoggerFactory.getLogger(EmailingService.class);
 
-    @Autowired
-    ApplicationConfigService applicationConfigService;
-
-    @Autowired
-    private GlobalSettings globalSettings;
-
-    @Autowired
-    private EmailingSettings emailingSettings;
-
-    @Autowired
-    private UserRepo users;
-
-    @Autowired
-    private JavaMailSenderImpl javaMailSender;
+    private final ApplicationConfigService applicationConfigService;
+    private final GlobalSettings globalSettings;
+    private final EmailingSettings emailingSettings;
+    private final UserRepo users;
+    private final JavaMailSenderImpl javaMailSender;
 
     /**
      * EmailingService constructor.
+     * @param globalSettings
+     * @param emailingSettings
+     * @param users
+     * @param javaMailSender
      */
-    public EmailingService() {
-        super();
+    @Autowired
+    public EmailingService(ApplicationConfigService applicationConfigService,
+                           GlobalSettings globalSettings,
+                           EmailingSettings emailingSettings,
+                           UserRepo users,
+                           JavaMailSenderImpl javaMailSender) {
+        this.applicationConfigService = applicationConfigService;
+        this.globalSettings = globalSettings;
+        this.emailingSettings = emailingSettings;
+        this.users = users;
+        this.javaMailSender = javaMailSender;
     }
 
     /**

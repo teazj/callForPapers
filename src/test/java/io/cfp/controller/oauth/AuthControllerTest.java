@@ -17,7 +17,6 @@ import io.cfp.service.user.UserService;
 import io.cfp.utils.Utils;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,48 +103,13 @@ public class AuthControllerTest {
             return mock(UserService.class);
         }
 
-        @Bean // field injection of UserService
-        public MapperFacade mapper() {
-            return mock(MapperFacade.class);
-        }
-
-        @Bean // field injection of EmailingService
-        public ApplicationConfigService applicationConfigService() {
-            return mock(ApplicationConfigService.class);
-        }
-
-        @Bean // field injection of ApplicationConfigService
-        public CfpConfigRepo cfpConfigRepo() {
-            return mock(CfpConfigRepo.class);
-        }
-
-        @Bean // field injection of ApplicationConfigService
-        public EventRepository eventRepository() {
-            return mock(EventRepository.class);
-        }
-
-        @Bean // field injection of EmailingService
-        public GlobalSettings globalSettings() {
-            return mock(GlobalSettings.class);
-        }
-
-        @Bean // field injection of EmailingService
-        public EmailingSettings emailingSettings() {
-            return mock(EmailingSettings.class);
-        }
-
-        @Bean // field injection of EmailingService
-        public JavaMailSenderImpl javaMailSender() {
-            return mock(JavaMailSenderImpl.class);
-        }
-
         @Bean
         public EmailingService emailingService() {
             return mock(EmailingService.class);
         }
 
         @Bean
-        public AuthSettings AuthSettings() {
+        public AuthSettings authSettings() {
             return mock(AuthSettings.class);
         }
 
@@ -156,7 +120,7 @@ public class AuthControllerTest {
 
         @Bean
         public AuthController authController() {
-            return new AuthController();
+            return new AuthController(userService(), emailingService(), authSettings(), reCaptchaChecker());
         }
 
     }

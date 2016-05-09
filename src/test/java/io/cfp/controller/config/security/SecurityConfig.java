@@ -20,25 +20,9 @@ import static org.mockito.Mockito.mock;
 public class SecurityConfig {
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer properties() {
-        final PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-        final Properties properties = new Properties();
-        properties.setProperty("cfp.database.loaded", "");
-        properties.setProperty("cfp.app.hostname", "");
-        properties.setProperty("cfp.email.emailsender", "");
-        properties.setProperty("cfp.email.send", "false");
-        properties.setProperty("cfp.auth.secrettoken", "");
-        properties.setProperty("cfp.auth.captchasecret", "");
-        properties.setProperty("cfp.auth.captchapublic", "");
-        propertySourcesPlaceholderConfigurer.setProperties(properties);
-        return propertySourcesPlaceholderConfigurer;
-    }
-
-    @Bean
     public SecurityUserService userDetailsService() {
         return new SecurityUserService();
     }
-
 
     @Bean
     public UserRepo userRepo() {
