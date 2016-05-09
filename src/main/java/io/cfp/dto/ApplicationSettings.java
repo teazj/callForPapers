@@ -33,7 +33,6 @@ public class ApplicationSettings {
     private String date;
     private String releaseDate;
     private String decisionDate;
-    private boolean configured;
     private boolean open;
 
 
@@ -46,6 +45,7 @@ public class ApplicationSettings {
         date = format.format(event.getDate());
         releaseDate = format.format(event.getReleaseDate());
         decisionDate = format.format(event.getDecisionDate());
+        open = event.isOpen();
     }
 
     public String getEventName() {
@@ -89,11 +89,7 @@ public class ApplicationSettings {
     }
 
     public boolean isConfigured() {
-        return configured;
-    }
-
-    public void setConfigured(boolean configured) {
-        this.configured = configured;
+        return true;
     }
 
     public boolean isOpen() {

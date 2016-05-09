@@ -64,7 +64,6 @@ public class ApplicationConfigService {
         applicationSettings.setDecisionDate(cfpConfigRepo.findValueByKey(DECISION_DATE, Event.current()));
         applicationSettings.setReleaseDate(cfpConfigRepo.findValueByKey(RELEASE_DATE, Event.current()));
         applicationSettings.setOpen(Boolean.valueOf(cfpConfigRepo.findValueByKey(OPEN, Event.current())));
-        applicationSettings.setConfigured(true);
 
         return applicationSettings;
     }
