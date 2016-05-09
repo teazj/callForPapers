@@ -33,15 +33,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AdminUserService {
 
-    @Autowired
-    private RoleRepository roles;
+    private final RoleRepository roles;
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
     /** Current logged admin, scoped request object */
+    private final User currentAdmin;
+
     @Autowired
-    private User currentAdmin;
+    public AdminUserService(User currentAdmin, RoleRepository roles, UserRepo userRepo) {
+        this.currentAdmin = currentAdmin;
+        this.roles = roles;
+        this.userRepo = userRepo;
+    }
 
     /**
      * Retrieve an admin if the user e-mail match an admin e-mail
