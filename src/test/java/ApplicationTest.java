@@ -18,8 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import io.cfp.TestConfig;
 import io.cfp.controller.ApplicationController;
+import io.cfp.controller.oauth.AuthControllerTest;
 import io.cfp.dto.ApplicationSettings;
+import io.cfp.repository.EventRepository;
 import io.cfp.service.admin.config.ApplicationConfigService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -30,6 +33,8 @@ import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -46,26 +51,25 @@ import static org.mockito.Mockito.when;
 /**
  * Created by tmaugin on 08/04/2015.
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = {TestConfig.class})
+@WebIntegrationTest("server.port:0")
 public class ApplicationTest {
 
-    @Mock
-    private ApplicationConfigService applicationConfigService;
+    @Autowired
+    private EventRepository events;
 
     private ApplicationController applicationController;
 
     @Before
     public void setUp() {
         applicationController = new ApplicationController();
-        ReflectionTestUtils.setField(applicationController, "applicationConfigService", applicationConfigService);
+        ReflectionTestUtils.setField(applicationController, "events", events);
         RestAssuredMockMvc.standaloneSetup(applicationController);
     }
 
     @Test
     public void test1_getApplication() {
-
-        ApplicationSettings applicationSettings = new ApplicationSettings();
-        when(applicationConfigService.getAppConfig()).thenReturn(applicationSettings);
 
         given()
                 .contentType("application/json")
@@ -75,6 +79,4 @@ public class ApplicationTest {
                 .statusCode(200)
                 .body("size()", equalTo(7));
     }
-
-
 }

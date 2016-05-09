@@ -20,6 +20,9 @@
 
 package io.cfp.dto;
 
+import io.cfp.entity.Event;
+import org.apache.commons.lang.time.FastDateFormat;
+
 /**
  * Public application settings
  */
@@ -32,6 +35,18 @@ public class ApplicationSettings {
     private String decisionDate;
     private boolean configured;
     private boolean open;
+
+
+    public ApplicationSettings() { }
+
+    public ApplicationSettings(Event event) {
+        FastDateFormat format = FastDateFormat.getInstance("yyyy/MM/dd");
+
+        eventName = event.getId();
+        date = format.format(event.getDate());
+        releaseDate = format.format(event.getReleaseDate());
+        decisionDate = format.format(event.getDecisionDate());
+    }
 
     public String getEventName() {
         return eventName;

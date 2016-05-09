@@ -31,9 +31,15 @@
         <insert tableName="users">
             <column name="id" value="10"/>
             <column name="email" value="EMAIL"/>
+            <column name="verified" valueBoolean="true"/>
         </insert>
         <insert tableName="events">
             <column name="id" value="EVENT_ID"/>
+            <column name="short_description" value="Test"/>
+            <column name="date" valueDate="2042-12-31"/>
+            <column name="decision_date" valueDate="2042-12-30"/>
+            <column name="release_date" valueDate="2042-12-29"/>
+            <column name="open" valueBoolean="true"/>
         </insert>
         <insert tableName="roles">
             <column name="id" value="10"/>

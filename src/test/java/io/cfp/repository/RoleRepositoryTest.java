@@ -1,8 +1,7 @@
 package io.cfp.repository;
 
 import io.cfp.entity.Role;
-import io.cfp.repository.config.RepositoriesConfig;
-import org.junit.Ignore;
+import io.cfp.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {RepositoriesConfig.class})
+@SpringApplicationConfiguration(classes = {TestConfig.class})
 @DirtiesContext
 public class RoleRepositoryTest {
 
