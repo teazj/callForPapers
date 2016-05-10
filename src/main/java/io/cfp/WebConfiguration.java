@@ -26,6 +26,7 @@ import io.cfp.config.filter.TenantFilter;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -81,6 +82,11 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         registrationBean.setUrlPatterns(Collections.singleton("/api/admin/*"));
         registrationBean.setOrder(3);
         return registrationBean;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 
 }
