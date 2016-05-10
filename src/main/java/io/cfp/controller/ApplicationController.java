@@ -20,21 +20,22 @@
 
 package io.cfp.controller;
 
-import io.cfp.domain.exception.BadRequestException;
-import io.cfp.domain.exception.NotFoundException;
-import io.cfp.dto.ApplicationSettings;
-import io.cfp.entity.Event;
-import io.cfp.repository.EventRepository;
-import io.cfp.service.admin.config.ApplicationConfigService;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import io.cfp.domain.exception.BadRequestException;
+import io.cfp.domain.exception.NotFoundException;
+import io.cfp.dto.ApplicationSettings;
+import io.cfp.entity.Event;
+import io.cfp.repository.EventRepository;
 
 /**
  * Created by tmaugin on 07/05/2015.
@@ -44,10 +45,10 @@ import java.text.SimpleDateFormat;
 public class ApplicationController {
 
     @Autowired
-    private ApplicationConfigService applicationConfigService;
-
-    @Autowired
     private EventRepository events;
+    
+    @Value("${authServer}")
+    private String authServer;
 
     /**
      * Obtain application settings, (name, dates, ...)
@@ -62,7 +63,9 @@ public class ApplicationController {
             throw new NotFoundException("No event with ID: "+name);
         }
 
-        return new ApplicationSettings(event);
+        ApplicationSettings applicationSettings = new ApplicationSettings(event);
+        applicationSettings.setAuthServer(authServer);
+        return applicationSettings;
     }
 
 

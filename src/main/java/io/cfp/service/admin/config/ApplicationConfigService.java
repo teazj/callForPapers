@@ -42,13 +42,6 @@ public class ApplicationConfigService {
 
     private final Logger log = LoggerFactory.getLogger(ApplicationConfigService.class);
 
-    private static final String COMMUNITY = "community";
-    private static final String EVENT_NAME = "eventName";
-    private static final String DATE = "date";
-    private static final String DECISION_DATE = "decisionDate";
-    private static final String RELEASE_DATE = "releaseDate";
-    private static final String OPEN = "open";
-
     @Autowired
     private CfpConfigRepo cfpConfigRepo;
     
@@ -62,7 +55,6 @@ public class ApplicationConfigService {
     public ApplicationSettings getAppConfig() {
         ApplicationSettings applicationSettings = new ApplicationSettings(events.findOne(Event.current()));
         applicationSettings.setAuthServer(authServer);
-
         return applicationSettings;
     }
 
