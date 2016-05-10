@@ -39,7 +39,7 @@ public class ApplicationSettings {
     public ApplicationSettings() { }
 
     public ApplicationSettings(Event event) {
-        FastDateFormat format = FastDateFormat.getInstance("yyyy/MM/dd");
+        FastDateFormat format = FastDateFormat.getInstance("dd/MM/yyyy");
 
         eventName = event.getId();
         date = format.format(event.getDate());

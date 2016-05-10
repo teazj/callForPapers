@@ -115,4 +115,35 @@ public class Event {
     public static void unsetCurrent() {
         current.remove();
     }
+
+
+    public Event id(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public Event shortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+        return this;
+    }
+
+    public Event date(Date date) {
+        this.date = date;
+        return this;
+    }
+
+    public Event releaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+        return this;
+    }
+
+    public Event decisionDate(Date decisionDate) {
+        this.decisionDate = decisionDate;
+        return this;
+    }
+
+    public Event open(boolean open) {
+        this.open = open;
+        return this;
+    }
 }
