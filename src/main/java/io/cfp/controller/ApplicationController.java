@@ -20,6 +20,7 @@
 
 package io.cfp.controller;
 
+import io.cfp.domain.exception.BadRequestException;
 import io.cfp.domain.exception.NotFoundException;
 import io.cfp.dto.ApplicationSettings;
 import io.cfp.entity.Event;
@@ -30,6 +31,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by tmaugin on 07/05/2015.
@@ -66,7 +71,25 @@ public class ApplicationController {
      * @return
      */
     @RequestMapping(method=RequestMethod.POST, value="/admin/application")
-    public void getApplicationSettings(@RequestBody ApplicationSettings settings) {
-        applicationConfigService.saveConfiguration(settings);
+    public void getApplicationSettings(@RequestBody ApplicationSettings settings) throws NotFoundException, BadRequestException {
+
+        final String name = Event.current();
+        Event event = events.findOne(name);
+        if (event == null) {
+            throw new NotFoundException("No event with ID: "+name);
+        }
+
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            event.date(format.parse(settings.getDate()))
+                .decisionDate(format.parse(settings.getDecisionDate()))
+                .releaseDate(format.parse(settings.getReleaseDate()))
+                .open(settings.isOpen());
+        } catch (ParseException e) {
+            throw new BadRequestException("Invalid data "+e.getMessage());
+        }
+        events.save(event);
+
     }
 }

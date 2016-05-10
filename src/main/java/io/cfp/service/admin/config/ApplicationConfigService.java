@@ -56,16 +56,7 @@ public class ApplicationConfigService {
 
     @Cacheable("applicationSettings")
     public ApplicationSettings getAppConfig() {
-        ApplicationSettings applicationSettings = new ApplicationSettings();
-
-        applicationSettings.setEventName(cfpConfigRepo.findValueByKey(EVENT_NAME, Event.current()));
-        applicationSettings.setCommunity(cfpConfigRepo.findValueByKey(COMMUNITY, Event.current()));
-        applicationSettings.setDate(cfpConfigRepo.findValueByKey(DATE, Event.current()));
-        applicationSettings.setDecisionDate(cfpConfigRepo.findValueByKey(DECISION_DATE, Event.current()));
-        applicationSettings.setReleaseDate(cfpConfigRepo.findValueByKey(RELEASE_DATE, Event.current()));
-        applicationSettings.setOpen(Boolean.valueOf(cfpConfigRepo.findValueByKey(OPEN, Event.current())));
-
-        return applicationSettings;
+        return new ApplicationSettings(events.findOne(Event.current()));
     }
 
     @Cacheable("isCfpOpen")
@@ -100,14 +91,4 @@ public class ApplicationConfigService {
         log.debug(conf.getKey() + " -> " + conf.getValue());
     }
 
-    @CacheEvict("applicationSettings")
-    @Transactional
-    public void saveConfiguration(ApplicationSettings settings) {
-        saveConf(COMMUNITY, settings.getCommunity());
-        saveConf(EVENT_NAME, settings.getEventName());
-        saveConf(DATE, settings.getDate());
-        saveConf(DECISION_DATE, settings.getDecisionDate());
-        saveConf(RELEASE_DATE, settings.getReleaseDate());
-        saveConf(OPEN, String.valueOf(settings.isOpen()));
-    }
 }
