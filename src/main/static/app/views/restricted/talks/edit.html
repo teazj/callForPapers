@@ -34,7 +34,7 @@
                 <div>{{talkFormats[talk.format-1].description}}</div>
                 <div>
                     <select ng-model="talk.format" name="formatInput" required class="form-control"
-                            ng-options="format.id as (format.libelle +' ('+format.dureeMinutes+' mn)') for format in talkFormats">
+                            ng-options="format.id as (format.name +' ('+format.duration+' min)') for format in talkFormats">
 
                     </select>
                 </div>

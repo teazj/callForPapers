@@ -334,7 +334,7 @@ public class TalkUserService {
 
         setCoSpeaker(talkUser, talk);
 
-        talkUser.setState(newState);
+        talk.setState(newState);
         talk.setTrack(trackRepo.findByIdAndEventId(talkUser.getTrackId(), Event.current()));
         talk.setFormat(formatRepo.findByIdAndEventId(talkUser.getFormat(), Event.current()));
         talkRepo.save(talk);
