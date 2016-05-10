@@ -65,9 +65,6 @@ public class AuthAdminFilter extends AuthFilter {
         try {
         	User user = authUtils.getAuthUser(httpRequest);
             User admin = adminUserService.findFromEmail(user.getEmail());
-            if (admin == null) throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, AuthUtils.AUTH_ERROR_MSG);
-
-            User admin = adminUserService.findFromEmail(email);
             if (admin == null) {
                 httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Resource require Administrator role");
                 return;

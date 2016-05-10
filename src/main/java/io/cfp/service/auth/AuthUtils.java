@@ -20,31 +20,23 @@
 
 package io.cfp.service.auth;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import io.cfp.domain.token.Token;
 import io.cfp.entity.User;
 import io.cfp.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 
 @Component
 public final class AuthUtils {
-	
+
 	public static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",
             EXPIRE_ERROR_MSG = "Token has expired",
             JWT_ERROR_MSG = "Unable to parse JWT",
@@ -54,7 +46,7 @@ public final class AuthUtils {
 
     @Autowired
     private UserService userService;
-    
+
     @Value("${token.signing-key}")
     private String signingKey;
 
@@ -99,7 +91,7 @@ public final class AuthUtils {
     	if (tokenValue != null) {
     		try {
                 return decodeToken(tokenValue);
-            } 
+            }
     		catch (ExpiredJwtException ex) {
     			throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, EXPIRE_ERROR_MSG);
             }
@@ -120,21 +112,6 @@ public final class AuthUtils {
         return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(tokenValue).getBody();
     }
 
-    /**
-     * Create JWT token
-     * @param host
-     * @param sub
-     * @return
-     */
-    public Token createToken(String host, String sub) {
-        JwtBuilder builder = Jwts.builder()
-                .setSubject(sub)
-                .setExpiration(Date.from(Instant.now().plus(12, ChronoUnit.HOURS)))
-                .signWith(SignatureAlgorithm.HS512, signingKey);
-
-        return new Token(builder.compact());
-    }
-    
     /** Thrown if token is invalid */
     public static class InvalidTokenException extends Exception {
         private int responseCode;
