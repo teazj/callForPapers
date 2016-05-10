@@ -20,12 +20,18 @@
 
 package io.cfp;
 
+import io.cfp.config.filter.AuthAdminFilter;
+import io.cfp.config.filter.AuthFilter;
+import io.cfp.config.filter.TenantFilter;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import java.util.Collections;
 
 @Configuration
 public class WebConfiguration extends WebMvcConfigurerAdapter {
@@ -47,4 +53,34 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         resolver.setSuffix(".jsp");
         return resolver;
     }
+
+    @Bean
+    public FilterRegistrationBean tenantFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        TenantFilter tenantFilter = new TenantFilter();
+        registrationBean.setFilter(tenantFilter);
+        registrationBean.setOrder(1);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean authFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        AuthFilter authFilter = new AuthFilter();
+        registrationBean.setFilter(authFilter);
+        registrationBean.setUrlPatterns(Collections.singleton("/api/restricted/*"));
+        registrationBean.setOrder(2);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean authAdminFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        AuthFilter authFilter = new AuthAdminFilter();
+        registrationBean.setFilter(authFilter);
+        registrationBean.setUrlPatterns(Collections.singleton("/api/admin/*"));
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
 }

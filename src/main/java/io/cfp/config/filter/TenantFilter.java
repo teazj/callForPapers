@@ -37,7 +37,6 @@ import java.net.URL;
 /**
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
  */
-@WebFilter
 public class TenantFilter extends OncePerRequestFilter {
 
     @Override

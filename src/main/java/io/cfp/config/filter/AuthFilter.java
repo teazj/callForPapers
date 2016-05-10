@@ -42,7 +42,6 @@ import java.text.ParseException;
 /**
  * Filter reading auth token (JWT) to verify if user is correctly logged
  */
-@WebFilter(urlPatterns = "/api/restricted/*")
 public class AuthFilter implements Filter {
 
     protected static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",

@@ -42,7 +42,6 @@ import java.io.IOException;
 /**
  * Filter reading auth token and check if user is admin
  */
-@WebFilter(urlPatterns = "/api/admin/*")
 public class AuthAdminFilter extends AuthFilter {
 
     private AdminUserService adminUserService;
