@@ -21,6 +21,9 @@
 package io.cfp.config.filter;
 
 import io.cfp.entity.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -44,13 +47,18 @@ public class TenantFilter extends OncePerRequestFilter {
         String tenant = "default";
         if (host.endsWith(".cfp.io")) {
             tenant = host.substring(0, host.indexOf('.'));
+        } else {
+            logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'default'");
         }
+        MDC.put("event.id", tenant);
         Event.setCurrent(tenant);
         try {
             filterChain.doFilter(request, response);
         } finally {
             Event.unsetCurrent();
+            MDC.remove("event.id");
         }
-
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(TenantFilter.class);
 }
