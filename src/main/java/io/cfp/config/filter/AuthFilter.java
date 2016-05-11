@@ -70,10 +70,12 @@ public class AuthFilter implements Filter {
             User user = authUtils.getAuthUser(httpRequest);
             MDC.put(USER, user);
 
-            List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
-
-            UserAuthentication authentication = new UserAuthentication(user, roles);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserAuthentication authentication = null;
+            if (user != null) {
+                List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
+                authentication = new UserAuthentication(user, roles);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
 
             chain.doFilter(request, response);
 
