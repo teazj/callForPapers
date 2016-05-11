@@ -23,6 +23,7 @@ package io.cfp.controller;
 import io.cfp.dto.FormatDto;
 import io.cfp.entity.Event;
 import io.cfp.entity.Format;
+import io.cfp.entity.Role;
 import io.cfp.repository.EventRepository;
 import io.cfp.repository.FormatRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class FormatControler {
     }
 
     @RequestMapping(method = POST)
-    @Secured("ADMIN")
+    @Secured(Role.ADMIN)
     public FormatDto create(@RequestBody FormatDto format) {
         return new FormatDto(
             formats.save(
@@ -79,7 +80,7 @@ public class FormatControler {
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
-    @Secured("ADMIN")
+    @Secured(Role.ADMIN)
     public void update(@PathVariable int id, @RequestBody FormatDto format) {
         formats.save(
             formats.getOne(id)
@@ -90,7 +91,7 @@ public class FormatControler {
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
-    @Secured("ADMIN")
+    @Secured(Role.ADMIN)
     public void delete(@PathVariable int id) {
         formats.delete(id);
     }
