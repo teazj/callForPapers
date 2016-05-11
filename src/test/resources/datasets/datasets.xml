@@ -42,7 +42,7 @@
         </insert>
         <insert tableName="roles">
             <column name="id" value="10"/>
-            <column name="name" value="ADMIN"/>
+            <column name="name" value="ROLE_ADMIN"/>
             <column name="event_id" value="EVENT_ID"/>
             <column name="user_id" value="10"/>
         </insert>
