@@ -7,17 +7,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserAuthentication implements Authentication {
 
     private final User user;
-    private final Collection<Role> roles;
+    private final List<SimpleGrantedAuthority> authorities;
     private boolean authenticated = true;
 
     public UserAuthentication(User user, Collection<Role> roles) {
         this.user = user;
-        this.roles = roles;
+        authorities = roles.stream()
+            .map(role -> new SimpleGrantedAuthority(role.getName()))
+            .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority(Role.AUTHENTICATED));
     }
 
     @Override
@@ -27,9 +32,7 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName()))
-            .collect(Collectors.toList());
+        return authorities;
     }
 
     @Override
