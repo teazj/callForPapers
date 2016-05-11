@@ -25,6 +25,7 @@ import io.cfp.dto.TalkAdmin;
 import io.cfp.entity.Talk;
 import io.cfp.service.TalkAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="api/admin", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/admin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminSessionController {
 
     @Autowired

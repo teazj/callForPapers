@@ -22,9 +22,12 @@ package io.cfp.controller;
 
 import io.cfp.domain.exception.NotFoundException;
 import io.cfp.dto.RateAdmin;
+import io.cfp.entity.Role;
 import io.cfp.service.RateAdminService;
 import io.cfp.service.admin.user.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +38,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="api/admin/rates", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/rates", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminRateController {
 
     @Autowired
@@ -48,6 +51,7 @@ public class AdminRateController {
      * Get all ratings
      */
     @RequestMapping(method = RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public List<RateAdmin> getRates() {
         return rateService.getAll();
     }
@@ -56,6 +60,7 @@ public class AdminRateController {
      * Delete all ratings
      */
     @RequestMapping(method = RequestMethod.DELETE)
+    @Secured(Role.ADMIN)
     public void deleteRates() {
         rateService.deleteAll();
     }
@@ -64,6 +69,7 @@ public class AdminRateController {
      * Add a new rating
      */
     @RequestMapping(method=RequestMethod.POST)
+    @Secured(Role.ADMIN)
     public RateAdmin postRate(@Valid @RequestBody RateAdmin rate) throws NotFoundException {
         return rateService.add(rate, adminUserServiceCustom.getCurrentUser(), rate.getTalkId());
     }
@@ -72,6 +78,7 @@ public class AdminRateController {
      * Edit a rating
      */
     @RequestMapping(value= "/{rateId}", method=RequestMethod.PUT)
+    @Secured(Role.ADMIN)
     public RateAdmin putRate(@PathVariable int rateId, @Valid @RequestBody RateAdmin rate) {
         rate.setId(rateId);
         return rateService.edit(rate);
@@ -81,6 +88,7 @@ public class AdminRateController {
      * Get a specific rating
      */
     @RequestMapping(value= "/{rateId}", method= RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public RateAdmin getRate(@PathVariable int rateId) {
         return rateService.get(rateId);
     }
@@ -91,6 +99,7 @@ public class AdminRateController {
      * @return
      */
     @RequestMapping(value= "/user/{userId}", method= RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public List<RateAdmin> getRateByUserId(@PathVariable int userId) {
         return rateService.findForUser(userId);
     }
@@ -99,6 +108,7 @@ public class AdminRateController {
      * Get all ratings for a given session
      */
     @RequestMapping(value= "/session/{talkId}", method= RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public List<RateAdmin> getRatesByTalkId(@PathVariable int talkId) {
         return rateService.findForTalk(talkId);
     }
@@ -107,6 +117,7 @@ public class AdminRateController {
      * Get rating for current user and a session
      */
     @RequestMapping(value= "/session/{talkId}/user/me", method = RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public RateAdmin getRateByRowIdAndUserId(@PathVariable int talkId) throws NotFoundException {
         int adminId = adminUserServiceCustom.getCurrentUser().getId();
         return rateService.findForTalkAndAdmin(talkId, adminId);
@@ -116,6 +127,7 @@ public class AdminRateController {
      * Delete specific rating
      */
     @RequestMapping(value= "/{rateId}", method= RequestMethod.DELETE)
+    @Secured(Role.ADMIN)
     public void deleteRate(@PathVariable int rateId) {
         rateService.delete(rateId);
     }

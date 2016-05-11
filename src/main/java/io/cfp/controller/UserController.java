@@ -38,7 +38,7 @@ import java.util.Map;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
-@RequestMapping(value = "/api/restricted", produces = APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/api/users", produces = APPLICATION_JSON_UTF8_VALUE)
 public class UserController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
     @Secured(Role.AUTHENTICATED)
     public Map<String, Object> getUserProfil(@AuthenticationPrincipal User user) {
         HashMap<String, Object> map = new HashMap<>();
@@ -76,7 +76,7 @@ public class UserController {
      * @param profil
      * @return
      */
-    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/me", method = RequestMethod.PUT)
     @Secured(Role.AUTHENTICATED)
     public UserProfil putUserProfil(@AuthenticationPrincipal User user, @RequestBody UserProfil profil) {
         profil.setEmail(user.getEmail());

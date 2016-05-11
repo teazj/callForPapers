@@ -20,8 +20,10 @@
 
 package io.cfp.controller;
 
+import io.cfp.entity.Role;
 import io.cfp.service.admin.config.ApplicationConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +37,7 @@ import javax.validation.Valid;
  * SII
  */
 @RestController
-@RequestMapping(value="api/admin/config", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/config", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ConfigController {
 
     @Autowired
@@ -47,6 +49,7 @@ public class ConfigController {
      * @return key
      */
     @RequestMapping(value="/enableSubmissions", method= RequestMethod.POST)
+    @Secured(Role.ADMIN)
     public io.cfp.domain.common.Key postEnableSubmissions(@Valid @RequestBody io.cfp.domain.common.Key key) {
 
         if (key.getKey().equals("true"))

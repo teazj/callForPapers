@@ -21,8 +21,8 @@
 'use strict';
 
 angular.module('CallForPaper').factory('RestrictedUser', ['$resource', function($resource) {
-    return $resource('api/restricted/user/:id', null, {
+    return $resource('api/users/me', null, {
         query: {method: 'GET', isArray: false},
-        update: {method: 'PUT', url: 'api/restricted/user'}
+        update: {method: 'PUT'}
     });
 }]);

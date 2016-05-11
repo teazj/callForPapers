@@ -24,8 +24,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import io.cfp.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,12 +44,12 @@ import io.cfp.repository.EventRepository;
  * Created by tmaugin on 07/05/2015.
  */
 @RestController
-@RequestMapping(value="/api", produces = "application/json; charset=utf-8")
+@RequestMapping(value="/api", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ApplicationController {
 
     @Autowired
     private EventRepository events;
-    
+
     @Value("${authServer}")
     private String authServer;
 
@@ -73,7 +76,8 @@ public class ApplicationController {
      * save application settings, (name, dates, ...)
      * @return
      */
-    @RequestMapping(method=RequestMethod.POST, value="/admin/application")
+    @RequestMapping(method=RequestMethod.POST, value="/application")
+    @Secured(Role.ADMIN)
     public void getApplicationSettings(@RequestBody ApplicationSettings settings) throws NotFoundException, BadRequestException {
 
         final String name = Event.current();

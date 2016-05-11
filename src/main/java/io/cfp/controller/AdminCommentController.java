@@ -27,6 +27,7 @@ import io.cfp.entity.User;
 import io.cfp.service.CommentAdminService;
 import io.cfp.service.admin.user.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="api/admin/sessions/{talkId}/comments", produces = "application/json; charset=utf-8")
+@RequestMapping(value="api/admin/sessions/{talkId}/comments", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminCommentController {
 
     @Autowired

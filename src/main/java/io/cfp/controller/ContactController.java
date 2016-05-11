@@ -29,6 +29,7 @@ import io.cfp.service.CommentUserService;
 import io.cfp.service.TalkUserService;
 import io.cfp.service.email.EmailingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping(value = "api/restricted/sessions/{talkId}/contacts", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "api/restricted/sessions/{talkId}/contacts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ContactController extends RestrictedController {
 
     @Autowired

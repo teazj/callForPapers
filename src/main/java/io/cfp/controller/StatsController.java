@@ -22,22 +22,26 @@ package io.cfp.controller;
 
 import io.cfp.domain.exception.NotVerifiedException;
 import io.cfp.dto.RestrictedMeter;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
 import io.cfp.service.TalkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/restricted/stats")
+@RequestMapping(value = "/api/stats", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class StatsController extends RestrictedController {
 
     @Autowired
     private TalkUserService talkService;
 
     @RequestMapping("/meter")
+    @Secured(Role.AUTHENTICATED)
     public RestrictedMeter meter(HttpServletRequest req) throws NotVerifiedException {
         User user = retrieveUser(req);
 

@@ -44,7 +44,7 @@ angular.module('CallForPaper')
              * @return {void}
              */
             $scope.toggleSubmit = function(value) {
-                $http.post('/api/admin/config/enableSubmissions', {
+                $http.post('/api/config/enableSubmissions', {
                     key: value
                 }).then(function() {
                 }, function() {
@@ -57,7 +57,7 @@ angular.module('CallForPaper')
                 $scope.config.date = $filter('date')($scope.config.start,'dd/MM/yyyy');
                 $scope.config.releaseDate = $filter('date')($scope.config.release,'dd/MM/yyyy');
                 $scope.config.decisionDate = $filter('date')($scope.config.decision,'dd/MM/yyyy');
-                $http.post('/api/admin/application', $scope.config).then(function() {
+                $http.post('/api/application', $scope.config).then(function() {
                 }, function() {
                 });
 

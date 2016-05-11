@@ -23,6 +23,7 @@ package io.cfp.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,7 @@ import io.cfp.service.auth.AuthUtils;
 import io.cfp.service.auth.AuthUtils.InvalidTokenException;
 
 @RestController
-@RequestMapping(value="/api/adminUser")
+@RequestMapping(value="/api/adminUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminUserController {
 
     @Autowired
@@ -48,7 +49,7 @@ public class AdminUserController {
      */
     @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     public AdminUserInfo getCurrentUser(HttpServletRequest req) {
-    	
+
     	User user = null;
     	try {
     		user = authUtils.getAuthUser(req);

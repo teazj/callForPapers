@@ -22,19 +22,19 @@
 
 angular.module('CallForPaper').service('TalkService', ['resourceRetries', function(resourceRetries) {
 
-    var tracks = resourceRetries('/api/settings/talk/tracks', null,
+    var tracks = resourceRetries('/api/tracks', null,
         {
             findAll: {
-                url: '/api/settings/talk/tracks',
+                url: '/api/tracks',
                 method: 'GET',
                 isArray: true
             }
         });
 
-    var formats = resourceRetries('/api/settings/talk/formats', null,
+    var formats = resourceRetries('/api/formats', null,
         {
             findAll: {
-                url: '/api/settings/talk/formats',
+                url: '/api/formats',
                 method: 'GET',
                 isArray: true
             }
