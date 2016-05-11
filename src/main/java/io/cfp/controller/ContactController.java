@@ -24,12 +24,14 @@ import io.cfp.domain.exception.NotFoundException;
 import io.cfp.domain.exception.NotVerifiedException;
 import io.cfp.dto.CommentUser;
 import io.cfp.dto.TalkUser;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
 import io.cfp.service.CommentUserService;
 import io.cfp.service.TalkUserService;
 import io.cfp.service.email.EmailingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping(value = "api/restricted/sessions/{talkId}/contacts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "api/proposals/{talkId}/contacts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ContactController extends RestrictedController {
 
     @Autowired
@@ -58,6 +60,7 @@ public class ContactController extends RestrictedController {
      * Get all contact message for a given session
      */
     @RequestMapping(method = RequestMethod.GET)
+    @Secured(Role.AUTHENTICATED)
     public List<CommentUser> getAll(@PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException {
         User user = retrieveUser(req);
 
@@ -68,6 +71,7 @@ public class ContactController extends RestrictedController {
      * Add a contact message for the given session
      */
     @RequestMapping(method = RequestMethod.POST)
+    @Secured(Role.AUTHENTICATED)
     public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest httpServletRequest)
             throws NotVerifiedException, NotFoundException {
         User user = retrieveUser(httpServletRequest);
@@ -91,6 +95,7 @@ public class ContactController extends RestrictedController {
      * Edit contact message
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @Secured(Role.AUTHENTICATED)
     public CommentUser putContact(@PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req)
             throws NotVerifiedException {
         User user = retrieveUser(req);

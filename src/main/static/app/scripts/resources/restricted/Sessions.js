@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper').factory('Sessions', function(Restangular) {
-    var Sessions = Restangular.service('restricted/sessions');
+    var Sessions = Restangular.service('proposals');
 
     Sessions.get = function get(id) {
         return Sessions.one(id).get();
