@@ -25,6 +25,7 @@ import io.cfp.entity.Event;
 import io.cfp.entity.Role;
 import io.cfp.entity.User;
 import io.cfp.repository.RoleRepository;
+import io.cfp.service.admin.user.AdminUserService;
 import io.cfp.service.auth.AuthUtils;
 import io.cfp.service.auth.AuthUtils.InvalidTokenException;
 import org.apache.log4j.MDC;
@@ -47,6 +48,7 @@ public class AuthFilter implements Filter {
 
     private AuthUtils authUtils;
     private RoleRepository roleRepository;
+    private AdminUserService adminUserService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -54,6 +56,7 @@ public class AuthFilter implements Filter {
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         authUtils = webApplicationContext.getBean(AuthUtils.class);
         roleRepository = webApplicationContext.getBean(RoleRepository.class);
+        adminUserService = webApplicationContext.getBean(AdminUserService.class);
     }
 
     /**
@@ -70,19 +73,21 @@ public class AuthFilter implements Filter {
             User user = authUtils.getAuthUser(httpRequest);
             MDC.put(USER, user);
 
-            UserAuthentication authentication = null;
             if (user != null) {
                 List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
-                authentication = new UserAuthentication(user, roles);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (roles.contains(Role.ADMIN)) {
+                    adminUserService.setCurrentAdmin(user);
+                }
+                SecurityContextHolder.getContext()
+                    .setAuthentication(new UserAuthentication(user, roles));
             }
-
-            chain.doFilter(request, response);
-
         } catch (InvalidTokenException e) {
             httpResponse.sendError(e.getResponseCode(), e.getMessage());
         }
-        finally {
+
+        try {
+            chain.doFilter(request, response);
+        } finally {
             MDC.remove(USER);
             SecurityContextHolder.getContext().setAuthentication(null);
         }

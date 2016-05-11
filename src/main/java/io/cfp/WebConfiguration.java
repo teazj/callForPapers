@@ -20,7 +20,6 @@
 
 package io.cfp;
 
-import io.cfp.config.filter.AuthAdminFilter;
 import io.cfp.config.filter.AuthFilter;
 import io.cfp.config.filter.TenantFilter;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -69,18 +68,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         AuthFilter authFilter = new AuthFilter();
         registrationBean.setFilter(authFilter);
-        registrationBean.setUrlPatterns(Collections.singleton("/api/restricted/*"));
+        registrationBean.setUrlPatterns(Collections.singleton("/api/*"));
         registrationBean.setOrder(2);
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean authAdminFilter() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        AuthFilter authFilter = new AuthAdminFilter();
-        registrationBean.setFilter(authFilter);
-        registrationBean.setUrlPatterns(Collections.singleton("/api/admin/*"));
-        registrationBean.setOrder(3);
         return registrationBean;
     }
 
