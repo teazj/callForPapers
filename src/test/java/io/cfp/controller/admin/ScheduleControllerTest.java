@@ -125,7 +125,7 @@ public class ScheduleControllerTest {
 
         when(talkUserService.findAll(Talk.State.CONFIRMED)).thenReturn(talkList);
 
-        MockMvcResponse mockMvcResponse = given().contentType("application/json").when().get("/api/admin/scheduledtalks/confirmed");
+        MockMvcResponse mockMvcResponse = given().contentType("application/json").when().get("/api/schedule/confirmed");
 
         System.out.println(mockMvcResponse.asString());
 
@@ -182,7 +182,7 @@ public class ScheduleControllerTest {
 
         when(talkUserService.findAll(Talk.State.ACCEPTED)).thenReturn(talkList);
 
-        MockMvcResponse mockMvcResponse = given().when().get("/api/admin/scheduledtalks/accepted/speakers");
+        MockMvcResponse mockMvcResponse = given().when().get("/api/schedule/accepted/speakers");
 
         System.out.println(mockMvcResponse.asString());
 
@@ -223,7 +223,7 @@ public class ScheduleControllerTest {
         when(talkUserService.updateConfirmedTalk(1, dateEventStart)).thenReturn(talkUser1);
         Mockito.doNothing().when(emailingService).sendEmail(anyString(), anyString(), anyString(), isNull(List.class), isNull(List.class));
 
-        MockMvcResponse mockMvcResponse = given().body(scheduleList).contentType("application/json").put("/api/admin/scheduledtalks?sendMail=true");
+        MockMvcResponse mockMvcResponse = given().body(scheduleList).contentType("application/json").put("/api/schedule?sendMail=true");
 
         mockMvcResponse.then().statusCode(200);
     }
@@ -262,7 +262,7 @@ public class ScheduleControllerTest {
         when(talkUserService.updateConfirmedTalk(1, dateEventStart)).thenReturn(talkUser1);
         Mockito.doNothing().when(emailingService).sendEmail(anyString(), anyString(), anyString(), isNull(List.class), isNull(List.class));
 
-        MockMvcResponse mockMvcResponse = given().body(scheduleList).contentType("application/json").put("/api/admin/scheduledtalks");
+        MockMvcResponse mockMvcResponse = given().body(scheduleList).contentType("application/json").put("/api/schedule");
 
         mockMvcResponse.then().statusCode(200);
 
@@ -295,7 +295,7 @@ public class ScheduleControllerTest {
         when(talkUserService.findAll(Talk.State.ACCEPTED)).thenReturn(talkList);
         Mockito.doNothing().when(emailingService).sendEmail(anyString(), anyString(), anyString(), isNull(List.class), isNull(List.class));
 
-        MockMvcResponse mockMvcResponse = given().contentType("application/json").post("/api/admin/scheduledtalks/notification");
+        MockMvcResponse mockMvcResponse = given().contentType("application/json").post("/api/schedule/notification");
 
         mockMvcResponse.then().statusCode(200);
 
