@@ -23,6 +23,7 @@ package io.cfp.controller;
 import io.cfp.dto.TalkUser;
 import io.cfp.dto.user.Schedule;
 import io.cfp.dto.user.UserProfil;
+import io.cfp.entity.Role;
 import io.cfp.entity.Talk;
 import io.cfp.service.TalkUserService;
 import io.cfp.service.email.EmailingService;
@@ -30,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,7 +55,7 @@ import static java.util.stream.Collectors.toSet;
  */
 
 @RestController
-@RequestMapping(value = "api/admin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/api/schedule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ScheduleController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ScheduleController.class);
@@ -74,12 +76,10 @@ public class ScheduleController {
      *
      * @return Confirmed talks in "LikeBox" format.
      */
-    @RequestMapping(value = "/scheduledtalks/confirmed", method = RequestMethod.GET)
+    @RequestMapping(value = "/confirmed", method = RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public List<Schedule> getConfirmedScheduleList() {
-        LOG.info("GET /scheduledtalks/confirmed");
-
         List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.CONFIRMED);
-
         return getSchedules(talkUserList);
     }
 
@@ -88,12 +88,10 @@ public class ScheduleController {
      *
      * @return Speakers Set
      */
-    @RequestMapping(value = "/scheduledtalks/accepted/speakers", method = RequestMethod.GET)
+    @RequestMapping(value = "/accepted/speakers", method = RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public Set<UserProfil> getSpeakerList() {
-        LOG.info("GET /scheduledtalks/accepted/speakers");
-
         List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.ACCEPTED);
-
         return talkUserList.stream().map(t -> t.getSpeaker()).collect(toSet());
     }
 
@@ -102,12 +100,10 @@ public class ScheduleController {
      *
      * @return Accepted talks in "LikeBox" format.
      */
-    @RequestMapping(value = "/scheduledtalks/accepted", method = RequestMethod.GET)
+    @RequestMapping(value = "/accepted", method = RequestMethod.GET)
+    @Secured(Role.ADMIN)
     public List<Schedule> getScheduleList() {
-        LOG.info("GET /scheduledtalks/accepted");
-
         List<TalkUser> talkUserList = talkUserService.findAll(Talk.State.ACCEPTED);
-
         return getSchedules(talkUserList);
     }
 
@@ -134,10 +130,9 @@ public class ScheduleController {
      *
      * @param scheduleList Accepted talks in "LikeBox" format.
      */
-    @RequestMapping(value = "/scheduledtalks", method = RequestMethod.PUT)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @Secured(Role.ADMIN)
     public Map<String, List<TalkUser>> putScheduleList(@RequestBody List<Schedule> scheduleList, @RequestParam(defaultValue = "false", required = false) boolean sendMail) {
-        LOG.info("PUT /scheduledtalks");
-
         scheduleList.forEach(s -> {
             LocalDateTime dateEventStart = LocalDateTime.parse(s.getEventStart(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             // update database
@@ -166,11 +161,9 @@ public class ScheduleController {
     /**
      * Notify by mails scheduling result.
      */
-    @RequestMapping(value = "/scheduledtalks/notification", method = RequestMethod.POST)
+    @RequestMapping(value = "/notification", method = RequestMethod.POST)
+    @Secured(Role.ADMIN)
     public Map<String, List<TalkUser>> notifyScheduling() {
-        LOG.info("POST /scheduledtalks/notification");
-
-
         Map<String, List<TalkUser>> result = new HashMap<>();
 
         List<TalkUser> refused = talkUserService.findAll(Talk.State.REFUSED);
