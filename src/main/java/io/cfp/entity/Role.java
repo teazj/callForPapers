@@ -25,12 +25,7 @@
 
 package io.cfp.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -82,5 +77,6 @@ public class Role {
         this.user = user;
     }
 
-    public static String ADMIN = "ADMIN";
+    public static final String ADMIN = "ROLE_ADMIN";
+    public static final String AUTHENTICATED = "ROLE_AUTHENTICATED";
 }
