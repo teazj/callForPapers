@@ -21,7 +21,10 @@
 package io.cfp.config.filter;
 
 import io.cfp.domain.common.UserAuthentication;
+import io.cfp.entity.Event;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
+import io.cfp.repository.RoleRepository;
 import io.cfp.service.auth.AuthUtils;
 import io.cfp.service.auth.AuthUtils.InvalidTokenException;
 import org.apache.log4j.MDC;
@@ -33,21 +36,24 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Filter reading auth token (JWT) to verify if user is correctly logged
  */
 public class AuthFilter implements Filter {
 
-    public static final String USER = "user";
+    protected static final String USER = "user";
 
     private AuthUtils authUtils;
+    private RoleRepository roleRepository;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext servletContext = filterConfig.getServletContext();
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         authUtils = webApplicationContext.getBean(AuthUtils.class);
+        roleRepository = webApplicationContext.getBean(RoleRepository.class);
     }
 
     /**
@@ -64,7 +70,9 @@ public class AuthFilter implements Filter {
             User user = authUtils.getAuthUser(httpRequest);
             MDC.put(USER, user);
 
-            UserAuthentication authentication = new UserAuthentication(user);
+            List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
+
+            UserAuthentication authentication = new UserAuthentication(user, roles);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             chain.doFilter(request, response);
