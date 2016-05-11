@@ -40,7 +40,7 @@ angular.module('CallForPaper').factory('Sessions', function(Restangular) {
 
 
 angular.module('CallForPaper').factory('CoSessions', function(Restangular) {
-    var coSessions = Restangular.service('restricted/cosessions');
+    var coSessions = Restangular.service('cosessions');
 
     coSessions.get = function get(id) {
         return coSessions.one(id).get();

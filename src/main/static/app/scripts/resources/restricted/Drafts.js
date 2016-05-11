@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper').factory('Drafts', function(Restangular) {
-    var Drafts = Restangular.service('restricted/drafts');
+    var Drafts = Restangular.service('drafts');
 
     Drafts.get = function get(id) {
         return Drafts.one(id).get();
