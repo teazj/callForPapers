@@ -51,20 +51,17 @@ public class ApplicationConfigService {
     @Autowired
     private EventRepository events;
 
-    @Cacheable("applicationSettings")
     public ApplicationSettings getAppConfig() {
         ApplicationSettings applicationSettings = new ApplicationSettings(events.findOne(Event.current()));
         applicationSettings.setAuthServer(authServer);
         return applicationSettings;
     }
 
-    @Cacheable("isCfpOpen")
     public boolean isCfpOpen() {
         return events.findOne(Event.current()).isOpen();
     }
 
     @Transactional
-    @CacheEvict("isCfpOpen")
     public void openCfp() {
         Event event = events.findOne(Event.current());
         event.setOpen(true);
@@ -72,7 +69,6 @@ public class ApplicationConfigService {
     }
 
     @Transactional
-    @CacheEvict("isCfpOpen")
     public void closeCfp() {
         Event event = events.findOne(Event.current());
         event.setOpen(false);
@@ -80,7 +76,6 @@ public class ApplicationConfigService {
 
     }
 
-    @CacheEvict("applicationSettings")
     @Transactional
     public void saveConf(String key, String value) {
         CfpConfig conf = cfpConfigRepo.findByKeyAndEventId(key, Event.current());
