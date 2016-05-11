@@ -20,25 +20,26 @@
 
 package io.cfp.controller;
 
-import io.cfp.domain.exception.NotFoundException;
-import io.cfp.domain.exception.NotVerifiedException;
 import io.cfp.dto.user.UserProfil;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
 import io.cfp.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+
 @RestController
-@RequestMapping(value = "/api/restricted", produces = "application/json; charset=utf-8")
-public class UserController extends RestrictedController {
+@RequestMapping(value = "/api/restricted", produces = APPLICATION_JSON_UTF8_VALUE)
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -46,28 +47,24 @@ public class UserController extends RestrictedController {
     /**
      * Get current user profil
      *
-     * @param req
+     * @param user
      * @return
-     * @throws NotVerifiedException
-     * @throws NotFoundException
-     * @throws IOException
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public Map<String, Object> getUserProfil(HttpServletRequest req) throws NotVerifiedException, NotFoundException, IOException {
-        User u = retrieveUser(req);
-
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("email", u.getEmail());
-        map.put("lastname", u.getLastname());
-        map.put("firstname", u.getFirstname());
-        map.put("phone", u.getPhone());
-        map.put("company", u.getCompany());
-        map.put("bio", u.getBio());
-        map.put("social", u.getSocial());
-        map.put("twitter", u.getTwitter());
-        map.put("googleplus", u.getGoogleplus());
-        map.put("github", u.getGithub());
-        map.put("imageProfilURL", u.getImageProfilURL());
+    @Secured(Role.AUTHENTICATED)
+    public Map<String, Object> getUserProfil(@AuthenticationPrincipal User user) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("email", user.getEmail());
+        map.put("lastname", user.getLastname());
+        map.put("firstname", user.getFirstname());
+        map.put("phone", user.getPhone());
+        map.put("company", user.getCompany());
+        map.put("bio", user.getBio());
+        map.put("social", user.getSocial());
+        map.put("twitter", user.getTwitter());
+        map.put("googleplus", user.getGoogleplus());
+        map.put("github", user.getGithub());
+        map.put("imageProfilURL", user.getImageProfilURL());
 
         return map;
     }
@@ -75,18 +72,15 @@ public class UserController extends RestrictedController {
     /**
      * Edit current user profil
      *
-     * @param req
+     * @param user
      * @param profil
      * @return
-     * @throws NotVerifiedException
-     * @throws NotFoundException
-     * @throws IOException
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    public UserProfil putUserProfil(HttpServletRequest req, @RequestBody UserProfil profil) throws NotVerifiedException, NotFoundException, IOException {
-        User u = retrieveUser(req);
-        profil.setEmail(u.getEmail());
-        userService.update(u.getId(), profil);
+    @Secured(Role.AUTHENTICATED)
+    public UserProfil putUserProfil(@AuthenticationPrincipal User user, @RequestBody UserProfil profil) {
+        profil.setEmail(user.getEmail());
+        userService.update(user.getId(), profil);
 
         return profil;
 
