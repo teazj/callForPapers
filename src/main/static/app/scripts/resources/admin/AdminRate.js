@@ -26,11 +26,11 @@ angular.module('CallForPaper').factory('AdminRate', ['$resource', function($reso
             update: {method: 'PUT', url: 'api/rates/:id'},
             getByRowIdAndUserId: {
                 method: 'GET',
-                url: 'api/rates/session/:rowId/user/me'
+                url: 'api/rates/proposals/:rowId/me'
             },
             getByRowId: {
                 method: 'GET',
-                url: 'api/rates/session/:rowId',
+                url: 'api/rates/proposals/:rowId',
                 isArray: true
             }
         });

@@ -107,7 +107,7 @@ public class AdminRateController {
     /**
      * Get all ratings for a given session
      */
-    @RequestMapping(value= "/session/{talkId}", method= RequestMethod.GET)
+    @RequestMapping(value= "/proposals/{talkId}", method= RequestMethod.GET)
     @Secured(Role.ADMIN)
     public List<RateAdmin> getRatesByTalkId(@PathVariable int talkId) {
         return rateService.findForTalk(talkId);
@@ -116,7 +116,7 @@ public class AdminRateController {
     /**
      * Get rating for current user and a session
      */
-    @RequestMapping(value= "/session/{talkId}/user/me", method = RequestMethod.GET)
+    @RequestMapping(value= "/proposals/{talkId}/me", method = RequestMethod.GET)
     @Secured(Role.ADMIN)
     public RateAdmin getRateByRowIdAndUserId(@PathVariable int talkId) throws NotFoundException {
         int adminId = adminUserServiceCustom.getCurrentUser().getId();

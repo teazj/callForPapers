@@ -20,44 +20,36 @@
 
 package io.cfp.controller;
 
-import io.cfp.entity.Role;
-import io.cfp.service.admin.config.ApplicationConfigService;
+import io.cfp.dto.Speaker;
+import io.cfp.entity.Talk;
+import io.cfp.service.TalkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
- * Created by tmaugin on 16/07/2015.
- * SII
+ * Created by tmaugin on 15/04/2015.
  */
+
 @RestController
-@RequestMapping(value="api/config", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class ConfigController {
+@RequestMapping(value = "/api/tracks", produces = APPLICATION_JSON_UTF8_VALUE)
+public class SpeakersController {
 
     @Autowired
-    private ApplicationConfigService applicationConfigService;
+    TalkUserService talks;
 
     /**
-     * Disable or enable submission of new talks
-     * @param key enable submission if true, else disable
-     * @return key
+     * Get all sessions
      */
-    @RequestMapping(value="/enableSubmissions", method= RequestMethod.POST)
-    @Secured(Role.ADMIN)
-    public io.cfp.domain.common.Key postEnableSubmissions(@Valid @RequestBody io.cfp.domain.common.Key key) {
-
-        if (key.getKey().equals("true"))
-            applicationConfigService.openCfp();
-        if (key.getKey().equals("false"))
-            applicationConfigService.closeCfp();
-
-        return key;
+    @RequestMapping(value="/speakers", method= RequestMethod.GET)
+    @ResponseBody
+    public List<Speaker> getAllSpeakers() {
+        return talks.findAllSpeaker(Talk.State.CONFIRMED, Talk.State.ACCEPTED);
     }
 }

@@ -38,9 +38,6 @@ import java.util.List;
 @Controller
 public class HomeController {
 
-    @Autowired
-    TalkUserService talkService;
-
     /**
      * Redirect to index.html
      * @return
@@ -50,12 +47,4 @@ public class HomeController {
         return "forward:/index.html";
     }
 
-    /**
-     * Get all sessions
-     */
-    @RequestMapping(value="/speakers", method= RequestMethod.GET)
-    @ResponseBody
-    public List<Speaker> getAllSpeakers() {
-        return talkService.findAllSpeaker(Talk.State.CONFIRMED, Talk.State.ACCEPTED);
-    }
 }
