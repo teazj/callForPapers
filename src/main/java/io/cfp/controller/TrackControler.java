@@ -22,11 +22,11 @@ package io.cfp.controller;
 
 import io.cfp.dto.TrackDto;
 import io.cfp.entity.Event;
+import io.cfp.entity.Role;
 import io.cfp.entity.Track;
 import io.cfp.repository.EventRepository;
 import io.cfp.repository.TrackRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
@@ -67,7 +67,7 @@ public class TrackControler {
     }
 
     @RequestMapping(method = POST)
-    @Secured("ADMIN")
+    @Secured(Role.ADMIN)
     public TrackDto create(@RequestBody TrackDto track) {
         return new TrackDto(
             tracks.save(
@@ -79,7 +79,7 @@ public class TrackControler {
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
-    @Secured("ADMIN")
+    @Secured(Role.ADMIN)
     public void update(@PathVariable int id, @RequestBody TrackDto track) {
         tracks.save(
             tracks.getOne(id)
@@ -90,7 +90,7 @@ public class TrackControler {
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
-    @Secured("ADMIN")
+    @Secured(Role.ADMIN)
     public void delete(@PathVariable int id) {
         tracks.delete(id);
     }
