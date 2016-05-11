@@ -20,26 +20,19 @@
 
 package io.cfp.config.filter;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.MDC;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
+import io.cfp.domain.common.UserAuthentication;
 import io.cfp.entity.User;
 import io.cfp.service.auth.AuthUtils;
 import io.cfp.service.auth.AuthUtils.InvalidTokenException;
+import org.apache.log4j.MDC;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Filter reading auth token (JWT) to verify if user is correctly logged
@@ -47,9 +40,9 @@ import io.cfp.service.auth.AuthUtils.InvalidTokenException;
 public class AuthFilter implements Filter {
 
     public static final String USER = "user";
-    
+
     private AuthUtils authUtils;
-    
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext servletContext = filterConfig.getServletContext();
@@ -71,14 +64,17 @@ public class AuthFilter implements Filter {
             User user = authUtils.getAuthUser(httpRequest);
             MDC.put(USER, user);
 
+            UserAuthentication authentication = new UserAuthentication(user);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             chain.doFilter(request, response);
-            
+
         } catch (InvalidTokenException e) {
             httpResponse.sendError(e.getResponseCode(), e.getMessage());
-
         }
         finally {
             MDC.remove(USER);
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
 
