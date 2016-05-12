@@ -66,6 +66,7 @@ public class UserService {
             .email(profil.getEmail())
             .firstname(profil.getFirstname())
             .lastname(profil.getLastname())
+            .language(profil.getLanguage())
             .bio(profil.getBio())
             .phone(profil.getPhone())
             .company(profil.getCompany())

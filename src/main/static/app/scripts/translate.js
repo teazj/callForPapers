@@ -141,6 +141,7 @@ angular.module('CallForPaper')
                 'email': 'Adresse email * :',
                 'lastname': 'Nom * :',
                 'firstname': 'Prénom * :',
+                'language': 'Langue préférée',
                 'phone': 'Téléphone :',
                 'errorPhone': 'Entrez un numéro de téléphone correct',
                 'company': 'Entreprise :',
