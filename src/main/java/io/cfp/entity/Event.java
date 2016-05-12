@@ -43,8 +43,11 @@ public class Event {
 
     public static String current() {
         String s = current.get();
-        logger.warn("current event is not set. Falling back to 'demo'", new IllegalStateException());
-        return s != null ? s : "demo";
+        if (s == null) {
+            logger.warn("current event is not set. Falling back to 'demo'");
+            s = "demo";
+        }
+        return s ;
     }
 
     @Id
