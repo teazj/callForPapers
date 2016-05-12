@@ -20,8 +20,11 @@
 
 package io.cfp.entity;
 
+import io.cfp.config.filter.TenantFilter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,7 +43,8 @@ public class Event {
 
     public static String current() {
         String s = current.get();
-        return s != null ? s : "default";
+        logger.warn("current event is not set. Falling back to 'demo'", new IllegalStateException());
+        return s != null ? s : "demo";
     }
 
     @Id
@@ -146,4 +150,7 @@ public class Event {
         this.open = open;
         return this;
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(Event.class);
+
 }

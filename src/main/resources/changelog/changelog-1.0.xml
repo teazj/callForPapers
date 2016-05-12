@@ -187,7 +187,7 @@
     <changeSet author="ndeloof" id="2">
         <comment>Insert initial data to make contribution easier starting with a fresh new database. For sure, production instance has to get this removed :P</comment>
         <insert tableName="events">
-            <column name="id" value="default"/>
+            <column name="id" value="demo"/>
             <column name="short_description" value="Test"/>
             <column name="date" valueDate="2016-12-31"/>
             <column name="decision_date" valueDate="2016-12-30"/>
@@ -202,19 +202,21 @@
             <column name="id" value="1"/>
             <column name="name" value="ROLE_ADMIN"/>
             <column name="user_id" value="1"/>
-            <column name="event_id" value="default"/>
+            <column name="event_id" value="demo"/>
         </insert>
         <insert tableName="formats">
             <column name="name" value="conference"/>
             <column name="duration" value="55"/>
             <column name="description" value="Conference (55 minutes)"/>
-            <column name="event_id" value="default"/>
+            <column name="event_id" value="demo"/>
         </insert>
         <insert tableName="tracks">
-            <column name="libelle" value="default track"/>
+            <column name="libelle" value="demo track"/>
             <column name="description" value="This is a single track event"/>
-            <column name="event_id" value="default"/>
+            <column name="event_id" value="demo"/>
         </insert>
     </changeSet>
+
+
 
 </databaseChangeLog>
