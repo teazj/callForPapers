@@ -43,11 +43,11 @@ public class TenantFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String host = new URL(request.getRequestURL().toString()).getHost();
 
-        String tenant = "default";
+        String tenant = "demo";
         if (host.endsWith(".cfp.io")) {
             tenant = host.substring(0, host.indexOf('.'));
         } else {
-            logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'default'");
+            logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'demo'");
         }
         MDC.put("event.id", tenant);
         Event.setCurrent(tenant);
