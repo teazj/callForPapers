@@ -52,7 +52,7 @@ public class User {
     private String twitter;
     private String googleplus;
     private String github;
-    private String language = "fr";
+    private String language;
 
     /**
      * other url (blog, linkedin...)

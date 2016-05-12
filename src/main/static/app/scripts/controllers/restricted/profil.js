@@ -73,6 +73,11 @@ angular.module('CallForPaper').controller('ProfilCtrl', function($scope, Restric
                                 $scope.formData.lastname = profil[key];
                             }
                             break;
+                        case 'language':
+                            if (profil[key] !== null) {
+                                $scope.formData.language = profil[key];
+                            }
+                            break;
                         case 'phone':
                             if (profil[key] !== null) {
                                 $scope.formData.phone = profil[key];

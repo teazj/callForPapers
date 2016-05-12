@@ -57,6 +57,7 @@ public class UserController {
         map.put("email", user.getEmail());
         map.put("lastname", user.getLastname());
         map.put("firstname", user.getFirstname());
+        map.put(("language"), user.getLanguage());
         map.put("phone", user.getPhone());
         map.put("company", user.getCompany());
         map.put("bio", user.getBio());
