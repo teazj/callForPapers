@@ -20,27 +20,23 @@
 
 package io.cfp.service.auth;
 
+import java.text.ParseException;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import io.cfp.entity.User;
 import io.cfp.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
 
 @Component
 public final class AuthUtils {
-
-	public static final String AUTH_ERROR_MSG = "Please make sure your request has an Authorization header",
-            EXPIRE_ERROR_MSG = "Token has expired",
-            JWT_ERROR_MSG = "Unable to parse JWT",
-            JWT_INVALID_MSG = "Invalid JWT token";
 
     private static final String TOKEN_COOKIE_NAME = "token";
 
@@ -54,9 +50,8 @@ public final class AuthUtils {
      * Get user from JWT token
      * @param httpRequest
      * @return User
-     * @throws InvalidTokenException
      */
-    public User getAuthUser(HttpServletRequest httpRequest) throws InvalidTokenException {
+    public User getAuthUser(HttpServletRequest httpRequest) {
         Claims claims = getToken(httpRequest);
         if (claims != null) {
         	String email = claims.getSubject();
@@ -76,8 +71,7 @@ public final class AuthUtils {
      * @param httpRequest
      * @return JWT claims set
      */
-    private Claims getToken(HttpServletRequest httpRequest) throws InvalidTokenException
-    {
+    private Claims getToken(HttpServletRequest httpRequest) {
     	String tokenValue = null;
     	if (httpRequest.getCookies() != null) {
 	    	for (Cookie cookie : httpRequest.getCookies()) {
@@ -92,11 +86,7 @@ public final class AuthUtils {
     		try {
                 return decodeToken(tokenValue);
             }
-    		catch (ExpiredJwtException ex) {
-    			throw new InvalidTokenException(HttpServletResponse.SC_UNAUTHORIZED, EXPIRE_ERROR_MSG);
-            }
     		catch (Exception ex) {
-                throw new InvalidTokenException(HttpServletResponse.SC_BAD_REQUEST, JWT_ERROR_MSG);
             }
         }
         return null;
@@ -110,25 +100,5 @@ public final class AuthUtils {
      */
     private Claims decodeToken(String tokenValue) throws ExpiredJwtException {
         return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(tokenValue).getBody();
-    }
-
-    /** Thrown if token is invalid */
-    public static class InvalidTokenException extends Exception {
-        private int responseCode;
-        private String message;
-
-        public InvalidTokenException(int responseCode, String message) {
-            this.responseCode = responseCode;
-            this.message = message;
-        }
-
-        public int getResponseCode() {
-            return responseCode;
-        }
-
-        @Override
-        public String getMessage() {
-            return message;
-        }
     }
 }

@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.cfp.domain.exception.NotVerifiedException;
 import io.cfp.entity.User;
 import io.cfp.service.auth.AuthUtils;
-import io.cfp.service.auth.AuthUtils.InvalidTokenException;
 
 public abstract class RestrictedController {
 
@@ -42,13 +41,8 @@ public abstract class RestrictedController {
      * @throws NotVerifiedException If token invalid and user id can't be read
      */
     protected User retrieveUser(HttpServletRequest req) throws NotVerifiedException {
-        User user = null;
-        try {
-        	user = authUtils.getAuthUser(req);
-        }
-        catch (InvalidTokenException ex) {
-        	//Nothing?
-        }
+        User user = authUtils.getAuthUser(req);
+
         if (user == null) {
             throw new NotVerifiedException("Claims Set is null");
         }
