@@ -42,7 +42,7 @@ public class ApplicationSettings {
     public ApplicationSettings(Event event) {
         FastDateFormat format = FastDateFormat.getInstance("dd/MM/yyyy");
 
-        eventName = event.getId();
+        eventName = event.getName();
         date = format.format(event.getDate());
         releaseDate = format.format(event.getReleaseDate());
         decisionDate = format.format(event.getDecisionDate());

@@ -53,6 +53,8 @@ public class Event {
     @Id
     private String id;
 
+    private String name;
+
     @Column(name = "short_description")
     private String shortDescription;
 
@@ -123,9 +125,21 @@ public class Event {
         current.remove();
     }
 
+    public String getName() {
+        return name != null ? name : id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Event id(String id) {
         this.id = id;
+        return this;
+    }
+
+    public Event name(String name) {
+        this.name = name;
         return this;
     }
 
