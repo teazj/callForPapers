@@ -223,6 +223,9 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="4" author="ndeloof">
+        <addUniqueConstraint tableName="roles" columnNames="event_id, user_id, name"/>
+    </changeSet>
 
 
 </databaseChangeLog>
