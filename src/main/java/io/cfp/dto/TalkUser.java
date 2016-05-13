@@ -36,6 +36,7 @@ public class TalkUser {
     private int id;
     private Talk.State state;
     private String name;
+    private String language;
     private int format;
     private Integer trackId;
     private String trackLabel;
@@ -55,6 +56,7 @@ public class TalkUser {
         this.id = t.getId();
         this.state = t.getState();
         this.name = t.getName();
+        this.language = t.getLanguage();
         this.format = t.getFormat().getId();
         this.trackId = t.getTrack().getId();
         this.description = t.getDescription();
@@ -162,6 +164,17 @@ public class TalkUser {
         return cospeakers;
     }
 
+    public void setCospeakers(Set<CospeakerProfil> cospeakers) {
+        this.cospeakers = cospeakers;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     @Override
     public boolean equals(Object o) {

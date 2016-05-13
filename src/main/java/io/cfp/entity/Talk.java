@@ -51,6 +51,7 @@ public class Talk {
     private int id;
     private State state;
     private String name;
+    private String language;
     private Track track;
     private String description;
     private String references;
@@ -91,6 +92,10 @@ public class Talk {
     @NotNull(message = "Session name field is required")
     public String getName() {
         return name;
+    }
+
+    public String getLanguage() {
+        return language;
     }
 
     @ManyToOne
@@ -163,6 +168,10 @@ public class Talk {
         this.name = name;
     }
 
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public void setTrack(Track track) {
         this.track = track;
     }
@@ -215,6 +224,11 @@ public class Talk {
 
     public Talk name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Talk language(String language) {
+        this.language = language;
         return this;
     }
 

@@ -47,6 +47,16 @@
                 </div>
             </div>
             <div class="form-group"
+                 ng-class="{'has-success': talkForm.languageInput.$valid && talkForm.languageInput.$dirty, 'has-error': talkForm.languageInput.$invalid && (talkForm.languageInput.$dirty || talkInvalid)}">
+                <label class="control-label">{{'step2.language' | translate}}</label>
+                <div>
+                    <select name="languageInput" class="form-control" id="language" ng-model="talk.language">
+                        <option>Français</option>
+                        <option>English</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"
                  ng-class="{'has-success': talkForm.descriptionInput.$valid && talkForm.descriptionInput.$dirty, 'has-error': talkForm.descriptionInput.$invalid && (talkForm.descriptionInput.$dirty || talkInvalid)}">
                 <label class="control-label">{{'step2.description' | translate}}</label>
                 <div>{{'step2.hintDescription' | translate}}</div>
