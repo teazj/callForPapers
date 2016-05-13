@@ -90,6 +90,7 @@ public class ApplicationController {
 
         try {
             event.date(format.parse(settings.getDate()))
+                .name(settings.getEventName())
                 .shortDescription(settings.getShortDescription())
                 .decisionDate(format.parse(settings.getDecisionDate()))
                 .releaseDate(format.parse(settings.getReleaseDate()))
