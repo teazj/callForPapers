@@ -41,26 +41,31 @@ public class TenantFilter extends OncePerRequestFilter {
 
     public static final String REFERER = "Referer";
 
+    public static final String TENANT_HEADER = "X-Tenant-Id";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final URL url = new URL(request.getRequestURL().toString());
         String host = url.getHost();
 
-        String tenant = "demo";
-        String header = request.getHeader(REFERER);
+        String eventId = "demo";
+        String referer = request.getHeader(REFERER);
+        String header = request.getHeader(TENANT_HEADER);
         final String path = url.getPath();
         int i;
         if (path.startsWith("/events/") && (i = path.indexOf('/', 8)) > 0) {
-            tenant = path.substring(8, i);
-        } else if (header != null && header.endsWith(".cfp.io")) {
-            tenant = host.substring(0, host.indexOf('.'));
+            eventId = path.substring(8, i);
+        } else if (referer != null && referer.endsWith(".cfp.io")) {
+            eventId = host.substring(0, host.indexOf('.'));
+        } else if (header != null) {
+            eventId = header;
         } else if (host.endsWith(".cfp.io")) {
-            tenant = host.substring(0, host.indexOf('.'));
+            eventId = host.substring(0, host.indexOf('.'));
         } else {
             logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'demo'");
         }
-        MDC.put("event.id", tenant);
-        Event.setCurrent(tenant.toLowerCase());
+        MDC.put("event.id", eventId);
+        Event.setCurrent(eventId.toLowerCase());
         try {
             filterChain.doFilter(request, response);
         } finally {
