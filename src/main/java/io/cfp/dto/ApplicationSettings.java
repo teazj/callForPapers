@@ -29,7 +29,7 @@ import org.apache.commons.lang.time.FastDateFormat;
 public class ApplicationSettings {
 
     private String eventName;
-    private String community;
+    private String shortDescription;
     private String date;
     private String releaseDate;
     private String decisionDate;
@@ -46,6 +46,7 @@ public class ApplicationSettings {
         date = format.format(event.getDate());
         releaseDate = format.format(event.getReleaseDate());
         decisionDate = format.format(event.getDecisionDate());
+        shortDescription = event.getShortDescription();
         open = event.isOpen();
     }
 
@@ -57,12 +58,12 @@ public class ApplicationSettings {
         this.eventName = eventName;
     }
 
-    public String getCommunity() {
-        return community;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setCommunity(String community) {
-        this.community = community;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     public String getDate() {

@@ -194,7 +194,7 @@ public class EmailingService {
         map.put("name", user.getFirstname());
         map.put("talk", talk.getName());
         map.put("hostname", globalSettings.getHostname());
-        map.put("community", applicationConfigService.getAppConfig().getCommunity());
+        map.put("shortDescription", applicationConfigService.getAppConfig().getShortDescription());
         map.put("event", applicationConfigService.getAppConfig().getEventName());
 
         String templatePath = emailingSettings.getTemplatePath(EmailType.NOT_SELECTIONNED, locale);
