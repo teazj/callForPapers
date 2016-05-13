@@ -20,6 +20,24 @@
 
 package io.cfp.config.filter;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.MDC;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import io.cfp.domain.common.UserAuthentication;
 import io.cfp.entity.Event;
 import io.cfp.entity.Role;
@@ -27,17 +45,6 @@ import io.cfp.entity.User;
 import io.cfp.repository.RoleRepository;
 import io.cfp.service.admin.user.AdminUserService;
 import io.cfp.service.auth.AuthUtils;
-import io.cfp.service.auth.AuthUtils.InvalidTokenException;
-import org.apache.log4j.MDC;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Filter reading auth token (JWT) to verify if user is correctly logged
@@ -69,20 +76,15 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        try {
-            User user = authUtils.getAuthUser(httpRequest);
-            MDC.put(USER, user);
+        User user = authUtils.getAuthUser(httpRequest);
+        MDC.put(USER, user);
 
-            if (user != null) {
-                List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
-                if (roles.contains(Role.ADMIN)) {
-                    adminUserService.setCurrentAdmin(user);
-                }
-                SecurityContextHolder.getContext()
-                    .setAuthentication(new UserAuthentication(user, roles));
+        if (user != null) {
+            List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
+            if (roles.contains(Role.ADMIN)) {
+                adminUserService.setCurrentAdmin(user);
             }
-        } catch (InvalidTokenException e) {
-            httpResponse.sendError(e.getResponseCode(), e.getMessage());
+            SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(user, roles));
         }
 
         try {

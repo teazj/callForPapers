@@ -32,7 +32,6 @@ import io.cfp.dto.AdminUserInfo;
 import io.cfp.entity.User;
 import io.cfp.service.admin.user.AdminUserService;
 import io.cfp.service.auth.AuthUtils;
-import io.cfp.service.auth.AuthUtils.InvalidTokenException;
 
 @RestController
 @RequestMapping(value="/api/adminUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -50,13 +49,7 @@ public class AdminUserController {
     @RequestMapping(value="/currentUser", method= RequestMethod.GET)
     public AdminUserInfo getCurrentUser(HttpServletRequest req) {
 
-    	User user = null;
-    	try {
-    		user = authUtils.getAuthUser(req);
-    	}
-    	catch (InvalidTokenException ex) {
-    		//Nothing?
-    	}
+    	User user = authUtils.getAuthUser(req);
 
         if (user == null) {
             return new AdminUserInfo("./", false, false, false, "");
