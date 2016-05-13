@@ -39,18 +39,23 @@ import java.net.URL;
  */
 public class TenantFilter extends OncePerRequestFilter {
 
+    public static final String REFERER = "Referer";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String host = new URL(request.getRequestURL().toString()).getHost();
 
         String tenant = "demo";
-        if (host.endsWith(".cfp.io")) {
+        String header = request.getHeader(REFERER);
+        if (header != null && header.endsWith(".cfp.io")) {
+            tenant = host.substring(0, host.indexOf('.'));
+        } else if (host.endsWith(".cfp.io")) {
             tenant = host.substring(0, host.indexOf('.'));
         } else {
             logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'demo'");
         }
         MDC.put("event.id", tenant);
-        Event.setCurrent(tenant);
+        Event.setCurrent(tenant.toLowerCase());
         try {
             filterChain.doFilter(request, response);
         } finally {
