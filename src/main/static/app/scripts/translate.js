@@ -156,6 +156,7 @@ angular.module('CallForPaper')
             'step2': {
                 'name': 'Nom de la conférence * :',
                 'description': 'Description * :',
+                'language': 'Langue de présentation :',
                 'hintDescription': 'Donnez une description de votre présentation. Elle sera utilisée sur le site web.',
                 'references': 'Références ou compléments d\'informations :',
                 'hintReferences': 'Y a-t-il des conférences où vous avez déjà fait des présentations ? Si vous pouvez donner un lien vers celle(s)-ci ça serait bien.',

@@ -217,6 +217,12 @@
         </insert>
     </changeSet>
 
+    <changeSet id="3" author="ndeloof">
+        <addColumn tableName="proposals">
+            <column name="language" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
 
 
 </databaseChangeLog>

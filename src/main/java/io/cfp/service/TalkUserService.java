@@ -28,14 +28,12 @@ import io.cfp.dto.user.CospeakerProfil;
 import io.cfp.entity.Event;
 import io.cfp.entity.Talk;
 import io.cfp.entity.Format;
-import io.cfp.entity.Track;
 import io.cfp.entity.User;
 import io.cfp.repository.EventRepository;
 import io.cfp.repository.FormatRepo;
 import io.cfp.repository.TalkRepo;
 import io.cfp.repository.TrackRepo;
 import io.cfp.repository.UserRepo;
-import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -298,6 +296,7 @@ public class TalkUserService {
             .added(new Date())
             .state(state)
             .name(talkUser.getName())
+            .language(talkUser.getLanguage())
             .track(trackRepo.getOne(talkUser.getTrackId()))
             .description(talkUser.getDescription())
             .references(talkUser.getReferences())
@@ -334,9 +333,14 @@ public class TalkUserService {
 
         setCoSpeaker(talkUser, talk);
 
-        talk.setState(newState);
-        talk.setTrack(trackRepo.findByIdAndEventId(talkUser.getTrackId(), Event.current()));
-        talk.setFormat(formatRepo.findByIdAndEventId(talkUser.getFormat(), Event.current()));
+        talk.state(newState)
+            .name(talkUser.getName())
+            .language(talkUser.getLanguage())
+            .track(trackRepo.getOne(talkUser.getTrackId()))
+            .description(talkUser.getDescription())
+            .references(talkUser.getReferences())
+            .difficulty(talkUser.getDifficulty())
+            .format(formatRepo.getOne(talkUser.getFormat()));
         talkRepo.save(talk);
         talkRepo.flush();
 
