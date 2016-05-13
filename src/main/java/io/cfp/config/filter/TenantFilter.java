@@ -43,11 +43,16 @@ public class TenantFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String host = new URL(request.getRequestURL().toString()).getHost();
+        final URL url = new URL(request.getRequestURL().toString());
+        String host = url.getHost();
 
         String tenant = "demo";
         String header = request.getHeader(REFERER);
-        if (header != null && header.endsWith(".cfp.io")) {
+        final String path = url.getPath();
+        int i;
+        if (path.startsWith("/events/") && (i = path.indexOf('/', 8)) > 0) {
+            tenant = path.substring(8, i);
+        } else if (header != null && header.endsWith(".cfp.io")) {
             tenant = host.substring(0, host.indexOf('.'));
         } else if (host.endsWith(".cfp.io")) {
             tenant = host.substring(0, host.indexOf('.'));
