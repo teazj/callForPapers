@@ -266,7 +266,6 @@ angular.module('CallForPaper', [
             .state('app.dashboard', {
                 url: '/dashboard',
                 resolve: {
-                    isProfileComplete: ProfileValidatorProvider.isValid(),
                     tracks: function(TalkService) {
                         return TalkService.tracks.findAll().$promise;
                     },
