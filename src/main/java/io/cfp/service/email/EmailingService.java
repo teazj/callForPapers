@@ -20,9 +20,30 @@
 
 package io.cfp.service.email;
 
-import io.cfp.config.email.EmailingSettings;
-import io.cfp.config.email.EmailingSettings.EmailType;
-import io.cfp.config.global.GlobalSettings;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import io.cfp.dto.TalkAdmin;
 import io.cfp.dto.TalkUser;
 import io.cfp.dto.user.CospeakerProfil;
@@ -31,60 +52,34 @@ import io.cfp.entity.Event;
 import io.cfp.entity.User;
 import io.cfp.repository.UserRepo;
 import io.cfp.service.admin.config.ApplicationConfigService;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
 
 @Service
 public class EmailingService {
 
     private final Logger log = LoggerFactory.getLogger(EmailingService.class);
-
-    private final ApplicationConfigService applicationConfigService;
-    private final GlobalSettings globalSettings;
-    private final EmailingSettings emailingSettings;
-    private final UserRepo users;
-    private final JavaMailSenderImpl javaMailSender;
-
-    /**
-     * EmailingService constructor.
-     * @param globalSettings
-     * @param emailingSettings
-     * @param users
-     * @param javaMailSender
-     */
+    
     @Autowired
-    public EmailingService(ApplicationConfigService applicationConfigService,
-                           GlobalSettings globalSettings,
-                           EmailingSettings emailingSettings,
-                           UserRepo users,
-                           JavaMailSenderImpl javaMailSender) {
-        this.applicationConfigService = applicationConfigService;
-        this.globalSettings = globalSettings;
-        this.emailingSettings = emailingSettings;
-        this.users = users;
-        this.javaMailSender = javaMailSender;
-    }
+    private ApplicationConfigService applicationConfigService;
+    
+    @Autowired
+    private UserRepo users;
+    
+    @Autowired
+    private VelocityEngine velocityEngine;
+    
+    @Autowired
+    private JavaMailSenderImpl javaMailSender;
+    
+    @Value("${cfp.app.hostname}")
+    private String hostname;
+    
+    @Value("${cfp.email.emailsender}")
+    private String emailSender;
 
+    @Value("${cfp.email.send}")
+    private boolean send;
+
+   
     /**
      * Send Confirmation of your session.
      *
@@ -96,18 +91,12 @@ public class EmailingService {
     public void sendConfirmed(User user, TalkUser talk, Locale locale) {
         log.debug("Sending email confirmation e-mail to '{}'", user.getEmail());
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getFirstname());
-        map.put("talk", talk.getName());
-        map.put("hostname", StringUtils.replace(globalSettings.getHostname(), "{{event}}", Event.current()));
-        map.put("id", String.valueOf(talk.getId()));
-
-        String templatePath = emailingSettings.getTemplatePath(EmailType.CONFIRMED, locale);
-
-        String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.CONFIRMED, locale);
-
-        sendEmail(user.getEmail(), subject, content, null, null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", user.getFirstname());
+        params.put("talk", talk.getName());
+        params.put("id", String.valueOf(talk.getId()));
+       
+        createAndSendEmail("confirmed.html", user.getEmail(), params, null, null, locale);
     }
 
     /**
@@ -124,20 +113,14 @@ public class EmailingService {
     public void sendNewCommentToSpeaker(User speaker, TalkAdmin talk, Locale locale) {
         log.debug("Sending new comment email to speaker '{}' for talk '{}'", speaker.getEmail(), talk.getName());
 
-        List<String> bcc = users.findAdminsEmail(Event.current());
+        List<String> cc = users.findAdminsEmail(Event.current());
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", speaker.getFirstname());
-        map.put("talk", talk.getName());
-        map.put("hostname", globalSettings.getHostname());
-        map.put("id", String.valueOf(talk.getId()));
-
-        String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_COMMENT_TO_SPEAKER, locale);
-
-        String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_SPEAKER, locale, talk.getName());
-
-        sendEmail(speaker.getEmail(), subject, content, bcc, null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", speaker.getFirstname());
+        params.put("talk", talk.getName());
+        params.put("id", String.valueOf(talk.getId()));
+       
+        createAndSendEmail("newMessage.html", speaker.getEmail(), params, cc, null, locale);
     }
 
     /**
@@ -156,20 +139,12 @@ public class EmailingService {
 
         List<String> bcc = users.findAdminsEmail(Event.current());
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", speaker.getFirstname());
-        map.put("talk", talk.getName());
-        map.put("hostname", globalSettings.getHostname());
-        map.put("id", String.valueOf(talk.getId()));
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", speaker.getFirstname());
+        params.put("talk", talk.getName());
+        params.put("id", String.valueOf(talk.getId()));
 
-        String templatePath = emailingSettings.getTemplatePath(EmailType.NEW_COMMENT_TO_ADMIN, locale);
-
-        String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.NEW_COMMENT_TO_ADMIN, locale, speaker.getFirstname() + " " + speaker.getLastname(),
-                talk.getName());
-
-        // To address must not be null => from = to
-        sendEmail(emailingSettings.getEmailSender(), subject, content, null, bcc);
+        createAndSendEmail("newMessageAdmin.html", emailSender, params, null, bcc, locale);
     }
 
     /**
@@ -190,19 +165,14 @@ public class EmailingService {
                 cc.add(cospeakerProfil.getEmail());
             }
         }
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getFirstname());
-        map.put("talk", talk.getName());
-        map.put("hostname", globalSettings.getHostname());
-        map.put("shortDescription", applicationConfigService.getAppConfig().getShortDescription());
-        map.put("event", applicationConfigService.getAppConfig().getEventName());
+        
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", user.getFirstname());
+        params.put("talk", talk.getName());
+        params.put("shortDescription", applicationConfigService.getAppConfig().getShortDescription());
+        params.put("event", applicationConfigService.getAppConfig().getEventName());
 
-        String templatePath = emailingSettings.getTemplatePath(EmailType.NOT_SELECTIONNED, locale);
-
-        String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.NOT_SELECTIONNED, locale);
-
-        sendEmail(user.getEmail(), subject, content, cc, null);
+        createAndSendEmail("notSelectionned.html", user.getEmail(), params, cc, null, locale);
     }
 
     @Async
@@ -217,19 +187,14 @@ public class EmailingService {
                 cc.add(cospeakerProfil.getEmail());
             }
         }
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getFirstname());
-        map.put("talk", talk.getName());
-        map.put("hostname", globalSettings.getHostname());
-        map.put("event", applicationConfigService.getAppConfig().getEventName());
-        map.put("date", applicationConfigService.getAppConfig().getDate());
+        
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", user.getFirstname());
+        params.put("talk", talk.getName());
+        params.put("event", applicationConfigService.getAppConfig().getEventName());
+        params.put("date", applicationConfigService.getAppConfig().getDate());
 
-        String templatePath = emailingSettings.getTemplatePath(EmailType.PENDING, locale);
-
-        String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.PENDING, locale);
-
-        sendEmail(user.getEmail(), subject, content, cc, null);
+        createAndSendEmail("pending.html", user.getEmail(), params, cc, null, locale);
     }
 
     @Async
@@ -244,31 +209,57 @@ public class EmailingService {
                 cc.add(cospeakerProfil.getEmail());
             }
         }
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getFirstname());
-        map.put("talk", talk.getName());
-        map.put("hostname", globalSettings.getHostname());
-        map.put("event", applicationConfigService.getAppConfig().getEventName());
-        map.put("date", applicationConfigService.getAppConfig().getDate());
-        map.put("releaseDate", applicationConfigService.getAppConfig().getReleaseDate());
+        
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", user.getFirstname());
+        params.put("talk", talk.getName());
+        params.put("event", applicationConfigService.getAppConfig().getEventName());
+        params.put("date", applicationConfigService.getAppConfig().getDate());
+        params.put("releaseDate", applicationConfigService.getAppConfig().getReleaseDate());
 
-        String templatePath = emailingSettings.getTemplatePath(EmailType.SELECTIONNED, locale);
+        createAndSendEmail("selectionned.html", user.getEmail(), params, cc, null, locale);
+    }
+    
+    public void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
+    	String templatePath = getTemplatePath(template, locale);
 
-        String content = processContent(templatePath, map);
-        String subject = emailingSettings.getSubject(EmailType.SELECTIONNED, locale);
+        String content = processTemplate(templatePath, parameters);
+        String subject = (String) parameters.get("subject");
 
-        sendEmail(user.getEmail(), subject, content, cc, null);
+        sendEmail(email, subject, content, cc, bcc);
+    }
+
+    public String getTemplatePath(final String emailTemplate, final Locale locale) {
+    	String language = locale.getLanguage();
+    	if (!"fr".equals(language)) {
+    		language = "en";
+    	}
+        return "mails/" + language + "/" + emailTemplate;
+    }
+    
+    public String processTemplate(String templatePath, Map<String, Object> parameters) {
+        
+        // adds global params
+        parameters.put("hostname", StringUtils.replace(hostname, "{{event}}", Event.current()));
+        
+        VelocityContext context = new VelocityContext(parameters);
+
+        Template template = velocityEngine.getTemplate(templatePath, "UTF-8");
+
+        StringWriter writer = new StringWriter();
+        template.merge(context, writer);
+        return writer.toString();
     }
 
     public void sendEmail(String to, String subject, String content, List<String> cc, List<String> bcc) {
-        if (!emailingSettings.isSend())
+        if (!send)
             return;
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         try {
-            helper.setFrom(emailingSettings.getEmailSender());
+            helper.setFrom(emailSender);
             helper.setTo(to);
             if (bcc != null) {
                 helper.setBcc(bcc.toArray(new String[bcc.size()]));
@@ -286,26 +277,4 @@ public class EmailingService {
         }
     }
 
-    public String processContent(String templatePath, Map<String, String> data) {
-        // Init velocityEngine
-        VelocityEngine velocityEngine = buildVelocityEngine();
-        velocityEngine.init();
-        VelocityContext context = new VelocityContext();
-        for (Map.Entry<String, String> item : data.entrySet()) {
-            context.put(item.getKey(), item.getValue());
-        }
-
-        Template template = velocityEngine.getTemplate(templatePath, "UTF-8");
-
-        StringWriter writer = new StringWriter();
-        template.merge(context, writer);
-        return writer.toString();
-    }
-
-    private VelocityEngine buildVelocityEngine() {
-        Properties props = new Properties();
-        props.setProperty("resource.loader", "class");
-        props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        return new VelocityEngine(props);
-    }
 }
