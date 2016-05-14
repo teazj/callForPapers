@@ -21,5 +21,5 @@
 'use strict';
 
 angular.module('CallForPaper').factory('Application', ['$resource', function($resource) {
-    return $resource('api/application/:id', null, {});
+    return $resource('/v0/application/:id', null, {});
 }]);

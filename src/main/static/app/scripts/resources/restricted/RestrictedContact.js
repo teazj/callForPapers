@@ -21,15 +21,15 @@
 'use strict';
 
 angular.module('CallForPaper').factory('RestrictedContact', ['$resource', function($resource) {
-    return $resource('api/proposals/:rowId/contacts', {},
+    return $resource('/v0/proposals/:rowId/contacts', {},
         {
             getByRowId: {
-                url: 'api/proposals/:rowId/contacts',
+                url: '/v0/proposals/:rowId/contacts',
                 method: 'GET',
                 isArray: true
             },
             update: {method: 'PUT',
-             url: 'api/proposals/:rowId/contacts/:id'
+             url: '/v0/proposals/:rowId/contacts/:id'
              }
         });
 }]);

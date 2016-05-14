@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/api/stats", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/stats", "/api/stats" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class StatsController extends RestrictedController {
 
     @Autowired

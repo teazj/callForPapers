@@ -38,7 +38,7 @@ import javax.validation.Valid;
  * SII
  */
 @RestController
-@RequestMapping(value="api/config", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/config", "/api/config" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ConfigController {
 
     @Autowired

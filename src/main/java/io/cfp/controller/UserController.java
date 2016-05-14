@@ -38,7 +38,7 @@ import java.util.Map;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
-@RequestMapping(value = "/api/users", produces = APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/users", "/api/users" }, produces = APPLICATION_JSON_UTF8_VALUE)
 public class UserController {
 
     @Autowired

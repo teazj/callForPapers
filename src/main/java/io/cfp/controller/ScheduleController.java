@@ -55,7 +55,7 @@ import static java.util.stream.Collectors.toSet;
  */
 
 @RestController
-@RequestMapping(value = "/api/schedule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/schedule", "/api/schedule" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ScheduleController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ScheduleController.class);

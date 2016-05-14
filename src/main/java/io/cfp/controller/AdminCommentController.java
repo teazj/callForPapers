@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="api/admin/sessions/{talkId}/comments", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/admin/sessions/{talkId}/comments", "/api/admin/sessions/{talkId}/comments" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminCommentController {
 
     @Autowired

@@ -34,7 +34,7 @@ import io.cfp.service.admin.user.AdminUserService;
 import io.cfp.service.auth.AuthUtils;
 
 @RestController
-@RequestMapping(value="/api/adminUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/adminUser", "/api/adminUser" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminUserController {
 
     @Autowired
