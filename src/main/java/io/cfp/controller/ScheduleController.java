@@ -136,7 +136,7 @@ public class ScheduleController {
         scheduleList.forEach(s -> {
             LocalDateTime dateEventStart = LocalDateTime.parse(s.getEventStart(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             // update database
-            TalkUser talkUser = talkUserService.updateConfirmedTalk(s.getId(), dateEventStart);
+            talkUserService.updateConfirmedTalk(s.getId(), dateEventStart);
         });
 
         Map<String, List<TalkUser>> result = new HashMap<>();

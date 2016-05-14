@@ -24,6 +24,7 @@ import io.cfp.dto.RateAdmin;
 import io.cfp.entity.Event;
 import io.cfp.entity.Rate;
 import io.cfp.entity.User;
+import io.cfp.repository.EventRepository;
 import io.cfp.repository.RateRepo;
 import io.cfp.repository.TalkRepo;
 import ma.glasnost.orika.MapperFacade;
@@ -49,6 +50,9 @@ public class RateAdminService {
 
     @Autowired
     private MapperFacade mapper;
+    
+    @Autowired
+    private EventRepository events;
 
     /**
      * Retrieve all rates
@@ -112,6 +116,7 @@ public class RateAdminService {
         newRate.setAdded(new Date());
         newRate.setAdminUser(admin);
         newRate.setTalk(talkRepo.getOne(talkId));     // FIXME do we need to check the talk belong to current event ?
+        newRate.setEvent(events.findOne(Event.current()));
         rateRepo.save(newRate);
         rateRepo.flush(); //to get rate id
         return mapper.map(newRate, RateAdmin.class);

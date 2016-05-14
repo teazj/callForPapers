@@ -36,13 +36,11 @@ angular.module('CallForPaper', [
         'ngTable',
         'ui-notification',
         'customFilters',
-        'ui.gravatar',
         'relativeDate',
         'matchMedia',
         'angular-loading-bar',
         'ngFx',
         'offClick',
-        'ngFileUpload',
         'hc.marked',
         'mdPreview',
         'LocalStorageModule',
@@ -57,7 +55,6 @@ angular.module('CallForPaper', [
     .config(['$httpProvider', function($httpProvider) {
         //Http Intercpetor to check auth failures for xhr requests
         $httpProvider.interceptors.push('authHttpResponseInterceptor');
-        $httpProvider.interceptors.push('csrfInterceptor');
     }])
     .config(function($stateProvider, $urlRouterProvider, AuthServiceProvider, AppConfigProvider, RestangularProvider, ProfileValidatorProvider) {
 
@@ -153,16 +150,6 @@ angular.module('CallForPaper', [
                 },
                 templateUrl: 'views/admin/sessions.html',
                 controller: 'AdminSessionsCtrl'
-            })
-            .state('admin.export_postit', {
-                url: '/export/postit',
-                templateUrl: 'views/admin/sessions-export.html',
-                controller: 'AdminSessionsExportCtrl'
-            })
-            .state('admin.export_json', {
-                url: '/export/json',
-                templateUrl: 'views/admin/sessions-export-json.html',
-                controller: 'AdminSessionsExportJsonCtrl'
             })
             .state('admin.session', {
                 url: '/sessions/{id:int}?tab',
@@ -404,8 +391,6 @@ angular.module('CallForPaper', [
     })
     .run(function(AuthService, $http, $rootScope, $state) {
         AuthService.init();
-        $http.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
-        $http.defaults.xsrfCookieName = 'CSRF-TOKEN';
         $.material.init();
 
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {

@@ -20,9 +20,6 @@
 
 package io.cfp.entity;
 
-import com.fasterxml.jackson.databind.PropertyMetadata;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +27,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
 
 /**
  * Created by SGUERNIO on 29/11/2015.
