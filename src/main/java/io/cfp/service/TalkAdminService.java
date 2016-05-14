@@ -20,25 +20,10 @@
 
 package io.cfp.service;
 
-import io.cfp.domain.exception.CospeakerNotFoundException;
-import io.cfp.dto.TalkAdmin;
-import io.cfp.dto.TalkUser;
-import io.cfp.dto.user.CospeakerProfil;
-import io.cfp.dto.user.UserProfil;
-import io.cfp.entity.Event;
-import io.cfp.entity.Rate;
-import io.cfp.entity.Talk;
-import io.cfp.entity.User;
-import io.cfp.repository.RateRepo;
-import io.cfp.repository.FormatRepo;
-import io.cfp.repository.TalkRepo;
-import io.cfp.repository.TrackRepo;
-import io.cfp.repository.UserRepo;
-import io.cfp.service.admin.user.AdminUserService;
-import ma.glasnost.orika.MapperFacade;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.stream.Collectors.averagingInt;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -46,7 +31,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import io.cfp.domain.exception.CospeakerNotFoundException;
+import io.cfp.dto.TalkAdmin;
+import io.cfp.dto.user.CospeakerProfil;
+import io.cfp.dto.user.UserProfil;
+import io.cfp.entity.Event;
+import io.cfp.entity.Rate;
+import io.cfp.entity.Talk;
+import io.cfp.entity.User;
+import io.cfp.repository.FormatRepo;
+import io.cfp.repository.RateRepo;
+import io.cfp.repository.TalkRepo;
+import io.cfp.repository.TrackRepo;
+import io.cfp.repository.UserRepo;
+import io.cfp.service.admin.user.AdminUserService;
+import ma.glasnost.orika.MapperFacade;
 
 /**
  * Service for managing talks by the admins
