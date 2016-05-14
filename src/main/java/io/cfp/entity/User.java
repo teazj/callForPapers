@@ -20,16 +20,17 @@
 
 package io.cfp.entity;
 
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Email;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
 
 /**
  * Speaker account
@@ -38,7 +39,13 @@ import javax.persistence.Transient;
 @Table(name = "users")
 public class User {
 
-    public enum Provider {GOOGLE, GITHUB}
+	public enum Gender {
+		MALE, FEMALE
+	}
+	
+	public enum TshirtSize {
+		XS, S, M, L, XL, XXL
+	}
 
     private int id;
     private String email;
@@ -53,6 +60,8 @@ public class User {
     private String googleplus;
     private String github;
     private String language;
+    private Gender gender = Gender.MALE;
+    private TshirtSize tshirtSize = TshirtSize.M;
 
     /**
      * other url (blog, linkedin...)
@@ -121,6 +130,17 @@ public class User {
     public String getImageProfilURL() {
         return imageProfilURL;
     }
+    
+    @Enumerated(EnumType.STRING)
+    public Gender getGender() {
+		return gender;
+	}
+
+    @Column(name = "tshirt_size")
+    @Enumerated(EnumType.STRING)
+	public TshirtSize getTshirtSize() {
+		return tshirtSize;
+	}
 
 
     public void setId(int id) {
@@ -174,42 +194,14 @@ public class User {
     public void setImageProfilURL(String imageProfilURL) {
         this.imageProfilURL = imageProfilURL;
     }
+    
+    public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
-    public void mergeData(User userToMerge) {
-        if (this.getFirstname() == null) {
-            this.setFirstname(userToMerge.getFirstname());
-        }
-
-        if (this.getLastname() == null) {
-            this.setLastname(userToMerge.getLastname());
-        }
-
-        if (this.getEmail() == null) {
-            this.setEmail(userToMerge.getEmail());
-        }
-
-        if (this.getGithub() == null) {
-            this.setGithub(userToMerge.getGithub());
-        }
-
-        if (this.getGoogleplus() == null) {
-            this.setGoogleplus(userToMerge.getGoogleplus());
-        }
-
-        if (this.getBio() == null) {
-            this.setBio(userToMerge.getBio());
-        }
-
-        if (this.getCompany() == null) {
-            this.setCompany(userToMerge.getCompany());
-        }
-
-        if (this.getImageProfilURL() == null) {
-            if (userToMerge.getImageProfilURL() != null && !userToMerge.getImageProfilURL().equals("")) {
-                this.setImageProfilURL(userToMerge.getImageProfilURL());
-            }
-        }
-    }
+	public void setTshirtSize(TshirtSize tshirtSize) {
+		this.tshirtSize = tshirtSize;
+	}
 
     public User id(int id) {
         this.id = id;
@@ -273,6 +265,16 @@ public class User {
 
     public User imageProfilURL(String imageProfilURL) {
         this.imageProfilURL = imageProfilURL;
+        return this;
+    }
+
+    public User gender(Gender gender) {
+        this.gender = gender;
+        return this;
+    }
+    
+    public User tshirtSize(TshirtSize tshirtSize) {
+        this.tshirtSize = tshirtSize;
         return this;
     }
 }

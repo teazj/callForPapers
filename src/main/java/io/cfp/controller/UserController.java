@@ -57,7 +57,7 @@ public class UserController {
         map.put("email", user.getEmail());
         map.put("lastname", user.getLastname());
         map.put("firstname", user.getFirstname());
-        map.put(("language"), user.getLanguage());
+        map.put("language", user.getLanguage());
         map.put("phone", user.getPhone());
         map.put("company", user.getCompany());
         map.put("bio", user.getBio());
@@ -66,6 +66,8 @@ public class UserController {
         map.put("googleplus", user.getGoogleplus());
         map.put("github", user.getGithub());
         map.put("imageProfilURL", user.getImageProfilURL());
+        map.put("gender", user.getGender());
+        map.put("tshirtSize", user.getTshirtSize());
 
         return map;
     }
@@ -82,7 +84,6 @@ public class UserController {
     public UserProfil putUserProfil(@AuthenticationPrincipal User user, @RequestBody UserProfil profil) {
         profil.setEmail(user.getEmail());
         userService.update(user.getId(), profil);
-
         return profil;
 
     }

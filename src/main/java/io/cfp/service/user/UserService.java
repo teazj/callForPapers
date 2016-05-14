@@ -20,15 +20,15 @@
 
 package io.cfp.service.user;
 
-import io.cfp.dto.user.UserProfil;
-import io.cfp.entity.User;
-import io.cfp.repository.UserRepo;
-import ma.glasnost.orika.MapperFacade;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import io.cfp.dto.user.UserProfil;
+import io.cfp.entity.User;
+import io.cfp.repository.UserRepo;
 
 @Service
 @Transactional
@@ -62,10 +62,10 @@ public class UserService {
 	}
 
 	public void update(int userId, UserProfil profil) {
-		User user = userRepo.findOne(userId)
-            .email(profil.getEmail())
+		User user = userRepo.findOne(userId) 
             .firstname(profil.getFirstname())
             .lastname(profil.getLastname())
+            .email(profil.getEmail())
             .language(profil.getLanguage())
             .bio(profil.getBio())
             .phone(profil.getPhone())
@@ -75,7 +75,9 @@ public class UserService {
             .twitter(profil.getTwitter())
             .googleplus(profil.getGoogleplus())
             .imageProfilURL(profil.getImageProfilURL())
-            .social(profil.getSocial());
+            .social(profil.getSocial())
+			.gender(profil.getGender())
+			.tshirtSize(profil.getTshirtSize());
         userRepo.saveAndFlush(user);
 	}
 }

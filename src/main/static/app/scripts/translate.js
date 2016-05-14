@@ -151,7 +151,9 @@ angular.module('CallForPaper')
                 'twitter': 'Profil Twitter :',
                 'googleplus': 'Profil Google Plus :',
                 'github': 'Profil Github :',
-                'hintSocial': 'Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog.'
+                'hintSocial': 'Donnez les liens de vos réseaux sociaux (pour le site web) : Twitter / G+ / Github / Blog.',
+                'gender':'Sexe t-shirt',
+                'tshirtSize':'Taille t-shirt'
             },
             'step2': {
                 'name': 'Nom de la conférence * :',
@@ -469,7 +471,9 @@ angular.module('CallForPaper')
                 'twitter': 'Twitter Profil :',
                 'googleplus': 'Google Plus Profil:',
                 'github': 'Github Profil :',
-                'hintSocial': 'Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog.'
+                'hintSocial': 'Give us your socials networks data (for the website) : Twitter / G+ / Github / Blog.',
+                'gender': 'T-shirt gender',
+                'tshirtSize': 'T-shirt size'
             },
             'step2': {
                 'name': 'Session name *',

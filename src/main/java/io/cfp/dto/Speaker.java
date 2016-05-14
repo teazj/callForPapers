@@ -21,12 +21,14 @@
 package io.cfp.dto;
 
 import io.cfp.entity.User;
+import io.cfp.entity.User.Gender;
+import io.cfp.entity.User.TshirtSize;
 
 /**
  * Created by sylvain on 02/03/16.
  */
 public class Speaker {
-
+	
     private int id;
     private String lastname;
     private String firstname;
@@ -37,6 +39,8 @@ public class Speaker {
     private String googleplus;
     private String github;
     private String imageProfilURL;
+    private Gender gender;
+    private TshirtSize tshirtSize;
 
     public Speaker() { }
 
@@ -51,6 +55,8 @@ public class Speaker {
         this.googleplus = user.getGoogleplus();
         this.github = user.getGithub();
         this.imageProfilURL = user.getImageProfilURL();
+        this.gender = user.getGender();
+        this.tshirtSize = user.getTshirtSize();
     }
 
     public String getLastname() {
@@ -124,6 +130,22 @@ public class Speaker {
     public void setImageProfilURL(String imageProfilURL) {
         this.imageProfilURL = imageProfilURL;
     }
+    
+    public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public void setTshirtSize(TshirtSize tshirtSize) {
+		this.tshirtSize = tshirtSize;
+	}
+	
+	public Gender getGender() {
+		return gender;
+	}
+
+	public TshirtSize getTshirtSize() {
+		return tshirtSize;
+	}
 
     @Override
     public boolean equals(Object o) {
@@ -189,6 +211,16 @@ public class Speaker {
 
     public Speaker imageProfilURL(String imageProfilURL) {
         this.imageProfilURL = imageProfilURL;
+        return this;
+    }
+
+    public Speaker gender(Gender gender) {
+        this.gender = gender;
+        return this;
+    }
+    
+    public Speaker tshirtSize(TshirtSize tshirtSize) {
+        this.tshirtSize = tshirtSize;
         return this;
     }
 }

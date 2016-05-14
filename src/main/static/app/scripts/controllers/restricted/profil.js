@@ -26,7 +26,7 @@ angular.module('CallForPaper').controller('ProfilCtrl', function($scope, Restric
     $scope.formData.imageProfilKey = null;
 
     $scope.$watch(function() {
-        return $scope.form && $scope.form.lastname.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone === '') && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid && $scope.form.twitter.$valid && $scope.form.googleplus.$valid && $scope.form.github.$valid;
+        return $scope.form && $scope.form.lastname.$valid && $scope.form.firstname.$valid && ($scope.form.phone.$valid || $scope.formData.phone === '') && $scope.form.company.$valid && $scope.form.bio.$valid && $scope.form.social.$valid && $scope.form.twitter.$valid && $scope.form.googleplus.$valid && $scope.form.github.$valid && $scope.form.gender.$valid && $scope.form.tshirtSize.$valid;
     }, function(isValid) {
         $scope.formData.isValid = isValid;
     });
@@ -83,11 +83,6 @@ angular.module('CallForPaper').controller('ProfilCtrl', function($scope, Restric
                                 $scope.formData.phone = profil[key];
                             }
                             break;
-                        case 'email':
-                            if (profil[key] !== null) {
-                                $scope.email = profil[key];
-                            }
-                            break;
                         case 'imageProfilKey':
                             if (profil[key] !== undefined) {
                                 $scope.formData.imageProfilKey = profil[key];
@@ -120,6 +115,16 @@ angular.module('CallForPaper').controller('ProfilCtrl', function($scope, Restric
                         case 'github':
                             if (profil[key] !== null) {
                                 $scope.formData.github = profil[key];
+                            }
+                            break;
+                        case 'gender':
+                            if (profil[key] !== null) {
+                                $scope.formData.gender = profil[key];
+                            }
+                            break;
+                        case 'tshirtSize':
+                            if (profil[key] !== null) {
+                                $scope.formData.tshirtSize = profil[key];
                             }
                             break;
                     }

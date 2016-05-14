@@ -20,6 +20,9 @@
 
 package io.cfp.dto.user;
 
+import io.cfp.entity.User.Gender;
+import io.cfp.entity.User.TshirtSize;
+
 /**
  * Created by tmaugin on 05/06/2015.
  * SII
@@ -38,6 +41,8 @@ public class UserProfil {
     private String imageProfilURL;
     private String email;
     private String language = "fr";
+    private Gender gender;
+    private TshirtSize tshirtSize;
 
     public UserProfil() {
         super();
@@ -153,5 +158,21 @@ public class UserProfil {
     public void setEmail(String email) {
         this.email = email;
     }
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public TshirtSize getTshirtSize() {
+		return tshirtSize;
+	}
+
+	public void setTshirtSize(TshirtSize tshirtSize) {
+		this.tshirtSize = tshirtSize;
+	}
 
 }

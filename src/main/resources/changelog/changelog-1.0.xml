@@ -232,6 +232,15 @@
             <column name="name" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="6" author="mimah">
+        <addColumn tableName="users">
+            <column name="gender" type="VARCHAR(6)"/>
+        </addColumn>
+        <addColumn tableName="users">
+            <column name="tshirt_size" type="VARCHAR(6)"/>
+        </addColumn>
+    </changeSet>
 
 
 </databaseChangeLog>

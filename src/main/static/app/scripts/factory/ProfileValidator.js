@@ -23,7 +23,7 @@
 angular.module('CallForPaper').provider('ProfileValidator', function() {
 
     function isValid(user) {
-        return Boolean(user.firstname && user.lastname && user.bio && user.email);
+        return Boolean(user.firstname && user.lastname && user.bio);
     }
 
     return {
