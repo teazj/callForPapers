@@ -74,15 +74,16 @@ public class AuthFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         User user = authUtils.getAuthUser(httpRequest);
         MDC.put(USER, user);
 
         if (user != null) {
             List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
-            if (roles.contains(Role.ADMIN)) {
-                adminUserService.setCurrentAdmin(user);
+            for (Role role : roles) {
+            	if (Role.ADMIN.equals(role.getName())) {
+            		adminUserService.setCurrentAdmin(user);
+            	}
             }
             SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(user, roles));
         }

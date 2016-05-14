@@ -26,6 +26,7 @@ import io.cfp.entity.Event;
 import io.cfp.entity.Talk;
 import io.cfp.entity.User;
 import io.cfp.repository.CommentRepo;
+import io.cfp.repository.EventRepository;
 import io.cfp.repository.TalkRepo;
 import io.cfp.repository.UserRepo;
 import ma.glasnost.orika.MapperFacade;
@@ -51,6 +52,9 @@ public class CommentAdminService {
 
     @Autowired
     private UserRepo userRepo;
+    
+    @Autowired
+    private EventRepository eventRepo;
 
     @Autowired
     private MapperFacade mapper;
@@ -79,12 +83,14 @@ public class CommentAdminService {
         if (talk == null) return null;
         User user = userRepo.findByEmail(admin.getEmail());
         if (user == null) throw new IllegalStateException("Admin with email [" + admin.getEmail() + "] doesn't exists in user table");
-
+        Event event = eventRepo.findOne(Event.current());
+        
         Comment comment = mapper.map(commentUser, Comment.class);
         comment.setAdded(new Date());
         comment.setTalk(talk);
         comment.setUser(user);
         comment.setInternal(internal);
+        comment.setEvent(event);
 
         Comment saved = commentRepo.save(comment);
         commentRepo.flush();
