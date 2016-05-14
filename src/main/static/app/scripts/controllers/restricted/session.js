@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession,RestrictedCoSession, RestrictedContact, $modal, Config, talkformats, isCoSession) {
+    .controller('RestrictedSessionCtrl', function($scope, $stateParams, $filter, RestrictedSession,RestrictedCoSession, RestrictedContact, $modal, talkformats, isCoSession) {
         $scope.tab = $stateParams.tab;
 
         $scope.session = null;
@@ -127,14 +127,6 @@ angular.module('CallForPaper')
         };
         updateContacts();
 
-        $scope.captchaShow = true;
-        $scope.recaptchaId = Config.recaptchaPublicKey;
-        $scope.captcha = null;
-        $scope.setResponse = function(response) {
-            // send the `response` to your server for verification.
-            $scope.captcha = response;
-        };
-
         $scope.contactButtonDisabled = false;
         /**
          * Post current contact in textarea
@@ -143,15 +135,12 @@ angular.module('CallForPaper')
         $scope.postContact = function() {
             $scope.contactButtonDisabled = true;
             RestrictedContact.save({rowId: $stateParams.id}, {
-                'comment': $scope.contactMsg,
-                'captcha': $scope.captcha
+                'comment': $scope.contactMsg
             }, function() {
-                $scope.captchaShow = !$scope.captchaShow;
                 $scope.contactMsg = '';
                 $scope.contactButtonDisabled = false;
                 updateContacts();
             }, function() {
-                $scope.captchaShow = !$scope.captchaShow;
                 $scope.contactButtonDisabled = false;
             });
         };

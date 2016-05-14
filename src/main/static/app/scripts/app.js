@@ -72,8 +72,6 @@ angular.module('CallForPaper', [
             .when('/admin', '/admin/sessions')
             .when('/admin/', '/admin/sessions')
 
-            .when('/form', '/form/')
-
             .otherwise('/dashboard');
 
         $stateProvider
@@ -216,19 +214,6 @@ angular.module('CallForPaper', [
                 }
             })
 
-            // Login Admin
-            .state('loginAdmin', {
-                url: '/admin/login',
-                templateUrl: 'views/admin/login.html',
-                controller: 'AdminLoginCtrl'
-            })
-            // Logout Admin
-            .state('logoutAdmin', {
-                url: '/admin/logout',
-                templateUrl: 'views/admin/login.html',
-                controller: 'AdminLogoutCtrl'
-            })
-
             // Restricted
             .state('app', {
                 parent: 'main',
@@ -351,38 +336,6 @@ angular.module('CallForPaper', [
                         $state.go('app.dashboard');
                     }
                 }
-            })
-
-
-            // Form
-            .state('app.form', {
-                url: '/form/:id',
-                views: {
-                    '': {
-                        templateUrl: 'views/restricted/form/form.html',
-                        controller: 'FormCtrl',
-                        resolve: {
-                            isOpen: AppConfigProvider.$get().isOpen
-                        }
-                    },
-                    '@app.form': {
-                        templateUrl: 'views/restricted/form/step1.html',
-                        controller: 'Step1Ctrl'
-                    }
-                }
-            })
-
-            .state('app.form.step2', {
-                templateUrl: 'views/restricted/form/step2.html',
-                controller: 'Step2Ctrl'
-            })
-            .state('app.form.step3', {
-                templateUrl: 'views/restricted/form/step3.html',
-                controller: 'Step3Ctrl'
-            })
-            .state('app.form.result', {
-                templateUrl: 'views/restricted/form/result.html',
-                controller: 'ResultCtrl'
             })
 
             .state('app.session', {
