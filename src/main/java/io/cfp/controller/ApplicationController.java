@@ -44,7 +44,7 @@ import io.cfp.repository.EventRepository;
  * Created by tmaugin on 07/05/2015.
  */
 @RestController
-@RequestMapping(value="/api", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0", "/api" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ApplicationController {
 
     @Autowired

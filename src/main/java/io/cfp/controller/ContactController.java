@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping(value = "api/proposals/{talkId}/contacts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/proposals/{talkId}/contacts", "/api/proposals/{talkId}/contacts" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ContactController extends RestrictedController {
 
     @Autowired

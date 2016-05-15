@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper').factory('RestrictedCoDraft', ['resourceRetries', function(resourceRetries) {
-    return resourceRetries('api/codrafts/:id', null, {
-        update: {method: 'PUT', url: 'api/codrafts/:id'}
+    return resourceRetries('/v0/codrafts/:id', null, {
+        update: {method: 'PUT', url: '/v0/codrafts/:id'}
     });
 }]);

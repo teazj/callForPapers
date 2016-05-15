@@ -21,11 +21,11 @@
 'use strict';
 
 angular.module('CallForPaper').factory('RestrictedDraft', ['resourceRetries', function(resourceRetries) {
-    return resourceRetries('api/drafts/:id', null, {
-        update: {method: 'PUT', url: 'api/drafts/:id'},
+    return resourceRetries('/v0/drafts/:id', null, {
+        update: {method: 'PUT', url: '/v0/drafts/:id'},
         delete: {
             method: 'DELETE',
-            url: 'api/drafts/:id'
+            url: '/v0/drafts/:id'
         }
     });
 }]);

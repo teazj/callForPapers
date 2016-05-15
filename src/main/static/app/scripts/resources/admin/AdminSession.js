@@ -21,23 +21,23 @@
 'use strict';
 
 angular.module('CallForPaper').factory('AdminSession', ['resourceRetries', function(resourceRetries) {
-    return resourceRetries('api/admin/sessions/:id', null,
+    return resourceRetries('/v0/admin/sessions/:id', null,
         {
             update: {
                 method: 'PUT',
-                url: 'api/admin/sessions/:id'
+                url: '/v0/admin/sessions/:id'
             },
             delete: {
                 method: 'DELETE',
-                url: 'api/admin/sessions/:id'
+                url: '/v0/admin/sessions/:id'
             },
             setViewed: {
                 method: 'POST',
-                url: 'api/admin/sessions/viewed/:id',
+                url: '/v0/admin/sessions/viewed/:id',
             },
             changeTrack: {
                 method: 'PUT',
-                url: 'api/admin/sessions/track/:id'
+                url: '/v0/admin/sessions/track/:id'
             }
         });
 }]);

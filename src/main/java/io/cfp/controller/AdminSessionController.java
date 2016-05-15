@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping(value="api/admin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/admin", "/api/admin" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminSessionController {
 
     @Autowired

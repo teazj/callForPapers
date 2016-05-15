@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper').factory('AdminDraft', ['resourceRetries', function(resourceRetries) {
-    return resourceRetries('api/admin/drafts/:id', null, {
-        update: {method: 'PUT', url: 'api/admin/drafts/:id'}
+    return resourceRetries('/v0/admin/drafts/:id', null, {
+        update: {method: 'PUT', url: '/v0/admin/drafts/:id'}
     });
 }]);

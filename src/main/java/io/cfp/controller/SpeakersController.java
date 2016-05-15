@@ -38,7 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
  */
 
 @RestController
-@RequestMapping(value = "/api/tracks", produces = APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/tracks", "/api/tracks" }, produces = APPLICATION_JSON_UTF8_VALUE)
 public class SpeakersController {
 
     @Autowired

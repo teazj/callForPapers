@@ -31,6 +31,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -68,7 +69,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         AuthFilter authFilter = new AuthFilter();
         registrationBean.setFilter(authFilter);
-        registrationBean.setUrlPatterns(Collections.singleton("/api/*"));
+        registrationBean.setUrlPatterns(Arrays.asList("/v0/*", "/api/*"));
         registrationBean.setOrder(2);
         return registrationBean;
     }

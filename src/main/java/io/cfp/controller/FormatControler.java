@@ -43,7 +43,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
  */
 @RestController
-@RequestMapping(value = "/api/formats", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/formats", "/api/formats" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class FormatControler {
 
     @Autowired

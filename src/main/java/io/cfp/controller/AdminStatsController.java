@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value="api/admin/stats", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0/admin/stats", "/api/admin/stats" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminStatsController {
 
     @Autowired

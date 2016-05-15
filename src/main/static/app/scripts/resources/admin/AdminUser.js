@@ -21,18 +21,18 @@
 'use strict';
 
 angular.module('CallForPaper').factory('AdminUser', ['$resource', function($resource) {
-    return $resource('/api/adminUser/:id', null, {
+    return $resource('/v0/adminUser/:id', null, {
         getCurrentUser: {
-            url: '/api/adminUser/currentUser',
+            url: '/v0/adminUser/currentUser',
             method: 'GET'
         },
         getLoginUrl: {
-            url: '/api/adminUser/login',
+            url: '/v0/adminUser/login',
             method: 'POST'
         },
 
         getLogoutUrl: {
-            url: '/api/adminUser/logout',
+            url: '/v0/adminUser/logout',
             method: 'POST'
         }
     });
