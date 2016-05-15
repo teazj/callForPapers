@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import io.cfp.entity.User;
@@ -59,7 +60,13 @@ public final class AuthUtils {
         	if (user == null) {
         		user = new User();
         		user.setEmail(email);
-        		user = userService.save(user);
+                try {
+                    user = userService.save(user);
+                } catch (DataIntegrityViolationException e) {
+                    // Handle concurrent insert by parallel requests to API
+                    user = userService.findByemail(email);
+                    if (user == null) throw e; // other error
+                }
         	}
         	return user;
         }
