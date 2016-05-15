@@ -68,6 +68,9 @@ angular.module('CallForPaper', [
 
             .when('/admin', '/admin/sessions')
             .when('/admin/', '/admin/sessions')
+            
+            .when('/owner', '/owner/config')
+            .when('/owner/', '/owner/config')
 
             .otherwise('/dashboard');
 
@@ -87,12 +90,21 @@ angular.module('CallForPaper', [
                 parent: 'main',
                 url: '/admin',
                 abstract: true,
+                resolve: {
+                    currentUser: ['AuthService', function(AuthService) {
+                        return AuthService.getCurrentUser();
+                    }]
+                },
                 views: {
                     'side-menu': {
-                        templateUrl: 'views/admin/_side-menu.html'
+                        templateUrl: 'views/admin/_side-menu.html',
+                        controller: 'AdminMenuCtrl',
+                        controllerAs: 'topMenu'
                     },
                     'top-menu': {
-                        templateUrl: 'views/admin/_top-menu.html'
+                        templateUrl: 'views/admin/_top-menu.html',
+                        controller: 'AdminMenuCtrl',
+                        controllerAs: 'topMenu'
                     },
                     '': {
                         templateUrl: 'views/admin/admin.html',
@@ -104,11 +116,47 @@ angular.module('CallForPaper', [
                     }
                 }
             })
+            .state('owner', {
+                parent: 'main',
+                url: '/owner',
+                abstract: true,
+                resolve: {
+                    currentUser: ['AuthService', function(AuthService) {
+                        return AuthService.getCurrentUser();
+                    }]
+                },
+                views: {
+                    'side-menu': {
+                        templateUrl: 'views/owner/_side-menu.html',
+                        controller: 'OwnerMenuCtrl',
+                        controllerAs: 'topMenu'
+                    },
+                    'top-menu': {
+                        templateUrl: 'views/owner/_top-menu.html',
+                        controller: 'OwnerMenuCtrl',
+                        controllerAs: 'topMenu'
+                    },
+                    '': {
+                        templateUrl: 'views/owner/owner.html',
+                        controller: 'OwnerCtrl',
+                        resolve: {
+                            isAutorizedAdmin: AuthServiceProvider.$get().isAdmin,
+                            isConfigured: AppConfigProvider.$get().isConfigured
+                        }
+                    }
+                }
+            })
             // Config
-            .state('admin.config', {
+            .state('owner.config', {
                 url: '/config',
-                templateUrl: 'views/admin/config.html',
-                controller: 'AdminConfigCtrl'
+                templateUrl: 'views/owner/config.html',
+                controller: 'OwnerConfigCtrl'
+            })
+            // Admins
+            .state('owner.admins', {
+                url: '/admins',
+                templateUrl: 'views/owner/admins.html',
+                controller: 'OwnerAdminsCtrl'
             })
             // Session
             .state('admin.loading', {

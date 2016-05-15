@@ -20,6 +20,8 @@
 
 package io.cfp.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.cfp.dto.AdminUserInfo;
+import io.cfp.entity.Event;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
-import io.cfp.service.admin.user.AdminUserService;
+import io.cfp.repository.RoleRepository;
 import io.cfp.service.auth.AuthUtils;
 
 @RestController
@@ -38,7 +42,7 @@ import io.cfp.service.auth.AuthUtils;
 public class AdminUserController {
 
     @Autowired
-    private AdminUserService adminUserService;
+    private RoleRepository roles;
 
     @Autowired
     private AuthUtils authUtils;
@@ -55,12 +59,17 @@ public class AdminUserController {
             return new AdminUserInfo("./", false, false, false, "");
         }
 
-        User adminUser = adminUserService.findFromEmail(user.getEmail());
+        AdminUserInfo infos = new AdminUserInfo("./logout", true, false, false, user.getEmail());
+        List<Role> userRoles = roles.findByUserIdAndEventId(user.getId(), Event.current());
+        for (Role role : userRoles) {
+        	if (Role.ADMIN.equals(role.getName())) {
+        		infos.setAdmin(true);
+        	}
+        	if (Role.OWNER.equals(role.getName())) {
+        		infos.setOwner(true);
+        	}
+         }
 
-        if (adminUser == null) {
-            return new AdminUserInfo("./logout", true, false, true, user.getEmail());
-        }
-
-        return new AdminUserInfo("./logout", true, true, true, adminUser.getEmail());
+        return infos;
     }
 }

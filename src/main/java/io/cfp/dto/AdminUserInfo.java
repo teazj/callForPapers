@@ -26,7 +26,8 @@ package io.cfp.dto;
 public class AdminUserInfo {
     private boolean connected;
     private boolean admin;
-    private boolean config;
+    private boolean owner;
+    
     private String uri;
     private String email;
 
@@ -46,12 +47,12 @@ public class AdminUserInfo {
         this.admin = admin;
     }
 
-    public boolean isConfig() {
-        return config;
+    public boolean isOwner() {
+        return owner;
     }
 
-    public void setConfig(boolean config) {
-        this.config = config;
+    public void setOwner(boolean owner) {
+        this.owner = owner;
     }
 
     public String getUri() {
@@ -70,11 +71,11 @@ public class AdminUserInfo {
         this.email = email;
     }
 
-    public AdminUserInfo(String uri, boolean connected, boolean admin, boolean config, String email) {
+    public AdminUserInfo(String uri, boolean connected, boolean admin, boolean owner, String email) {
         this.uri = uri;
         this.connected = connected;
         this.admin = admin;
-        this.config = config;
+        this.owner = owner;
         this.email= email;
     }
 }

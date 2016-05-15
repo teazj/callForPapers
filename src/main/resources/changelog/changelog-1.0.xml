@@ -241,6 +241,13 @@
             <column name="tshirt_size" type="VARCHAR(6)"/>
         </addColumn>
     </changeSet>
-
+    
+    <changeSet id="7" author="mimah">
+    	<insert tableName="roles">
+            <column name="name" value="ROLE_OWNER"/>
+            <column name="user_id" value="1"/>
+            <column name="event_id" value="demo"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>

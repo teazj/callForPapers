@@ -19,14 +19,8 @@
   -->
 
 <li>
-    <a ui-sref="app.dashboard">{{'header.dashboard' | translate}}</a>
+	<a ui-sref="owner.config">{{'owner.config' | translate}}</a>
 </li>
 <li>
-    <a ui-sref="app.profil">{{'header.profil' | translate}}</a>
-</li>
-<li ng-if="topMenu.isAdmin">
-    <a ui-sref="admin.sessions">{{'header.admin' | translate}}</a>
-</li>
-<li ng-if="topMenu.isOwner">
-    <a ui-sref="owner.config">{{'owner.config' | translate}}</a>
+	<a ui-sref="owner.admins">{{'owner.admins' | translate}}</a>
 </li>

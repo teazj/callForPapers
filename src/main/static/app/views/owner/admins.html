@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2016 BreizhCamp
+  ~ [http://breizhcamp.org]
+  ~
+  ~ This file is part of CFP.io.
+  ~
+  ~ CFP.io is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div class="row">
+	<div class="panel">
+		<div class="panel-body">
+			<h1>{{'owner.admins' | translate}}</h1>
+            <form  id="adminForm" name="form" xt-form role="form" novalidate>
+            
+            <div class="form-group">
+                <label class="control-label">{{'owner.admins' | translate}}</label>
+                <div>{{'owner.hintAdmins' | translate}}</div>
+                <div>
+                    <div>
+                       <tags-input type="email" id="admins" name="admins" ng-model="admins"></tags-input>
+                    </div>
+                </div>
+            </div>
+            <button ng-click="saveAdmins()" ng-disabled="sending" class="btn btn-block btn-primary">
+                <span class="mdi-content-save pull-right" ng-class="{'glyphicon-refresh-animate' : sending, 'mdi-content-save' : !sending, 'mdi-navigation-refresh' : sending}"></span>
+                {{'admin.btn.save' | translate}}
+            </button>
+        </form>
+    </div>
+</div>

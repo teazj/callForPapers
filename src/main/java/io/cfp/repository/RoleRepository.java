@@ -25,18 +25,16 @@
 
 package io.cfp.repository;
 
-import io.cfp.entity.Role;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
-import java.util.List;
+import io.cfp.entity.Role;
 
 /**
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
  */
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-
-    Collection<Role> findByUserEmail(String email);
 
     Role findByUserIdAndEventIdAndName(int userId, String eventId, String role);
 

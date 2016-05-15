@@ -23,11 +23,13 @@ package io.cfp.controller;
 import io.cfp.domain.exception.ForbiddenException;
 import io.cfp.domain.exception.NotFoundException;
 import io.cfp.dto.CommentUser;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
 import io.cfp.service.CommentAdminService;
 import io.cfp.service.admin.user.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@Secured(Role.ADMIN)
 @RequestMapping(value = { "/v0/admin/sessions/{talkId}/comments", "/api/admin/sessions/{talkId}/comments" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminCommentController {
 
