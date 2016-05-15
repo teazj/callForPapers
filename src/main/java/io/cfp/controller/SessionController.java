@@ -45,7 +45,7 @@ import io.cfp.service.TalkUserService;
 import io.cfp.service.email.EmailingService;
 
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v0", "/api" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SessionController extends RestrictedController {
 
     @Autowired
