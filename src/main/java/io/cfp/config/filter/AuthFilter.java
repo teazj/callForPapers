@@ -50,7 +50,7 @@ import io.cfp.service.auth.AuthUtils;
  */
 public class AuthFilter implements Filter {
 
-    protected static final String USER = "user";
+    private static final String USER = "user";
 
     private AuthUtils authUtils;
     private RoleRepository roleRepository;
@@ -75,9 +75,9 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         User user = authUtils.getAuthUser(httpRequest);
-        MDC.put(USER, user);
 
         if (user != null) {
+            MDC.put(USER, user.getEmail());
             List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
             for (Role role : roles) {
             	if (Role.ADMIN.equals(role.getName()) || Role.OWNER.equals(role.getName())) {
