@@ -80,7 +80,7 @@ public class AuthFilter implements Filter {
         if (user != null) {
             List<Role> roles = roleRepository.findByUserIdAndEventId(user.getId(), Event.current());
             for (Role role : roles) {
-            	if (Role.ADMIN.equals(role.getName())) {
+            	if (Role.ADMIN.equals(role.getName()) || Role.OWNER.equals(role.getName())) {
             		adminUserService.setCurrentAdmin(user);
             	}
             }

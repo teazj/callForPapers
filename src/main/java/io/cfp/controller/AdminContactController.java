@@ -24,6 +24,7 @@ import io.cfp.domain.exception.ForbiddenException;
 import io.cfp.domain.exception.NotFoundException;
 import io.cfp.dto.CommentUser;
 import io.cfp.dto.TalkAdmin;
+import io.cfp.entity.Role;
 import io.cfp.entity.User;
 import io.cfp.service.CommentAdminService;
 import io.cfp.service.TalkAdminService;
@@ -32,6 +33,7 @@ import io.cfp.service.email.EmailingService;
 import io.cfp.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +50,7 @@ import java.util.Locale;
  * Manages comments sent by administrators to speakers about a talk
  */
 @RestController
+@Secured(Role.ADMIN)
 @RequestMapping(value = { "/v0/admin/sessions/{talkId}/contacts", "/api/admin/sessions/{talkId}/contacts" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminContactController {
 

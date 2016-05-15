@@ -77,7 +77,7 @@ public class ApplicationController {
      * @return
      */
     @RequestMapping(method=RequestMethod.POST, value="/application")
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public void getApplicationSettings(@RequestBody ApplicationSettings settings) throws NotFoundException, BadRequestException {
 
         final String name = Event.current();

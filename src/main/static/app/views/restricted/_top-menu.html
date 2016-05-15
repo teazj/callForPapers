@@ -28,4 +28,7 @@
     <li ui-sref-active="active" ng-if="topMenu.isAdmin">
         <a ui-sref="admin.sessions">{{'header.admin' | translate}}</a>
     </li>
+    <li ui-sref-active="active" ng-if="topMenu.isOwner">
+        <a ui-sref="owner.config">{{'owner.config' | translate}}</a>
+    </li>
 </ul>

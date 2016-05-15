@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .controller('AdminConfigCtrl', ['$scope','$filter', '$http', 'Application',
+    .controller('OwnerConfigCtrl', ['$scope','$filter', '$http', 'Application',
         function($scope,$filter, $http, Application) {
 
             $scope.submission = false;

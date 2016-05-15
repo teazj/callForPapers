@@ -247,7 +247,6 @@ angular.module('CallForPaper')
             },
             'admin': {
                 'logout': 'Se déconnecter',
-                'config': 'Configuration',
                 'allowSubmissions': 'Autoriser les utilisateurs à poster de nouveaux talks ?',
                 'session': 'Talk',
                 'sessions': 'Talks',
@@ -297,7 +296,12 @@ angular.module('CallForPaper')
                 'startDate': 'Date du début de l\'événement',
                 'configCfp': 'Configuration du CFP',
                 'btn.save': 'Sauvegarder'
-
+            },
+            'owner': {
+            	'admins': 'Admins',
+            	'config': 'Configuration',
+            	'hintAdmins': 'Ajouter les emails des admins',
+            	'adminsSuccess': 'La liste des admins a été mise à jour'
             },
             'config': {
                 'logout': 'Se déconnecter',
@@ -567,7 +571,6 @@ angular.module('CallForPaper')
             },
             'admin': {
                 'logout': 'Logout',
-                'config': 'Configuration',
                 'allowSubmissions': 'Allow users to submit new talks ?',
                 'session': 'Talk',
                 'sessions': 'Talks',
@@ -610,6 +613,12 @@ angular.module('CallForPaper')
                 'allType': 'All',
                 'newMessages': 'New messages',
                 nextToRate: 'Next talk to rate'
+            },
+            'owner': {
+            	'admins': 'Admins',
+            	'config': 'Configuration',
+            	'hintAdmins': 'Enter admins email',
+            	'adminsSuccess': 'Admin list updated'
             },
             'config': {
                 'login': 'Login',

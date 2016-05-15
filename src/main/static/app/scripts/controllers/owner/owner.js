@@ -20,10 +20,6 @@
 
 'use strict';
 
-angular.module('CallForPaper').controller('UserMenuCtrl', function(isProfileComplete, currentUser) {
-
-    this.isProfileComplete = isProfileComplete;
-    this.isAdmin = currentUser.admin;
-    this.isOwner = currentUser.owner;
-    
+angular.module('CallForPaper').controller('OwnerCtrl', function($scope) {
+    $scope.header.navBarColorClass = 'navbar-material-blue-A700';  // TODO Pretty dirty…
 });

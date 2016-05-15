@@ -20,10 +20,15 @@
 
 'use strict';
 
-angular.module('CallForPaper').controller('UserMenuCtrl', function(isProfileComplete, currentUser) {
+angular.module('CallForPaper').factory('OwnerAdmins', ['$resource', function($resource) {
+    return $resource('api/admins', {},
+        {
+            getAll: {
+                method: 'GET',
+                isArray: true
+            },
+            add: {method: 'POST'},
+            remove: {method: 'DELETE',url: 'api/admins/:email'}
 
-    this.isProfileComplete = isProfileComplete;
-    this.isAdmin = currentUser.admin;
-    this.isOwner = currentUser.owner;
-    
-});
+        });
+}]);

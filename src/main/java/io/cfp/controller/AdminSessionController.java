@@ -22,10 +22,12 @@ package io.cfp.controller;
 
 import io.cfp.domain.exception.CospeakerNotFoundException;
 import io.cfp.dto.TalkAdmin;
+import io.cfp.entity.Role;
 import io.cfp.entity.Talk;
 import io.cfp.service.TalkAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
+@Secured(Role.ADMIN)
 @RequestMapping(value = { "/v0/admin", "/api/admin" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminSessionController {
 
