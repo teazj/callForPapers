@@ -67,7 +67,7 @@ public class FormatControler {
     }
 
     @RequestMapping(method = POST)
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public FormatDto create(@RequestBody FormatDto format) {
         return new FormatDto(
             formats.save(
@@ -80,7 +80,7 @@ public class FormatControler {
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public void update(@PathVariable int id, @RequestBody FormatDto format) {
         formats.save(
             formats.getOne(id)
@@ -91,7 +91,7 @@ public class FormatControler {
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public void delete(@PathVariable int id) {
         formats.delete(id);
     }

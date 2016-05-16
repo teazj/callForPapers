@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright (c) 2016 BreizhCamp
+  ~ [http://breizhcamp.org]
+  ~
+  ~ This file is part of CFP.io.
+  ~
+  ~ CFP.io is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div class="row">
+	<div class="panel">
+		<div class="panel-body">
+		
+			<h1>{{'owner.tracks' | translate}}</h1>
+            
+            <table class="table table-striped table-condensed">
+            	<thead>
+            		<tr>
+            			<th class="col-xs-3">{{'owner.trackName' | translate}}</th>
+            			<th class="col-xs-7">{{'owner.trackDescription' | translate}}</th>
+            			<th class="col-xs-2"></th>
+            		</tr>
+            	</thead>
+            	<tbody>
+            		<tr ng-repeat="track in tracks">
+            			<td><input required type="text" name="name" class="form-control" id="name" ng-model="track.libelle" ng-blur="saveTrack(track)" /></td>
+            			<td>
+                            <textarea required class="form-control" name="description" id="description" ng-model="track.description" ng-blur="saveTrack(track)" rows="1"></textarea>
+                        </td>
+            			<td class="text-center">
+            				<button type="button" class="btn btn-danger" ng-click="removeTrack($index)">{{'owner.trackDelete' | translate}}</button>
+            			</td>
+            		</tr>
+            	</tbody>
+            	<tfoot>
+            		<tr>
+            			<th><button type="button" class="btn btn-primary" ng-click="addTrack()">{{'owner.trackNew' | translate}}</button></th>
+            			<th></th>
+            			<th></th>
+            		</tr>
+            	</tfoot>
+            </table>
+            
+            
+            <h1>{{'owner.formats' | translate}}</h1>
+            
+            <table class="table table-striped table-condensed">
+            	<thead>
+            		<tr>
+            			<th class="col-xs-2">{{'owner.formatName' | translate}}</th>
+            			<th class="col-xs-1">{{'owner.formatDuration' | translate}}</th>
+            			<th class="col-xs-7">{{'owner.formatDescription' | translate}}</th>
+            			<th class="col-xs-2"></th>
+            		</tr>
+            	</thead>
+            	<tbody>
+            		<tr ng-repeat="format in formats">
+            			<td><input required type="text" name="name" class="form-control" id="name" ng-model="format.name" ng-blur="saveFormat(format)" /></td>
+            			<td><input required type="number" name="duration" class="form-control" id="duration" ng-model="format.duration" ng-blur="saveFormat(format)" /></td>
+            			<td>
+                            <textarea required class="form-control" name="description" id="description" ng-model="format.description" ng-blur="saveFormat(format)" rows="1"></textarea>
+                        </td>
+            			<td class="text-center">
+            				<button type="button" class="btn btn-danger" ng-click="removeFormat($index)">{{'owner.formatDelete' | translate}}</button>
+            			</td>
+            		</tr>
+            	</tbody>
+            	<tfoot>
+            		<tr>
+            			<th><button type="button" class="btn btn-primary" ng-click="addFormat()">{{'owner.formatNew' | translate}}</button></th>
+            			<th></th>
+            			<th></th>
+            			<th></th>
+            		</tr>
+            	</tfoot>
+            </table>
+            
+            
+		</div>
+	</div>
+</div>

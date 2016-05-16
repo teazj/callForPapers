@@ -67,7 +67,7 @@ public class TrackControler {
     }
 
     @RequestMapping(method = POST)
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public TrackDto create(@RequestBody TrackDto track) {
         return new TrackDto(
             tracks.save(
@@ -79,7 +79,7 @@ public class TrackControler {
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public void update(@PathVariable int id, @RequestBody TrackDto track) {
         tracks.save(
             tracks.getOne(id)
@@ -90,7 +90,7 @@ public class TrackControler {
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
-    @Secured(Role.ADMIN)
+    @Secured(Role.OWNER)
     public void delete(@PathVariable int id) {
         tracks.delete(id);
     }
