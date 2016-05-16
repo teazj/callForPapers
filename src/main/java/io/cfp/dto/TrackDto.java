@@ -22,21 +22,20 @@ package io.cfp.dto;
 
 import io.cfp.entity.Track;
 
-/**
- * Created by SGUERNIO on 29/11/2015.
- */
 public class TrackDto {
     private int id;
     private String libelle;
     private String description;
+    private boolean referenced;
 
     public TrackDto() {
     }
 
-    public TrackDto(Track track) {
+    public TrackDto(Track track, boolean referenced) {
         this.id = track.getId();
         this.libelle = track.getLibelle();
         this.description = track.getDescription();
+        this.referenced = referenced;
     }
 
     public int getId() {
@@ -62,4 +61,12 @@ public class TrackDto {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	public boolean isReferenced() {
+		return referenced;
+	}
+
+	public void setReferenced(boolean referenced) {
+		this.referenced = referenced;
+	}
 }

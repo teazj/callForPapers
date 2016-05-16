@@ -20,12 +20,14 @@
 
 package io.cfp.controller;
 
-import io.cfp.dto.FormatDto;
-import io.cfp.entity.Event;
-import io.cfp.entity.Format;
-import io.cfp.entity.Role;
-import io.cfp.repository.EventRepository;
-import io.cfp.repository.FormatRepo;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -34,14 +36,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import io.cfp.dto.FormatDto;
+import io.cfp.entity.Event;
+import io.cfp.entity.Format;
+import io.cfp.entity.Role;
+import io.cfp.repository.EventRepository;
+import io.cfp.repository.FormatRepo;
+import io.cfp.repository.TalkRepo;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
-/**
- * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
- */
 @RestController
 @RequestMapping(value = { "/v0/formats", "/api/formats" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class FormatControler {
@@ -51,19 +53,23 @@ public class FormatControler {
 
     @Autowired
     private EventRepository events;
+    
+    @Autowired
+    private TalkRepo talks;
 
     @RequestMapping(method = GET)
     public Collection<FormatDto> all() {
         return formats
             .findByEventId(Event.current())
             .stream()
-            .map( t -> new FormatDto(t) )
+            .map( t -> new FormatDto(t, isReferenced(t)) )
             .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{id}", method = GET)
     public FormatDto getOne(@PathVariable int id) {
-        return new FormatDto(formats.findByIdAndEventId(id, Event.current()));
+    	Format format = formats.findByIdAndEventId(id, Event.current());
+        return new FormatDto(format, isReferenced(format));
     }
 
     @RequestMapping(method = POST)
@@ -76,23 +82,33 @@ public class FormatControler {
                     .withName(format.getName())
                     .withDuration(format.getDuration())
                     .withDescription(format.getDescription())
-            ));
+            ), false);
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
     @Secured(Role.OWNER)
-    public void update(@PathVariable int id, @RequestBody FormatDto format) {
-        formats.save(
-            formats.getOne(id)
-                .withName(format.getName())
-                .withDuration(format.getDuration())
-                .withDescription(format.getDescription())
-        );
+    public void update(@PathVariable int id, @RequestBody FormatDto update) {
+    	Format format = formats.findByIdAndEventId(id, Event.current()); // make sure the format belongs to the current event
+    	if (format != null) {
+	        formats.save(
+	            format
+	                .withName(update.getName())
+	                .withDuration(update.getDuration())
+	                .withDescription(update.getDescription())
+	        );
+    	}
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
     @Secured(Role.OWNER)
     public void delete(@PathVariable int id) {
-        formats.delete(id);
+    	Format format = formats.findByIdAndEventId(id, Event.current()); // make sure the format belongs to the current event
+    	if (format != null && !isReferenced(format)) {
+    		formats.delete(id);
+    	}
+    }
+    
+    private boolean isReferenced(Format format) {
+    	return talks.countByEventIdAndFormat(Event.current(), format) > 0;
     }
 }
