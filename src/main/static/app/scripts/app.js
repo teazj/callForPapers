@@ -152,6 +152,12 @@ angular.module('CallForPaper', [
                 templateUrl: 'views/owner/config.html',
                 controller: 'OwnerConfigCtrl'
             })
+            // Tracks and formats
+            .state('owner.tracksAndFormats', {
+                url: '/tracksAndFormats',
+                templateUrl: 'views/owner/tracksAndFormats.html',
+                controller: 'OwnerTracksAndFormatsCtrl'
+            })
             // Admins
             .state('owner.admins', {
                 url: '/admins',

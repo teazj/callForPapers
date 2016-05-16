@@ -203,7 +203,9 @@ angular.module('CallForPaper')
                 'textDelete': 'Êtes-vous sûr de vouloir suprimer cette session ? Une fois supprimée, vous ne serez pas en mesure de la restaurer.',
                 'confirm': 'Envoyer',
                 'confirmDelete': 'Supprimer',
-                'cancel': 'Annuler'
+                'cancel': 'Annuler',
+                'textDeleteFormat': 'Êtes-vous sûr de vouloir supprimer ce format ?',
+                'textDeleteTrack': 'Êtes-vous sûr de vouloir supprimer ce thème ?'
             },
             'previewModal': {
                 'title': 'Prévisualisation',
@@ -301,7 +303,19 @@ angular.module('CallForPaper')
             	'admins': 'Admins',
             	'config': 'Configuration',
             	'hintAdmins': 'Ajouter les emails des admins',
-            	'adminsSuccess': 'La liste des admins a été mise à jour'
+            	'adminsSuccess': 'La liste des admins a été mise à jour',
+            	'tracksAndFormats': 'Thèmes et formats',
+            	'tracks': 'Thèmes',
+            	'trackName': 'Libellé',
+            	'trackDescription': 'Description',
+            	'trackNew': 'Nouveau thème',
+            	'trackDelete': 'Supprimer',
+            	'formats': 'Formats',
+            	'formatName': 'Libellé',
+            	'formatDuration': 'Durée en minutes',
+            	'formatDescription': 'Description',
+            	'formatNew': 'Nouveau format',
+            	'formatDelete': 'Supprimer'
             },
             'config': {
                 'logout': 'Se déconnecter',
@@ -527,7 +541,9 @@ angular.module('CallForPaper')
                 'textDelete': 'Do you really want to delete this session ? Once done you will not be able to recover it.',
                 'confirm': 'OK',
                 'confirmDelete': 'Delete',
-                'cancel': 'Cancel'
+                'cancel': 'Cancel',
+                'textDeleteFormat': 'Do you really want to delete this format?',
+                'textDeleteTrack': 'Do you really want to delete this track?'         	
             },
             'previewModal': {
                 'title': 'Preview',
@@ -618,7 +634,15 @@ angular.module('CallForPaper')
             	'admins': 'Admins',
             	'config': 'Configuration',
             	'hintAdmins': 'Enter admins email',
-            	'adminsSuccess': 'Admin list updated'
+            	'adminsSuccess': 'Admin list updated',
+            	'tracksAndFormats': 'Tracks and formats',
+            	'tracks': 'Tracks',
+            	'trackName': 'Name',
+            	'trackDescription': 'Description',
+            	'formats': 'Formats',
+            	'formatName': 'Name',
+            	'formatDuration': 'Duration in minutes',
+            	'formatDescription': 'Description'
             },
             'config': {
                 'login': 'Login',
