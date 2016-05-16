@@ -20,7 +20,10 @@
 
 package io.cfp.repository;
 
+import io.cfp.entity.Format;
 import io.cfp.entity.Talk;
+import io.cfp.entity.Track;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,6 +42,10 @@ public interface TalkRepo extends JpaRepository<Talk, Integer> {
     long countByEventIdAndStateIn(String eventId, Collection<Talk.State> states);
 
     int countByEventIdAndUserId(String eventId, int userId);
+    
+    int countByEventIdAndTrack(String eventId, Track track);
+    
+    int countByEventIdAndFormat(String eventId, Format format);
 
     Talk findByIdAndEventIdAndUserId(int talkId, String eventId, int userId);
 
@@ -59,5 +66,7 @@ public interface TalkRepo extends JpaRepository<Talk, Integer> {
         "WHERE  t.event.id = :eventId " +
         "AND t.state IN (:states)")
     List<Talk> findByEventIdAndStatesFetch(@Param("eventId") String eventId, @Param("states") Collection<Talk.State> states);
+
+	
 
 }

@@ -20,12 +20,15 @@
 
 package io.cfp.controller;
 
-import io.cfp.dto.TrackDto;
-import io.cfp.entity.Event;
-import io.cfp.entity.Role;
-import io.cfp.entity.Track;
-import io.cfp.repository.EventRepository;
-import io.cfp.repository.TrackRepo;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,15 +36,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import io.cfp.dto.TrackDto;
+import io.cfp.entity.Event;
+import io.cfp.entity.Role;
+import io.cfp.entity.Track;
+import io.cfp.repository.EventRepository;
+import io.cfp.repository.TalkRepo;
+import io.cfp.repository.TrackRepo;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
-/**
- * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
- */
 @RestController
 @RequestMapping(value = { "/v0/tracks", "/api/tracks" }, produces = APPLICATION_JSON_UTF8_VALUE)
 public class TrackControler {
@@ -51,19 +53,23 @@ public class TrackControler {
 
     @Autowired
     private EventRepository events;
+    
+    @Autowired
+    private TalkRepo talks;
 
     @RequestMapping(method = GET)
     public Collection<TrackDto> all() {
         return tracks
             .findByEventId(Event.current())
             .stream()
-            .map( t -> new TrackDto(t) )
+            .map( t -> new TrackDto(t, isReferenced(t)) )
             .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{id}", method = GET)
     public TrackDto getOne(@PathVariable int id) {
-        return new TrackDto(tracks.findByIdAndEventId(id, Event.current()));
+    	Track track = tracks.findByIdAndEventId(id, Event.current());
+        return new TrackDto(track, isReferenced(track));
     }
 
     @RequestMapping(method = POST)
@@ -75,23 +81,33 @@ public class TrackControler {
                     .withEvent(events.findOne(Event.current()))
                     .withLibelle(track.getLibelle())
                     .withDescription(track.getDescription())
-            ));
+            ), false);
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
     @Secured(Role.OWNER)
-    public void update(@PathVariable int id, @RequestBody TrackDto track) {
-        tracks.save(
-            tracks.getOne(id)
-                .withLibelle(track.getLibelle())
-                .withDescription(track.getDescription())
-
-        );
+    public void update(@PathVariable int id, @RequestBody TrackDto update) {
+    	Track track = tracks.findByIdAndEventId(id, Event.current()); // make sure the track belongs to the current event
+    	if (track != null) {
+	        tracks.save(
+	            track
+	                .withLibelle(track.getLibelle())
+	                .withDescription(track.getDescription())
+	
+	        );
+    	}
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
     @Secured(Role.OWNER)
     public void delete(@PathVariable int id) {
-        tracks.delete(id);
+    	Track track = tracks.findByIdAndEventId(id, Event.current()); // make sure the track belongs to the current event
+    	if (track != null && !isReferenced(track)) {
+    		tracks.delete(id);
+    	}
+    }
+    
+    private boolean isReferenced(Track track) {
+    	return talks.countByEventIdAndTrack(Event.current(), track) > 0;
     }
 }

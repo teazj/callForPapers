@@ -22,24 +22,23 @@ package io.cfp.dto;
 
 import io.cfp.entity.Format;
 
-/**
- * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
- */
 public class FormatDto {
 
     private int id;
     private String name;
     private int duration;
     private String description;
+    private boolean referenced;
 
     public FormatDto() {
     }
 
-    public FormatDto(Format format) {
+    public FormatDto(Format format, boolean referenced) {
         this.id = format.getId();
         this.name = format.getName();
         this.duration = format.getDuration();
         this.description = format.getDescription();
+        this.referenced = referenced;
     }
 
     public String getDescription() {
@@ -73,4 +72,12 @@ public class FormatDto {
     public void setName(String name) {
         this.name = name;
     }
+
+	public boolean isReferenced() {
+		return referenced;
+	}
+
+	public void setReferenced(boolean referenced) {
+		this.referenced = referenced;
+	}
 }

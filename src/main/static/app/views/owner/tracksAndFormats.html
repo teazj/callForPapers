@@ -39,7 +39,7 @@
                             <textarea required class="form-control" name="description" id="description" ng-model="track.description" ng-blur="saveTrack(track)" rows="1"></textarea>
                         </td>
             			<td class="text-center">
-            				<button type="button" class="btn btn-danger" ng-click="removeTrack($index)">{{'owner.trackDelete' | translate}}</button>
+            				<button type="button" class="btn btn-danger" ng-click="removeTrack($index)" ng-disabled="track.referenced">{{'owner.trackDelete' | translate}}</button>
             			</td>
             		</tr>
             	</tbody>
@@ -72,7 +72,7 @@
                             <textarea required class="form-control" name="description" id="description" ng-model="format.description" ng-blur="saveFormat(format)" rows="1"></textarea>
                         </td>
             			<td class="text-center">
-            				<button type="button" class="btn btn-danger" ng-click="removeFormat($index)">{{'owner.formatDelete' | translate}}</button>
+            				<button type="button" class="btn btn-danger" ng-click="removeFormat($index)" ng-disabled="format.referenced">{{'owner.formatDelete' | translate}}</button>
             			</td>
             		</tr>
             	</tbody>
