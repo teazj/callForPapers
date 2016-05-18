@@ -20,13 +20,10 @@
 
 package io.cfp.config.exception;
 
-import io.cfp.domain.exception.BadRequestException;
-import io.cfp.domain.exception.CospeakerNotFoundException;
-import io.cfp.domain.exception.ErrorResponse;
-import io.cfp.domain.exception.ForbiddenException;
-import io.cfp.domain.exception.NotFoundException;
-import io.cfp.domain.exception.NotVerifiedException;
+import io.cfp.domain.exception.*;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,6 +42,9 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+
+    @Value("${authServer}")
+    private String hostname;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
@@ -72,8 +72,12 @@ public class GlobalControllerExceptionHandler {
         ErrorResponse resp = new ErrorResponse(e);
         resp.setStatus(HttpStatus.UNAUTHORIZED.value());
         resp.setError(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", hostname);
         resp.setMessage(e.getMessage());
-        return new ResponseEntity<>(resp, HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>(resp, headers, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadRequestException.class)

@@ -21,7 +21,7 @@
 'use strict';
 
 angular.module('CallForPaper')
-    .factory('authHttpResponseInterceptor', ['$q', '$injector', '$filter', function($q, $injector, $filter) {
+    .factory('authHttpResponseInterceptor', ['$q', '$injector', '$filter', '$window', function($q, $injector, $filter, $window) {
         /**
          * Intercep every request and popup a notification if error
          */
@@ -49,7 +49,9 @@ angular.module('CallForPaper')
                 if (rejection.status === 0) {
                     noInternet();
                 } else if (rejection.status === 401) {
-                    $injector.get('$state').go('app.login');
+                    var locationHeader = response.headers('Location');
+                    console.warn('Receive '+response.status+', redirecting to '+ locationHeader);
+                    $window.location.href = locationHeader;
                 } else if (rejection.status === 403) {
                     $injector.get('$state').go('403');
                 } else if (rejection.status === 404) {
