@@ -31,7 +31,6 @@
 						<button ng-click="tableParams.filter({});notReviewed=false;" class="btn btn-default">
                             {{'admin.clearFilter' | translate}}
                         </button>
-						<a class="btn btn-default" ui-sref="admin.export_postit">{{'admin.export' | translate}}</a>
 					</span>
 					<span class="checkbox" style="margin-top:0;text-align:right">
 						<label>
@@ -66,7 +65,7 @@
                     <li role="presentation" ng-class="{active: format === talkFormat.id}"
                         ng-repeat="talkFormat in talkFormats track by $index">
                         <button ui-sref="admin.sessions({format: talkFormat.id})" role="tab"
-                                aria-controls="all" aria-expanded="true" ng-bind="::talkFormat.libelle"></button>
+                                aria-controls="all" aria-expanded="true" ng-bind="::talkFormat.name"></button>
                     </li>
                 </ul>
 
