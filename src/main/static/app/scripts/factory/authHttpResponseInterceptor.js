@@ -49,8 +49,8 @@ angular.module('CallForPaper')
                 if (rejection.status === 0) {
                     noInternet();
                 } else if (rejection.status === 401) {
-                    var locationHeader = response.headers('Location');
-                    console.warn('Receive '+response.status+', redirecting to '+ locationHeader);
+                    var locationHeader = rejection.headers('Location');
+                    console.warn('Receive '+rejection.status+', redirecting to '+ locationHeader);
                     $window.location.href = locationHeader;
                 } else if (rejection.status === 403) {
                     $injector.get('$state').go('403');
