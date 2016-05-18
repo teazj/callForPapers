@@ -35,8 +35,6 @@ public interface TalkRepo extends JpaRepository<Talk, Integer> {
 
     Talk findByIdAndEventId(int integer, String eventId);
 
-    List<Talk> findByEventId(String eventId);
-
     List<Talk> findByEventIdAndUserIdAndStateIn(String eventId, int userId, Collection<Talk.State> states);
 
     long countByEventIdAndStateIn(String eventId, Collection<Talk.State> states);
@@ -48,9 +46,6 @@ public interface TalkRepo extends JpaRepository<Talk, Integer> {
     int countByEventIdAndFormat(String eventId, Format format);
 
     Talk findByIdAndEventIdAndUserId(int talkId, String eventId, int userId);
-
-    @Query("SELECT t FROM Talk t JOIN FETCH t.cospeakers c WHERE c.id = :userId")
-    List<Talk> findByCospeakers(@Param("userId") int userId);
 
     @Query("SELECT t FROM Talk t JOIN FETCH t.cospeakers c WHERE t.event.id = :eventId AND c.id = :userId AND t.id = :talkId")
     Talk findByIdAndEventIdAndCospeakers(@Param("talkId") int talkId, @Param("eventId") String eventId, @Param("userId") int userId);

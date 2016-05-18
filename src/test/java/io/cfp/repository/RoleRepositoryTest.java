@@ -25,7 +25,7 @@ public class RoleRepositoryTest {
     private RoleRepository roleRepository;
 
     @Test
-    public void shoul_find_all_roles_of_users_for_an_event() {
+    public void should_find_all_roles_of_users_for_an_event() {
         final List<Role> returnedRoles = roleRepository.findByUserIdAndEventId(USER_ID, EVENT_ID);
         assertThat(returnedRoles).isNotEmpty();
     }

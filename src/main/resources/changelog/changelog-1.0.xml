@@ -232,7 +232,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </addColumn>
     </changeSet>
-    
+
     <changeSet id="6" author="mimah">
         <addColumn tableName="users">
             <column name="gender" type="VARCHAR(6)"/>
@@ -241,13 +241,19 @@
             <column name="tshirt_size" type="VARCHAR(6)"/>
         </addColumn>
     </changeSet>
-    
+
     <changeSet id="7" author="mimah">
     	<insert tableName="roles">
             <column name="name" value="ROLE_OWNER"/>
             <column name="user_id" value="1"/>
             <column name="event_id" value="demo"/>
         </insert>
+    </changeSet>
+
+    <changeSet id="8" author="ndeloof">
+        <createView viewName="submissions">
+            (select p.user as user_id, p.state, p.event_id from proposals p) union (select c.user_id, p.state, p.event_id from proposals p inner join cospeakers c on c.proposal_id = p.id)
+        </createView>
     </changeSet>
 
 </databaseChangeLog>
