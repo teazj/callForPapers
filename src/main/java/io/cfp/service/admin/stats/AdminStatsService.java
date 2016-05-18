@@ -22,8 +22,8 @@ package io.cfp.service.admin.stats;
 
 import io.cfp.domain.admin.meter.AdminMeter;
 import io.cfp.entity.Event;
+import io.cfp.repository.SubmissionRepository;
 import io.cfp.repository.TalkRepo;
-import io.cfp.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,17 +37,17 @@ import static io.cfp.entity.Talk.State.*;
 public class AdminStatsService {
 
     @Autowired
-    private UserRepo userRepo;
+    private TalkRepo talks;
 
     @Autowired
-    private TalkRepo talkRepo;
+    private SubmissionRepository submissions;
 
     @Transactional(readOnly = true)
     public AdminMeter getAdminMeter() {
         AdminMeter meter = new AdminMeter();
-        meter.setSpeakers((int) userRepo.count());
-        meter.setTalks((int) talkRepo.countByEventIdAndStateIn(Event.current(), Arrays.asList(CONFIRMED, ACCEPTED, REFUSED)));
-        meter.setDrafts((int) talkRepo.countByEventIdAndStateIn(Event.current(), Collections.singletonList(DRAFT)));
+        meter.setSpeakers(submissions.countByEventId(Event.current()));
+        meter.setTalks((int) talks.countByEventIdAndStateIn(Event.current(), Arrays.asList(CONFIRMED, ACCEPTED, REFUSED)));
+        meter.setDrafts((int) talks.countByEventIdAndStateIn(Event.current(), Collections.singletonList(DRAFT)));
         return meter;
     }
 }
