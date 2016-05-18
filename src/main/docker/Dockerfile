@@ -8,8 +8,10 @@ EXPOSE 8080
 EXPOSE 8443
 
 WORKDIR $HOME
-ENTRYPOINT java -jar call-for-paper.jar
+ENTRYPOINT [ "java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "call-for-paper.jar" ]
 VOLUME ["$HOME/config"]
 
 USER cfp
 ADD call-for-paper.jar $HOME
+RUN sh -c 'touch $HOME/call-for-paper.jar'
+
