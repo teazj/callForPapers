@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +54,7 @@ public class FormatControler {
 
     @Autowired
     private EventRepository events;
-    
+
     @Autowired
     private TalkRepo talks;
 
@@ -73,6 +74,7 @@ public class FormatControler {
     }
 
     @RequestMapping(method = POST)
+    @Transactional
     @Secured(Role.OWNER)
     public FormatDto create(@RequestBody FormatDto format) {
         return new FormatDto(
@@ -86,6 +88,7 @@ public class FormatControler {
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
+    @Transactional
     @Secured(Role.OWNER)
     public void update(@PathVariable int id, @RequestBody FormatDto update) {
     	Format format = formats.findByIdAndEventId(id, Event.current()); // make sure the format belongs to the current event
@@ -100,6 +103,7 @@ public class FormatControler {
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
+    @Transactional
     @Secured(Role.OWNER)
     public void delete(@PathVariable int id) {
     	Format format = formats.findByIdAndEventId(id, Event.current()); // make sure the format belongs to the current event
@@ -107,7 +111,7 @@ public class FormatControler {
     		formats.delete(id);
     	}
     }
-    
+
     private boolean isReferenced(Format format) {
     	return talks.countByEventIdAndFormat(Event.current(), format) > 0;
     }

@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +54,7 @@ public class TrackControler {
 
     @Autowired
     private EventRepository events;
-    
+
     @Autowired
     private TalkRepo talks;
 
@@ -73,6 +74,7 @@ public class TrackControler {
     }
 
     @RequestMapping(method = POST)
+    @Transactional
     @Secured(Role.OWNER)
     public TrackDto create(@RequestBody TrackDto track) {
         return new TrackDto(
@@ -85,6 +87,7 @@ public class TrackControler {
     }
 
     @RequestMapping(value = "/{id}", method = PUT)
+    @Transactional
     @Secured(Role.OWNER)
     public void update(@PathVariable int id, @RequestBody TrackDto update) {
     	Track track = tracks.findByIdAndEventId(id, Event.current()); // make sure the track belongs to the current event
@@ -93,12 +96,13 @@ public class TrackControler {
 	            track
 	                .withLibelle(track.getLibelle())
 	                .withDescription(track.getDescription())
-	
+
 	        );
     	}
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
+    @Transactional
     @Secured(Role.OWNER)
     public void delete(@PathVariable int id) {
     	Track track = tracks.findByIdAndEventId(id, Event.current()); // make sure the track belongs to the current event
@@ -106,7 +110,7 @@ public class TrackControler {
     		tracks.delete(id);
     	}
     }
-    
+
     private boolean isReferenced(Track track) {
     	return talks.countByEventIdAndTrack(Event.current(), track) > 0;
     }
