@@ -94,8 +94,8 @@ public class TrackControler {
     	if (track != null) {
 	        tracks.save(
 	            track
-	                .withLibelle(track.getLibelle())
-	                .withDescription(track.getDescription())
+	                .withLibelle(update.getLibelle())
+	                .withDescription(update.getDescription())
 
 	        );
     	}
