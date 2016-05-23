@@ -51,7 +51,7 @@ public class AdminSessionController {
      */
     @RequestMapping(value="/sessions", method= RequestMethod.GET)
     @ResponseBody
-    public List<TalkAdmin> getAllSessions(@RequestParam("status") String status) {
+    public List<TalkAdmin> getAllSessions(@RequestParam(name = "status", required = false) String status) {
 
         Talk.State[] accept;
         if (status == null) {
