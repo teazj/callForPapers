@@ -32,6 +32,7 @@ import io.cfp.service.email.EmailingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping(value = { "/v0/proposals/{talkId}/contacts", "/api/proposals/{talkId}/contacts" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class ContactController extends RestrictedController {
+public class ContactController  {
 
     @Autowired
     private EmailingService emailingService;
@@ -61,9 +62,7 @@ public class ContactController extends RestrictedController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @Secured(Role.AUTHENTICATED)
-    public List<CommentUser> getAll(@PathVariable int talkId, HttpServletRequest req) throws NotVerifiedException {
-        User user = retrieveUser(req);
-
+    public List<CommentUser> getAll(@AuthenticationPrincipal User user, @PathVariable int talkId) throws NotVerifiedException {
         return commentService.findAll(user.getId(), talkId);
     }
 
@@ -72,20 +71,15 @@ public class ContactController extends RestrictedController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @Secured(Role.AUTHENTICATED)
-    public CommentUser postContact(@Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest httpServletRequest)
+    public CommentUser postContact(@AuthenticationPrincipal User user,
+                                   @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId)
             throws NotVerifiedException, NotFoundException {
-        User user = retrieveUser(httpServletRequest);
-        if (user == null) {
-            throw new NotFoundException("User not found");
-        }
-
         TalkUser talk = talkUserService.getOne(user.getId(), talkId);
         CommentUser saved = null;
         if (talk != null) {
             saved = commentService.addComment(user.getId(), talkId, commentUser);
 
-            Locale userPreferredLocale = httpServletRequest.getLocale();
-            emailingService.sendNewCommentToAdmins(user, talk, userPreferredLocale);
+            emailingService.sendNewCommentToAdmins(user, talk, user.getLocale());
         }
 
         return saved;
@@ -96,10 +90,9 @@ public class ContactController extends RestrictedController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Secured(Role.AUTHENTICATED)
-    public CommentUser putContact(@PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId, HttpServletRequest req)
+    public CommentUser putContact(@AuthenticationPrincipal User user,
+                                  @PathVariable int id, @Valid @RequestBody CommentUser commentUser, @PathVariable int talkId)
             throws NotVerifiedException {
-        User user = retrieveUser(req);
-
         commentUser.setId(id);
         return commentService.editComment(user.getId(), talkId, commentUser);
     }

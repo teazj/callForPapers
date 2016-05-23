@@ -28,6 +28,7 @@ import io.cfp.service.TalkUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,16 +36,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = { "/v0/stats", "/api/stats" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class StatsController extends RestrictedController {
+public class StatsController  {
 
     @Autowired
     private TalkUserService talkService;
 
     @RequestMapping("/meter")
     @Secured(Role.AUTHENTICATED)
-    public RestrictedMeter meter(HttpServletRequest req) throws NotVerifiedException {
-        User user = retrieveUser(req);
-
+    public RestrictedMeter meter(@AuthenticationPrincipal User user) throws NotVerifiedException {
         RestrictedMeter res = new RestrictedMeter();
         res.setTalks(talkService.count(user.getId()));
         return res;

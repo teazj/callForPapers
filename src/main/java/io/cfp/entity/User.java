@@ -32,6 +32,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
+import java.util.Locale;
+
 /**
  * Speaker account
  */
@@ -39,10 +41,10 @@ import org.hibernate.validator.constraints.Email;
 @Table(name = "users")
 public class User {
 
-	public enum Gender {
+    public enum Gender {
 		MALE, FEMALE
 	}
-	
+
 	public enum TshirtSize {
 		XS, S, M, L, XL, XXL
 	}
@@ -105,6 +107,13 @@ public class User {
         return language;
     }
 
+    public Locale getLocale() {
+        if (language != null && language.equalsIgnoreCase("français")) return Locale.FRENCH;
+        return Locale.ENGLISH;
+    }
+
+
+
     @Type(type = "text")
     public String getBio() {
         return bio;
@@ -130,7 +139,7 @@ public class User {
     public String getImageProfilURL() {
         return imageProfilURL;
     }
-    
+
     @Enumerated(EnumType.STRING)
     public Gender getGender() {
 		return gender;
@@ -194,7 +203,7 @@ public class User {
     public void setImageProfilURL(String imageProfilURL) {
         this.imageProfilURL = imageProfilURL;
     }
-    
+
     public void setGender(Gender gender) {
 		this.gender = gender;
 	}
@@ -272,7 +281,7 @@ public class User {
         this.gender = gender;
         return this;
     }
-    
+
     public User tshirtSize(TshirtSize tshirtSize) {
         this.tshirtSize = tshirtSize;
         return this;
