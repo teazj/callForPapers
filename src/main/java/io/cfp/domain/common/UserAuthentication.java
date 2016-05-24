@@ -19,7 +19,10 @@ public class UserAuthentication implements Authentication {
     public UserAuthentication(User user, Collection<Role> roles) {
         this.user = user;
         authorities = roles.stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName()))
+            .map(role -> {
+                final String name = role.getName();
+                user.addRole(name);
+                return new SimpleGrantedAuthority(name); })
             .collect(Collectors.toList());
 
         authorities.add(new SimpleGrantedAuthority(Role.AUTHENTICATED));

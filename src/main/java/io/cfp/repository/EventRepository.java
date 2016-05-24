@@ -27,9 +27,19 @@ package io.cfp.repository;
 
 import io.cfp.entity.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
  */
 public interface EventRepository extends JpaRepository<Event, String> {
+
+    @Query("SELECT e FROM Event e WHERE open=true")
+    List<Event> findOpen();
+
+    @Query("SELECT e FROM Event e WHERE date < current_date()")
+    List<Event> findPassed();
 }

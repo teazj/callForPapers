@@ -28,11 +28,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Speaker account
@@ -75,6 +78,18 @@ public class User {
      */
     private String imageProfilURL;
 
+    private Set<String> roles;
+
+    @Transient
+    public boolean hasRole(String role) {
+        return roles != null && roles.contains(role);
+    }
+
+    public void addRole(String role) {
+        if (roles == null) roles = new HashSet<>();
+        roles.add(role);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
@@ -107,12 +122,11 @@ public class User {
         return language;
     }
 
+    @Transient
     public Locale getLocale() {
         if (language != null && language.equalsIgnoreCase("français")) return Locale.FRENCH;
         return Locale.ENGLISH;
     }
-
-
 
     @Type(type = "text")
     public String getBio() {
