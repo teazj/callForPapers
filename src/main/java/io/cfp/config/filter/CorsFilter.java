@@ -40,7 +40,7 @@ public class CorsFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (CorsUtils.isPreFlightRequest(request)) {
+        if (CorsUtils.isCorsRequest(request)) {
             String origin = request.getHeader(HttpHeaders.ORIGIN);
             if (origin.endsWith(".cfp.io") || origin.startsWith("localhost:")) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
