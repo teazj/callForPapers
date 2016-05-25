@@ -20,6 +20,8 @@
 
 package io.cfp.config.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -38,15 +40,21 @@ public class CorsFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (CorsUtils.isCorsRequest(request) && CorsUtils.isPreFlightRequest(request)) {
-            String referer = request.getHeader(HttpHeaders.REFERER);
-            if (referer.endsWith(".cfp.io") || referer.startsWith("localhost:")) {
-                response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, referer);
+        if (CorsUtils.isPreFlightRequest(request)) {
+            String origin = request.getHeader(HttpHeaders.ORIGIN);
+            if (origin.endsWith(".cfp.io") || origin.startsWith("localhost:")) {
+                response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "*");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+                response.addHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1");
+            } else {
+                logger.warn("unsupported CORS request from "+origin);
             }
         }
 
         filterChain.doFilter(request, response);
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(CorsFilter.class);
+
 }
