@@ -21,6 +21,7 @@
 package io.cfp;
 
 import io.cfp.config.filter.AuthFilter;
+import io.cfp.config.filter.CorsFilter;
 import io.cfp.config.filter.TenantFilter;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.servlet.Filter;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -74,9 +76,13 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         return registrationBean;
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/*");
+    @Bean
+    public FilterRegistrationBean corsFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        Filter authFilter = new CorsFilter();
+        registrationBean.setFilter(authFilter);
+        registrationBean.setUrlPatterns(Arrays.asList("/v0/*", "/api/*"));
+        registrationBean.setOrder(2);
+        return registrationBean;
     }
-
 }
