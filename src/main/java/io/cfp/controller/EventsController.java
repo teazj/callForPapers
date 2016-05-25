@@ -22,8 +22,10 @@ package io.cfp.controller;
 
 import io.cfp.domain.exception.BadRequestException;
 import io.cfp.entity.Event;
+import io.cfp.entity.User;
 import io.cfp.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,13 +39,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
  */
 @RestController
-@RequestMapping(value = { "/v1/events", "/api/events" }, produces = APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = { "/v1", "/api" }, produces = APPLICATION_JSON_UTF8_VALUE)
 public class EventsController {
 
     @Autowired
     private EventRepository events;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
     public List<Event> all(@RequestParam(name = "state", required = false, defaultValue = "open") String state) throws BadRequestException {
         switch (state) {
             case "passed":
@@ -53,6 +55,11 @@ public class EventsController {
             default:
                 throw new BadRequestException("Unsupported state filter :"+state);
         }
+    }
+
+    @RequestMapping(value = "/users/me/events", method = RequestMethod.GET)
+    public List<Event> mines(@AuthenticationPrincipal User user) throws BadRequestException {
+        return events.findByUser(user.getId());
     }
 
 }

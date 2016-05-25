@@ -42,4 +42,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
 
     @Query("SELECT e FROM Event e WHERE date < current_date()")
     List<Event> findPassed();
+
+    @Query("SELECT e FROM Event e WHERE exists (SELECT r from Role r WHERE r.event.id = e.id)")
+    List<Event> findByUser(int id);
 }
