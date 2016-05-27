@@ -461,6 +461,8 @@ angular.module('CallForPaper', [
                 event.preventDefault();
                 rule();
             }
+
+            event.preventDefault()
         });
     })
     .run(function($templateCache) {

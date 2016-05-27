@@ -60,7 +60,7 @@ angular.module('CallForPaper')
          * Login the user and redirect to the given state
          */
         authService.login = function() {
-        	$window.location = authService.server + '/?target=' + escape($location.absUrl());
+        	$window.location = authService.server;
         };
 
         /**
