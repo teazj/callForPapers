@@ -60,8 +60,6 @@ public class TenantFilter extends OncePerRequestFilter {
             eventId = host.substring(0, host.indexOf('.'));
         } else if (header != null) {
             eventId = header;
-        } else if (host.endsWith(".cfp.io")) {
-            eventId = host.substring(0, host.indexOf('.'));
         } else {
             logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'demo'");
         }
