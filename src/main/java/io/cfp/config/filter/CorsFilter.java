@@ -42,7 +42,7 @@ public class CorsFilter extends OncePerRequestFilter {
 
         if (CorsUtils.isCorsRequest(request)) {
             String origin = request.getHeader(HttpHeaders.ORIGIN);
-            if (origin.endsWith(".cfp.io") || origin.startsWith("localhost:")) {
+            if (origin.endsWith(".cfp.io") || origin.startsWith("http://localhost:")) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "*");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
