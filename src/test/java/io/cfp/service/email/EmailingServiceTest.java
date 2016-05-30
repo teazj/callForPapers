@@ -82,14 +82,11 @@ public class EmailingServiceTest {
     private ApplicationConfigService applicationConfigService;
 
     @Autowired
-    private JavaMailSenderImpl javaMailSender;
+    private UserRepo users;
 
     @Autowired
-    private UserRepo users;
-    
-    @Autowired
     private VelocityEngine velocityEngine;
-    
+
     private String emailSender;
 
     private User user;
@@ -123,7 +120,6 @@ public class EmailingServiceTest {
         MockitoAnnotations.initMocks(this);
 
         ReflectionTestUtils.setField(emailingService, "users", users);
-        ReflectionTestUtils.setField(emailingService, "javaMailSender", javaMailSender);
         ReflectionTestUtils.setField(emailingService, "applicationConfigService", applicationConfigService);
         ReflectionTestUtils.setField(emailingService, "velocityEngine", velocityEngine);
         ReflectionTestUtils.setField(emailingService, "emailSender", emailSender);
@@ -133,9 +129,6 @@ public class EmailingServiceTest {
         testSmtp.start();
 
         // Don't forget to set the test port!
-        javaMailSender.setPort(3025);
-        javaMailSender.setHost("localhost");
-
         when(applicationConfigService.getAppConfig()).thenReturn(new ApplicationSettings());
 
     }
@@ -386,6 +379,7 @@ public class EmailingServiceTest {
             properties.setProperty("cfp.app.hostname", "");
             properties.setProperty("cfp.database.loaded", "");
             properties.setProperty("cfp.email.emailsender", "");
+            properties.setProperty("cfp.email.sendgrid.apikey", "");
             properties.setProperty("cfp.email.send", "false");
             properties.setProperty("authServer", "http://localhost");
             propertySourcesPlaceholderConfigurer.setProperties(properties);
@@ -416,7 +410,7 @@ public class EmailingServiceTest {
         public EventRepository eventRepo() {
             return mock(EventRepository.class);
         }
-        
+
         @Bean
         public VelocityEngine velocityEngine() {
         	Properties props = new Properties();

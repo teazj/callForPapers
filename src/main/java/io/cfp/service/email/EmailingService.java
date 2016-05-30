@@ -20,30 +20,8 @@
 
 package io.cfp.service.email;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
+import com.sendgrid.SendGrid;
+import com.sendgrid.SendGridException;
 import io.cfp.dto.TalkAdmin;
 import io.cfp.dto.TalkUser;
 import io.cfp.dto.user.CospeakerProfil;
@@ -52,34 +30,51 @@ import io.cfp.entity.Event;
 import io.cfp.entity.User;
 import io.cfp.repository.UserRepo;
 import io.cfp.service.admin.config.ApplicationConfigService;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class EmailingService {
 
     private final Logger log = LoggerFactory.getLogger(EmailingService.class);
-    
+
     @Autowired
     private ApplicationConfigService applicationConfigService;
-    
+
     @Autowired
     private UserRepo users;
-    
+
     @Autowired
     private VelocityEngine velocityEngine;
-    
-    @Autowired
-    private JavaMailSenderImpl javaMailSender;
-    
+
+    @Value("${cfp.email.sendgrid.apikey}")
+    private String sendgridApiKey;
+
     @Value("${cfp.app.hostname}")
     private String hostname;
-    
+
     @Value("${cfp.email.emailsender}")
     private String emailSender;
 
     @Value("${cfp.email.send}")
     private boolean send;
 
-   
+
     /**
      * Send Confirmation of your session.
      *
@@ -95,7 +90,7 @@ public class EmailingService {
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
         params.put("id", String.valueOf(talk.getId()));
-       
+
         createAndSendEmail("confirmed.html", user.getEmail(), params, null, null, locale);
     }
 
@@ -119,7 +114,7 @@ public class EmailingService {
         params.put("name", speaker.getFirstname());
         params.put("talk", talk.getName());
         params.put("id", String.valueOf(talk.getId()));
-       
+
         createAndSendEmail("newMessage.html", speaker.getEmail(), params, cc, null, locale);
     }
 
@@ -165,7 +160,7 @@ public class EmailingService {
                 cc.add(cospeakerProfil.getEmail());
             }
         }
-        
+
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
@@ -187,7 +182,7 @@ public class EmailingService {
                 cc.add(cospeakerProfil.getEmail());
             }
         }
-        
+
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
@@ -209,7 +204,7 @@ public class EmailingService {
                 cc.add(cospeakerProfil.getEmail());
             }
         }
-        
+
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
@@ -219,7 +214,7 @@ public class EmailingService {
 
         createAndSendEmail("selectionned.html", user.getEmail(), params, cc, null, locale);
     }
-    
+
     public void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
     	String templatePath = getTemplatePath(template, locale);
 
@@ -236,12 +231,12 @@ public class EmailingService {
     	}
         return "mails/" + language + "/" + emailTemplate;
     }
-    
+
     public String processTemplate(String templatePath, Map<String, Object> parameters) {
-        
+
         // adds global params
         parameters.put("hostname", StringUtils.replace(hostname, "{{event}}", Event.current()));
-        
+
         VelocityContext context = new VelocityContext(parameters);
 
         Template template = velocityEngine.getTemplate(templatePath, "UTF-8");
@@ -252,27 +247,33 @@ public class EmailingService {
     }
 
     public void sendEmail(String to, String subject, String content, List<String> cc, List<String> bcc) {
-        if (!send)
+        if (!send) {
+            log.info("Mail '{}' to {} not actually sent as mail service is disabled by configuration.", subject, to);
             return;
+        }
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+        SendGrid sendgrid = new SendGrid(sendgridApiKey);
+
+        SendGrid.Email email = new SendGrid.Email();
+
+        email.setFrom(emailSender)
+            .setFromName("CFP.io")
+            .setReplyTo("no-reply@cfp.io")
+            .addTo(to)
+            .setSubject(subject)
+            .setHtml(content);
+        if (cc != null) {
+            email.addCc(cc.toArray(new String[cc.size()]));
+        }
+        if (bcc != null) {
+            email.addBcc(bcc.toArray(new String[bcc.size()]));
+        }
+
 
         try {
-            helper.setFrom(emailSender);
-            helper.setTo(to);
-            if (bcc != null) {
-                helper.setBcc(bcc.toArray(new String[bcc.size()]));
-            }
-            if (cc != null) {
-                helper.setCc(cc.toArray(new String[cc.size()]));
-            }
-            helper.setSubject(subject);
-            helper.setText(content, true);
-
-            javaMailSender.send(message);
-            log.debug("Sent e-mail to User '{}'", to);
-        } catch (MailSendException | MessagingException e) {
+            SendGrid.Response response = sendgrid.send(email);
+            log.debug("Sent e-mail to User '{}' with status {}", to, response.getStatus());
+        } catch (SendGridException e) {
             log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
         }
     }
