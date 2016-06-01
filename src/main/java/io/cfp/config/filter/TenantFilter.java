@@ -64,7 +64,7 @@ public class TenantFilter extends OncePerRequestFilter {
         final String path = request.getPathInfo();
 
         int i;
-        if (path.startsWith("/events/") && (i = path.indexOf('/', 8)) > 0) {
+        if (path != null && path.startsWith("/events/") && (i = path.indexOf('/', 8)) > 0) {
             return path.substring(8, i);
         } else if (origin != null && origin.endsWith(".cfp.io")) {
             // Origin: https://foo-bar.cfp.io
