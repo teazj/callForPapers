@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.cfp.entity.Event;
@@ -40,29 +41,11 @@ import io.cfp.entity.Event;
  */
 public class TenantFilter extends OncePerRequestFilter {
 
-    public static final String REFERER = "Referer";
-
     public static final String TENANT_HEADER = "X-Tenant-Id";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final URL url = new URL(request.getRequestURL().toString());
-        String host = url.getHost();
-
-        String eventId = "demo";
-        String referer = request.getHeader(REFERER);
-        String header = request.getHeader(TENANT_HEADER);
-        final String path = url.getPath();
-        int i;
-        if (path.startsWith("/events/") && (i = path.indexOf('/', 8)) > 0) {
-            eventId = path.substring(8, i);
-        } else if (referer != null && referer.endsWith(".cfp.io")) {
-            eventId = host.substring(0, host.indexOf('.'));
-        } else if (header != null) {
-            eventId = header;
-        } else {
-            logger.warn("Can't determine current event from requested host '"+host+" from "+request.getRequestURL()+". Fallback to 'demo'");
-        }
+        final String eventId =  extractTenant(request);
         MDC.put("event.id", eventId);
         Event.setCurrent(eventId.toLowerCase());
         try {
@@ -71,6 +54,30 @@ public class TenantFilter extends OncePerRequestFilter {
             Event.unsetCurrent();
             MDC.remove("event.id");
         }
+    }
+
+    String extractTenant(HttpServletRequest request) {
+
+        String origin = request.getHeader(HttpHeaders.ORIGIN);
+        String referer = request.getHeader(HttpHeaders.REFERER);
+        String header = request.getHeader(TENANT_HEADER);
+        final String path = request.getPathInfo();
+
+        int i;
+        if (path.startsWith("/events/") && (i = path.indexOf('/', 8)) > 0) {
+            return path.substring(8, i);
+        } else if (origin != null && origin.endsWith(".cfp.io")) {
+            // Origin: https://foo-bar.cfp.io
+            return origin.substring(8, origin.indexOf('.'));
+        } else if (referer != null && referer.endsWith(".cfp.io/")) {
+            // Referer: https://foo-bar.cfp.io/
+            return referer.substring(8, referer.indexOf('.'));
+        } else if (header != null) {
+            return header;
+        }
+
+        logger.warn("Can't determine current event. Fallback to 'demo'");
+        return "demo";
     }
 
     private static final Logger logger = LoggerFactory.getLogger(TenantFilter.class);
