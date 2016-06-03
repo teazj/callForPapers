@@ -57,6 +57,14 @@ public class Event {
     @Column(name = "short_description")
     private String shortDescription;
 
+    private boolean published;
+
+    private String url;
+
+    private String logoUrl;
+
+    private String videosUrl;
+
     @Type(type="date")
     private Date date;
 
@@ -74,6 +82,38 @@ public class Event {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
+    }
+
+    public String getVideosUrl() {
+        return videosUrl;
+    }
+
+    public void setVideosUrl(String videosUrl) {
+        this.videosUrl = videosUrl;
     }
 
     public Date getDecisionDate() {

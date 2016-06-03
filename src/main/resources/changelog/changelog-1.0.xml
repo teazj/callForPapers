@@ -256,4 +256,13 @@
         </createView>
     </changeSet>
 
+    <changeSet id="9" author="ndeloof">
+        <addColumn tableName="events">
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="logo_url" type="VARCHAR(255)"/>
+            <column name="videos_url" type="VARCHAR(255)"/>
+            <column name="published" type="BOOLEAN" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
