@@ -44,7 +44,7 @@ public class CorsFilter extends OncePerRequestFilter {
             String origin = request.getHeader(HttpHeaders.ORIGIN);
             if (origin.endsWith(".cfp.io") || origin.startsWith("http://localhost:")) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
-                response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "*");
+                response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "DELETE,GET,HEAD,PATCH,POST,PUT");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1");
             } else {
