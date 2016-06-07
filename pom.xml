@@ -157,11 +157,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.icegreen</groupId>
             <artifactId>greenmail</artifactId>
             <version>1.4.1</version>
