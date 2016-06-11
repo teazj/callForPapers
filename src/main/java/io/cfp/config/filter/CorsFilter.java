@@ -42,14 +42,15 @@ public class CorsFilter extends OncePerRequestFilter {
 
         if (CorsUtils.isCorsRequest(request)) {
             String origin = request.getHeader(HttpHeaders.ORIGIN);
-            if (origin.endsWith(".cfp.io") || origin.startsWith("http://localhost:")) {
+            String originWithoutPort = origin.substring(0, origin.lastIndexOf(':')); // do not consider port number when checking origin to ease development of client
+            if (originWithoutPort.endsWith(".cfp.io") || originWithoutPort.startsWith("http://localhost:")) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "DELETE,GET,HEAD,PATCH,POST,PUT");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, request.getHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS)); // todo filter ?
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1");
             } else {
-                logger.warn("unsupported CORS request from "+origin);
+                logger.warn("unsupported CORS request from " + origin);
             }
         }
 
