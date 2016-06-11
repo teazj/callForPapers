@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.WebUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -42,8 +42,8 @@ public class CorsFilter extends OncePerRequestFilter {
 
         if (CorsUtils.isCorsRequest(request)) {
             String origin = request.getHeader(HttpHeaders.ORIGIN);
-            String originWithoutPort = origin.substring(0, origin.lastIndexOf(':')); // do not consider port number when checking origin to ease development of client
-            if (originWithoutPort.endsWith(".cfp.io") || originWithoutPort.startsWith("http://localhost:")) {
+            String originHost = UriComponentsBuilder.fromOriginHeader(origin).build().getHost();
+            if (originHost.endsWith(".cfp.io") || originHost.equals("localhost")) {
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "DELETE,GET,HEAD,PATCH,POST,PUT");
                 response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, request.getHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS)); // todo filter ?
