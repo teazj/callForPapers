@@ -28,11 +28,14 @@ import io.cfp.dto.user.CospeakerProfil;
 import io.cfp.dto.user.UserProfil;
 import io.cfp.entity.Event;
 import io.cfp.entity.User;
+import io.cfp.repository.EventRepository;
 import io.cfp.repository.UserRepo;
 import io.cfp.service.admin.config.ApplicationConfigService;
+import org.apache.commons.io.FileUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.generic.DateTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +44,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Service
 public class EmailingService {
@@ -58,6 +60,9 @@ public class EmailingService {
 
     @Autowired
     private UserRepo users;
+
+    @Autowired
+    private EventRepository eventRepo;
 
     @Autowired
     private VelocityEngine velocityEngine;
@@ -164,8 +169,6 @@ public class EmailingService {
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
-        params.put("shortDescription", applicationConfigService.getAppConfig().getShortDescription());
-        params.put("event", applicationConfigService.getAppConfig().getEventName());
 
         createAndSendEmail("notSelectionned.html", user.getEmail(), params, cc, null, locale);
     }
@@ -186,8 +189,6 @@ public class EmailingService {
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
-        params.put("event", applicationConfigService.getAppConfig().getEventName());
-        params.put("date", applicationConfigService.getAppConfig().getDate());
 
         createAndSendEmail("pending.html", user.getEmail(), params, cc, null, locale);
     }
@@ -208,15 +209,12 @@ public class EmailingService {
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstname());
         params.put("talk", talk.getName());
-        params.put("event", applicationConfigService.getAppConfig().getEventName());
-        params.put("date", applicationConfigService.getAppConfig().getDate());
-        params.put("releaseDate", applicationConfigService.getAppConfig().getReleaseDate());
 
         createAndSendEmail("selectionned.html", user.getEmail(), params, cc, null, locale);
     }
 
     public void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
-    	String templatePath = getTemplatePath(template, locale);
+        String templatePath = getTemplatePath(template, locale);
 
         String content = processTemplate(templatePath, parameters);
         String subject = (String) parameters.get("subject");
@@ -236,6 +234,8 @@ public class EmailingService {
 
         // adds global params
         parameters.put("hostname", StringUtils.replace(hostname, "{{event}}", Event.current()));
+        parameters.put("event", eventRepo.findOne(Event.current()));
+        parameters.put("date", new DateTool());
 
         VelocityContext context = new VelocityContext(parameters);
 
@@ -248,7 +248,8 @@ public class EmailingService {
 
     public void sendEmail(String to, String subject, String content, List<String> cc, List<String> bcc) {
         if (!send) {
-            log.info("Mail '{}' to {} not actually sent as mail service is disabled by configuration.", subject, to);
+            String fileName = saveLocally(content);
+            log.warn("Mail [{}] to [{}] not sent as mail is disabled but can be found at [{}]", subject, to, fileName);
             return;
         }
 
@@ -278,4 +279,16 @@ public class EmailingService {
         }
     }
 
+
+
+    private String saveLocally(String content) {
+        try {
+            File tempFile = File.createTempFile("cfpio-", ".html");
+            FileUtils.writeStringToFile(tempFile, content, StandardCharsets.UTF_8);
+            return tempFile.getAbsolutePath();
+        } catch (IOException e) {
+            log.error("Unable to save temp mail file", e);
+            return null;
+        }
+    }
 }

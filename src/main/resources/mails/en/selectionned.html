@@ -121,6 +121,7 @@
     <tbody><tr style="padding: 0;vertical-align: top">
       <td class="center" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;margin: 0;text-align: center;background-color: #E5E5E5" align="center" valign="top">
 
+        #if($event.logoUrl)
         <!--[if (gte mso 9)|(IE)]>
         <table width='600' class="ieCell" align="center" cellpadding="0" cellspacing="0" border="0">
           <tr>
@@ -148,8 +149,8 @@
                                                 <tbody><tr style="padding: 0;vertical-align: top">
                                                   <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;margin: 0;width: 100%;text-align: center fullwidth" align="center fullwidth">
                                                     <div style="max-width: 100%;padding-top: 10px;padding-right: 10px;padding-left: 10px" align="center fullwidth">
-                                                      <a href="http://www.cfp.io/" target="_blank">
-                                                        <img class="center fullwidth" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 100%;clear: both;display: block;border: none;height: auto;line-height: 100%;margin: 0 auto;float: none;max-width: 600px" border="0" width="100%" align="center fullwidth" src="$hostname/lib/images/header.png" alt="Image" title="Image">
+                                                      <a href="http://${event.id}.cfp.io/" target="_blank">
+                                                        <img class="center fullwidth" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 100%;clear: both;display: block;border: none;height: auto;line-height: 100%;margin: 0 auto;float: none;max-width: 600px" border="0" width="100%" align="center fullwidth" src="${event.logoUrl}" alt="${event.name}" title="${event.name}">
                                                       </a>
                                                     </div>
                                                   </td>
@@ -181,6 +182,8 @@
         </tr>
       </table>
       <![endif]-->
+      #end
+
       <!--[if (gte mso 9)|(IE)]>
       <table width='600' class="ieCell" align="center" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -226,7 +229,7 @@
                                               <tbody><tr style="padding: 0;vertical-align: top">
                                                 <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;margin: 0;padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px">
                                                   <div style="color:#767676;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;">
-                                                    <div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;">Your session "$talk" was chosen for $event!</span></div>
+                                                    <div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;">Your session "$talk" was chosen for $event.name!</span></div>
                                                   </div>
                                                 </td>
                                               </tr>
@@ -235,7 +238,7 @@
                                               <tbody><tr style="padding: 0;vertical-align: top">
                                                 <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;margin: 0;padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px">
                                                   <div style="color:#767676;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;">
-                                                    <div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;">We need to get feedback from you on the following aspects:</span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;"><br data-mce-bogus="1"></span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:18px; line-height:22px;">&nbsp; &nbsp; &nbsp;- Can you confirm your participation as a speaker, on the $date to $event?</span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:18px; line-height:22px;"><br data-mce-bogus="1"></span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:18px; line-height:22px;">&nbsp; &nbsp; &nbsp;- Do you have any particular question about the organization and your coming?</span></div>
+                                                    <div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;">We need to get feedback from you on the following aspects:</span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;"><br data-mce-bogus="1"></span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:18px; line-height:22px;">&nbsp; &nbsp; &nbsp;- Can you confirm your participation as a speaker, on the $date.format('dd/MM/yyyy', $event.date) to $event.name?</span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:18px; line-height:22px;"><br data-mce-bogus="1"></span></div><div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:18px; line-height:22px;">&nbsp; &nbsp; &nbsp;- Do you have any particular question about the organization and your coming?</span></div>
                                                   </div>
                                                 </td>
                                               </tr>
@@ -244,7 +247,7 @@
                                               <tbody><tr style="padding: 0;vertical-align: top">
                                                 <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;border-collapse: collapse !important;padding: 0;vertical-align: top;margin: 0;padding-top: 10px;padding-right: 10px;padding-bottom: 10px;padding-left: 10px">
                                                   <div style="color:#767676;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;">
-                                                    <div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;">Thank you to answer us as soon as possible. We will announce the program on the $releaseDate.</span></div>
+                                                    <div style="font-size: 12px; line-height: 14px; text-align: left;color: #767676;font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height: 14px" data-mce-style="font-size: 12px; line-height: 14px; text-align: left;"><span style="font-size:20px; line-height:24px;">Thank you to answer us as soon as possible. We will announce the program on the $date.format('dd/MM/yyyy', $event.releaseDate).</span></div>
                                                   </div>
                                                 </td>
                                               </tr>

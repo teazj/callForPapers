@@ -20,32 +20,27 @@
 
 package io.cfp.service.email;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
+import io.cfp.dto.ApplicationSettings;
+import io.cfp.dto.TalkAdmin;
+import io.cfp.dto.TalkUser;
+import io.cfp.dto.user.UserProfil;
+import io.cfp.entity.Event;
+import io.cfp.entity.User;
+import io.cfp.repository.CfpConfigRepo;
+import io.cfp.repository.EventRepository;
+import io.cfp.repository.UserRepo;
+import io.cfp.service.admin.config.ApplicationConfigService;
 import org.apache.velocity.app.VelocityEngine;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -54,18 +49,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetupTest;
+import java.util.*;
 
-import io.cfp.dto.ApplicationSettings;
-import io.cfp.dto.TalkAdmin;
-import io.cfp.dto.TalkUser;
-import io.cfp.dto.user.UserProfil;
-import io.cfp.entity.User;
-import io.cfp.repository.CfpConfigRepo;
-import io.cfp.repository.EventRepository;
-import io.cfp.repository.UserRepo;
-import io.cfp.service.admin.config.ApplicationConfigService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = EmailingServiceTest.Config.class)
@@ -81,8 +74,11 @@ public class EmailingServiceTest {
     @Autowired
     private ApplicationConfigService applicationConfigService;
 
-    @Autowired
+    @Mock
     private UserRepo users;
+
+    @Autowired
+    private EventRepository eventRepo;
 
     @Autowired
     private VelocityEngine velocityEngine;
@@ -94,6 +90,8 @@ public class EmailingServiceTest {
     private TalkAdmin talkAdmin;
 
     private TalkUser talkUser;
+
+    private Event event;
 
     @Before
     public void setup() {
@@ -117,9 +115,19 @@ public class EmailingServiceTest {
         talkAdmin.setId(2);
         talkAdmin.setName("My amazing user talk 2");
 
+        event = new Event();
+        event.setId("test");
+        event.setName("Test");
+        event.setDate(new Date());
+        event.setReleaseDate(new Date());
+        event.setLogoUrl("http://localhost/logo.png");
+        Event.setCurrent("test");
+        when(eventRepo.findOne("test")).thenReturn(event);
+
         MockitoAnnotations.initMocks(this);
 
         ReflectionTestUtils.setField(emailingService, "users", users);
+        ReflectionTestUtils.setField(emailingService, "eventRepo", eventRepo);
         ReflectionTestUtils.setField(emailingService, "applicationConfigService", applicationConfigService);
         ReflectionTestUtils.setField(emailingService, "velocityEngine", velocityEngine);
         ReflectionTestUtils.setField(emailingService, "emailSender", emailSender);
@@ -235,7 +243,6 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("hostname", "http://yourappid.appspot.com/");
         map.put("id", "123");
 
         // When
@@ -254,9 +261,7 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("community", "GDG Nantes");
-        map.put("event", "DevFest 2015");
-        map.put("hostname", "http://yourappid.appspot.com/");
+        map.put("id", "123");
 
         // When
         String content = emailingService.processTemplate(templatePath, map);
@@ -274,9 +279,6 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("event", "DevFest 2015");
-        map.put("date", "13/11/1992");
-        map.put("hostname", "http://yourappid.appspot.com/");
 
         // When
         String content = emailingService.processTemplate(templatePath, map);
@@ -294,10 +296,6 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("event", "DevFest 2015");
-        map.put("date", "13/11/1992");
-        map.put("releaseDate", "12/11/1992");
-        map.put("hostname", "http://yourappid.appspot.com/");
 
         // When
         String content = emailingService.processTemplate(templatePath, map);
@@ -315,7 +313,6 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("hostname", "http://yourappid.appspot.com/");
         map.put("id", "123");
 
         // When
@@ -334,7 +331,6 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("hostname", "http://yourappid.appspot.com/");
         map.put("id", "123");
 
         // When
@@ -353,7 +349,6 @@ public class EmailingServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Thomas");
         map.put("talk", "Google App Engine pour les nuls");
-        map.put("hostname", "http://yourappid.appspot.com/");
         map.put("id", "123");
 
         // When
