@@ -220,7 +220,7 @@ public class EmailingService {
         createAndSendEmail("selectionned.html", user.getEmail(), params, cc, null, locale);
     }
 
-    private void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
+    protected void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
         String templatePath = getTemplatePath(template, locale);
 
         String content = processTemplate(templatePath, parameters);
@@ -229,7 +229,7 @@ public class EmailingService {
         sendEmail(parameters.get("contactMail").toString(), email, subject, content, cc, bcc);
     }
 
-    private String getTemplatePath(final String emailTemplate, final Locale locale) {
+    protected String getTemplatePath(final String emailTemplate, final Locale locale) {
     	String language = locale.getLanguage();
     	if (!"fr".equals(language)) {
     		language = "en";
@@ -237,7 +237,7 @@ public class EmailingService {
         return "mails/" + language + "/" + emailTemplate;
     }
 
-    private String processTemplate(String templatePath, Map<String, Object> parameters) {
+    protected String processTemplate(String templatePath, Map<String, Object> parameters) {
 
         // adds global params
         parameters.put("hostname", StringUtils.replace(hostname, "{{event}}", Event.current()));
