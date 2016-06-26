@@ -20,16 +20,15 @@
 
 package io.cfp.entity;
 
-import java.util.Date;
+import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Date;
 
 /**
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
@@ -64,6 +63,8 @@ public class Event {
     private String logoUrl;
 
     private String videosUrl;
+
+    private String contactMail;
 
     @Type(type="date")
     private Date date;
@@ -114,6 +115,14 @@ public class Event {
 
     public void setVideosUrl(String videosUrl) {
         this.videosUrl = videosUrl;
+    }
+
+    public String getContactMail() {
+        return contactMail;
+    }
+
+    public void setContactMail(String contactMail) {
+        this.contactMail = contactMail;
     }
 
     public Date getDecisionDate() {

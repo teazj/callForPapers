@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -88,6 +89,7 @@ public class EmailingService {
      * @param locale
      */
     @Async
+    @Transactional
     public void sendConfirmed(User user, TalkUser talk, Locale locale) {
         log.debug("Sending email confirmation e-mail to '{}'", user.getEmail());
 
@@ -110,6 +112,7 @@ public class EmailingService {
      * @param locale
      */
     @Async
+    @Transactional
     public void sendNewCommentToSpeaker(User speaker, TalkAdmin talk, Locale locale) {
         log.debug("Sending new comment email to speaker '{}' for talk '{}'", speaker.getEmail(), talk.getName());
 
@@ -134,6 +137,7 @@ public class EmailingService {
      * @param locale
      */
     @Async
+    @Transactional
     public void sendNewCommentToAdmins(User speaker, TalkUser talk, Locale locale) {
         log.debug("Sending new comment email to admins for talk '{}'", talk.getName());
 
@@ -154,6 +158,7 @@ public class EmailingService {
      * @param locale
      */
     @Async
+    @Transactional
     public void sendNotSelectionned(TalkUser talk, Locale locale) {
         UserProfil user = talk.getSpeaker();
 
@@ -174,6 +179,7 @@ public class EmailingService {
     }
 
     @Async
+    @Transactional
     public void sendPending(TalkUser talk, Locale locale) {
         UserProfil user = talk.getSpeaker();
 
@@ -194,6 +200,7 @@ public class EmailingService {
     }
 
     @Async
+    @Transactional
     public void sendSelectionned(TalkUser talk, Locale locale) {
         UserProfil user = talk.getSpeaker();
 
@@ -213,16 +220,16 @@ public class EmailingService {
         createAndSendEmail("selectionned.html", user.getEmail(), params, cc, null, locale);
     }
 
-    public void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
+    private void createAndSendEmail(String template, String email, Map<String,Object> parameters, List<String> cc, List<String> bcc, Locale locale) {
         String templatePath = getTemplatePath(template, locale);
 
         String content = processTemplate(templatePath, parameters);
         String subject = (String) parameters.get("subject");
 
-        sendEmail(email, subject, content, cc, bcc);
+        sendEmail(parameters.get("contactMail").toString(), email, subject, content, cc, bcc);
     }
 
-    public String getTemplatePath(final String emailTemplate, final Locale locale) {
+    private String getTemplatePath(final String emailTemplate, final Locale locale) {
     	String language = locale.getLanguage();
     	if (!"fr".equals(language)) {
     		language = "en";
@@ -230,12 +237,14 @@ public class EmailingService {
         return "mails/" + language + "/" + emailTemplate;
     }
 
-    public String processTemplate(String templatePath, Map<String, Object> parameters) {
+    private String processTemplate(String templatePath, Map<String, Object> parameters) {
 
         // adds global params
         parameters.put("hostname", StringUtils.replace(hostname, "{{event}}", Event.current()));
-        parameters.put("event", eventRepo.findOne(Event.current()));
         parameters.put("date", new DateTool());
+        Event curEvent = eventRepo.findOne(Event.current());
+        parameters.put("event", curEvent);
+        parameters.put("contactMail", curEvent.getContactMail() != null ? curEvent.getContactMail() : "contact@cfp.io");
 
         VelocityContext context = new VelocityContext(parameters);
 
@@ -246,7 +255,7 @@ public class EmailingService {
         return writer.toString();
     }
 
-    public void sendEmail(String to, String subject, String content, List<String> cc, List<String> bcc) {
+    public void sendEmail(String from, String to, String subject, String content, List<String> cc, List<String> bcc) {
         if (!send) {
             String fileName = saveLocally(content);
             log.warn("Mail [{}] to [{}] not sent as mail is disabled but can be found at [{}]", subject, to, fileName);
@@ -259,7 +268,7 @@ public class EmailingService {
 
         email.setFrom(emailSender)
             .setFromName("CFP.io")
-            .setReplyTo("no-reply@cfp.io")
+            .setReplyTo(from)
             .addTo(to)
             .setSubject(subject)
             .setHtml(content);

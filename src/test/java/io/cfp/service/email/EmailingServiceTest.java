@@ -64,6 +64,7 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = EmailingServiceTest.Config.class)
 public class EmailingServiceTest {
 
+    private static final String CONTACT_MAIL = "contact@maconf.fr";
     private static final String JOHN_DOE_EMAIL = "john.doe@gmail.com";
 
     @Spy
@@ -121,6 +122,7 @@ public class EmailingServiceTest {
         event.setDate(new Date());
         event.setReleaseDate(new Date());
         event.setLogoUrl("http://localhost/logo.png");
+        event.setContactMail(CONTACT_MAIL);
         Event.setCurrent("test");
         when(eventRepo.findOne("test")).thenReturn(event);
 
@@ -151,7 +153,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processTemplate(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), anyString(), anyString(), isNull(List.class), isNull(List.class));
+        verify(emailingService).sendEmail(eq(CONTACT_MAIL), eq(JOHN_DOE_EMAIL), anyString(), anyString(), isNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -164,7 +166,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processTemplate(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
+        verify(emailingService).sendEmail(eq(CONTACT_MAIL), eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -177,7 +179,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processTemplate(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(emailSender), anyString(), anyString(), isNull(List.class), notNull(List.class));
+        verify(emailingService).sendEmail(eq(CONTACT_MAIL), eq(emailSender), anyString(), anyString(), isNull(List.class), notNull(List.class));
     }
 
     @Test
@@ -190,7 +192,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processTemplate(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
+        verify(emailingService).sendEmail(eq(CONTACT_MAIL), eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -203,7 +205,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processTemplate(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
+        verify(emailingService).sendEmail(eq(CONTACT_MAIL), eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
@@ -216,7 +218,7 @@ public class EmailingServiceTest {
 
         // Then
         verify(emailingService).processTemplate(eq(templatePath), anyMap());
-        verify(emailingService).sendEmail(eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
+        verify(emailingService).sendEmail(eq(CONTACT_MAIL), eq(JOHN_DOE_EMAIL), anyString(), anyString(), notNull(List.class), isNull(List.class));
     }
 
     @Test
