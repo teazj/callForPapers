@@ -25,6 +25,7 @@ import io.cfp.entity.Comment;
 import io.cfp.entity.Event;
 import io.cfp.entity.Talk;
 import io.cfp.repository.CommentRepo;
+import io.cfp.repository.EventRepository;
 import io.cfp.repository.TalkRepo;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class CommentUserService {
 
     @Autowired
     private CommentRepo commentRepo;
+
+    @Autowired
+    private EventRepository eventRepo;
 
     @Autowired
     private MapperFacade mapper;
@@ -77,6 +81,7 @@ public class CommentUserService {
         comment.setTalk(talk);
         comment.setUser(talk.getUser());
         comment.setInternal(false);
+        comment.setEvent(eventRepo.getOne(Event.current()));
 
         Comment saved = commentRepo.save(comment);
         commentRepo.flush();

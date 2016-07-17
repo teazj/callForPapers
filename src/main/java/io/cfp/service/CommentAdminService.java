@@ -52,7 +52,7 @@ public class CommentAdminService {
 
     @Autowired
     private UserRepo userRepo;
-    
+
     @Autowired
     private EventRepository eventRepo;
 
@@ -83,8 +83,8 @@ public class CommentAdminService {
         if (talk == null) return null;
         User user = userRepo.findByEmail(admin.getEmail());
         if (user == null) throw new IllegalStateException("Admin with email [" + admin.getEmail() + "] doesn't exists in user table");
-        Event event = eventRepo.findOne(Event.current());
-        
+        Event event = eventRepo.getOne(Event.current());
+
         Comment comment = mapper.map(commentUser, Comment.class);
         comment.setAdded(new Date());
         comment.setTalk(talk);
