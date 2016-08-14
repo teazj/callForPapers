@@ -81,6 +81,7 @@ public class TalkAdminService {
 
     /**
      * Retrieve all talks
+     *
      * @param states List of states the talk must be
      * @return List of talks
      */
@@ -115,13 +116,14 @@ public class TalkAdminService {
 
     /**
      * Retrieve a talk
+     *
      * @param talkId Id of the talk to retrieve
      * @return Talk or null if not found
      */
     public TalkAdmin getOne(int talkId) {
         Talk talk = talkRepo.findByIdAndEventId(talkId, Event.current());
         TalkAdmin talkAdmin = mapper.map(talk, TalkAdmin.class);
-        UserProfil user = mapper.map(talk.getUser(),UserProfil.class);
+        UserProfil user = mapper.map(talk.getUser(), UserProfil.class);
         user.setImageProfilURL(talk.getUser().getImageProfilURL());
         talkAdmin.setSpeaker(user);
         talkAdmin.setUserId(user.getId());
@@ -130,48 +132,57 @@ public class TalkAdminService {
 
     /**
      * Edit a talk
+     *
      * @param talkAdmin Talk to edit
      * @return Edited talk
      */
-    public TalkAdmin edit(TalkAdmin talkAdmin)  throws CospeakerNotFoundException {
-      Talk talk = talkRepo.findByIdAndEventId(talkAdmin.getId(), Event.current());
-      if (talk == null) return null;
+    public TalkAdmin edit(TalkAdmin talkAdmin) throws CospeakerNotFoundException {
+        Talk talk = talkRepo.findByIdAndEventId(talkAdmin.getId(), Event.current());
+        if (talk == null) {
+            return null;
+        }
 
+        talk.name(talkAdmin.getName())
+            .language(talkAdmin.getLanguage())
+            .track(trackRepo.getOne(talkAdmin.getTrackId()))
+            .description(talkAdmin.getDescription())
+            .references(talkAdmin.getReferences())
+            .difficulty(talkAdmin.getDifficulty())
+            .format(formatRepo.findByIdAndEventId(talkAdmin.getFormat(), Event.current()))
+            .track(trackRepo.findByIdAndEventId(talkAdmin.getTrackId(), Event.current()));
+        setCoSpeaker(talkAdmin, talk);
 
-      talk.setTrack(trackRepo.findByIdAndEventId(talkAdmin.getTrackId(), Event.current()));
-      talk.setFormat(formatRepo.findByIdAndEventId(talkAdmin.getFormat(), Event.current()));
-      setCoSpeaker(talkAdmin, talk);
+        talkRepo.save(talk);
+        talkRepo.flush();
 
-      mapper.map(talkAdmin, talk);
-      talkRepo.save(talk);
-      talkRepo.flush();
-
-      return mapper.map(talk, TalkAdmin.class);
+        return mapper.map(talk, TalkAdmin.class);
     }
 
     /**
      * For each cospeaker, check if the user is in the CFP database and set the id on the user object
+     *
      * @param talk TalkUser
      * @param talk Talk
      * @throws CospeakerNotFoundException If a cospeaker is not found
      */
-     private void setCoSpeaker(TalkAdmin talkAdmin, Talk talk) throws CospeakerNotFoundException {
+    private void setCoSpeaker(TalkAdmin talkAdmin, Talk talk) throws CospeakerNotFoundException {
 
-         if (talkAdmin.getCospeakers() == null) return;
+        if (talkAdmin.getCospeakers() == null) return;
 
-         HashSet<User> users = new HashSet<User>();
-         for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
-             User u = userRepo.findByEmail(cospeaker.getEmail());
-             if (u == null) {
-                 throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
-             }
-             users.add(u);
-         }
-         talk.setCospeakers(users);
-     }
+        HashSet<User> users = new HashSet<User>();
+        for (CospeakerProfil cospeaker : talkAdmin.getCospeakers()) {
+            User u = userRepo.findByEmail(cospeaker.getEmail());
+            if (u == null) {
+                throw new CospeakerNotFoundException("error cospeaker not found", new CospeakerProfil(cospeaker.getEmail()));
+            }
+            users.add(u);
+        }
+        talk.setCospeakers(users);
+    }
 
     /**
      * Delete a talk
+     *
      * @param talkId Id of the talk to delete
      * @return Deleted talk
      */
